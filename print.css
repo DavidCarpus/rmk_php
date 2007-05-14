@@ -1,0 +1,42 @@
+.centerblock{
+	width:100%;
+	display:block; 
+	float: left;
+}
+
+.content{
+	display:block;
+	float:center;
+	clear:none;
+	margin: 20px 10px 10px 40px;
+}
+
+.titlebar{	display: none;}
+.leftnavigation{	display: none;}
+.footer{	display: none;}
+.admintitlebar{	display: none;}
+.adminOrderNavigation{	display: none;}
+
+
+.requestTypeHeader {
+	text-align: left; 
+	font: bold 14px sans-serif; 
+	padding: 5px 0px 5px 10px; 
+	margin: 0px 0px 0px 0px; 
+	border-width: 0px; 
+	text-decoration: none; 
+}
+
+
+.adminOrderType{
+    font-size:18;
+	text-align: center; 
+	font-weight: bold; 
+}
+
+.noPageBreak{
+	page-break-after: always;
+}
+
+.printHide{ display: none;}
+
