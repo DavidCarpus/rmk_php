@@ -176,12 +176,12 @@ function getDefaultRequests($parameters){
 	if($startid > 0) $whereStatement = addToWhereStatement($whereStatement, "orders_id < $startid");
 	$whereStatement = addToWhereStatement($whereStatement, " processed = $status ");
 	$whereStatement = addToWhereStatement($whereStatement, " ordertype = $type ");
-	$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders WHERE $whereStatement ORDER BY orders_id DESC LIMIT 20";
+	$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders WHERE $whereStatement ORDER BY orders_id DESC LIMIT 40";
 	$records = getDbRecords($query);
 //	debugStatement(count($records) . " - " . $query);
 	$prepend="";
 	if(count($records) > 20){
-		$prepend = "Only displaying first 20 records. Processes 20 at a time.<BR>\n";
+		$prepend = "Only displaying first 40 records. Processes 40 at a time.<BR>\n";
 	}
 	return $prepend . getOrderList2($records);
 }
