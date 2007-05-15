@@ -80,7 +80,7 @@ function htmlizeFormValue($original){
 		return $results; 
 }
 function de_htmlizeFormValue($original){
-		$results = str_replace("&apos;", "'", $results); 
+		$results = str_replace("&apos;", "'", $original); 
 		return $results; 
 }
 
@@ -370,6 +370,10 @@ function getCurrPage(){
 }
 
 function isDebugMachine(){
+	if($_SERVER['REMOTE_ADDR'] =='70.118.199.240'){
+		echo "<HR>DEBUG MACHINE<HR>";
+		return true;
+	}
 	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org');	
 }
 ?>

@@ -73,6 +73,7 @@ function saveRecord($tableName, $keyField, $record){
 	}else{
 		$sql = insertRecordSQL($record, $keyField, $tableName);
 		executeSQL($sql);
+		debugStatement($sql);
 //		echo "<HR>$sql<HR>";
 		$record[$keyField] = mysql_insert_id();		
 	}

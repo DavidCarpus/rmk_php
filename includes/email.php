@@ -68,14 +68,16 @@ function saveAndSend($form, $quiet=false){
 	$dbRecord['messagesubject'] = $form['subject'];
 	$dbRecord['messagebody'] = de_htmlizeFormValue($form['message']);
 
-	saveRecord("emails", "email_id", $dbRecord);
+//	if(!isDevelopmentMachine()){
+		saveRecord("emails", "email_id", $dbRecord);
+//	}
 	
 	if(!isDevelopmentMachine() && !$mail->Send()){ 
 		$error = $error . 'Unable to send email to:' . $form['to'] . "<BR>\n";
 	}else{
 		if(!$quiet){
-			print "The following message was sent:<BR>";
-			print  $form['message'];
+			print "The following message was 'sent':<BR>";
+			print  $form['message'] . "-" . $dbRecord['messagebody'];
 		}
 	}
 //	print_r($form);
@@ -88,6 +90,7 @@ function saveAndSend($form, $quiet=false){
 function isDevelopmentMachine(){
 	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org') return true;
 	if($_SERVER['HTTP_HOST'] == 'localhost') return true;
+	if($_SERVER['REMOTE_ADDR'] =='70.118.199.240') return true;
 	return false;
 }
 
