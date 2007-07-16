@@ -75,12 +75,15 @@ function checkbox($name, $label, $required=false, $value=''){
 }
 function htmlizeFormValue($original){
 		$results = $original;
-		$results = str_replace("'", "&apos;", $results); 
-		$results = str_replace("`", "&apos;", $results); 
+//		$results = str_replace("'", "&apos;", $results);
+//		$results = str_replace("`", "&apos;", $results); 
+		$results = str_replace("'", "&#39;", $results);
+		$results = str_replace("`", "&#39;", $results);
 		return $results; 
 }
 function de_htmlizeFormValue($original){
-		$results = str_replace("&apos;", "'", $original); 
+//		$results = str_replace("&apos;", "'", $original); 
+		$results = str_replace("&#39;", "'", $original); 
 		return $results; 
 }
 
@@ -246,6 +249,11 @@ function adminToolbar(){
 		$results = $results . "<a href='$prefix/admin/logout.php'>LOGOUT</a>\n";
 	else
 		$results = $results . "<a href='$prefix/admin/logout.php'>LOGIN</a>\n";
+
+	//########### Development machine not set up for secure pages at this point  #####
+	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
+		$results = str_replace("https://", "http://", $results);
+	}
 		
 	$results = $results . "</div>\n";
 
@@ -312,7 +320,7 @@ function getToolbarPrefix(){
 		
 	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org'){
 		$secureLocation = false;
-		$prefix = $prefix . "/rmk";
+		$prefix = $prefix . "/rmkweb";
 //		$prefix = $prefix . $_SERVER['HTTP_HOST'];
 	}
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57'){
@@ -342,7 +350,7 @@ function getToolbarPrefix(){
 }
 
 function getBaseImageDir(){
-	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmk/images";
+	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmkweb/images";
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57')				return  "/~uplzcvgw/images";
 	return  getToolbarPrefix()."/images";
 	
@@ -363,7 +371,7 @@ return "\n<div class='footer'>" .
 
 function getCurrPage(){
 	$currPage=$_SERVER['PHP_SELF'];
-	if(substr($currPage,0,5) == "/rmk/") $currPage = substr($currPage,5);
+	if(substr($currPage,0,5) == "/rmkweb/") $currPage = substr($currPage,7);
 	if(substr($currPage,0,6) == "admin/") $currPage = substr($currPage,6); // strip the "admin" from the front
 	if(substr($currPage,0,1) == "/") $currPage = substr($currPage,1);
 	return $currPage;
