@@ -171,6 +171,12 @@ function selection($name, $values, $label, $selected="", $autosubmit=false){
 	return $results;
 }
 
+function headSegment($stylesheet="Style.css"){
+	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
+			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
+			"<LINK href='Style.css' rel='stylesheet' type='text/css'></head>\n";
+}
+
 function logo_header($section, $prefix="."){
 //	$prefix = ".";
 //	if(strpos($_SERVER['PHP_SELF'],"order/") != FALSE)
@@ -178,9 +184,7 @@ function logo_header($section, $prefix="."){
 //	if(strpos($_SERVER['PHP_SELF'],"admin/") != FALSE)
 //		$prefix = "..";
 		
-	$results = $results . "<html><head><meta http-equiv='Content-Language' content='en' />" .
-			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
-			"<LINK href='Style.css' rel='stylesheet' type='text/css'></head><body>\n";
+	$results = "";
 	
 	if($section=='admin') $headerid='admin';
 //	if($section=='admin')

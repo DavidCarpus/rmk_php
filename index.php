@@ -6,6 +6,9 @@ include_once "includes/htmlHead.php";
 
 // echo dumpServerVariables(); 
 ?>
+<html>
+<?php echo headSegment(); ?>
+<body>
 
 
 <?php echo logo_header(""); ?>

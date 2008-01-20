@@ -5,8 +5,11 @@ session_start();
 include_once "includes/db.php";
 include_once "includes/htmlHead.php";
 ?>
-
+<html>
+<?php echo headSegment(); ?>
+<body>
 <?php echo logo_header(""); ?>
+
 <div class="mainbody">
 	<div class="centerblock">
 		<?php echo toolbar(); ?>

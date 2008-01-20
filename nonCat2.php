@@ -4,7 +4,9 @@ session_start();
 include_once "includes/db.php";
 include_once "includes/htmlHead.php";
 ?>
-<LINK href="Style.css" rel="stylesheet" type="text/css">
+<html>
+<?php echo headSegment(); ?>
+<body>
 
 <style type="text/css">
 
@@ -109,7 +111,7 @@ for($i=0; $i< count($left); $i++ ) {
 		</div>
 	</div>
 	<?php echo footer(); ?>
-</div>
+<!--  </div> -->
 
 </body>
 </html>
