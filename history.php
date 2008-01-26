@@ -25,7 +25,7 @@ include_once "includes/htmlHead.php";
 			<BR><BR>
 			I challenged myself to make a knife that was just as good, or at least make the best knife I could make.
 			<BR><BR>
-			My first knife was a simple blade ground form a file. But before long I had a shop with a small forge and I put a lot of time into crafting knives that I could be proud to make and use myself.
+			My first knife was a simple blade ground from a file. But before long I had a shop with a small forge and I put a lot of time into crafting knives that I could be proud to make and use myself.
 			<BR><BR>
 			An before long, I began selling them at my father-in-law's clothing store in Orlando.
 			<BR><BR>
