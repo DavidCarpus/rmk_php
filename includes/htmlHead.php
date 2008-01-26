@@ -174,7 +174,7 @@ function selection($name, $values, $label, $selected="", $autosubmit=false){
 function headSegment($stylesheet="Style.css"){
 	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
 			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
-			"<LINK href='Style.css' rel='stylesheet' type='text/css'></head>\n";
+			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n";
 }
 
 function logo_header($section, $prefix="."){

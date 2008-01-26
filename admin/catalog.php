@@ -274,7 +274,7 @@ function processFileUpload($formValues, $tmp_name, $name){
 
 ?>
 <html>
-<?php echo headSegment(); ?>
+<?php echo headSegment("../Style.css"); ?>
 <body>
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -287,5 +287,5 @@ function processFileUpload($formValues, $tmp_name, $name){
 	<?php echo footer(); ?>
 </div>
 
-</body>
+</body >
 </html>
