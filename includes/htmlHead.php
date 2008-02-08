@@ -185,7 +185,7 @@ function logo_header($section, $prefix="."){
 //		$prefix = "..";
 		
 	$results = "";
-	
+	$headerid="";
 	if($section=='admin') $headerid='admin';
 //	if($section=='admin')
 ////		$results = $results .  "<div id='adminheader'><H1>Admin Header</H1></div>\n";
@@ -265,6 +265,46 @@ function adminToolbar(){
 //		return "<a href='Times.php'>Billed Time</a>";
 	
 }
+function shopToolbar(){
+	if(!isLocalAccess())
+		return "";
+		
+	$prefix = getToolbarPrefix();
+	$menu = array(
+//	array('', ''),
+				array('knife_list.php', 'Knife List'),
+				array('view_invoice.php', 'View Order'),
+				);
+	$results = "";
+	$currPage=getCurrPage();
+	
+//	$results = $results . $currPage;
+	
+	$results = $results . "<div class='leftnavigation'>\n";
+	foreach($menu as $option){
+		$realprefix = $prefix;
+		$realprefix = str_replace("http://", "https://", $realprefix);
+		if($option[1] == 'Home'){
+			$realprefix = str_replace("https://", "http://", $realprefix);
+		}
+		$selectedStyle="";
+		if(strtolower($currPage)==strtolower($option[0]))
+			$selectedStyle="id='selected'";
+			
+		$results = $results . "<a $selectedStyle href='$realprefix/shop/" . $option[0] . "'>" . $option[1] . "</a>\n";
+	}
+	
+	//########### Development machine not set up for secure pages at this point  #####
+	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
+		$results = str_replace("https://", "http://", $results);
+	}
+		
+	$results = $results . "</div>\n";
+
+	return $results;
+}
+
+
 function toolbar(){
 	$prefix = getToolbarPrefix();
 
@@ -387,5 +427,19 @@ function isDebugMachine(){
 		return true;
 	}
 	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org');	
+}
+
+function isLocalAccess(){
+	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
+	if(substr($_SERVER['REMOTE_ADDR'],0,10) == "192.168.1."){
+		return true;
+	}
+	if($_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org")
+//	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") 
+			){
+				return true;
+			}
+	
+	return false;
 }
 ?>

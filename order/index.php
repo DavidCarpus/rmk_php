@@ -7,8 +7,10 @@ include_once "../includes/htmlHead.php";
 include_once "../includes/orders.php";
 ?>
 
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<?php echo logo_header(""); ?>
+<html>
+<?php echo headSegment("../Style.css"); ?>
+<body>
+
 <div class="mainbody">
 	<div class="centerblock">
 		<?php echo toolbar(); ?>
@@ -18,7 +20,8 @@ include_once "../includes/orders.php";
 	</div>
 	<?php echo footer(); ?>
 </div>
-
+</body>
+</html>
 <?php
 
 function processOrders(){

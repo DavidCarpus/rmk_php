@@ -90,9 +90,8 @@ function getPageDescription($page){
 }
 
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
 <html>
-<?php echo headSegment(); ?>
+<?php echo headSegment("../Style.css"); ?>
 <body>
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
