@@ -39,8 +39,9 @@ function debugStatement($statement){
 function dumpDBRecord($record){
 	$results = "";
 	foreach(array_keys($record) as $key){
-		$results .= "$key=>".$record[$key]."\n";
+		$results .= "<B>$key</B>=>".$record[$key]."<BR>\n";
 	}
+		
 	return $results;
 }
 
@@ -266,8 +267,9 @@ function adminToolbar(){
 	
 }
 function shopToolbar(){
-	if(!isLocalAccess())
+	if(!isLocalAccess() && !isDebugAccess())
 		return "";
+//		return $_SERVER['REMOTE_ADDR'];
 		
 	$prefix = getToolbarPrefix();
 	$menu = array(
@@ -435,11 +437,20 @@ function isLocalAccess(){
 		return true;
 	}
 	if($_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org")
-//	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") 
-			){
+	 ||	$_SERVER['REMOTE_ADDR'] == '67.8.255.165'
+	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") 
+	){
 				return true;
 			}
 	
 	return false;
+}
+function isDebugAccess(){
+	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
+	
+	return ($_SERVER['REMOTE_ADDR'] == '97.100.243.22'
+		||	$_SERVER['REMOTE_ADDR'] == '67.8.252.151'
+		|| $_SERVER['REMOTE_ADDR'] == '198.73.165.1'
+	);
 }
 ?>

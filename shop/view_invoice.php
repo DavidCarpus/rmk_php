@@ -17,7 +17,7 @@ include_once "../includes/shop.php";
 	<div class="centerblock">
 		<?php echo shopToolbar(); ?>
 		<div class="content">
-			<?php echo TBD(); ?>
+			<?php echo orderDisplay(); ?>
 		</div>
 	</div>
 </div>
