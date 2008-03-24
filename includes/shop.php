@@ -213,9 +213,10 @@ function displayInvoiceDetailsForShop($record){
 	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs further testing) vvvvvvvvvvvvvvvvvvvv";
 	$results .= "<TABLE>";
 	$results .=  "<TR><TD><B>TotalCost</B></TD><TD>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
 	$results .=  "<TR><TD><B>Subtotal</B></TD><TD>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
 	$results .=  "<TR><TD><B>Shipping</B></TD><TD>$ " .  number_format($costs['Shipping'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Taxes</B></TD><TD>$ " .  number_format($costs['Taxes'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
 	$results .=  "<TR><TD><B>Due</B></TD><TD>$ " .  number_format($costs['Due'] ,2). "</TD></TR>";
 	$results .=  "</TABLE>";
 	
@@ -362,11 +363,11 @@ function computeInvoiceCosts($invoice){
 	$results = array();
 	$entries = fetchInvoiceEntries($invoice['Invoice']);
 	$year = date("Y", strtotime($invoice['dateestimated']));
-	// compute total payments
 
 	$results['TotalPayments']=totalInvoicePayments($invoice['Invoice'], $year);
 	$results['NonTaxable']=invoiceNonTaxableTotal($invoice['Invoice']);
 
+	//~ echo dumpDBRecord($invoice);
 	// for each entry
 	$results['TotalCost']  = 0;
 	foreach($entries as $entry){
@@ -377,9 +378,14 @@ function computeInvoiceCosts($invoice){
 	if($results['Discount'] > 0) $results['Discount']  /= 100;
 	$results['Subtotal']= $results['TotalCost']  * (1-$results['Discount']);
 	$results['Shipping'] = $invoice['ShippingAmount'];
-	$results['Due']= $results['Subtotal']  - $results['NonTaxable'] + $results['Shipping']  - $results['TotalPayments'];
-	unset($results['Discount']);
+	$results['TaxRate'] = $invoice['TaxPercentage'];
+	if($results['TaxRate'] > 0) $results['TaxRate']  /= 100;
 	
+	$taxable = $results['Subtotal']  - $results['NonTaxable'] ;
+	$results['Taxes']= $taxable * $results['TaxRate'] ;
+	$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
+	unset($results['Discount']);
+		
 	return $results;
 }
 ?>
