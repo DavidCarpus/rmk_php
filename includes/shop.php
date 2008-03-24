@@ -272,13 +272,26 @@ function displayInvoiceList($records){
 
 function knifeEntryAdditions_TableCell($entryID, $year){
 	$additions = fetchEntryAdditions($entryID);
+	$sheaths = "  MAB MBB MCB ";
+	$etching = "  ET1 ET2 ";
 	$results = "";
 	$results .= "<TD  class='additions'>";
+	$totalAdds=count($additions);
+	$cnt=0;
 	foreach($additions as $addition){
 		$part=fetchPart($addition['PartID'] , $year);
+		$code=" ".$part['PartCode'] . " ";
+		$isSheath = ( strpos($sheaths, $code) > 0);
+		$isEtch = ( strpos($etching, $code ) > 0);
+		
+		if($isSheath ) $results .= "<span class='sheath'>";
+		if($isEtch ) $results .= "<span class='etch'>";
 		$results .= $part['PartCode'] . ",";
+		if(++$cnt == $totalAdds)
+			$results = substr($results, 0, strlen($results)-1);
+		if($isSheath || $isEtch )  $results .= "</span>";
 	}
-	$results = substr($results, 0, strlen($results)-1);
+	//~ $results = substr($results, 0, strlen($results)-1);
 	$results .= "</TD>";
 	return $results;
 }

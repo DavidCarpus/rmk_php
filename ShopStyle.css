@@ -259,11 +259,11 @@ td.quantity{
 	border: 1px;
 }
 td.additions{
-	width:120px; 
+/*	width:120px; */
 	border: 1px;
 }
 td.comment{
-	width:240px; 
+/*	width:240px; */
 	border: 1px;
 }
 td.invoice{
@@ -278,7 +278,14 @@ tr.summary{
 	font-weight: bold; 
 /*	background: #6D929B;*/
 }
-
+.sheath{
+	font-weight: bold; 
+	color:#0000FF;
+}
+.etch{
+	font-weight: bold; 
+	color:#FF0000;
+}
 
 
 span.cap-g {
