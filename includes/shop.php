@@ -1,13 +1,15 @@
 <?php
-if( isLocalAccess()
-|| isDebugAccess()
-){
+
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_server = "localhost";
-	$db_username="root";
-	$db_password="skeet100";
+	$db_username="rmkweb";
+	$db_password="rmkskeet";
 	$db_webDatabase="newrmk";
 }
 
+$g_partPrices=array();
+
+//=========================================================
 $sortOptions = array("Invoice"=>"Customers.LastName, Customers.FirstName, Invoice desc", 
 			"Date Ordered"=>"Customers.LastName, Customers.FirstName, UNIX_TIMESTAMP(DateOrdered) desc");
 
@@ -20,164 +22,196 @@ function fieldDesc($field){
 }
 function fields(){
 	return array('invoice_num', 'lastname', 'firstname', 'phone'
-	);
-	
+	);	
 }
+//=========================================================
 
 function knifeList($form){
-	$results = "";
-	$week = $form['week'];
-	if($week == null) $week=0;
+	global $g_partPrices;
+	global $sortOptions;
+	$results="";
+	$week =0;
+	if(array_key_exists('week', $form) ) 	$week = $form['week'];
+	//~ $week += 1;
+	$startDay = (date("d")- date('w') + 7*$week);
+	$startDate  = date("Y-m-d", mktime(0, 0, 0, date("m")  ,$startDay, date("Y")));
+	$endDate=date("Y-m-d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
+
 	$query = 
-	"select Invoices.Invoice, InvoiceEntries.InvoiceEntryID, 
-InvoiceEntryAdditions.AdditionID,
-Knife.PartCode as KnifeCode, Addition.PartCode, Knife.BladeItem,
-InvoiceEntries.Quantity, InvoiceEntries.Comment,
-Customers.LastName,Customers.FirstName,Dealer, Invoices.CustomerID
-from Invoices 
-left join Customers on Customers.CustomerID = Invoices.CustomerID
-left join InvoiceEntries on InvoiceEntries.Invoice = Invoices.Invoice
-left join InvoiceEntryAdditions on InvoiceEntryAdditions.EntryID = InvoiceEntries.InvoiceEntryID
-inner join Parts as Knife on Knife.PartID = InvoiceEntries.PartID
-left join Parts as Addition on Addition.PartID = InvoiceEntryAdditions.PartID
-where year(dateestimated ) = year(now()) and week(dateestimated) = week(now()) + $week and Knife.BladeItem
-order  by Dealer, LastName, Invoices.Invoice, InvoiceEntries.InvoiceEntryID";
+		"Select Invoices.Invoice,Invoices.CustomerID, Dealer, dateestimated,
+		Customers.LastName,Customers.FirstName
+		from Invoices 
+		left join Customers on Customers.CustomerID = Invoices.CustomerID
+		where dateestimated between '$startDate' and '$endDate' 
+		order by Dealer, LastName, Invoices.Invoice";
+		
 	$records = getDbRecords($query);
-
-	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
-	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-	$daysToMon = date("w")+1;
-	if($week != 0)
-		$results .= "<B>Week of " . date("m/d/Y", strtotime("+ $week week -$daysToMon days")) . "</B>";
-	else
-		$results .= "<B>Current Week</B>";
-	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week +1) . "> Next Week</a>";
-	
-	$results .= "<TABLE border='1'>";
-	
-	
-	$lastInvoice=0;
-	$lastInvoiceEntry=0;
-	$knifecnt=0;
-	$comment="";
-	$featureCnt=0;
-	$totalKnives=0;
-	$dealerSummary=array();
-	foreach($records as $record){
-		$dealerInvoice = $record['Dealer'];
-		$newCustomer = ($dealerSummary['CustomerID'] !=  $record['CustomerID']);
-		$newInvoice = ($lastInvoice != $record['Invoice']);
-		
-		$newKnife=($lastInvoiceEntry != $record['InvoiceEntryID']);
-		
-		if($record['BladeItem']){
-			
-		if($newInvoice || $newKnife){			$featureCnt=0;		}
-		
-		if($newInvoice && ($dealerInvoice && $newCustomer ) 
-			|| ($newCustomer && !$dealerInvoice && $dealerSummary['KnifeCount']>0)){
-			if($knifecnt > 0){ // Dump the 'constructed' comment and end the row
-				$results .= "<TD>" . $comment . "</TD>";
-				$results .= "</TR>\n";
-				$comment="";
-			}
-				
-			// Dump previous dealer 'summary'
-			$results .= "<TR>";			
-			$results .= "<TD colspan=1><B>";
-			$results .= $dealerSummary['KnifeCount'];
-			$results .= "</B></TD>";
-
-			$results .= "<TD colspan=3><B>";
-			$results .= $dealerSummary['Name'];
-			$results .= "</B></TD>";
-			$results .= "</TR>\n";
-			// reset summary
-			$dealerSummary['CustomerID']=$record['CustomerID'];
-			$dealerSummary['Name'] = $record['LastName'] . "," .  $record['FirstName'];
-			$dealerSummary['KnifeCount']=0;
+	$custid=0;
+	$custInv = array();
+	//~ fetchParts(2008);
+	$results .= knifeListNav($week);
+	foreach($records as $Invoice){
+		if($custid==0) $custid=$Invoice['CustomerID'];
+		if($custid != $Invoice['CustomerID']){
+			$results .= displayKnifeListInvoices($custInv) . "<BR>";
+			$custInv=array();
 		}
-					
-		if($newInvoice && $dealerInvoice && $newCustomer ){
-			// display new dealer info
-			$results .= "<TR>";			
-			$results .= "<TD colspan=5><B>";
-			$results .= $dealerSummary['Name'];
-			$results .= "</B></TD>";
-			$results .= "</TR>\n";
-		}
-		
-		if($newKnife){
-			if($knifecnt > 0){ // Dump the 'constructed' comment and end the row
-				$results .= "<TD>" . $comment . "</TD>";
-				$results .= "</TR>\n";
-			}
-			// start new row
-			$results .= "<TR>";
-			$results .= "<TD>". (($lastInvoice != $record['Invoice'])?invoiceDetailLink($record['Invoice']):"") . "</TD>";
-			$results .= "<TD>" . $record['KnifeCode'] . "</TD>";
-			$results .= "<TD>" . $record['Quantity'] . "</TD><TD>";
-			$knifecnt += $record['Quantity'];
-			if($dealerInvoice)
-				$dealerSummary['KnifeCount'] += $record['Quantity'];
-		}
-
-		if($featureCnt > 0)
-			$results .= ", ";
-			
-		$results .= partCodeForKnifeList($record);
-//		$results .= $record['PartCode'];
-		
-		$lastInvoice = $record['Invoice'];
-		$lastInvoiceEntry = $record['InvoiceEntryID'];
-		$comment =  $record['Comment'];
-		$featureCnt++;
-		}
+		$custInv[] = $Invoice;
+		$custid=$Invoice['CustomerID'];
 	}
-	if($knifecnt > 0){ // Dump the 'constructed' comment and end the row
-		$results .= "<TD>" . $comment . "</TD>";
-		$results .= "</TR>\n";
-	}
-	$results .= "</TABLE>";
+	//~ return $query . "<HR>" . $results;
 	return $results;
 }
 
-function partCodeForKnifeList($record){
+function displayKnifeListInvoices($invoices){
+	$results ="\n\n<TABLE class='knifelist' border='1'>";
+	if(count($invoices) > 0 && $invoices[0]['Dealer']){
+	$results .= "<TR>";
+	$results .= "<TH colspan='4'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TH>";
+	$results .= "</TR>";
+	}
 	
-	if($record['PartCode'] == "MCB"
-		|| $record['PartCode'] == "MAB"
-		|| $record['PartCode'] == "ET1"
-		|| $record['PartCode'] == "ET2"
-		) 
-		return "<B>" . $record['PartCode'] . "</B>";
+	foreach($invoices as $Invoice){
+		$knifeCount=0;
+		$results .= "<TR>";
+		//~ $results .= "<TD class='invoice' colspan='4'>" . $Invoice['Invoice']. "</TD>";
+		$results .= "<TD class='invoice' colspan='4'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
 		
-	return $record['PartCode'];	
+		$results .= "</TR>\n";
+		$year = date("Y", strtotime($Invoice['dateestimated']));
+		$entries = fetchInvoiceEntries($Invoice['Invoice']);
+		$alt=1;
+		foreach($entries as $entry){
+			$alt = (!$alt);
+			$part = fetchPart($entry['PartID'] , $year);
+			$shadeTag="";
+			if($alt) $shadeTag="class='shade'";
+			$results .= "<TR " . $shadeTag . ">";
+			$results .= "<TD class='partcode'>" . $part['PartCode']  . "</TD>";
+			$results .= "<TD class='quantity'>" . $entry['Quantity']  . "</TD>";
+			$knifeCount += $entry['Quantity'] ;
+
+			$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
+
+			$results .= "<TD class='comment'>" . $entry['Comment']  . "</TD>";
+			$results .= "</TR>\n";
+		}
+		if(count($entries) > 1){
+			$results .= "<TR class='summary'>";
+			$results .= "<TD > Total (". $Invoice['Invoice']. ")</TD>" ;
+			$results .= "<TD >" . $knifeCount. "</TD>" ;
+			$results .= "</TR>\n";
+		}
+
+	}
+	$results .="</TABLE>";
+	return $results;
 }
 function invoiceDetailLink($invNum){
 	return "<a href=view_invoice.php?invoice_num=$invNum>$invNum</a>";
 }
+function knifeListNav($week){
+	$startDay = (date("d")- date('w') + 7*$week);
+	$startDate  = date("m/d", mktime(0, 0, 0, date("m")  ,$startDay, date("Y")));
+	$endDate=date("m/d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
+	$year = date("Y", mktime(0, 0, 0, date("m")  , $startDay, date("Y")));
 
-function TBD(){
-	return "To Be Done";
+	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
+
+	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
+	$results .= "<B>Week of " .  $startDate  . " - " .  $endDate  . " (" . $year . ")</B>";
+	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
+	
+	
+	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week +1) . "> Next Week</a>";
+	return $results;
 }
-
+//================================================
+//================================================
 function orderDisplay(){
 	$form = getFormValues();
 	$linkedIn=false;
-	if($form['submit']==NULL && $form['invoice_num'] != NULL && $form['invoice_num'] > 0) $linkedIn=true;
-//	$results .=  dumpDBRecord($form) . "</HR>";
-//	return "Test" . ($linkedIn) . $results;
+	$results="";
+	if(!array_key_exists('submit', $form)  && !array_key_exists('invoice_num', $form) ) $linkedIn=true;
+	//~ $results .=  dumpDBRecord($form) . "</HR>";
 	if($linkedIn){ 
-		// Linked in
-		// do not display form
+		// Linked in do not display form
 	} else{
-			$results .= orderSearchForm($form);
+		$results .= orderSearchForm($form);
 	}
 	$results .= displaySearchResults($form);
 	return $results;
 }
-
+function orderSearchForm($request){
+	global $sortOptions;
+	$results="";
+	$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results .=  textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "<BR>\n" ;
+	$results .= textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "<BR>\n" ;
+	$sortField="sortby";
+	$request[$sortField];
+	$values="";
+	foreach($sortOptions as $id=>$sql){
+		$selection = array("id"=>$id, 'label'=>$id);
+		$values[] = $selection;
+	}
+	$results .= selection($sortField, $values, "Sort By", $selected=$request[$sortField], $autosubmit=false);
+	$results .= "<center><input class='btn' type='submit' name='submit' value='Search' ></center>\n" ;
+	$results .=  "</form>";
+	return $results;
+}
+function displaySearchResults($form)
+{
+	$query=orderSearchQueryForShop($form);
+	if($query=="") return "";
+	$records = getDbRecords($query);
+	if(count($records) == 0){
+		return "No Matching invoices!";
+	}
+	if(count($records) == 1){
+		$record = $records[0];
+		return displayInvoiceDetailsForShop($record);
+	} else {
+		return displayInvoiceList($records);
+	}
+}
+function displayInvoiceDetailsForShop($record){
+	$results .=  "<B>".fieldDesc('lastname') . "," . fieldDesc('firstname')."</B> " . $record['LastName'] . "," .  $record['FirstName'];
+	if($record['Dealer'])
+		$results .=  "<B><I size=+4>Dealer</I></B> ";
+	$results .=  "<BR>";
+	
+	$results .=  "<B>".fieldDesc('phonenumber')."</B> " . $record['PhoneNumber'];
+	$results .=  "<BR>";
+	$results .=  "<B>".fieldDesc('invoice_num')."</B> " . $record['Invoice'];
+	$results .=  "<BR>";
+	$results .=  "<B>".fieldDesc('dateordered')."</B> " . $record['dateordered'];
+	$results .=  "<BR>";
+	$results .=  "<B>".fieldDesc('dateestimated')."</B> " . $record['dateestimated'];
+	$results .=  "<BR>";
+	$results .=  "<B>Shipping</B> " . $record['ShippingInstructions'];
+	$results .=  "<HR>";
+	$results .=  invKnifeList($record);
+	return $results;
+}
+function invKnifeList($invoice){
+	$records = fetchInvoiceEntries($invoice['Invoice']);
+	$year = date("Y", strtotime($invoice['dateestimated']));
+	$results .= "<Table border=1>";
+	foreach($records as $record){
+		$part=fetchPart($record['PartID'] , $year);
+		$results .= "<TR>";
+		$results .= "<TD>" . $record['Quantity'] . "</TD>";
+		$results .= "<TD>" . $part['PartCode'] . "</TD>";
+		
+		$results .= knifeEntryAdditions_TableCell($record['InvoiceEntryID'] , $year);
+		
+		$results .= "<TD>" . $record['Comment'] . "</TD>";
+		$results .= "</TR>";
+	}
+	$results .= "</Table>";
+	return $results;
+}
 function displayInvoiceList($records){
 	$results .= "<TABLE border=1>";
 	$results .= "<TR><TH>Invoice</TH><TH>Last Name</TH><TH>First Name</TH>";
@@ -198,102 +232,52 @@ function displayInvoiceList($records){
 	return $results;
 }
 
-function orderSearchForm($request){
-	global $sortOptions;
-//	$results .=  dumpDBRecord($request) . "</BR>";
-	$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-	$results .=  textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "<BR>\n" ;
-	$results .= textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "<BR>\n" ;
-	$sortField="sortby";
-	$request[$sortField];
-	$values="";
-	foreach($sortOptions as $id=>$sql){
-		$selection = array("id"=>$id, 'label'=>$id);
-		$values[] = $selection;
+
+
+function knifeEntryAdditions_TableCell($entryID, $year){
+	$additions = fetchEntryAdditions($entryID);
+	$results .= "<TD  class='additions'>";
+	foreach($additions as $addition){
+		$part=fetchPart($addition['PartID'] , $year);
+		$results .= $part['PartCode'] . ",";
 	}
-	$results .= selection($sortField, $values, "Sort By", $selected=$request[$sortField], $autosubmit=false);
-	$results .= "<center><input class='btn' type='submit' name='submit' value='Search' ></center>\n" ;
-	$results .=  "</form>";
+	$results .= "</TD>";
 	return $results;
 }
-
-function displaySearchResults($form)
-{
-	$query=orderSearchQueryForShop($form);
-	if($query=="") return "";
-//	if(isDebugAccess())	return $query;
-	$records = getDbRecords($query);
-	if(count($records) == 0){
-		return "No Matching invoices!";
-	}
-	if(count($records) == 1){
-		$record = $records[0];
-		return displayInvoiceDetailsForShop($record);
-	} else {
-//		if(isDebugAccess())	return $query . "<HR>". displayInvoiceList($records);
-		return displayInvoiceList($records);
-//		return orderSearchQueryForShop($form);
-	}
+//================================================
+//================================================
+function fetchEntryAdditions($invEntryID){
+	$query = "Select * from InvoiceEntryAdditions where EntryID=$invEntryID";
+	return getDbRecords($query);
 }
 
-function displayInvoiceDetailsForShop($record){
-	$results .=  "<B>".fieldDesc('lastname') . "," . fieldDesc('firstname')."</B> " . $record['LastName'] . "," .  $record['FirstName'];
-	if($record['Dealer'])
-		$results .=  "<B><I size=+4>Dealer</I></B> ";
-	$results .=  "<BR>";
-	
-	$results .=  "<B>".fieldDesc('phonenumber')."</B> " . $record['PhoneNumber'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('invoice_num')."</B> " . $record['Invoice'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('dateordered')."</B> " . $record['dateordered'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('dateestimated')."</B> " . $record['dateestimated'];
-	$results .=  "<BR>";
-	$results .=  "<B>Shipping</B> " . $record['ShippingInstructions'];
-	$results .=  "<HR>";
-	$results .=  invoiceKnifeList($record['Invoice']);
-//	$results .=  dumpDBRecord($record);
-	return $results;
-}
-function invoiceKnifeList($invNum)
-{
-	$query="select InvoiceEntries.InvoiceEntryID, Parts.PartCode, InvoiceEntries.Quantity, InvoiceEntries.Comment
-#,333333InvoiceEntries.*, Parts.PartCode
-from InvoiceEntries 
-left join Parts on Parts.PartID = InvoiceEntries.PartID
-where Invoice =  $invNum order by Parts.PartCode";
-//	$results .= $query;
-	$results .= "<Table border=1>";
-	$records = getDbRecords($query);
-	foreach($records as $record){
-		$results .= "<TR>";
-		$results .= "<TD>" . $record['Quantity'] . "</TD>";
-		$results .= "<TD>" . $record['PartCode'] . "</TD>";
-		$results .= "<TD>" . getKnifeFeatureString($record['InvoiceEntryID']) . "</TD>";
-		
-		$results .= "<TD>" . $record['Comment'] . "</TD>";
-//		$results .=  dumpDBRecord($record);
-		$results .= "</TR>";
-	}
-	$results .= "</Table>";
-	return $results;
+function fetchInvoiceEntries($invNum){
+	$query = "Select * from InvoiceEntries where Invoice=$invNum";
+	return getDbRecords($query);
 }
 
-function getKnifeFeatureString($invEntryID)
-{
-		$query="select Parts.PartCode
-from InvoiceEntryAdditions
-left join Parts on Parts.PartID = InvoiceEntryAdditions.PartID
-where EntryID =  $invEntryID order by Parts.PartCode";
-//	$results .= $query;
-	$records = getDbRecords($query);
-	foreach($records as $record){
-		$results .=  $record['PartCode'] . ", ";
-	}
-	return $results;
+function fetchPart($partid, $year){
+	global $g_partPrices;
+	fetchParts($year);
+	return($g_partPrices[$year][$partid]);	
 }
 
+function fetchParts($year){
+	global $g_partPrices;
+	if(count($g_partPrices[$year]) < 1){
+		$query = "Select Parts.*, PartPrices.Price  from Parts 
+			left join PartPrices on PartPrices.PartID = Parts.PartID 
+			where PartPrices.Year = $year";
+		$parts =  getDbRecords($query);
+		foreach($parts as $part){
+			$g_partPrices[$year][$part['PartID']] =  $part;
+		}
+		//~ echo $query;
+		//~ foreach($g_partPrices[$year]  as $key=>$part){
+			//~ echo $key . " - " . dumpDBRecord($part) . "</BR>";
+		//~ }
+	}
+}
 function orderSearchQueryForShop($form)
 {
 	if($form['lastname']==NULL && $form['invoice_num'] == NULL) return "";

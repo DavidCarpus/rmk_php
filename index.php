@@ -16,6 +16,7 @@ include_once "includes/htmlHead.php";
 	<div class="centerblock">
 		<?php echo toolbar(); ?>
 		<div class="content" align=center>
+			<?php isDebugMachine(); ?>
 			<img src='<?php echo getBaseImageDir(); ?>/main.jpg'>
 		</div>
 	</div>

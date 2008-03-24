@@ -6,6 +6,7 @@
 //else
 //	$fileDir = '/home/rmk/public_html';
 
+$debugMachineRoot="/rmk";
 
 function dumpServerVariables(){
 	echo getServerVariables();
@@ -173,9 +174,12 @@ function selection($name, $values, $label, $selected="", $autosubmit=false){
 }
 
 function headSegment($stylesheet="Style.css"){
+	$printStyle = str_replace(".css", "_Print.css", $stylesheet);
 	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
 			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
-			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n";
+			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n".
+			"<LINK href='$printStyle' media='print' rel='stylesheet' type='text/css'></head>\n"
+			;
 }
 
 function logo_header($section, $prefix="."){
@@ -330,7 +334,7 @@ function toolbar(){
 //	$results = $results . $currPage;
 	
 	
-	
+	//~ $debugMachineRoot
 	foreach($menu as $option){
 		$realprefix = $prefix;
 		if($option[0] == 'order/index.php' || $option[0] == 'catalogrequest.php'){
@@ -342,15 +346,15 @@ function toolbar(){
 		
 		$results = $results . "<a $selectedStyle href='$realprefix/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
-	if($_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") ||
-		$_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org") 
+	if(isDebugMachine() 
+		|| $_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org") 
 			){
 		$prefix = str_replace("http://", "https://", $prefix);
 		$results = $results . "<a href='$prefix/admin/'>Administrate</a>\n";
 	}
 	
 	//########### Development machine not set up for secure pages at this point  #####
-	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
+	if(isDebugMachine()){ 
 		$results = str_replace("https://", "http://", $results);
 	}
 	
@@ -360,14 +364,14 @@ function toolbar(){
 }
 
 function getToolbarPrefix(){
-	$prefix = $prefix . $_SERVER['HTTP_HOST'];
+	global $debugMachineRoot;
+	$prefix = $_SERVER['HTTP_HOST'];
 	
-//	echo "<HR>"; print_r($_SERVER); echo "<HR>";
+	//~ echo "<HR>"; dumpServerVariables(); echo "<HR>";
 		
-	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org'){
+	if(isDebugMachine()){
 		$secureLocation = false;
-		$prefix = $prefix . "/rmkweb";
-//		$prefix = $prefix . $_SERVER['HTTP_HOST'];
+		$prefix = $prefix . $debugMachineRoot;
 	}
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57'){
 		$secureLocation = false;
@@ -378,13 +382,7 @@ function getToolbarPrefix(){
 		$secureLocation = false;
 		$prefix = $prefix . "/~uplzcvgw";
 	}
-		
-//	if($_SERVER['HTTP_HOST'] == 'server121.tchmachines.com'){
-//		$secureLocation = false;
-//		$prefix = $prefix . "/~uplzcvgw";
-////		$prefix = $prefix . $_SERVER['HTTP_HOST'];
-//	}
-	if($_SERVER['HTTPS'] == 'on')
+	if(array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on')
 		$secureLocation = true;
 		
 	if($secureLocation)
@@ -397,6 +395,7 @@ function getToolbarPrefix(){
 
 function getBaseImageDir(){
 	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmkweb/images";
+	if($_SERVER['SERVER_ADDR'] == '192.168.1.99')		return  "/rmk/images";
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57')				return  "/~uplzcvgw/images";
 	return  getToolbarPrefix()."/images";
 	
@@ -424,12 +423,26 @@ function getCurrPage(){
 }
 
 function isDebugMachine(){
-	if($_SERVER['REMOTE_ADDR'] =='70.118.199.240'){
-		echo "<HR>DEBUG MACHINE<HR>";
+	$address = '192.168.1';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		//~ echo "<HR>DEBUG MACHINE<HR>";
 		return true;
 	}
+
+	//~ if($_SERVER['REMOTE_ADDR'] =='70.118.199.240'){
+		//~ echo "<HR>DEBUG MACHINE<HR>";
+		//~ return true;
+	//~ }
 	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org');	
 }
+function isCarpusServer(){
+	$address = '192.168.1.99';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+	return false;
+}
+$carpusServer=isCarpusServer();
 
 function isLocalAccess(){
 	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;

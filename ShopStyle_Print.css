@@ -1,0 +1,20 @@
+.leftnavigation{
+	display: none; 
+	width:0px;
+	height:0px;
+	padding: 10px 0px 0px 0px; 
+}
+
+.centerblock{
+	width:100%;
+	display:block; 
+	float: left;
+}
+.content{
+	display:block;
+	clear:none;
+	margin: 1px 1px 1px 1px;
+}
+.titlebar{
+	display: none; 
+}

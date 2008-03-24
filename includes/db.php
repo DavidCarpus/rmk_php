@@ -9,6 +9,14 @@ $db_webDatabase="uplzcvgw_rmk";
 if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
 	$db_server = "localhost";
 
+$address = '192.168.1';
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+	$db_server = "localhost";
+	$db_username="rmkweb";
+	$db_password="rmkskeet";
+	$db_webDatabase="newrmk";
+}
+
 function getDbRecords($query){
 	$dbh=getDBConnection();
 	global $db_webDatabase;

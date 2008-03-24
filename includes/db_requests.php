@@ -2,9 +2,9 @@
 /* * Created on Mar 24, 2006 */
 
 $order_types=array(
-	array('id'=>1, label=>'Quote'),
-	array('id'=>2, label=>'Order'),
-	array('id'=>3, label=>'Catalog Request'),
+	array('id'=>1, 'label'=>'Quote'),
+	array('id'=>2, 'label'=>'Order'),
+	array('id'=>3, 'label'=>'Catalog Request'),
 	);
 	
 	

@@ -10,6 +10,7 @@ include_once "../includes/adminFunctions.php";
 function getTimeString(){
 	return trim( 
 "
+3/23 - 4
 3/5 - 1
 2/26 - 6
 2/24 - 4
