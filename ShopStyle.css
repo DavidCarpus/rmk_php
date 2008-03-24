@@ -275,7 +275,8 @@ tr.shade{
 	background: #F2F9F9;
 }
 tr.summary{
-	background: #6D929B;
+	font-weight: bold; 
+/*	background: #6D929B;*/
 }
 
 

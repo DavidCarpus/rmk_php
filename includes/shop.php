@@ -84,7 +84,8 @@ function displayKnifeListInvoices($invoices){
 		$knifeCount=0;
 		$results .= "<TR>";
 		//~ $results .= "<TD class='invoice' colspan='4'>" . $Invoice['Invoice']. "</TD>";
-		$results .= "<TD class='invoice' colspan='4'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
+		$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
+		$results .= "<TD class='quantity'>Qty.</TD>";
 		
 		$results .= "</TR>\n";
 		$year = date("Y", strtotime($Invoice['dateestimated']));
