@@ -190,25 +190,41 @@ function displaySearchResults($form)
 }
 function displayInvoiceDetailsForShop($record){
 	$results = "";
-	$results .=  "<B>".fieldDesc('lastname') . "," . fieldDesc('firstname')."</B> " . $record['LastName'] . "," .  $record['FirstName'];
+	$results .= "<TABLE>";
+	$results .=  "<TR>";
+	$results .=  "<TH>". $record['LastName'] . "," .  $record['FirstName'];
 	if($record['Dealer'])
 		$results .=  "<B><I size=+4>Dealer</I></B> ";
-	$results .=  "<BR>";
+	$results .=  "</TH>";
+	$results .=  "</TR>";
 	
-	$results .=  "<B>".fieldDesc('phonenumber')."</B> " . $record['PhoneNumber'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('invoice_num')."</B> " . $record['Invoice'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('dateordered')."</B> " . $record['dateordered'];
-	$results .=  "<BR>";
-	$results .=  "<B>".fieldDesc('dateestimated')."</B> " . $record['dateestimated'];
-	$results .=  "<BR>";
-	$results .=  "<B>Shipping</B> " . $record['ShippingInstructions'];
-	$results .=  "<HR>";
-	$results .=  dumpDBRecord(computeInvoiceCosts($record));
+	$results .= "<TR><TD><B>".fieldDesc('phonenumber')."</B></TD><TD>" . $record['PhoneNumber'] . "</TD></TR>";
+	$results .= "<TR><TD><B>".fieldDesc('invoice_num')."</B></TD><TD>" . $record['Invoice'] . "</TD></TR>";
+	$results .= "<TR><TD><B>".fieldDesc('dateordered')."</B></TD><TD>" . $record['dateordered'] . "</TD></TR>";
+	$results .= "<TR><TD><B>".fieldDesc('dateestimated')."</B></TD><TD>" . $record['dateestimated'] . "</TD></TR>";
+	$results .= "<TR><TD><B>Shipping</B></TD><TD>" . $record['ShippingInstructions'] . "</TD></TR>";
+	$results .=  "</TABLE>";
+	$results .=  "</BR>";
 	$results .=  invKnifeList($record);
+	
+	$costs = computeInvoiceCosts($record);
+
+	$results .=  "</BR>";
+	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs further testing) vvvvvvvvvvvvvvvvvvvv";
+	$results .= "<TABLE>";
+	$results .=  "<TR><TD><B>TotalCost</B></TD><TD>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Subtotal</B></TD><TD>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Shipping</B></TD><TD>$ " .  number_format($costs['Shipping'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Due</B></TD><TD>$ " .  number_format($costs['Due'] ,2). "</TD></TR>";
+	$results .=  "</TABLE>";
+	
+	//~ $results .=  dumpDBRecord(computeInvoiceCosts($record));
 	return $results;
 }
+function price($val){
+}
+
 function invKnifeList($invoice){
 	$records = fetchInvoiceEntries($invoice['Invoice']);
 	$year = date("Y", strtotime($invoice['dateestimated']));
@@ -361,11 +377,9 @@ function computeInvoiceCosts($invoice){
 	if($results['Discount'] > 0) $results['Discount']  /= 100;
 	$results['Subtotal']= $results['TotalCost']  * (1-$results['Discount']);
 	$results['Shipping'] = $invoice['ShippingAmount'];
-	$results['Due']= $results['Subtotal']  + $results['Shipping']  - $results['TotalPayments'];
+	$results['Due']= $results['Subtotal']  - $results['NonTaxable'] + $results['Shipping']  - $results['TotalPayments'];
+	unset($results['Discount']);
 	
-	//~ double taxesDue = (retail - nonTaxable - discount + shipping) * taxes;
-	
-	//~ $results['Debug'] = dumpDBRecord($invoice);
 	return $results;
 }
 ?>
