@@ -93,17 +93,20 @@ function displayKnifeListInvoices($invoices){
 		foreach($entries as $entry){
 			$alt = (!$alt);
 			$part = fetchPart($entry['PartID'] , $year);
-			$shadeTag="";
-			if($alt) $shadeTag="class='shade'";
-			$results .= "<TR " . $shadeTag . ">";
-			$results .= "<TD class='partcode'>" . $part['PartCode']  . "</TD>";
-			$results .= "<TD class='quantity'>" . $entry['Quantity']  . "</TD>";
-			$knifeCount += $entry['Quantity'] ;
+			if($part['PartCode'] != "KNV"){
+				//~ echo dumpDBRecord($entry);
+				$shadeTag="";
+				if($alt) $shadeTag="class='shade'";
+				$results .= "<TR " . $shadeTag . ">";
+				$results .= "<TD class='partcode'>" . $part['PartCode']  . "</TD>";
+				$results .= "<TD class='quantity'>" . $entry['Quantity']  . "</TD>";
+				$knifeCount += $entry['Quantity'] ;
 
-			$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
+				$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
 
-			$results .= "<TD class='comment'>" . $entry['Comment']  . "</TD>";
-			$results .= "</TR>\n";
+				$results .= "<TD class='comment'>" . $entry['Comment']  . "</TD>";
+				$results .= "</TR>\n";
+			}
 		}
 		if(count($entries) > 1){
 			$results .= "<TR class='summary'>";
