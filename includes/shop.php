@@ -141,10 +141,12 @@ function knifeListNav($week){
 //================================================
 function orderDisplay(){
 	$form = getFormValues();
-	$linkedIn=false;
+	$linkedIn=true;
 	$results="";
-	if(!array_key_exists('submit', $form)  && !array_key_exists('invoice_num', $form) ) $linkedIn=true;
-	//~ $results .=  dumpDBRecord($form) . "</HR>";
+	if( array_key_exists('submit', $form)  ) $linkedIn=false;
+	// Fresh search form?
+	if( !array_key_exists('submit', $form)  &&  !array_key_exists('invoice_num', $form) ) $linkedIn=false;
+	//~ $results .=  $linkedIn . dumpDBRecord($form) . "</HR>";
 	if($linkedIn){ 
 		// Linked in do not display form
 	} else{
@@ -187,6 +189,7 @@ function displaySearchResults($form)
 	}
 }
 function displayInvoiceDetailsForShop($record){
+	$results = "";
 	$results .=  "<B>".fieldDesc('lastname') . "," . fieldDesc('firstname')."</B> " . $record['LastName'] . "," .  $record['FirstName'];
 	if($record['Dealer'])
 		$results .=  "<B><I size=+4>Dealer</I></B> ";
@@ -202,6 +205,7 @@ function displayInvoiceDetailsForShop($record){
 	$results .=  "<BR>";
 	$results .=  "<B>Shipping</B> " . $record['ShippingInstructions'];
 	$results .=  "<HR>";
+	$results .=  dumpDBRecord(computeInvoiceCosts($record));
 	$results .=  invKnifeList($record);
 	return $results;
 }
@@ -253,6 +257,7 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 		$part=fetchPart($addition['PartID'] , $year);
 		$results .= $part['PartCode'] . ",";
 	}
+	$results = substr($results, 0, strlen($results)-1);
 	$results .= "</TD>";
 	return $results;
 }
@@ -265,6 +270,10 @@ function fetchEntryAdditions($invEntryID){
 
 function fetchInvoiceEntries($invNum){
 	$query = "Select * from InvoiceEntries where Invoice=$invNum";
+	return getDbRecords($query);
+}
+function fetchInvoicePayments($invNum){
+	$query = "Select * from Payments where Invoice=$invNum";
 	return getDbRecords($query);
 }
 
@@ -284,12 +293,11 @@ function fetchParts($year){
 		foreach($parts as $part){
 			$g_partPrices[$year][$part['PartID']] =  $part;
 		}
-		//~ echo $query;
-		//~ foreach($g_partPrices[$year]  as $key=>$part){
-			//~ echo $key . " - " . dumpDBRecord($part) . "</BR>";
-		//~ }
 	}
 }
+
+//=================================================
+//=================================================
 function orderSearchQueryForShop($form)
 {
 	if($form['lastname']==NULL && $form['invoice_num'] == NULL) return "";
@@ -318,5 +326,46 @@ function orderSearchQueryForShop($form)
 		}
 	}
 	return $query;
+}
+function totalInvoicePayments($invNum){
+	$query = "Select sum(Payment) from Payments where Invoice=$invNum";
+	//~ echo $query;
+	return 0+getIntFromDB($query);
+}
+function invoiceNonTaxableTotal($invNum, $year){
+	$query = "select sum(PartPrices.Price) from InvoiceEntries 
+		left join InvoiceEntryAdditions on InvoiceEntryAdditions.EntryID = InvoiceEntryID 
+		left join Parts on Parts.PartID = InvoiceEntryAdditions.PartID 
+		left join PartPrices on PartPrices.PartID = InvoiceEntryAdditions.PartID  
+		where Invoice=$invNum and year=$year and taxable=0;";
+	//~ echo $query;
+	return 0+getIntFromDB($query);
+}
+
+function computeInvoiceCosts($invoice){
+	$results = array();
+	$entries = fetchInvoiceEntries($invoice['Invoice']);
+	$year = date("Y", strtotime($invoice['dateestimated']));
+	// compute total payments
+
+	$results['TotalPayments']=totalInvoicePayments($invoice['Invoice'], $year);
+	$results['NonTaxable']=invoiceNonTaxableTotal($invoice['Invoice']);
+
+	// for each entry
+	$results['TotalCost']  = 0;
+	foreach($entries as $entry){
+		// compute cost of entry (shold be done at 'entry'
+		$results['TotalCost'] += 0+$entry['Price'];
+	}
+	$results['Discount']=$invoice['DiscountPercentage'];
+	if($results['Discount'] > 0) $results['Discount']  /= 100;
+	$results['Subtotal']= $results['TotalCost']  * (1-$results['Discount']);
+	$results['Shipping'] = $invoice['ShippingAmount'];
+	$results['Due']= $results['Subtotal']  + $results['Shipping']  - $results['TotalPayments'];
+	
+	//~ double taxesDue = (retail - nonTaxable - discount + shipping) * taxes;
+	
+	//~ $results['Debug'] = dumpDBRecord($invoice);
+	return $results;
 }
 ?>

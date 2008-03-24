@@ -392,7 +392,7 @@ function getToolbarPrefix(){
 }
 
 function getBaseImageDir(){
-	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmkweb/images";
+	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmk/images";
 	if($_SERVER['SERVER_ADDR'] == '192.168.1.99')		return  "/rmk/images";
 	if($_SERVER['SERVER_ADDR'] == '192.168.1.101')		return  "/images";
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57')				return  "/~uplzcvgw/images";
