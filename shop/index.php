@@ -5,11 +5,7 @@ session_start();
 include_once "../includes/db.php";
 include_once "../includes/db_requests.php";
 include_once "../includes/htmlHead.php";
-if($carpusServer){ 
-	include_once "../includes/shop2.php";
-}else{ 
-	include_once "../includes/shop.php";
-}
+include_once "../includes/shop.php";
 ?>
 
 

@@ -8,8 +8,16 @@ $db_webDatabase="uplzcvgw_rmk";
 
 if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
 	$db_server = "localhost";
-
-$address = '192.168.1';
+	
+$address = '192.168.1.101';
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+	$db_server = "localhost";
+	$db_username="root";
+	$db_password="skeet100";
+	$db_webDatabase="newrmk";
+}
+	
+$address = '192.168.1.99';
 if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_server = "localhost";
 	$db_username="rmkweb";

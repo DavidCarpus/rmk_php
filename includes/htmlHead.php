@@ -366,9 +366,7 @@ function toolbar(){
 function getToolbarPrefix(){
 	global $debugMachineRoot;
 	$prefix = $_SERVER['HTTP_HOST'];
-	
-	//~ echo "<HR>"; dumpServerVariables(); echo "<HR>";
-		
+			
 	if(isDebugMachine()){
 		$secureLocation = false;
 		$prefix = $prefix . $debugMachineRoot;
@@ -396,6 +394,7 @@ function getToolbarPrefix(){
 function getBaseImageDir(){
 	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmkweb/images";
 	if($_SERVER['SERVER_ADDR'] == '192.168.1.99')		return  "/rmk/images";
+	if($_SERVER['SERVER_ADDR'] == '192.168.1.101')		return  "/images";
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57')				return  "/~uplzcvgw/images";
 	return  getToolbarPrefix()."/images";
 	
@@ -423,7 +422,7 @@ function getCurrPage(){
 }
 
 function isDebugMachine(){
-	$address = '192.168.1';
+	$address = '192.168.1.99';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		//~ echo "<HR>DEBUG MACHINE<HR>";
 		return true;

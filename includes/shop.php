@@ -1,5 +1,13 @@
 <?php
+$address = '192.168.1.101';
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+	$db_server = "localhost";
+	$db_username="root";
+	$db_password="skeet100";
+	$db_webDatabase="newrmk";
+}
 
+$address = '192.168.1.99';
 if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_server = "localhost";
 	$db_username="rmkweb";
@@ -44,8 +52,8 @@ function knifeList($form){
 		left join Customers on Customers.CustomerID = Invoices.CustomerID
 		where dateestimated between '$startDate' and '$endDate' 
 		order by Dealer, LastName, Invoices.Invoice";
-		
 	$records = getDbRecords($query);
+//	echo count($records) . $query . "</HR>";
 	$custid=0;
 	$custInv = array();
 	//~ fetchParts(2008);
@@ -56,6 +64,7 @@ function knifeList($form){
 			$results .= displayKnifeListInvoices($custInv) . "<BR>";
 			$custInv=array();
 		}
+//		$results .= dumpDBRecord($Invoice);
 		$custInv[] = $Invoice;
 		$custid=$Invoice['CustomerID'];
 	}
@@ -116,6 +125,7 @@ function knifeListNav($week){
 	$endDate=date("m/d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
 	$year = date("Y", mktime(0, 0, 0, date("m")  , $startDay, date("Y")));
 
+	$results = "\n";
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
 
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -124,6 +134,7 @@ function knifeListNav($week){
 	
 	
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week +1) . "> Next Week</a>";
+	$results .= "\n";
 	return $results;
 }
 //================================================
