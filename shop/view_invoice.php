@@ -5,7 +5,7 @@ session_start();
 include_once "../includes/db.php";
 include_once "../includes/db_requests.php";
 include_once "../includes/htmlHead.php";
-include_once "../includes/shop2.php";
+include_once "../includes/shop.php";
 ?>
 
 

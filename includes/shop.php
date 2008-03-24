@@ -247,6 +247,7 @@ function displayInvoiceList($records){
 
 function knifeEntryAdditions_TableCell($entryID, $year){
 	$additions = fetchEntryAdditions($entryID);
+	$results = "";
 	$results .= "<TD  class='additions'>";
 	foreach($additions as $addition){
 		$part=fetchPart($addition['PartID'] , $year);
