@@ -279,12 +279,12 @@ tr.summary{
 /*	background: #6D929B;*/
 }
 .sheath{
-	font-weight: bold; 
-	color:#0000FF;
+	background-color: #0000FF;
+	color:#FFFFFF;
 }
 .etch{
-	font-weight: bold; 
-	color:#FF0000;
+	background-color: #FF0000;
+	color:#FFFFFF;
 }
 
 

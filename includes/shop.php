@@ -286,10 +286,13 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 		
 		if($isSheath ) $results .= "<span class='sheath'>";
 		if($isEtch ) $results .= "<span class='etch'>";
-		$results .= $part['PartCode'] . ",";
-		if(++$cnt == $totalAdds)
-			$results = substr($results, 0, strlen($results)-1);
+		$results .= $part['PartCode'];
+		//~ $results .= $part['PartCode'] . ",";
+		//~ if(++$cnt == $totalAdds)
+			//~ $results = substr($results, 0, strlen($results)-1);
 		if($isSheath || $isEtch )  $results .= "</span>";
+		if(++$cnt < $totalAdds)
+			$results .= ",";
 	}
 	//~ $results = substr($results, 0, strlen($results)-1);
 	$results .= "</TD>";
