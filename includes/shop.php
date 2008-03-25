@@ -24,7 +24,7 @@ $sortOptions = array("Invoice"=>"Customers.LastName, Customers.FirstName, Invoic
 function fieldDesc($field){
 	$lookup = array('invoice_num'=>'Invoice Number','lastname'=>'Last Name',
 	'firstname'=>'First Name', 'phonenumber'=>'Phone Number', 'dateordered'=>"Date Ordered",
-	'dateestimated'=>"Date Estimated", 'lastname'=>"Last Name", 
+	'dateestimated'=>"Date Estimated", 'lastname'=>"Last Name",  'dateshipped'=>"Date Shipped",
 	);
 	return $lookup[$field];
 }
@@ -38,7 +38,7 @@ function knifeList($form){
 	global $g_partPrices;
 	global $sortOptions;
 	$results="";
-	$week =0;
+	$week =-12;
 	if(array_key_exists('week', $form) ) 	$week = $form['week'];
 	//~ $week += 1;
 	$startDay = (date("d")- date('w') + 7*$week);
@@ -53,10 +53,8 @@ function knifeList($form){
 		where dateestimated between '$startDate' and '$endDate' 
 		order by Dealer, LastName, Invoices.Invoice";
 	$records = getDbRecords($query);
-//	echo count($records) . $query . "</HR>";
 	$custid=0;
 	$custInv = array();
-	//~ fetchParts(2008);
 	$results .= knifeListNav($week);
 	foreach($records as $Invoice){
 		if($custid==0) $custid=$Invoice['CustomerID'];
@@ -64,11 +62,9 @@ function knifeList($form){
 			$results .= displayKnifeListInvoices($custInv) . "<BR>";
 			$custInv=array();
 		}
-//		$results .= dumpDBRecord($Invoice);
 		$custInv[] = $Invoice;
 		$custid=$Invoice['CustomerID'];
 	}
-	//~ return $query . "<HR>" . $results;
 	return $results;
 }
 
@@ -83,9 +79,9 @@ function displayKnifeListInvoices($invoices){
 	foreach($invoices as $Invoice){
 		$knifeCount=0;
 		$results .= "<TR>";
-		//~ $results .= "<TD class='invoice' colspan='4'>" . $Invoice['Invoice']. "</TD>";
 		$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
 		$results .= "<TD class='quantity'>Qty.</TD>";
+		$results .= "<TD colspan='2'></TD>";
 		
 		$results .= "</TR>\n";
 		$year = date("Y", strtotime($Invoice['dateestimated']));
@@ -95,7 +91,6 @@ function displayKnifeListInvoices($invoices){
 			$alt = (!$alt);
 			$part = fetchPart($entry['PartID'] , $year);
 			if($part['PartCode'] != "KNV"){
-				//~ echo dumpDBRecord($entry);
 				$shadeTag="";
 				if($alt) $shadeTag="class='shade'";
 				$results .= "<TR " . $shadeTag . ">";
@@ -105,7 +100,9 @@ function displayKnifeListInvoices($invoices){
 
 				$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
 
-				$results .= "<TD class='comment'>" . $entry['Comment']  . "</TD>";
+				$comment = $entry['Comment'];
+				if(strlen($comment) <= 0) $comment=" ";
+				$results .= "<TD class='comment'>$comment</TD>";
 				$results .= "</TR>\n";
 			}
 		}
@@ -113,6 +110,7 @@ function displayKnifeListInvoices($invoices){
 			$results .= "<TR class='summary'>";
 			$results .= "<TD > Total (". $Invoice['Invoice']. ")</TD>" ;
 			$results .= "<TD >" . $knifeCount. "</TD>" ;
+			$results .= "<TD colspan='2'></TD>";
 			$results .= "</TR>\n";
 		}
 
@@ -194,6 +192,9 @@ function displaySearchResults($form)
 }
 function displayInvoiceDetailsForShop($record){
 	$results = "";
+
+	$shipping .=  invoiceShipAddress($record);
+	
 	$results .= "<TABLE>";
 	$results .=  "<TR>";
 	$results .=  "<TH>". $record['LastName'] . "," .  $record['FirstName'];
@@ -202,19 +203,26 @@ function displayInvoiceDetailsForShop($record){
 	$results .=  "</TH>";
 	$results .=  "</TR>";
 	
+
 	$results .= "<TR><TD><B>".fieldDesc('phonenumber')."</B></TD><TD>" . $record['PhoneNumber'] . "</TD></TR>";
 	$results .= "<TR><TD><B>".fieldDesc('invoice_num')."</B></TD><TD>" . $record['Invoice'] . "</TD></TR>";
 	$results .= "<TR><TD><B>".fieldDesc('dateordered')."</B></TD><TD>" . $record['dateordered'] . "</TD></TR>";
 	$results .= "<TR><TD><B>".fieldDesc('dateestimated')."</B></TD><TD>" . $record['dateestimated'] . "</TD></TR>";
+	if($record['dateshipped']  != NULL)
+		$results .= "<TR><TD><B>".fieldDesc('dateshipped')."</B></TD><TD><B><I>" . $record['dateshipped'] . "</I></B></TD></TR>";
 	$results .= "<TR><TD><B>Shipping</B></TD><TD>" . $record['ShippingInstructions'] . "</TD></TR>";
+	$results .= "<TR><TD><B>Ship To</B></TD><TD>$shipping</TD></TR>";
 	$results .=  "</TABLE>";
 	$results .=  "</BR>";
+	
+	//~ $results .=  dumpDBRecord($record) . "</BR>";
+
 	$results .=  invKnifeList($record);
 	
 	$costs = computeInvoiceCosts($record);
 
 	$results .=  "</BR>";
-	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs further testing) vvvvvvvvvvvvvvvvvvvv";
+	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs double checking) vvvvvvvvvvvvvvvvvvvv";
 	$results .= "<TABLE>";
 	$results .=  "<TR><TD><B>TotalCost</B></TD><TD>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
 	$results .=  "<TR><TD><B>Subtotal</B></TD><TD>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
@@ -227,8 +235,7 @@ function displayInvoiceDetailsForShop($record){
 	//~ $results .=  dumpDBRecord(computeInvoiceCosts($record));
 	return $results;
 }
-function price($val){
-}
+
 
 function invKnifeList($invoice){
 	$records = fetchInvoiceEntries($invoice['Invoice']);
@@ -272,12 +279,13 @@ function displayInvoiceList($records){
 
 function knifeEntryAdditions_TableCell($entryID, $year){
 	$additions = fetchEntryAdditions($entryID);
-	$sheaths = "  MAB MBB MCB ";
-	$etching = "  ET1 ET2 ";
+	$sheaths = "  MA1 MA2 MAB MB MBB MC MC1 MCB MCR MFB 24B NHS FCH WS BLK LHS LS1 LS2 OK DK ";
+	$etching = "  ET1  ET2  ETC ETV NPN NPB EN1 EN2 EN3 EN4 EN5 MED  ";
 	$results = "";
 	$results .= "<TD  class='additions'>";
 	$totalAdds=count($additions);
 	$cnt=0;
+	if($totalAdds == 0) $results .= " ";
 	foreach($additions as $addition){
 		$part=fetchPart($addition['PartID'] , $year);
 		$code=" ".$part['PartCode'] . " ";
@@ -318,6 +326,16 @@ function fetchPart($partid, $year){
 	global $g_partPrices;
 	fetchParts($year);
 	return($g_partPrices[$year][$partid]);	
+}
+
+function fetchCustomer($custID){
+	$query = "Select * from Customers where CustomerID=$custID";
+	$customer = getBasicSingleDbRecord("Customers","CustomerID",$custID);
+	if($customer && $customer['CurrrentAddress']){
+		$address = getBasicSingleDbRecord("Address", "AddressID", $customer['CurrrentAddress']);
+		$customer['CurrrentAddress'] = $address ;
+	}
+	return $customer;
 }
 
 function fetchParts($year){
@@ -406,6 +424,27 @@ function computeInvoiceCosts($invoice){
 	$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
 	unset($results['Discount']);
 		
+	return $results;
+}
+
+function invoiceShipAddress($invoice){
+	if( $invoice['ShippingInfo'] != NULL && strlen($invoice['ShippingInfo']) > 0){
+		return $invoice['ShippingInfo'];
+	}
+	// Get customer current address
+	$customer = fetchCustomer($invoice['CustomerID']);
+	$address = $customer['CurrrentAddress'];
+	$results = "";
+	$results .= $address['ADDRESS0'];
+	if(strlen($address['ADDRESS0']) > 0) $results .= "<BR>";
+	$results .= $address['ADDRESS1'];
+	if(strlen($address['ADDRESS1']) > 0) $results .= "<BR>";
+	$results .= $address['ADDRESS2'];
+	if(strlen($address['ADDRESS2']) > 0) $results .= "<BR>";
+	$results .= $address['CITY'] . " ";
+	$results .= $address['STATE'] . " ";
+	$results .= $address['ZIP'] . " ";
+	
 	return $results;
 }
 ?>
