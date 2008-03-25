@@ -86,10 +86,15 @@ function displayKnifeListInvoices($invoices){
 		$results .= "</TR>\n";
 		$year = date("Y", strtotime($Invoice['dateestimated']));
 		$entries = fetchInvoiceEntries($Invoice['Invoice']);
+		//~ echo dumpDBRecords($entries);
 		$alt=1;
 		foreach($entries as $entry){
 			$alt = (!$alt);
 			$part = fetchPart($entry['PartID'] , $year);
+			$yearFound=$year;
+			while($part == NULL && $yearFound < 2009){
+				$part = fetchPart($entry['PartID'] , $yearFound++);
+			}
 			if($part['PartCode'] != "KNV"){
 				$shadeTag="";
 				if($alt) $shadeTag="class='shade'";
@@ -183,12 +188,18 @@ function displaySearchResults($form)
 	if(count($records) == 0){
 		return "No Matching invoices!";
 	}
+	$results="";
 	if(count($records) == 1){
 		$record = $records[0];
-		return displayInvoiceDetailsForShop($record);
+		$results .= displayInvoiceDetailsForShop($record);
 	} else {
-		return displayInvoiceList($records);
+		//~ foreach($invoices as $Invoice){
+			//~ $result.=dumpDBRecord($Invoice);
+		//~ }
+		//~ $results .= displayKnifeListInvoices($records);
+		$results .= displayInvoiceList($records);
 	}
+	return $results;
 }
 function displayInvoiceDetailsForShop($record){
 	$results = "";
@@ -217,7 +228,8 @@ function displayInvoiceDetailsForShop($record){
 	
 	//~ $results .=  dumpDBRecord($record) . "</BR>";
 
-	$results .=  invKnifeList($record);
+	//~ $results .=  invKnifeList($record);
+	$results .=  displayKnifeListInvoices(array($record));
 	
 	$costs = computeInvoiceCosts($record);
 
@@ -237,24 +249,6 @@ function displayInvoiceDetailsForShop($record){
 }
 
 
-function invKnifeList($invoice){
-	$records = fetchInvoiceEntries($invoice['Invoice']);
-	$year = date("Y", strtotime($invoice['dateestimated']));
-	$results .= "<Table border=1>";
-	foreach($records as $record){
-		$part=fetchPart($record['PartID'] , $year);
-		$results .= "<TR>";
-		$results .= "<TD>" . $record['Quantity'] . "</TD>";
-		$results .= "<TD>" . $part['PartCode'] . "</TD>";
-		
-		$results .= knifeEntryAdditions_TableCell($record['InvoiceEntryID'] , $year);
-		
-		$results .= "<TD>" . $record['Comment'] . "</TD>";
-		$results .= "</TR>";
-	}
-	$results .= "</Table>";
-	return $results;
-}
 function displayInvoiceList($records){
 	$results .= "<TABLE border=1>";
 	$results .= "<TR><TH>Invoice</TH><TH>Last Name</TH><TH>First Name</TH>";
@@ -288,6 +282,11 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 	if($totalAdds == 0) $results .= " ";
 	foreach($additions as $addition){
 		$part=fetchPart($addition['PartID'] , $year);
+		$yearFound=$year;
+		while($part == NULL && $yearFound < 2050){
+			$part = fetchPart($addition['PartID'] , $yearFound++);
+		}
+
 		$code=" ".$part['PartCode'] . " ";
 		$isSheath = ( strpos($sheaths, $code) > 0);
 		$isEtch = ( strpos($etching, $code ) > 0);
@@ -325,7 +324,13 @@ function fetchInvoicePayments($invNum){
 function fetchPart($partid, $year){
 	global $g_partPrices;
 	fetchParts($year);
-	return($g_partPrices[$year][$partid]);	
+	while( !array_key_exists($year, $g_partPrices)  && $year < 2020 ){
+		$year++;
+	}
+	if(array_key_exists($year, $g_partPrices) && array_key_exists($partid, $g_partPrices[$year]) )
+		return($g_partPrices[$year][$partid]);	
+	else 
+		return NULL;
 }
 
 function fetchCustomer($custID){
@@ -340,7 +345,7 @@ function fetchCustomer($custID){
 
 function fetchParts($year){
 	global $g_partPrices;
-	if(count($g_partPrices[$year]) < 1){
+	if( !array_key_exists($year, $g_partPrices) || count($g_partPrices[$year]) < 1){
 		$query = "Select Parts.*, PartPrices.Price  from Parts 
 			left join PartPrices on PartPrices.PartID = Parts.PartID 
 			where PartPrices.Year = $year";
@@ -348,6 +353,7 @@ function fetchParts($year){
 		foreach($parts as $part){
 			$g_partPrices[$year][$part['PartID']] =  $part;
 		}
+		//~ echo $query;
 	}
 }
 
@@ -360,12 +366,12 @@ function orderSearchQueryForShop($form)
 	$query .= "Select Invoice, date_format(DateOrdered, '%M %e %Y') as dateordered, 
 			date_format(DateEstimated, '%M %e %Y') as dateestimated,
 			date_format(DateShipped, '%M %e %Y') as dateshipped,  
-			Invoices.ShippingInstructions,
-			Customers.LastName , Customers.FirstName , Customers.Dealer,
 			Invoices.*, Customers.* 
 			from Invoices
 			left join Customers on Customers.CustomerID = Invoices.CustomerID
 			";
+			//~ Invoices.ShippingInstructions, Customers.LastName , Customers.FirstName , Customers.Dealer,
+			
 	if($form['invoice_num'] > 0){
 		$query .= "where Invoice=" . $form['invoice_num'];
 		$query .= " ORDER BY Invoice desc ";

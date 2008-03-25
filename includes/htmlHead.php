@@ -46,6 +46,15 @@ function dumpDBRecord($record){
 	return $results;
 }
 
+function dumpDBRecords($records){
+	$results = "";
+	foreach($records as $record){
+		$results .= dumpDBRecord($record)."<BR>\n";
+	}
+		
+	return $results;
+}
+
 function dumpPOST_GET(){
 	if(!isDebugMachine()) return;
 	
