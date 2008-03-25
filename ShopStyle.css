@@ -248,27 +248,27 @@ div.catalogblockdetaillist{
 	border-collapse: collapse;
 	border-style: solid;
 	width:100%;
-	empty-cells:hide;
-	border-width: 3px;
+	empty-cells:show;
+	border-width: 2px;
 }
 td.partcode{
 	width:100px; 
 }
 td.quantity{
 	width:20px; 
-	border: 1px;
+	border: 2px;
 }
 td.additions{
 /*	width:120px; */
-	border: 1px;
+	border: 2px;
 }
 td.comment{
 /*	width:240px; */
-	border: 1px;
+	border: 2px;
 }
 td.invoice{
 	font-weight: bold; 
-	border: 1px;
+	border: 2px;
 }
 
 tr.shade{
