@@ -205,6 +205,7 @@ function displayInvoiceDetailsForShop($record){
 	$results = "";
 
 	$shipping .=  invoiceShipAddress($record);
+	$billing = invoiceBillingAddress($record);
 	
 	$results .= "<TABLE>";
 	$results .=  "<TR>";
@@ -219,10 +220,17 @@ function displayInvoiceDetailsForShop($record){
 	$results .= "<TR><TD><B>".fieldDesc('invoice_num')."</B></TD><TD>" . $record['Invoice'] . "</TD></TR>";
 	$results .= "<TR><TD><B>".fieldDesc('dateordered')."</B></TD><TD>" . $record['dateordered'] . "</TD></TR>";
 	$results .= "<TR><TD><B>".fieldDesc('dateestimated')."</B></TD><TD>" . $record['dateestimated'] . "</TD></TR>";
-	if($record['dateshipped']  != NULL)
-		$results .= "<TR><TD><B>".fieldDesc('dateshipped')."</B></TD><TD><B><I>" . $record['dateshipped'] . "</I></B></TD></TR>";
 	$results .= "<TR><TD><B>Shipping</B></TD><TD>" . $record['ShippingInstructions'] . "</TD></TR>";
-	$results .= "<TR><TD><B>Ship To</B></TD><TD>$shipping</TD></TR>";
+
+	if($record['dateshipped']  != NULL){
+		$results .= "<TR><TD><B>".fieldDesc('dateshipped')."</B></TD><TD><B><I>" . $record['dateshipped'] . "</I></B></TD></TR>";
+	}
+	$results .= "<TR>";
+	$results .= "<TD><B>Bill To</B></TD><TD>$billing</TD>";
+	$results .= "<TD><B>Ship To</B></TD><TD>$shipping</TD>";
+	$results .= "<TR>";
+
+
 	$results .=  "</TABLE>";
 	$results .=  "</BR>";
 	
@@ -425,17 +433,35 @@ function computeInvoiceCosts($invoice){
 	$results['TaxRate'] = $invoice['TaxPercentage'];
 	if($results['TaxRate'] > 0) $results['TaxRate']  /= 100;
 	
-	$taxable = $results['Subtotal']  - $results['NonTaxable'] ;
+	$taxable = $results['Subtotal']  - $results['NonTaxable']  + $results['Shipping'] ;
 	$results['Taxes']= $taxable * $results['TaxRate'] ;
 	$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
 	unset($results['Discount']);
 		
 	return $results;
 }
+function invoiceBillingAddress($invoice){
+	$customer = fetchCustomer($invoice['CustomerID']);
+	$address = $customer['CurrrentAddress'];
+	$results = "";
+	$results .= $address['ADDRESS0'];
+	if(strlen($address['ADDRESS0']) > 0) $results .= "<BR>";
+	$results .= $address['ADDRESS1'];
+	if(strlen($address['ADDRESS1']) > 0) $results .= "<BR>";
+	$results .= $address['ADDRESS2'];
+	if(strlen($address['ADDRESS2']) > 0) $results .= "<BR>";
+	$results .= $address['CITY'] . " ";
+	$results .= $address['STATE'] . " ";
+	$results .= $address['ZIP'] . " ";
+	
+	$results = str_replace("\|", "<BR>", $results);
+	
+	return $results;
+}
 
 function invoiceShipAddress($invoice){
 	if( $invoice['ShippingInfo'] != NULL && strlen($invoice['ShippingInfo']) > 0){
-		return $invoice['ShippingInfo'];
+		return str_replace("|", "<BR>", $invoice['ShippingInfo']);
 	}
 	// Get customer current address
 	$customer = fetchCustomer($invoice['CustomerID']);
@@ -450,6 +476,8 @@ function invoiceShipAddress($invoice){
 	$results .= $address['CITY'] . " ";
 	$results .= $address['STATE'] . " ";
 	$results .= $address['ZIP'] . " ";
+	
+	$results = str_replace("\|", "<BR>", $results);
 	
 	return $results;
 }
