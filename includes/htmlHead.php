@@ -355,7 +355,8 @@ function toolbar(){
 		
 		$results = $results . "<a $selectedStyle href='$realprefix/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
-	if(isDebugMachine() 
+	if(isDebugMachine()  
+		|| isLocalAccess()
 		|| $_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org") 
 			){
 		$prefix = str_replace("http://", "https://", $prefix);
@@ -460,7 +461,8 @@ function isLocalAccess(){
 	if($_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org")
 	 ||	$_SERVER['REMOTE_ADDR'] == '67.8.255.165'
 	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") 
-	){
+	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("grandall.dyndns.org") 
+	 ){
 				return true;
 			}
 	
