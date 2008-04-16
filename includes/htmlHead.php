@@ -157,11 +157,12 @@ function loggedIn(){
 
 function selection($name, $values, $label, $selected="", $autosubmit=false){
 //	print "Selected?:$selected";
+	$results = "";
 	if($label != '')
 		$results .= "<label for='$name' >$label</label>";
-	$results = $results."<select size='1' name='$name'";
+	$results .= "<select size='1' name='$name'";
 	if($autosubmit){
-		$results = $results." onChange='submit()' ";
+		$results .= " onChange='submit()' ";
 	}
 	$results = $results.">";
 	if($autosubmit){
@@ -310,7 +311,8 @@ function shopToolbar(){
 	}
 	
 	//########### Development machine not set up for secure pages at this point  #####
-	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
+	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org" ||
+			$_SERVER['HTTP_HOST'] == "localhost"){ 
 		$results = str_replace("https://", "http://", $results);
 	}
 		
@@ -377,7 +379,7 @@ function getToolbarPrefix(){
 	global $debugMachineRoot;
 	$prefix = $_SERVER['HTTP_HOST'];
 			
-	if(isDebugMachine()){
+	if(isDebugMachine() || isCarpusServer() ){
 		$secureLocation = false;
 		$prefix = $prefix . $debugMachineRoot;
 	}
@@ -402,8 +404,13 @@ function getToolbarPrefix(){
 }
 
 function getBaseImageDir(){
-	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmk/images";
-	if($_SERVER['SERVER_ADDR'] == '192.168.1.99')		return  "/rmk/images";
+	if(isCarpusServer()){
+		return  "/rmk/images";
+	}
+//	if($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org')		return  "/rmk/images";
+//	if($_SERVER['HTTP_HOST'] == 'localhost')		return  "/rmk/images";
+//	if($_SERVER['HTTP_HOST'] == 'localhost')		return  "/rmk/images";
+//	if($_SERVER['SERVER_ADDR'] == '192.168.1.99')		return  "/rmk/images";
 	if($_SERVER['SERVER_ADDR'] == '192.168.1.101')		return  "/images";
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57')				return  "/~uplzcvgw/images";
 	return  getToolbarPrefix()."/images";
@@ -442,10 +449,15 @@ function isDebugMachine(){
 		//~ echo "<HR>DEBUG MACHINE<HR>";
 		//~ return true;
 	//~ }
-	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org');	
+	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org'
+			|| $_SERVER['HTTP_HOST'] == "localhost");	
 }
 function isCarpusServer(){
 	$address = '192.168.1.99';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+	$address = '192.168.1.90';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		return true;
 	}

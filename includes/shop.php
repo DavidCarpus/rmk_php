@@ -51,8 +51,9 @@ function knifeList($form){
 		from Invoices 
 		left join Customers on Customers.CustomerID = Invoices.CustomerID
 		where dateestimated between '$startDate' and '$endDate' 
-		order by Dealer, LastName, Invoices.Invoice";
-	$records = getDbRecords($query);
+		order by Invoices.Invoice";
+//		order by Dealer, LastName, Invoices.Invoice";
+		$records = getDbRecords($query);
 	$custid=0;
 	$custInv = array();
 	$results .= knifeListNav($week);
@@ -80,8 +81,8 @@ function displayKnifeListInvoices($invoices){
 		$knifeCount=0;
 		$results .= "<TR>";
 		$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
-		$results .= "<TD class='quantity'>Qty.</TD>";
-		$results .= "<TD colspan='2'></TD>";
+//		$results .= "<TD class='quantity'>Qty.</TD>";
+		$results .= "<TD colspan='3'></TD>";
 		
 		$results .= "</TR>\n";
 		$year = date("Y", strtotime($Invoice['dateestimated']));
@@ -99,8 +100,8 @@ function displayKnifeListInvoices($invoices){
 				$shadeTag="";
 				if($alt) $shadeTag="class='shade'";
 				$results .= "<TR " . $shadeTag . ">";
-				$results .= "<TD class='partcode'>" . $part['PartCode']  . "</TD>";
 				$results .= "<TD class='quantity'>" . $entry['Quantity']  . "</TD>";
+				$results .= "<TD class='partcode'>" . $part['PartCode']  . "</TD>";
 				$knifeCount += $entry['Quantity'] ;
 
 				$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
@@ -113,8 +114,8 @@ function displayKnifeListInvoices($invoices){
 		}
 		if(count($entries) > 1){
 			$results .= "<TR class='summary'>";
+			$results .= "<TD  class='quantity' >" . $knifeCount. "</TD>" ;
 			$results .= "<TD > Total (". $Invoice['Invoice']. ")</TD>" ;
-			$results .= "<TD >" . $knifeCount. "</TD>" ;
 			$results .= "<TD colspan='2'></TD>";
 			$results .= "</TR>\n";
 		}
@@ -302,6 +303,8 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 		if($isSheath ) $results .= "<span class='sheath'>";
 		if($isEtch ) $results .= "<span class='etch'>";
 		$results .= $part['PartCode'];
+//		$results .= "(" . $addition['AdditionID'] . ")";
+		
 		//~ $results .= $part['PartCode'] . ",";
 		//~ if(++$cnt == $totalAdds)
 			//~ $results = substr($results, 0, strlen($results)-1);
@@ -316,12 +319,12 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 //================================================
 //================================================
 function fetchEntryAdditions($invEntryID){
-	$query = "Select * from InvoiceEntryAdditions where EntryID=$invEntryID";
+	$query = "Select * from InvoiceEntryAdditions where EntryID=$invEntryID order by AdditionID";
 	return getDbRecords($query);
 }
 
 function fetchInvoiceEntries($invNum){
-	$query = "Select * from InvoiceEntries where Invoice=$invNum";
+	$query = "Select * from InvoiceEntries where Invoice=$invNum order by InvoiceEntryID";
 	return getDbRecords($query);
 }
 function fetchInvoicePayments($invNum){

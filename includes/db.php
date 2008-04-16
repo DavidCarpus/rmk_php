@@ -25,6 +25,22 @@ if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_webDatabase="newrmk";
 }
 
+$address = '192.168.1.90';
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+	$db_server = "localhost";
+	$db_username="rmkweb";
+	$db_password="rmkskeet";
+	$db_webDatabase="newrmk";	
+}
+
+$address = '127.0.0.1';
+if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+	$db_server = "localhost";
+	$db_username="rmkweb";
+	$db_password="rmkskeet";
+	$db_webDatabase="newrmk";
+}
+
 function getDbRecords($query){
 	$dbh=getDBConnection();
 	global $db_webDatabase;
