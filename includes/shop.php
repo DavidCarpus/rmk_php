@@ -85,7 +85,7 @@ function displayKnifeListInvoices($invoices){
 		$results .= "<TD colspan='3'></TD>";
 		
 		$results .= "</TR>\n";
-		$year = date("Y", strtotime($Invoice['dateestimated']));
+		$year = date("Y", strtotime($Invoice['dateordered']));
 		$entries = fetchInvoiceEntries($Invoice['Invoice']);
 		//~ echo dumpDBRecords($entries);
 		$alt=1;
@@ -181,6 +181,7 @@ function orderSearchForm($request){
 	$results .=  "</form>";
 	return $results;
 }
+
 function displaySearchResults($form)
 {
 	$query=orderSearchQueryForShop($form);
@@ -202,10 +203,11 @@ function displaySearchResults($form)
 	}
 	return $results;
 }
+
 function displayInvoiceDetailsForShop($record){
 	$results = "";
 
-	$shipping .=  invoiceShipAddress($record);
+	$shipping =  invoiceShipAddress($record);
 	$billing = invoiceBillingAddress($record);
 	
 	$results .= "<TABLE>";
@@ -235,7 +237,6 @@ function displayInvoiceDetailsForShop($record){
 	$results .=  "</TABLE>";
 	$results .=  "</BR>";
 	
-	//~ $results .=  dumpDBRecord($record) . "</BR>";
 
 	//~ $results .=  invKnifeList($record);
 	$results .=  displayKnifeListInvoices(array($record));
@@ -256,7 +257,6 @@ function displayInvoiceDetailsForShop($record){
 	//~ $results .=  dumpDBRecord(computeInvoiceCosts($record));
 	return $results;
 }
-
 
 function displayInvoiceList($records){
 	$results .= "<TABLE border=1>";
@@ -327,6 +327,7 @@ function fetchInvoiceEntries($invNum){
 	$query = "Select * from InvoiceEntries where Invoice=$invNum order by InvoiceEntryID";
 	return getDbRecords($query);
 }
+
 function fetchInvoicePayments($invNum){
 	$query = "Select * from Payments where Invoice=$invNum";
 	return getDbRecords($query);
@@ -399,6 +400,7 @@ function orderSearchQueryForShop($form)
 	}
 	return $query;
 }
+
 function totalInvoicePayments($invNum){
 	$query = "Select sum(Payment) from Payments where Invoice=$invNum";
 	//~ echo $query;
@@ -418,11 +420,10 @@ function computeInvoiceCosts($invoice){
 	$results = array();
 	$entries = fetchInvoiceEntries($invoice['Invoice']);
 	$year = date("Y", strtotime($invoice['dateestimated']));
-
+	
 	$results['TotalPayments']=totalInvoicePayments($invoice['Invoice'], $year);
-	$results['NonTaxable']=invoiceNonTaxableTotal($invoice['Invoice']);
+	$results['NonTaxable']=invoiceNonTaxableTotal($invoice['Invoice'], $year);
 
-	//~ echo dumpDBRecord($invoice);
 	// for each entry
 	$results['TotalCost']  = 0;
 	foreach($entries as $entry){
