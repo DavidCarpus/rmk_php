@@ -37,8 +37,34 @@ function debugStatement($statement){
 	print "<HR>". $statement . "<BR><HR>";
 }
 
+function dumpBackTrace(){
+	global $g_lastDebug ;
+	$debug  = getBackTrace();
+	if ($g_lastDebug != $debug){
+		echo debugStatement(debug_backtrace());
+		$g_lastDebug = $debug ;
+	}
+}
+
+function getBackTrace(){
+	$trace = debug_backtrace();
+	$cnt=0;
+	foreach($trace as $func){
+		if($cnt++ > 0){
+			//~ $stmt .=  print_r($func, true) . "</BR>";
+			$file = $func['file'] ;
+			$file = str_replace("/var/www/html/Intranet/", "", $file);
+			$stmt .=  $file ."(" .  $func['line'] . ")-" .$func['function'] ."</BR>";
+		}
+	}
+	return debugStatement($stmt);
+}
+
 function dumpDBRecord($record){
 	$results = "";
+	if(count($record) <= 0)
+		dumpBackTrace();
+		
 	foreach(array_keys($record) as $key){
 		$results .= "<B>$key</B>=>".$record[$key]."<BR>\n";
 	}
@@ -439,7 +465,7 @@ function getCurrPage(){
 }
 
 function isDebugMachine(){
-	$address = '192.168.1.99';
+	$address = '192.168.1.90';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		//~ echo "<HR>DEBUG MACHINE<HR>";
 		return true;

@@ -6,40 +6,62 @@ $db_username="uplzcvgw_rmkweb";
 $db_password="rmkskeet";
 $db_webDatabase="uplzcvgw_rmk";
 
-if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
-	$db_server = "localhost";
+setDB_Globals();
 	
-$address = '192.168.1.101';
-if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-	$db_server = "localhost";
-	$db_username="root";
-	$db_password="skeet100";
-	$db_webDatabase="newrmk";
-}
-	
-$address = '192.168.1.99';
-if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-	$db_server = "localhost";
-	$db_username="rmkweb";
-	$db_password="rmkskeet";
-	$db_webDatabase="newrmk";
-}
+//if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
+//	$db_server = "localhost";
+//	
+//$address = '192.168.1.101';
+//if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//	$db_server = "localhost";
+//	$db_username="root";
+//	$db_password="skeet100";
+//	$db_webDatabase="newrmk";
+//}
+//	
+//$address = '192.168.1.99';
+//if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//	$db_server = "localhost";
+//	$db_username="rmkweb";
+//	$db_password="rmkskeet";
+//	$db_webDatabase="newrmk";
+//}
+//
+//$address = '192.168.1.90';
+//if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//	$db_server = "localhost";
+//	$db_username="rmkweb";
+//	$db_password="rmkskeet";
+//	$db_webDatabase="newrmk";	
+//}
+//
+//$address = '127.0.0.1';
+//if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//	$db_server = "localhost";
+//	$db_username="rmkweb";
+//	$db_password="rmkskeet";
+//	$db_webDatabase="newrmk";
+//}
 
-$address = '192.168.1.90';
-if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-	$db_server = "localhost";
-	$db_username="rmkweb";
-	$db_password="rmkskeet";
-	$db_webDatabase="newrmk";	
-}
 
-$address = '127.0.0.1';
-if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-	$db_server = "localhost";
-	$db_username="rmkweb";
-	$db_password="rmkskeet";
-	$db_webDatabase="newrmk";
-}
+//function debugStatement($data){
+//	//~ $debugUser = (auth_get_current_user_id()==2 || auth_get_current_user_id()==31 ); // carpus or debug
+//	//~ $debugUser = $debugUser || (auth_get_current_user_id()==36 && isTestSystem()); // velez
+//	$debugUser = 1;
+//
+//	if(count($data) > 0 && $debugUser ) {
+//		echo "\n\n\n<HR size=2 color=red>";
+//		if(count($data) > 1){
+//			foreach($data as $component){
+//				print_r($component);
+//				print "<BR>";
+//			}
+//		}else{
+//			print_r($data);
+//		}
+//		echo "<HR size=2 color=red>\n\n";
+//	}
+//}
 
 function getDbRecords($query){
 	$dbh=getDBConnection();
@@ -56,11 +78,13 @@ function getDbRecords($query){
 	}
 	return $results;	
 } 
+
 function getIntFromDB($query){
 	$record = getSingleDbRecord($query);
 	$keys = array_keys($record);
 	return $record[$keys[0]];
 }
+
 function getBasicSingleDbRecord($tableName, $keyField, $keyValue){
 	$query = "Select * from " . $tableName . " where $keyField=".$keyValue;
 	return getSingleDbRecord($query);
@@ -124,7 +148,47 @@ function getEntryFromPOST($fields){
 	return $entry;
 }
 
+function setDB_Globals(){
+	global $db_server;
+	global $db_username;
+	global $db_password;
+	global $db_webDatabase;
 
+	if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
+		$db_server = "localhost";
+	
+	$address = '192.168.1.101';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$db_server = "localhost";
+		$db_username="root";
+		$db_password="skeet100";
+		$db_webDatabase="newrmk";
+	}
+		
+	$address = '192.168.1.99';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$db_server = "localhost";
+		$db_username="rmkweb";
+		$db_password="rmkskeet";
+		$db_webDatabase="newrmk";
+	}
+	
+	$address = '192.168.1.90';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$db_server = "localhost";
+		$db_username="rmkweb";
+		$db_password="rmkskeet";
+		$db_webDatabase="newrmk";	
+	}
+	
+	$address = '127.0.0.1';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$db_server = "localhost";
+		$db_username="rmkweb";
+		$db_password="rmkskeet";
+		$db_webDatabase="newrmk";
+	}
+}
 
 //----------------------------------------------------
 //--- Query Generation
