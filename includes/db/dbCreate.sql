@@ -157,6 +157,8 @@ prefix="Current order deliveries are being scheduled in approximately 54 MONTHS.
 postfix="";
 
 
+mysql> create index CustID on Customers (CustomerID);
+mysql> create index KnifeInv on InvoiceEntries (Invoice);
 
 /*
 update orders set processed=0 where email='csdave2000@yahoo.com';

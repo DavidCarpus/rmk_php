@@ -1,4 +1,6 @@
 <?php
+include_once "forms/Shop.class.php";
+
 $address = '192.168.1.101';
 if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_server = "localhost";
@@ -16,6 +18,7 @@ if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 }
 
 $g_partPrices=array();
+$shopForms = new ShopForms();
 
 //=========================================================
 $sortOptions = array("Invoice"=>"Customers.LastName, Customers.FirstName, Invoice desc", 
@@ -41,10 +44,11 @@ function knifeList($form){
 	$week =-12;
 	if(array_key_exists('week', $form) ) 	$week = $form['week'];
 	//~ $week += 1;
-	$startDay = (date("d")- date('w') + 7*$week);
-	$startDate  = date("Y-m-d", mktime(0, 0, 0, date("m")  ,$startDay, date("Y")));
-	$endDate=date("Y-m-d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
-
+	$lastThurs = strtotime("-" . (date('w')-4+7) . " days");
+	$startTime = strtotime(date("Y-m-d", $lastThurs) ." " . $week . " weeks");
+	$startDate = date("Y-m-d",$startTime);
+	$endDate=date("Y-m-d", strtotime(date("Y-m-d", $startTime) ." +1 week"));
+	
 	$query = 
 		"Select Invoices.Invoice,Invoices.CustomerID, Dealer, dateestimated,
 		Customers.LastName,Customers.FirstName
@@ -53,10 +57,11 @@ function knifeList($form){
 		where dateestimated between '$startDate' and '$endDate' 
 		order by Invoices.Invoice";
 //		order by Dealer, LastName, Invoices.Invoice";
-		$records = getDbRecords($query);
+	$records = getDbRecords($query);
+//	$results .= $query;
 	$custid=0;
 	$custInv = array();
-	$results .= knifeListNav($week);
+	$results .= knifeListNav($week, $startDate, $endDate);
 	foreach($records as $Invoice){
 		if($custid==0) $custid=$Invoice['CustomerID'];
 		if($custid != $Invoice['CustomerID']){
@@ -127,17 +132,17 @@ function displayKnifeListInvoices($invoices){
 function invoiceDetailLink($invNum){
 	return "<a href=view_invoice.php?invoice_num=$invNum>$invNum</a>";
 }
-function knifeListNav($week){
-	$startDay = (date("d")- date('w') + 7*$week);
-	$startDate  = date("m/d", mktime(0, 0, 0, date("m")  ,$startDay, date("Y")));
-	$endDate=date("m/d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
-	$year = date("Y", mktime(0, 0, 0, date("m")  , $startDay, date("Y")));
+function knifeListNav($week, $startDate, $endDate){
+//	$startDay = (date("d")- date('w') + 7*$week);
+//	$startDate  = date("m/d", mktime(0, 0, 0, date("m")  ,$startDay, date("Y")));
+//	$endDate=date("m/d", mktime(0, 0, 0, date("m")  , $startDay+7, date("Y")));
+//	$year = date("Y", mktime(0, 0, 0, date("m")  , $startDay, date("Y")));
 
 	$results = "\n";
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
 
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-	$results .= "<B>Week of " .  $startDate  . " - " .  $endDate  . " (" . $year . ")</B>";
+	$results .= "<B>Week of " .  $startDate  . " - " .  $endDate ."</B>";
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
 	
 	
@@ -148,6 +153,7 @@ function knifeListNav($week){
 //================================================
 //================================================
 function orderDisplay(){
+	global $shopForms;
 	$form = getFormValues();
 	$linkedIn=true;
 	$results="";
@@ -158,27 +164,10 @@ function orderDisplay(){
 	if($linkedIn){ 
 		// Linked in do not display form
 	} else{
-		$results .= orderSearchForm($form);
+		$results .= $shopForms->orderSearchForm($form);
+//		$results .= orderSearchForm($form);
 	}
 	$results .= displaySearchResults($form);
-	return $results;
-}
-function orderSearchForm($request){
-	global $sortOptions;
-	$results="";
-	$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-	$results .=  textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "<BR>\n" ;
-	$results .= textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "<BR>\n" ;
-	$sortField="sortby";
-	$request[$sortField];
-	$values="";
-	foreach($sortOptions as $id=>$sql){
-		$selection = array("id"=>$id, 'label'=>$id);
-		$values[] = $selection;
-	}
-	$results .= selection($sortField, $values, "Sort By", $selected=$request[$sortField], $autosubmit=false);
-	$results .= "<center><input class='btn' type='submit' name='submit' value='Search' ></center>\n" ;
-	$results .=  "</form>";
 	return $results;
 }
 
@@ -259,7 +248,7 @@ function displayInvoiceDetailsForShop($record){
 }
 
 function displayInvoiceList($records){
-	$results .= "<TABLE border=1>";
+	$results = "<TABLE border=1>";
 	$results .= "<TR><TH>Invoice</TH><TH>Last Name</TH><TH>First Name</TH>";
 	$results .= "<TH>Ordered</TH><TH>Estimated</TH><TH>Shipped</TH>";
 	foreach($records as $record){
@@ -375,7 +364,7 @@ function orderSearchQueryForShop($form)
 {
 	if($form['lastname']==NULL && $form['invoice_num'] == NULL) return "";
 	
-	$query .= "Select Invoice, date_format(DateOrdered, '%M %e %Y') as dateordered, 
+	$query = "Select Invoice, date_format(DateOrdered, '%M %e %Y') as dateordered, 
 			date_format(DateEstimated, '%M %e %Y') as dateestimated,
 			date_format(DateShipped, '%M %e %Y') as dateshipped,  
 			Invoices.*, Customers.* 
