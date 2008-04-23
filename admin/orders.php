@@ -1,7 +1,7 @@
 <?php
 /* Created on Feb 8, 2006 */
-include_once "../includes/db.php";
-include_once "../includes/db_requests.php";
+include_once "../includes/db/db.php";
+include_once "../includes/db/db_requests.php";
 include_once "../includes/htmlHead.php";
 include_once "../includes/orders.php";
 include_once "../includes/adminFunctions.php";

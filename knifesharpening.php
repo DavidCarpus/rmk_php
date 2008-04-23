@@ -2,7 +2,7 @@
 /* Created on Feb 12, 2006 */
 session_start(); 
 
-include_once "includes/db.php";
+include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
 ?>
 <html>

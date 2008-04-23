@@ -4,8 +4,8 @@
 include_once "includes/htmlHead.php";
 include_once "includes/email.php";
 include_once "includes/orders.php";
-include_once "includes/db_requests.php";
-include_once "includes/db.php";
+include_once "includes/db/db_requests.php";
+include_once "includes/db/db.php";
 				
 $parameters = array_merge($_POST, $_GET);
 if(loggedIn() && emailedFromAdmin($parameters)){

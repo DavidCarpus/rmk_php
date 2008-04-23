@@ -1,5 +1,5 @@
 <?php
-include_once "db.php";
+include_once "db/db.php";
 
 $categories = array(array("label"=>"Outdoorsman Knives",         "tag"=>"outdoorsman"),
 					array("label"=>"Skinning and Hunting Knives","tag"=>"hunting"),

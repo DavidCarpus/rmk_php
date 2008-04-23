@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 /* Created on Feb 9, 2006 */
-include_once "includes/db.php";
+include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
 ?>
 <html>

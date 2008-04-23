@@ -1,6 +1,6 @@
 <?php
 /* Created on Feb 5, 2006*/
-include_once "../includes/db.php";
+include_once "../includes/db/db.php";
 include_once "../includes/htmlHead.php";
 include_once "../includes/catalog.php";
 include_once "../includes/adminFunctions.php";

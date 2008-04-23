@@ -2,7 +2,7 @@
 session_start(); 
 /* * Created on Jan 29, 2007 */
 
-include_once "../includes/db.php";
+include_once "../includes/db/db.php";
 include_once "../includes/htmlHead.php";
 include_once "../includes/adminFunctions.php";
 ?>
