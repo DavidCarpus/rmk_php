@@ -4,7 +4,7 @@ include_once "Base.class.php";
 class ShopForms extends Base
 {
 	function __construct() {
-       print "In constructor\n";
+//       print "In constructor\n";
        $this->name = "MyDestructableClass";
    }
    
