@@ -24,7 +24,8 @@
 .content{
 	display:block;
 	clear:none;
-	margin: 30px 30px 10px 190px;
+	width: 90%;
+	margin: 30px 50px 10px 190px;
 }
 
 .contentIE{
@@ -74,7 +75,7 @@
 
 
 label{
-	width: 200px;
+	width: 260px;
 	float: left;
 	text-align: right;
 /*	margin-right: 0.5em;*/
@@ -247,23 +248,29 @@ div.catalogblockdetaillist{
 .knifelist{
 	border-collapse: collapse;
 	border-style: solid;
-	width:100%;
-	empty-cells:show;
+	margin: 0 auto; 
+/*	margin: 30px 10px 10px 10px;*/
+	width:900px;
+/*	empty-cells:show;*/
 	border-width: 2px;
+	margin-left: auto;
+	margin-right: auto;
 }
 td.partcode{
-	width:100px; 
+	width:60px; 
+	text-align: left;
 }
 td.quantity{
-	width:60px; 
+	width:5px; 
 	border: 2px;
+	text-align: left;
 }
 td.additions{
-/*	width:120px; */
+	width:300px;
 	border: 2px;
 }
 td.comment{
-/*	width:240px; */
+	width:50%;
 	border: 2px;
 }
 td.invoice{

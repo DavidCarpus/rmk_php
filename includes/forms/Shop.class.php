@@ -12,8 +12,8 @@ class ShopForms extends Base
 		global $sortOptions;
 		$results="";
 		$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-		$results .=  textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "<BR>\n" ;
-		$results .= textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "<BR>\n" ;
+		$results .=  "<P>" . textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "</P>\n" ;
+		$results .= "<P>" . textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "</P>\n" ;
 		$sortField="sortby";
 		$request[$sortField];
 		$values="";

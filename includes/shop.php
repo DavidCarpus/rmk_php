@@ -75,6 +75,7 @@ function knifeList($form){
 	$custid=0;
 	$custInv = array();
 	$results .= knifeListNav($week, $startDate, $endDate);
+	$results .= "<P>";
 	foreach($records as $Invoice){
 		if($custid==0) $custid=$Invoice['CustomerID'];
 		if($custid != $Invoice['CustomerID']){
@@ -84,6 +85,7 @@ function knifeList($form){
 		$custInv[] = $Invoice;
 		$custid=$Invoice['CustomerID'];
 	}
+	$results .= "</P>";
 	return $results;
 }
 
