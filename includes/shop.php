@@ -59,7 +59,8 @@ function knifeList($form){
 	$lastThurs = strtotime("-" . (date('w')-4+7) . " days");
 	$startTime = strtotime(date("Y-m-d", $lastThurs) ." " . $week . " weeks");
 	$startDate = date("Y-m-d",$startTime);
-	$endDate=date("Y-m-d", strtotime(date("Y-m-d", $startTime) ." +1 week"));
+//	$endDate=date("Y-m-d", strtotime(date("Y-m-d", $startTime) ." +1 week"));
+	$endDate=date("Y-m-d", strtotime(date("Y-m-d", $startTime) ." +1 day"));
 	
 	$query = 
 		"Select Invoices.Invoice,Invoices.CustomerID, Dealer, dateestimated, dateordered,
@@ -147,7 +148,8 @@ function knifeListNav($week, $startDate, $endDate){
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
 
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-	$results .= "Week of <B>" .  substr($startDate,5)  . "</B> to <B>" .   substr($endDate,5) . "</B> (".substr($endDate,0,4). ")";
+//	$results .= "Week of <B>" .  substr($startDate,5)  . "</B> to <B>" .   substr($endDate,5) . "</B> (".substr($endDate,0,4). ")";
+	$results .= "Week of <B>" .  $startDate  . "</B>";
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
 	
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week +1) . "> Next Week</a>";
