@@ -10,6 +10,15 @@ include_once "../includes/adminFunctions.php";
 function getTimeString(){
 	return trim( 
 "
+5/11 - 3
+5/10 - 3
+5/5 - 1
+5/4 - 3
+5/4 - 3
+4/29 - 3
+4/26 - 3
+4/25 - 2
+4/23 - 4
 4/22 - 1
 4/15 - 1
 4/15 - 1

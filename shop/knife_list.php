@@ -18,7 +18,10 @@ include_once "../includes/shop.php";
 	<div class="centerblock">
 		<?php echo shopToolbar(); ?>
 		<div class="content">
-			<?php echo knifeList(getFormValues()); ?>
+			<?php
+//			 echo test();
+			echo knifeList(getFormValues()); 
+			?>
 		</div>
 	</div>
 </div>
