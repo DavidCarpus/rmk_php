@@ -91,12 +91,15 @@ function knifeList($form){
 
 function displayKnifeListInvoices($invoices){
 	global $parts, $Invoices;
+	
 	$results ="\n\n<TABLE class='knifelist' border='1'>";
 	if(count($invoices) > 0 && $invoices[0]['Dealer']){
-	$results .= "<TR>";
-	$results .= "<TH colspan='4'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TH>";
-	$results .= "</TR>";
+		$results .= "<TR>";
+		$results .= "<TH colspan='4'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TH>";
+		$results .= "</TR>";
 	}
+	
+	$bladeListItems=0;
 	
 	foreach($invoices as $Invoice){
 		$knifeCount=0;
@@ -107,12 +110,15 @@ function displayKnifeListInvoices($invoices){
 		
 		$results .= "</TR>\n";
 		$year = date("Y", strtotime($Invoice['dateordered']));
+		
 		if(!array_key_exists('entries', $Invoice))
 			$Invoice['entries'] = $Invoices->items($Invoice['Invoice']);
+			
 		$alt=1;
 		foreach($Invoice['entries'] as $entry){
 			$alt = (!$alt);
-			if($entry['PartCode'] != "KNV"){
+			if($entry['BladeItem']){
+				$bladeListItems++;
 				$shadeTag="";
 				if($alt) $shadeTag="class='shade'";
 				$results .= "<TR " . $shadeTag . ">";
@@ -138,7 +144,10 @@ function displayKnifeListInvoices($invoices){
 
 	}
 	$results .="</TABLE>";
-	return $results;
+	if($bladeListItems > 0)
+		return $results;
+	else
+		return "";
 }
 
 function invoiceDetailLink($invNum){
