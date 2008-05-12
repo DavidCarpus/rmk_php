@@ -15,5 +15,34 @@ class Base
 		return "<INPUT TYPE='hidden' NAME='".$name."' value='".htmlizeFormValue($value)."'>";
 	}
 	
+	function optionField($name, $label, $values, $default='' , $required=false){
+		$value = htmlizeFormValue($value);
+		if($required)
+			$results = "<label for='$name' class='required'>$label</label>";
+		else
+			$results="<label for='$name'>$label</label>";
+		foreach($values as $value){
+			if($default == $value)
+				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' checked>$value";
+			else 
+				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option'>$value"; 
+	//		$results = $results. "type='radio'";
+		}
+		return $results;
+	//	return print_r($values, true);
+	}
+	
+	function textArea($name, $label, $required=false, $value='', $large=false){
+		$results="";
+		
+		if($required)
+			$results = "<label for='$name' class='required'>$label</label><textarea $class id='$name' name='$name'>$value</textarea>";
+		else
+			$results = "<label for='$name' >$label</label><textarea $class id='$name' name='$name'>$value</textarea>";
+	
+		if($large)
+			$results = "<div class='largearea'>" . $results . "</div>";
+			
+	}
 }
 ?>
