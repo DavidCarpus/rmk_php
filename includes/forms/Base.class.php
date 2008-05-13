@@ -44,5 +44,15 @@ class Base
 			$results = "<div class='largearea'>" . $results . "</div>";
 			
 	}
+
+	function checkbox($name, $label, $required=false, $value=''){
+		if($value == 'on') $checked='checked=1';
+		if($value == 1) $checked='checked=1';
+		
+		if($required)
+			return "<input type='checkbox' id='$name'  name='$name' class='checkbox' $checked>\n";
+		else
+			return "<input type='checkbox' id='$name' name='$name' class='checkbox' $checked>\n";
+	}
 }
 ?>

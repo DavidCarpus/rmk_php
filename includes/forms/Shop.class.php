@@ -12,9 +12,9 @@ class ShopForms extends Base
 		global $sortOptions;
 		$results="";
 		$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-		$results .=  "<P>" . textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "</P>\n" ;
-		$results .= "<P>" . textField('firstname', fieldDesc('firstname'), false, $request['firstname']). "</P>\n" ;
-		$results .= "<P>" . textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "</P>\n" ;
+		$results .=  "<P>" . $this->textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "</P>\n" ;
+		$results .= "<P>" . $this->textField('firstname', fieldDesc('firstname'), false, $request['firstname']). "</P>\n" ;
+		$results .= "<P>" . $this->textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "</P>\n" ;
 		$sortField="sortby";
 		$request[$sortField];
 		$values="";
@@ -23,6 +23,7 @@ class ShopForms extends Base
 			$values[] = $selection;
 		}
 		$results .= selection($sortField, $values, "Sort By", $selected=$request[$sortField], $autosubmit=false);
+		$results .= " Display older invoices" . $this->checkbox('searchOlder', fieldDesc('searchOlder'), false, $request['searchOlder']). "\n" ;
 		$results .= "<center><input class='btn' type='submit' name='submit' value='Search' ></center>\n" ;
 		$results .=  "</form>";
 		return $results;

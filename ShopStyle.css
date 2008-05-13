@@ -111,6 +111,10 @@ input.option {
 label.option {
 	width: 18px;
 }
+	
+input.checkbox {
+	width: 18px;
+}
 
 label.required {
 	color: red;

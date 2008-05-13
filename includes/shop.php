@@ -35,7 +35,9 @@ function test(){
 
 //=========================================================
 $sortOptions = array("Invoice"=>"Customers.LastName, Customers.FirstName, Invoice desc", 
-			"Date Ordered"=>"Customers.LastName, Customers.FirstName, UNIX_TIMESTAMP(DateOrdered) desc");
+			"Date Ordered"=>"Customers.LastName, Customers.FirstName, UNIX_TIMESTAMP(DateOrdered) desc",
+			"Date Estimated"=>"Customers.LastName, Customers.FirstName, UNIX_TIMESTAMP(DateEstimated) ASC"
+);
 
 function fieldDesc($field){
 	$lookup = array('invoice_num'=>'Invoice Number','lastname'=>'Last Name',
@@ -71,8 +73,9 @@ function knifeList($form){
 		left join Customers on Customers.CustomerID = Invoices.CustomerID
 		where dateestimated between '$startDate' and '$endDate' 
 		order by Invoices.Invoice";
-//		order by Dealer, LastName, Invoices.Invoice";
-	$records = getDbRecords($query);
+//		order by Dealer, Invoices.Invoice";
+
+		$records = getDbRecords($query);
 //	$results .= $query;
 	$custid=0;
 	$custInv = array();
@@ -94,6 +97,7 @@ function knifeList($form){
 function displayKnifeListInvoices($invoices){
 	global $parts, $Invoices;
 	
+	
 	$results ="\n\n<TABLE class='knifelist' border='1'>";
 	if(count($invoices) > 0 && $invoices[0]['Dealer']){
 		$results .= "<TR>";
@@ -105,12 +109,21 @@ function displayKnifeListInvoices($invoices){
 	
 	foreach($invoices as $Invoice){
 		$knifeCount=0;
-		$results .= "<TR>";
-		$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
-//		$results .= "<TD class='quantity'>Qty.</TD>";
-		$results .= "<TD colspan='3'></TD>";
+
+//		echo dumpDBRecord( $Invoice );
 		
-		$results .= "</TR>\n";
+//		if($Invoice['Dealer']){
+//			$results .= "<TR>";
+//			$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
+//			$results .= "<TD colspan='3'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TD>";
+//			$results .= "</TR>";
+//		} else{
+			$results .= "<TR>";
+			$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
+			$results .= "<TD colspan='3'></TD>";
+			$results .= "</TR>\n";
+//		}
+			
 		$year = date("Y", strtotime($Invoice['dateordered']));
 		
 		if(!array_key_exists('entries', $Invoice))
@@ -370,11 +383,22 @@ function orderSearchQueryForShop($form)
 			$orderCriteria = " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
 		}
 	}
+	if (!array_key_exists('searchOlder', $form)) //  || $form['searchOlder'] == "on"
+	{
+		$minDate = date("Y-m-d",strtotime(date("Y-m-d", time()) ." -1 year"));
+		$criteria .= "DateEstimated > '$minDate' AND ";
+		
+	}
+		
+	
+	
 	$criteria = trim($criteria);
 	if(endsWith($criteria, "AND"))
 	{
 		$criteria = substr( $criteria, 0, strlen( $criteria ) - 4 ); 
 	}
+//	print $query . "where " . $criteria . $orderCriteria;
+//	print dumpDBRecord($form);
 	return $query . "where " . $criteria . $orderCriteria;
 }
 

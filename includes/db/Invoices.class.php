@@ -15,7 +15,7 @@ class Invoices
 //	}
 
 	function items($invNum){
-		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by InvoiceEntryID";
+		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
 		
 		return getDbRecords($query);
 	}
@@ -44,7 +44,9 @@ class Invoices
 		$results['Discount']=$invoice['DiscountPercentage'];
 		//		if($results['Discount'] > 0)
 		$results['Discount']  /= 100;
-
+		$results['TaxRate'] = $invoice['TaxPercentage'];
+		if($results['TaxRate'] > 0) $results['TaxRate']  /= 100;
+		
 		// for each entry
 		$results['TotalCost']  = 0;
 		foreach($invoice['entries'] as $entry){
@@ -55,14 +57,14 @@ class Invoices
 			$results['TotalCost'] += 0+$entry['TotalRetail'];
 			$results['NonDiscountable'] += 0+$entry['NonDiscountable'];
 			if($entry['Taxable'])
-				$results['Taxable'] += 0+$entry['TotalRetail'];
+			{
+				$discountedRetail = ($entry['TotalRetail'] - $entry['NonDiscountable']) * (1-$results['Discount'])+$entry['NonDiscountable'];
+				$results['Taxes'] += $discountedRetail * $results['TaxRate'];
+			}
 		}
 		$results['Subtotal']= ($results['TotalCost'] - $results['NonDiscountable']) * (1-$results['Discount']) + $results['NonDiscountable'];
 		$results['Shipping'] = $invoice['ShippingAmount'];
-		$results['TaxRate'] = $invoice['TaxPercentage'];
-		if($results['TaxRate'] > 0) $results['TaxRate']  /= 100;
 
-		$results['Taxes']= $results['Taxable'] * $results['TaxRate'] ;
 		$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
 		if($results['Due'] < 0.01)
 			$results['Due'] = 0;
