@@ -196,7 +196,7 @@ function displaySearchResults($form)
 	$query=orderSearchQueryForShop($form);
 	if($query=="") return "";
 	$records = getDbRecords($query);
-	debugStatement($query);
+//	debugStatement($query);
 	if(count($records) == 0){
 		return "No Matching invoices!";
 	}

@@ -66,7 +66,7 @@ function dumpDBRecord($record){
 		dumpBackTrace();
 		
 	foreach(array_keys($record) as $key){
-		$results .= "<B>$key</B>=>".$record[$key]."<BR>\n";
+		$results .= "<B>$key</B> => ".$record[$key]."<BR>\n";
 	}
 		
 	return $results;

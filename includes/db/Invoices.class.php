@@ -28,9 +28,11 @@ class Invoices
 
 	function computeCosts($invoice){
 		$results = array();
-		//		echo "<HR>";
-		//		var_dump($invoice);
-		//		echo "<HR>";
+
+//		echo "<HR>";
+//		var_dump($invoice);
+//		echo "<HR>";
+		
 		if(!array_key_exists('entries', $invoice))
 		$Invoice['entries'] = $Invoices->items($Invoice['Invoice']);
 		//		$invoice['entries'] = $this->items($invoice['Invoice']);
@@ -50,19 +52,21 @@ class Invoices
 			$entry['additions'] = $this->additions($entry['InvoiceEntryID']);
 			// compute cost of entry (shold be done at 'entry'
 //			echo dumpDBRecord($entry );
-//			echo "<HR>";
-//			echo dumpDBRecords($entry['additions'] );
 			$results['TotalCost'] += 0+$entry['TotalRetail'];
 			$results['NonDiscountable'] += 0+$entry['NonDiscountable'];
+			if($entry['Taxable'])
+				$results['Taxable'] += 0+$entry['TotalRetail'];
 		}
 		$results['Subtotal']= ($results['TotalCost'] - $results['NonDiscountable']) * (1-$results['Discount']) + $results['NonDiscountable'];
 		$results['Shipping'] = $invoice['ShippingAmount'];
 		$results['TaxRate'] = $invoice['TaxPercentage'];
 		if($results['TaxRate'] > 0) $results['TaxRate']  /= 100;
 
-		$taxable = $results['Subtotal']  - $results['NonTaxable']  + $results['Shipping'] ;
-		$results['Taxes']= $taxable * $results['TaxRate'] ;
+		$results['Taxes']= $results['Taxable'] * $results['TaxRate'] ;
 		$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
+		if($results['Due'] < 0.01)
+			$results['Due'] = 0;
+			
 		unset($results['Discount']);
 		unset($results['NonDiscountable']);
 		unset($results['NonTaxable']);
