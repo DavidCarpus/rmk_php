@@ -196,7 +196,7 @@ function displaySearchResults($form)
 	$query=orderSearchQueryForShop($form);
 	if($query=="") return "";
 	$records = getDbRecords($query);
-//	debugStatement($query);
+	debugStatement($query);
 	if(count($records) == 0){
 		return "No Matching invoices!";
 	}
@@ -352,7 +352,7 @@ function orderSearchQueryForShop($form)
 		$criteria .= "Invoice=" . $form['invoice_num'] . " AND ";
 		$orderCriteria .= " ORDER BY Invoice desc ";
 	}
-	if (array_key_exists('firstname', $form)){
+	if (array_key_exists('firstname', $form) && $form['firstname'] <> ""){
 		$criteria .= "Customers.FirstName like '%" . $form['firstname'] ."%'"  . " AND ";
 		if($form['sortby'] != NULL){
 			global $sortOptions;
@@ -361,7 +361,7 @@ function orderSearchQueryForShop($form)
 			$orderCriteria = " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
 		}
 	}
-	if (array_key_exists('lastname', $form)){
+	if (array_key_exists('lastname', $form) && $form['lastname'] <> ""){
 		$criteria .= "Customers.LastName like '%" . $form['lastname'] ."%'"  . " AND ";
 		if($form['sortby'] != NULL){
 			global $sortOptions;
