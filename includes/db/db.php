@@ -1,17 +1,19 @@
 <?php
 /* Created on Feb 4, 2006 */
-$dbh=null;
-$db_server = "www.randallknives.com";
-$db_username="uplzcvgw_rmkweb";
-$db_password="rmkskeet";
-$db_webDatabase="uplzcvgw_rmk";
+//$dbh=null;
+$dbconfig=array("server"=>"www.randallknives.com",
+				"dbh"=>null,
+				"username"=>"uplzcvgw_rmkweb",
+				"password"=>"rmkskeet",
+				"webDatabase"=>"uplzcvgw_rmk",
+	);
 
 setDB_Globals();
 	
 function getDbRecords($query){
+	global $dbconfig;
 	$dbh=getDBConnection();
-	global $db_webDatabase;
-	mysql_select_db ($db_webDatabase); 
+	mysql_select_db ($dbconfig['webDatabase']); 
 	
 	$results = array();
 	$dbresults = mysql_query($query);
@@ -36,9 +38,9 @@ function getBasicSingleDbRecord($tableName, $keyField, $keyValue){
 }
 
 function getSingleDbRecord($query){
+	global $dbconfig;
 	$dbh=getDBConnection();
-	global $db_webDatabase;
-	mysql_select_db ($db_webDatabase); 
+	mysql_select_db ($dbconfig['webDatabase']); 
 	
 	$results = array();
 	$dbresults = mysql_query($query);
@@ -50,21 +52,18 @@ function getSingleDbRecord($query){
 }
 
 function getDBConnection(){
-	global $db_server;
-	global $db_username;
-	global $db_password;
-	global $dbh;
+	global $dbconfig;	
 	
-	if($dbh == null)
-		$dbh=mysql_connect ($db_server, $db_username, $db_password, MYSQL_CLIENT_SSL) or die ('I cannot connect to the database because: ' . mysql_error());
+	if($dbconfig['dbh'] == null)
+		$dbconfig['dbh']=mysql_connect ($dbconfig['server'], $dbconfig['username'], $dbconfig['password'], MYSQL_CLIENT_SSL) or die ('I cannot connect to the database because: ' . mysql_error());
 //		$dbh=mysql_connect ("randallmade.dyndns.org", "carpus", "duntyr1", MYSQL_CLIENT_SSL) or die ('I cannot connect to the database because: ' . mysql_error());
-	return $dbh;
+	return $dbconfig['dbh'];
 }
 
 function executeSQL($sql){
-	global $db_webDatabase;
-	$dbConn = getDBConnection();
-	mysql_select_db ($db_webDatabase);
+	global $dbconfig;
+		$dbConn = getDBConnection();
+	mysql_select_db ($dbconfig['webDatabase']);
 	$result = mysql_query($sql) or die("Unable to execute SQL:" . $sql);	
 }
 
@@ -96,45 +95,53 @@ function getEntryFromPOST($fields){
 }
 
 function setDB_Globals(){
-	global $db_server;
-	global $db_username;
-	global $db_password;
-	global $db_webDatabase;
+	global $dbconfig;
 
 	if($_SERVER['HTTP_HOST'] == 'www.randallknives.com')
-		$db_server = "localhost";
+		$dbconfig['server'] = "localhost";
 	
 	$address = '192.168.1.101';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$db_server = "localhost";
-		$db_username="root";
-		$db_password="skeet100";
-		$db_webDatabase="newrmk";
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="root";
+		$dbconfig['password']="skeet100";
+		$dbconfig['webDatabase']="newrmk";
+		$dbconfig['address']=$address;
 	}
 		
 	$address = '192.168.1.99';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$db_server = "localhost";
-		$db_username="rmkweb";
-		$db_password="rmkskeet";
-		$db_webDatabase="newrmk";
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="rmkweb";
+		$dbconfig['password']="rmkskeet";
+		$dbconfig['webDatabase']="newrmk";
+		$dbconfig['address']=$address;
 	}
 	
 	$address = '192.168.1.90';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$db_server = "localhost";
-		$db_username="rmkweb";
-		$db_password="rmkskeet";
-		$db_webDatabase="newrmk";	
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="rmkweb";
+		$dbconfig['password']="rmkskeet";
+		$dbconfig['webDatabase']="newrmk";	
+		$dbconfig['address']=$address;
 	}
 	
 	$address = '127.0.0.1';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$db_server = "localhost";
-		$db_username="rmkweb";
-		$db_password="rmkskeet";
-		$db_webDatabase="newrmk";
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="rmkweb";
+		$dbconfig['password']="rmkskeet";
+		$dbconfig['webDatabase']="newrmk";
+		$dbconfig['address']=$address;
+		
+//		$dbconfig['server'] = "www.randallknives.com";
+//		$dbconfig['username']="uplzcvgw_rmkweb";
+//		$dbconfig['password']="rmkskeet";
+//		$dbconfig['webDatabase']="uplzcvgw_rmk";
+//		$dbconfig['address']=$address;
 	}
+	var_dump($dbconfig);
 }
 
 //----------------------------------------------------
