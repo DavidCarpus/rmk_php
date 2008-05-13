@@ -4,6 +4,8 @@ include_once "db/Parts.class.php";
 include_once "db/Customers.class.php";
 include_once "db/Invoices.class.php";
 
+ini_set('session.cache_limiter', 'private');
+
 $address = '192.168.1.101';
 if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 	$db_server = "localhost";
@@ -250,12 +252,12 @@ function displayInvoiceDetailsForShop($record){
 	$results .=  "</BR>";
 	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs double checking) vvvvvvvvvvvvvvvvvvvv";
 	$results .= "<TABLE>";
-	$results .=  "<TR><TD><B>TotalCost</B></TD><TD>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Subtotal</B></TD><TD>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Shipping</B></TD><TD>$ " .  number_format($costs['Shipping'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Taxes</B></TD><TD>$ " .  number_format($costs['Taxes'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Due</B></TD><TD>$ " .  number_format($costs['Due'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>TotalCost</B></TD><TD align=right>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Subtotal</B></TD><TD align=right>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Shipping</B></TD><TD align=right>$ " .  number_format($costs['Shipping'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Taxes</B></TD><TD align=right>$ " .  number_format($costs['Taxes'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD align=right>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
+	$results .=  "<TR><TD><B>Due</B></TD><TD align=right>$ " .  number_format($costs['Due'] ,2). "</TD></TR>";
 	$results .=  "</TABLE>";
 	
 //	$results .=  dumpDBRecord($costs);
