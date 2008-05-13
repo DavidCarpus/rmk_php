@@ -38,7 +38,7 @@ $sortOptions = array("Invoice"=>"Customers.LastName, Customers.FirstName, Invoic
 function fieldDesc($field){
 	$lookup = array('invoice_num'=>'Invoice Number','lastname'=>'Last Name',
 	'firstname'=>'First Name', 'phonenumber'=>'Phone Number', 'dateordered'=>"Date Ordered",
-	'dateestimated'=>"Date Estimated", 'lastname'=>"Last Name",  'dateshipped'=>"Date Shipped",
+	'dateestimated'=>"Date Estimated", 'lastname'=>"Last Name",  'firstname'=>"First Name",  'dateshipped'=>"Date Shipped",
 	);
 	return $lookup[$field];
 }
@@ -194,6 +194,7 @@ function displaySearchResults($form)
 	$query=orderSearchQueryForShop($form);
 	if($query=="") return "";
 	$records = getDbRecords($query);
+//	debugStatement($query);
 	if(count($records) == 0){
 		return "No Matching invoices!";
 	}
@@ -343,19 +344,40 @@ function orderSearchQueryForShop($form)
 			";
 			//~ Invoices.ShippingInstructions, Customers.LastName , Customers.FirstName , Customers.Dealer,
 			
+	$selectionCriteria = "";
+	$orderCriteria = "";
 	if($form['invoice_num'] > 0){
-		$query .= "where Invoice=" . $form['invoice_num'];
-		$query .= " ORDER BY Invoice desc ";
-	} else{		
-		$query .= "where Customers.LastName like '%" . $form['lastname'] ."%'";
+		$criteria .= "Invoice=" . $form['invoice_num'] . " AND ";
+		$orderCriteria .= " ORDER BY Invoice desc ";
+	}
+	if (array_key_exists('firstname', $form)){
+		$criteria .= "Customers.FirstName like '%" . $form['firstname'] ."%'"  . " AND ";
 		if($form['sortby'] != NULL){
 			global $sortOptions;
-			$query .= " ORDER BY " . $sortOptions[$form['sortby']];
+			$orderCriteria = " ORDER BY " . $sortOptions[$form['sortby']];
 		} else{
-			$query .= " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
+			$orderCriteria = " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
 		}
 	}
-	return $query;
+	if (array_key_exists('lastname', $form)){
+		$criteria .= "Customers.LastName like '%" . $form['lastname'] ."%'"  . " AND ";
+		if($form['sortby'] != NULL){
+			global $sortOptions;
+			$orderCriteria = " ORDER BY " . $sortOptions[$form['sortby']];
+		} else{
+			$orderCriteria = " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
+		}
+	}
+	$criteria = trim($criteria);
+	if(endsWith($criteria, "AND"))
+	{
+		$criteria = substr( $criteria, 0, strlen( $criteria ) - 4 ); 
+	}
+	return $query . "where " . $criteria . $orderCriteria;
+}
+
+function endsWith( $str, $sub ) {
+   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) === $sub );
 }
 
 ?>

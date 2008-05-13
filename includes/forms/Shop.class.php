@@ -13,6 +13,7 @@ class ShopForms extends Base
 		$results="";
 		$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
 		$results .=  "<P>" . textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "</P>\n" ;
+		$results .= "<P>" . textField('firstname', fieldDesc('firstname'), false, $request['firstname']). "</P>\n" ;
 		$results .= "<P>" . textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "</P>\n" ;
 		$sortField="sortby";
 		$request[$sortField];
