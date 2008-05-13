@@ -141,7 +141,7 @@ function setDB_Globals(){
 //		$dbconfig['webDatabase']="uplzcvgw_rmk";
 //		$dbconfig['address']=$address;
 	}
-	var_dump($dbconfig);
+//	var_dump($dbconfig);
 }
 
 //----------------------------------------------------
