@@ -89,6 +89,7 @@ class Invoices
 		}
 		// Get customer current address
 		$customer = $customers->fetchCustomer($invoice['CustomerID']);
+//		var_dump($customer);
 		return $this->addressString($customer['CurrrentAddress']);
 	}
 

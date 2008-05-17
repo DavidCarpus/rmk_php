@@ -32,7 +32,7 @@ function getHTMLValue($key){
 }
 
 function debugStatement($statement){
-	if(!isDebugMachine()) return;
+	if(!isDebugMachine() && !isDebugAccess() ) return;
 
 	print "<HR>". $statement . "<BR><HR>";
 }

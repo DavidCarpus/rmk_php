@@ -141,7 +141,7 @@ function setDB_Globals(){
 //		$dbconfig['webDatabase']="uplzcvgw_rmk";
 //		$dbconfig['address']=$address;
 	}
-//	var_dump($dbconfig);
+//	if($_SERVER['REMOTE_ADDR'] == '97.100.243.22') var_dump($dbconfig);
 }
 
 //----------------------------------------------------
