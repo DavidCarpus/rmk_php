@@ -17,7 +17,7 @@ include_once "includes/htmlHead.php";
 			We have incorporated the best of many designs, and we believe that almost any need for a knife can be met with one of our 45 plus models.
 			<BR><BR>
 			
-			<div class='floatleft'><img src='<?php echo getBaseImageDir(); ?>/3_5.jpg'><BR><i>Model #3-5&quot;  Hunter,  brass hilt, antique gold micarta handle, finger grips</i></div>
+			<div class='floatleft'><img src='<?php echo getBaseImageDir(); ?>/designpic.jpg'><BR></div>
 			
 			Each of our models has been thoroughly field-tested and has proven to be properly shaped and designed for its particular use.
 			<BR><BR>
