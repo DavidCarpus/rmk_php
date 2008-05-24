@@ -39,7 +39,7 @@ $invoiceClass = new Invoices();
 $customerClass = new Customers();
 
 $formValues = getFormValues();
-$invoiceNum = $formValues['invoice_num'];
+$invoiceNum = $formValues['Invoice'];
 $customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
 $invoice = $invoiceClass->details( $invoiceNum );
 $entries = $invoiceClass->items($invoiceNum);
@@ -53,7 +53,7 @@ foreach($entries as $entry)
 	<div class="centerblock">
 		<?php echo adminToolbar(); ?>
 		<div class="content">
-			<?php 	echo $invoiceForms->invNum(getFormValues());
+			<?php 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
 					echo $customerForms->summary( $customer );

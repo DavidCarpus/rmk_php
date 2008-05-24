@@ -8,15 +8,15 @@ class Invoice extends Base
        $this->name = "MyDestructableClass";
    }
    
-	public function invNum($request){
+	public function invNum( $invoice ){
 		$formName="InvoiceNum";
-		if(!array_key_exists('invoice_num', $request)) $request['invoice_num'] = "";
+		if(!array_key_exists('Invoice', $invoice)) $invoice['Invoice'] = "";
 		$results="";
 //		$results .=  "<legend>$formName</legend>";
 		$results .=  "<div id='$formName'>";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
 		$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
-		$results .=  $this->textField('invoice_num', $this->fieldDesc('invoice_num'), false, $request['invoice_num'],"",$JS) ;
+		$results .=  $this->textField('invoice_num', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >\n";
 		return $results;
@@ -53,7 +53,7 @@ class Invoice extends Base
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
-		$results .=  "<legend>$formName</legend>" . "\n";
+//		$results .=  "<legend>$formName</legend>" . "\n";
 		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount");
 		foreach($fields as $name)
 		{
@@ -71,7 +71,8 @@ class Invoice extends Base
 			if( $name=="KnifeCount" ) $JS['field'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			if( $name=="KnifeCount" ) $JS['label'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			
-			$results .=  $this->textField($name, $this->fieldDesc($name), false, $invoice[$name],'',$JS) . "\n";
+			$value = $invoice[$name];
+			$results .=  $this->textField($name, $this->fieldDesc($name), false, $value,'',$JS) . "\n";
 			if($this->isInternetExploder() && ( $name=="DateShipped"  || $name=="PONumber" ) )
 					$results .=  "</BR>";
 		}
@@ -83,6 +84,12 @@ class Invoice extends Base
 		$results .= "</div><!-- End $formName -- >\n";
 		
 		return $results;
+	}
+	
+	function linkToEntryEdit( $entry ){
+		$url = "<a href='invoiceEntryEdit.php?InvoiceEntryID=" . $entry['InvoiceEntryID'] . "'>" . $entry["PartDescription"] . "</a>";
+//		return $entry["PartDescription"];
+		return $url;
 	}
 	
 	function knifeListTable( $entries ){
@@ -105,14 +112,15 @@ class Invoice extends Base
 			if($cnt%2)
 				$results .= "<div class='InvoiceKnifeListHL'>";
 			foreach($fields  as $field){
-				if($field == "TotalRetail")
+				if($field == "TotalRetail"){
 					$results .= "<span class='$field'>" . "$" . number_format($entry[$field] ,2) . "</span>\n";
-				elseif($field == "FeatureList")
+				}elseif($field == "FeatureList"){
 					$results .= "<span class='FeatureList'>" . $this->knifeEntryAdditions($entry["Additions"]). "</span>\n";
-				elseif($field == "Part")
-					$results .= "<span class='PartDescription'>" .  $entry['PartDescription'] . "</span>\n";
-				else
+				}elseif($field == "Part"){
+					$results .= "<span class='PartDescription'>" .  $this->linkToEntryEdit( $entry ) . "</span>\n";
+				}else{
 					$results .= "<span class='$field'>" . $entry[$field] . "&nbsp;</span>\n";
+				}
 			}
 //			$results .= "</P>";
 			if($cnt%2)

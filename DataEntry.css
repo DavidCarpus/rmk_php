@@ -15,6 +15,7 @@ fieldset {
 	display: block;
 	float: left;
 	padding-right: 100px;
+	padding-bottom: 20px;
 }
 #customerSummary input{
 	clear: none;
@@ -29,9 +30,9 @@ fieldset {
 	float: left;
 	text-align: right;
 	padding-right: 10px;
-	padding-left: 40px;
+	padding-left: 10px;
 	display: block;
-	width: 150px;
+	width: 110px;
 }
 
 #CustomerSummary label.label-Suffix{	width: 100px;}
@@ -88,9 +89,6 @@ fieldset {
 	
 #InvoiceDetails label.label-ShippingInstructions{	clear: left; display: block; width: 90px; padding-left: 0px;}
 
-
-
-
 #knifeListItem{
 	clear: left;
 	display: block;
@@ -101,6 +99,7 @@ fieldset {
 	float: left;
 	display: block;
 }
+
 
 #InvoiceKnifeList br{
 	clear: left;
@@ -119,7 +118,7 @@ HR{
 
 .InvoiceKnifeListHL .PartDescription, .InvoiceKnifeListHL .Quantity, .InvoiceKnifeListHL .TotalRetail,
 	.InvoiceKnifeListHL .FeatureList,.InvoiceKnifeListHL .Comment
-	{background-color: #CCCCCC;}
+	{background-color: #DDDDDD;}
 
 
 #InvoiceKnifeList .sheath{
@@ -131,42 +130,3 @@ HR{
 	color:#FFFFFF;
 }
 
-
-/* CSS needed for the script */
-
-#ajax_tooltipObj{
-	z-index:1000000;
-	text-align:left;
-	position:relative;
-}
-#ajax_tooltipObj div{
-	position:relative;
-}
-
-/* If you don't want the arrow - Just set the width of this div to 1 or something like that and drop the background selectors from the CSS below */
-
-#ajax_tooltipObj .ajax_tooltip_arrow{	/* Left div for the small arrow */
-	background-image:url('../images/arrow.gif');
-	width:20px;
-	position:absolute;
-	left:0px;
-	top:0px;
-	background-repeat:no-repeat;
-	background-position:center left;
-	z-index:1000005;
-	height:60px;
-}
-
-#ajax_tooltipObj .ajax_tooltip_content{
-	border:2px solid #317082;	/* Border width */
-	left:18px;	/* Same as border thickness */
-	top:0px;
-	position:absolute;
-	width:350px;	/* Width of tooltip content */
-	height:300px;	/* Height of tooltip content */
-	background-color:#FFF;	/* Background color */
-	padding:5px;	/* Space between border and content */
-	font-size:0.8em;	/* Font size of content */
-	overflow:auto;	/* Hide overflow content */
-	z-index:1000001;
-}

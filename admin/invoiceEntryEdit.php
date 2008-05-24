@@ -44,7 +44,7 @@ $invoice = $invoiceClass->details( $invoiceNum );
 	<div class="centerblock">
 		<?php echo adminToolbar(); ?>
 		<div class="content">
-			<?php 	echo $invoiceForms->invNum(getFormValues());
+			<?php 	echo $invoiceForms->invNum($invoice);
 					echo "\n";
 					echo "\n";
 					echo $customerForms->summary( $customer );

@@ -62,7 +62,7 @@ function invoiceNumber(selfForm)
 			updateForm("CustomerSummary",local['CustomerSummary'] );
 			updateForm("InvoiceDetails",local['InvoiceDetails'] );
 			if(document.getElementById("InvoiceKnifeList") != null)
-				 document.getElementById("InvoiceKnifeList").innerHTML = knifeInfo;
+				 document.getElementById("InvoiceKnifeList").innerHTML = local['InvoiceKnifeList'];
 		}
 	}
 }

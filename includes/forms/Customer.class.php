@@ -14,7 +14,7 @@ class Customer extends Base
 		$results="\n";
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>"  . "\n";
-		$results .=  "<legend>$formName</legend>" . "\n";
+//		$results .=  "<legend>$formsName</legend>" . "\n";
 //		customerID as hidden field?
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress');
 		foreach( $fields as $name)
