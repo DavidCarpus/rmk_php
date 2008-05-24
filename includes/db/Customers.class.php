@@ -1,4 +1,6 @@
 <?php
+include_once "db.php";
+
 class Customers
 {
 	
@@ -12,5 +14,9 @@ class Customers
 		return $customer;
 	}
 	
+	function fetchCustomerForInvoice($invnum){
+		$query = "Select C.* from Invoices I inner join Customers C on C.CustomerID=I.CustomerID where I.Invoice=$invnum";
+		return getSingleDbRecord($query);
+	}
 }
 ?>

@@ -26,11 +26,10 @@ if(!loggedIn()){
 	session_destroy();
 	header("Location: "."../");
 }
-
 ?>
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">
-	 
+<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
 <LINK href="../Style.css" rel="stylesheet" media='screen' type="text/css">
+
 <?php echo logo_header("admin"); ?>
 
  <div class="mainbody">
@@ -44,6 +43,7 @@ if(!loggedIn()){
 </div>
 
 <?php
+
 function printAction(){
 //	$action = getHTMLValue('action');
 //	if($action == 'details' || $action == 'previousorder' || $action == 'nextorder') return true;

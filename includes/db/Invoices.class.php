@@ -1,6 +1,20 @@
 <?php
+include_once "db.php";
+
 class Invoices
 {
+	function details($invNum)
+	{
+		$query = "Select * from Invoices where Invoice=$invNum";
+		$invoice = getSingleDbRecord($query);	
+		$costs = $this->computeCosts($invoice);
+//		debugStatement(dumpDBRecord($costs));
+		$invoice['TotalRetail'] = "$" . number_format($costs['TotalCost'] ,2);
+		$invoice['ShippingAmount'] = "$" . number_format($costs['Shipping'] ,2);
+		
+		return 	$invoice;
+	}
+	
 	function totalPayments($invNum){
 		return 0+getIntFromDB("Select sum(Payment) from Payments where Invoice=$invNum");
 	}
@@ -19,9 +33,31 @@ class Invoices
 		
 		return getDbRecords($query);
 	}
+	
+	function knifeListHelpItems($invNum){
+		$query = "select sum(Quantity) as Cnt, P.PartCode from InvoiceEntries IE
+					Left join Parts P on P.PartID = IE.PartID
+					where Invoice=$invNum
+					group by P.PartCode
+					order by Cnt DESC";
+		return getDbRecords($query);
+	}
+	
+	
+	
+	function itemsWithAdditions($invNum){
+		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
 
+		$entries = getDbRecords($query);
+		foreach ($entries as $key=>$entry){
+			$entries[$key]['Additions'] = $this->additions($entry['InvoiceEntryID']);
+		}
+		
+		return $entries;
+	}
+		
 	function additions($entryID){
-		$query = "Select * from InvoiceEntryAdditions where EntryID=$entryID order by AdditionID";
+		$query = "Select IA.*, P.PartCode from InvoiceEntryAdditions IA left join Parts P on P.PartID=IA.PartID where EntryID=$entryID order by AdditionID";
 		//		echo "<HR>" . $query . "<HR>";
 		return getDbRecords($query);
 	}
@@ -34,10 +70,14 @@ class Invoices
 //		echo "<HR>";
 		
 		if(!array_key_exists('entries', $invoice))
-		$Invoice['entries'] = $Invoices->items($Invoice['Invoice']);
+			$invoice['entries'] = $this->items($invoice['Invoice']);
 		//		$invoice['entries'] = $this->items($invoice['Invoice']);
-		$year = date("Y", strtotime($invoice['dateestimated']));
-
+		$year = 0;
+		if(array_key_exists('dateestimated', $invoice))
+			$year = date("Y", strtotime($invoice['dateestimated']));
+		if(array_key_exists('DateEstimated', $invoice))
+			$year = date("Y", strtotime($invoice['DateEstimated']));
+		
 		$results['TotalPayments']=$this->totalPayments($invoice['Invoice']);
 //		$results['NonTaxable']=$this->nonTaxableTotal($invoice['Invoice'], $year);
 
@@ -49,6 +89,8 @@ class Invoices
 		
 		// for each entry
 		$results['TotalCost']  = 0;
+		$results['NonDiscountable'] = 0;
+		$results['Taxes'] = 0;
 		foreach($invoice['entries'] as $entry){
 			if(!array_key_exists('additions', $entry))
 			$entry['additions'] = $this->additions($entry['InvoiceEntryID']);
