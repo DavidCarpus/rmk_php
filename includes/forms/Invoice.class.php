@@ -10,42 +10,46 @@ class Invoice extends Base
    
 	public function invNum( $invoice ){
 		$formName="InvoiceNum";
+		$this_page = basename($_SERVER['REQUEST_URI']);
 		if(!array_key_exists('Invoice', $invoice)) $invoice['Invoice'] = "";
 		$results="";
 //		$results .=  "<legend>$formName</legend>";
 		$results .=  "<div id='$formName'>";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-		$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='GET'>" ;
+		$JS = array();
+//		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
+			$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
+//		}
 		$results .=  $this->textField('invoice_num', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
+		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
+			$results .= " <a id='viewInvoiceLink' href='invoiceEdit.php?Invoice=" . $invoice['Invoice'] . "'>View Invoice</a>";
+		}
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >\n";
 		return $results;
 	}
 	
-	public function knifeEntryAdditions($additions){
-		global $parts;
-		$sheaths = "  MA1 MA2 MAB MB MBB MC MC1 MCB MCR MFB 24B NHS FCH WS BLK LHS LS1 LS2 OK DK ";
-		$etching = "  ET1  ET2  ETC ETV NPN NPB EN1 EN2 EN3 EN4 EN5 MED  ";
-		$results = "";
-		$totalAdds=count($additions);
-		$cnt=0;
-		if($totalAdds == 0) $results .= " ";
-		foreach($additions as $addition){
-			$code=" ".$addition['PartCode'] . " ";
-			$isSheath = ( strpos($sheaths, $code) > 0);
-			$isEtch = ( strpos($etching, $code ) > 0);
-			
-			if($isSheath ) $results .= "<span class='sheath'>";
-			if($isEtch ) $results .= "<span class='etch'>";
-			$results .= $addition['PartCode'];
-	
-			if($isSheath || $isEtch )  $results .= "</span>";
-			if(++$cnt < $totalAdds)
-				$results .= ",";
-		}
+
+
+	public function editComment($invoice){
+		$formName="InvoiceCommentEdit";
+		if(!array_key_exists('Comment', $invoice)) $invoice['Comment'] = "";
+		if(!array_key_exists('Invoice', $invoice)) $invoice['Invoice'] = "";
+		
+		$results="";
+		$results .=  "<div id='$formName'>" . "\n";
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='GET'>" . "\n" ;
+		$results .=  $this->textArea('Comment', 'Comment', false, $invoice['Comment']) . "\n";
+		$results .=  $this->hiddenField('Invoice', $invoice['Invoice']);
+		$results .=  "<BR>";
+		$results .=  $this->button("submit", "Save_Update");
+		$results .= "</form>";
+		$results .= "</div><!-- End $formName -- >\n";
+		
 		return $results;
 	}
-
+	
 	public function details($invoice){
 		$formName="InvoiceDetails";
 		if(!array_key_exists('invoice_num', $invoice)) $invoice['invoice_num'] = "";
@@ -72,6 +76,9 @@ class Invoice extends Base
 			if( $name=="KnifeCount" ) $JS['label'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			
 			$value = $invoice[$name];
+			if($name == "TotalRetail") $value = "$" . number_format($invoice['TotalRetail'] ,2);
+			if($name == "ShippingAmount") $value = "$" . number_format($invoice['ShippingAmount'] ,2);
+			
 			$results .=  $this->textField($name, $this->fieldDesc($name), false, $value,'',$JS) . "\n";
 			if($this->isInternetExploder() && ( $name=="DateShipped"  || $name=="PONumber" ) )
 					$results .=  "</BR>";
@@ -86,55 +93,70 @@ class Invoice extends Base
 		return $results;
 	}
 	
-	function linkToEntryEdit( $entry ){
-		$url = "<a href='invoiceEntryEdit.php?InvoiceEntryID=" . $entry['InvoiceEntryID'] . "'>" . $entry["PartDescription"] . "</a>";
-//		return $entry["PartDescription"];
-		return $url;
+	function buttonLinks($invoice){
+		$formName="InvoiceDetailButtonLinks";
+		if(!array_key_exists('Invoice', $invoice)) $invoice['Invoice'] = "";
+		if(!array_key_exists('Comment', $invoice)) $invoice['Comment'] = "";
+		
+		$results="";
+		$results .=  "<div id='$formName'>" . "\n";
+		$label = ((strlen($invoice["Comment"]) > 0) ? "Edit" : "Add"). " Comment";
+		$results .= "<span class='helptext'>";
+		$results .= "<a href='invoiceCommentEntryEdit.php?Invoice=" . $invoice['Invoice'] . "'>";
+		$results .= "$label<span>" . $invoice["Comment"] . "</span></a>";
+		$results .= "</span>";
+		$results .= "&nbsp; &nbsp;";
+		$label = "Edit Payments";
+		$results .= "<a href='invoicePaymentsEntryEdit.php?Invoice=" . $invoice['Invoice'] . "'>$label</a>";
+		$results .= "</div><!-- End $formName -- >\n";
+//		$results .= dumpDBRecord($invoice);
+		return $results;
 	}
 	
-	function knifeListTable( $entries ){
-		$formName="InvoiceKnifeList";
-		$fields = array("Part", "Quantity" , "TotalRetail" , "FeatureList" , "Comment");
-		$results = "";
-		$results .=  "<div id='$formName'>\n";
-		foreach($fields  as $field){
-			if($field == "Part")
-				$results .= "<span style='font-weight: bold;' class='PartDescription'>Part</span>";
-			else
-				$results .= "<span style='font-weight: bold;' class='$field'>$field</span>";
-		}
-//		$results .= "\n</BR>";
-//		$results .= "</BR>";
-//		$results .= "<span style='clear: left;display: block;'>";
-		$results .= "<span id='knifeListItem'>";
-		$cnt=1;
-		foreach ($entries as $entry){
-			if($cnt%2)
-				$results .= "<div class='InvoiceKnifeListHL'>";
-			foreach($fields  as $field){
-				if($field == "TotalRetail"){
-					$results .= "<span class='$field'>" . "$" . number_format($entry[$field] ,2) . "</span>\n";
-				}elseif($field == "FeatureList"){
-					$results .= "<span class='FeatureList'>" . $this->knifeEntryAdditions($entry["Additions"]). "</span>\n";
-				}elseif($field == "Part"){
-					$results .= "<span class='PartDescription'>" .  $this->linkToEntryEdit( $entry ) . "</span>\n";
-				}else{
-					$results .= "<span class='$field'>" . $entry[$field] . "&nbsp;</span>\n";
-				}
+	public function getCustomerInvoiceList($invoices){
+		$formName="CustomerInvoiceList";
+		$results .=  "<div id='$formName'>" . "\n";
+		$fields = array('Invoice', 'DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'Due');
+		foreach($fields as $field)
+		{
+			$results .= "<span class='Header$field'>";
+			if(substr($field,0,4) == 'Date'){
+				$results .= substr($field,4);
+			} else {
+				$results .= $field;
 			}
-//			$results .= "</P>";
+			$results .= "</span>\n";
+		}
+		$results .= "<BR>\n";
+		$results .= "<span id='CustomerInvoices'>\n";
+		$cnt=1;
+		foreach($invoices as $invoice)
+		{
+			if($cnt%2)
+				$results .= "<div class='CustomerInvoiceListItemHL'>\n";
+				
+//			$results .= debugStatement(dumpDBRecord($invoice));
+			foreach($fields as $field)
+			{
+				$results .= "<span class='$field'>";
+				if(!array_key_exists($field, $invoice)) $invoice[$field] = "";
+				if(substr($field,0,4) == 'Date'){
+					$results .= substr($invoice[$field],0,10) . " ";
+				} else if($field == 'Invoice') {
+					$results .= " <a href='invoiceEdit.php?Invoice=" . $invoice['Invoice'] . "'>$invoice[$field]</a>";
+				} else if($field == 'TotalRetail' || $field == 'Due') {
+					$results .= "$" . number_format($invoice[$field] ,2);				
+				} else {
+					$results .= $invoice[$field] . " ";
+				}
+				$results .= "&nbsp;</span>";
+			}
 			if($cnt%2)
 				$results .= "</div>";
-			$cnt++;
-			$results .= "</BR>";
+			$cnt++;			$results .= "<BR>\n";
 		}
 		$results .= "</span>";
-//		foreach ($entries as $entry){
-//			$results .= dumpDBRecord($entry);
-//			$results .= "</BR>";
-//		}
-		$results .= "\n</div><!-- End $formName -- >\n";
-//		return count($entries) . " Entries";
+		$results .= "</div><!-- End $formName -- >\n";
 		return $results;
 	}
 	

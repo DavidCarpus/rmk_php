@@ -1,8 +1,15 @@
 <?php
+include_once "db.php";
 
 class Parts
 {
 	private $partPrices=array();
+	private $currentlyAvailibleParts=array();
+	
+	function fetchCurrYearPart($partID){
+		$year=date("Y");
+		return $this->fetchPart($partID, $year);		
+	}
 	
 	function fetchPart($partid, $year){
 		$this->fetchParts($year);
@@ -26,7 +33,26 @@ class Parts
 			}
 //			echo $query;
 		}
+//		echo "**" . dumpDBRecords($this->partPrices[$year]);
+		return $this->partPrices[$year];
 	}
 	
+	function currentYearPartPrice($partCode){
+		$year=date("Y");
+		if( count($this->currentlyAvailibleParts) < 1){
+			$query = "Select Parts.*, PartPrices.Price  from Parts 
+				left join PartPrices on PartPrices.PartID = Parts.PartID 
+				where PartPrices.Year = $year";
+//			echo $query;
+			$parts =  getDbRecords($query);
+//			debugStatement(dumpDBRecords($parts));
+			foreach($parts as $part){
+				$this->currentlyAvailibleParts[$part['PartCode']] =  $part;
+			}
+		}
+		if(!array_key_exists($partCode, $this->currentlyAvailibleParts)) return NULL;
+
+		return $this->currentlyAvailibleParts[$partCode];
+	}
 }
 ?>

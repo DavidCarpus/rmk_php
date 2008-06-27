@@ -9,8 +9,11 @@ class Invoices
 		$invoice = getSingleDbRecord($query);	
 		$costs = $this->computeCosts($invoice);
 //		debugStatement(dumpDBRecord($costs));
-		$invoice['TotalRetail'] = "$" . number_format($costs['TotalCost'] ,2);
-		$invoice['ShippingAmount'] = "$" . number_format($costs['Shipping'] ,2);
+//		$invoice['TotalRetail'] = "$" . number_format($costs['TotalCost'] ,2);
+//		$invoice['ShippingAmount'] = "$" . number_format($costs['Shipping'] ,2);
+
+		$invoice['TotalRetail'] = $costs['TotalCost'];
+		$invoice['ShippingAmount'] = $costs['Shipping'];
 		
 		return 	$invoice;
 	}
@@ -19,14 +22,10 @@ class Invoices
 		return 0+getIntFromDB("Select sum(Payment) from Payments where Invoice=$invNum");
 	}
 
-//	function nonTaxableTotal($invNum, $year){
-//		$query = "select sum(PartPrices.Price) from InvoiceEntries
-//		left join InvoiceEntryAdditions on InvoiceEntryAdditions.EntryID = InvoiceEntryID
-//		left join Parts on Parts.PartID = InvoiceEntryAdditions.PartID
-//		left join PartPrices on PartPrices.PartID = InvoiceEntryAdditions.PartID
-//		where Invoice=$invNum and year=$year and taxable=0;";
-//		return 0+getIntFromDB($query);
-//	}
+	function fetchInvoicePayments($invNum){
+		$query = "Select * from Payments where Invoice=$invNum";
+		return getDbRecords($query);
+	}
 
 	function items($invNum){
 		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
@@ -43,7 +42,13 @@ class Invoices
 		return getDbRecords($query);
 	}
 	
-	
+	function updateComment($invNum, $newComment)
+	{
+		$query = "Select * from Invoices where Invoice=$invNum";
+		$invoice = getSingleDbRecord($query);	
+		$invoice['Comment'] = $newComment;
+		updateField("Invoices", "Invoice", $invoice, "Comment");	
+	}
 	
 	function itemsWithAdditions($invNum){
 		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
@@ -106,9 +111,11 @@ class Invoices
 		}
 		$results['Subtotal']= ($results['TotalCost'] - $results['NonDiscountable']) * (1-$results['Discount']) + $results['NonDiscountable'];
 		$results['Shipping'] = $invoice['ShippingAmount'];
+		if(substr($results['Shipping'],0,1) == "$") $results['Shipping'] = substr($results['Shipping'],1);
 
+		$results['Taxes'] += $results['Shipping'] * $results['TaxRate'];
 		$results['Due']= $results['Subtotal'] + $results['Taxes'] + $results['Shipping']  - $results['TotalPayments'];
-		if($results['Due'] < 0.01)
+		if($results['Due'] > -0.01 && $results['Due'] < 0.01 )
 			$results['Due'] = 0;
 			
 		unset($results['Discount']);
@@ -150,6 +157,25 @@ class Invoices
 		return $results;
 	}
 
+	public function getCustomerInvoices($customerID, $older=false, $sort="invoice DESC"){
+		if($older){
+			$query = "Select * from Invoices where CustomerID=$customerID";
+		} else {
+			$years = 5;
+			$query = "SELECT * FROM Invoices I where customerid = $customerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
+		}
+		$query .= " order by $sort";
+		$invoices = getDbRecords($query);
+		foreach ($invoices as $key=>$invoice) {
+			$costs = $this->computeCosts($invoice);
+			$invoice['TotalRetail'] = $costs['TotalCost'];
+			$invoice['Due'] = $costs['Due'];
+//			$invoice['ShippingAmount'] = $costs['Shipping'];
+			$invoices[$key] = $invoice;
+		}
+		return $invoices;
+	}
+	
 }
 
 ?>

@@ -81,6 +81,13 @@ function saveRecord($tableName, $keyField, $record){
 	return $record;
 }
 
+function updateField($tableName, $keyField, $record, $editedField ){
+	$updateData[$keyField] = $record[$keyField];
+	$updateData[$editedField] = $record[$editedField];
+	$sql = updateRecordSQL($updateData, $keyField, $tableName);
+	executeSQL($sql);
+}
+
 function deleteRecord($tableName, $keyField, $record){
 	$sql = "delete from $tableName where $keyField=".$record[$keyField];
 	executeSQL($sql);

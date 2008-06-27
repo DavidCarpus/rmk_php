@@ -336,10 +336,10 @@ function fetchEntryAdditions($invEntryID){
 
 
 
-function fetchInvoicePayments($invNum){
-	$query = "Select * from Payments where Invoice=$invNum";
-	return getDbRecords($query);
-}
+//function fetchInvoicePayments($invNum){
+//	$query = "Select * from Payments where Invoice=$invNum";
+//	return getDbRecords($query);
+//}
 
 
 

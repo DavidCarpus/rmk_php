@@ -47,7 +47,7 @@ $invoice = $invoiceClass->details( $invoiceNum );
 			<?php 	echo $invoiceForms->invNum($invoice);
 					echo "\n";
 					echo "\n";
-					echo $customerForms->summary( $customer );
+					echo $customerForms->tiny( $customer );
 					echo "\n";
 					echo "\n";
 					echo $invoiceForms->details( $invoice );

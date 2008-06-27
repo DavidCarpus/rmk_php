@@ -34,7 +34,7 @@ function getHTMLValue($key){
 function debugStatement($statement){
 	if(!isDebugMachine() && !isDebugAccess() ) return;
 
-	print "<HR>". $statement . "<BR><HR>";
+	return "<div class='debug'><HR ". $statement . "<BR><HR></div>";
 }
 
 function dumpBackTrace(){
@@ -270,6 +270,7 @@ function adminToolbar(){
 				array('webcopy.php', 'Copy/Text'),
 				array('ToDo.php', 'ToDo'),
 				array('emailReview.php', 'Emails'),
+				array('rmk.php', 'RMK'),
 				array('../', 'Home'),
 				);
 	$results = "";
@@ -290,7 +291,7 @@ function adminToolbar(){
 			
 		$results = $results . "<a $selectedStyle href='$realprefix/admin/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
-	if($_SESSION['loginValidated'] == 1)
+	if(array_key_exists('loginValidated', $_SESSION) && $_SESSION['loginValidated'] == 1)
 		$results = $results . "<a href='$prefix/admin/logout.php'>LOGOUT</a>\n";
 	else
 		$results = $results . "<a href='$prefix/admin/logout.php'>LOGIN</a>\n";

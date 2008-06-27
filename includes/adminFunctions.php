@@ -169,6 +169,64 @@ function validLogin($name, $passwd){
 	return false;	
 }
 
+function toDoItems(){
+	$results = array();
+//	$results[] = array("Done"=>"2007-03-01", "Text"=>"apostrophes as \&rsquo; in emails instead of &rsquo;");
+//	$results[] = array("Done"=>"2007-03-01", "Text"=>"Create margins on nonCatII text");
+//	$results[] = array("Done"=>"2007-01-29", "Text"=>"Do not make phone number manditory for catalog requests. (Gary 2006-12-28)");
+//	$results[] = array("Done"=>"2007-02-06", "Text"=>"Reply  - save  Reply   to a file where we can review");
+//	$results[] = array("Done"=>"01-24", "Text"=>"Processed orders &#150; remove  option to &lsquo;unprocess&rsquo; a processed item.  In the screen of actual processed item, (cat,quote,order, - once item is processed, we have no need to &lsquo;unprocess&rsquo; **************review  screens----look at list and look at individual item—where unprocess item appears");
+//	$results[] = array("Done"=>"2007-02-14", "Text"=>"One step print button &#150; create for cat, quote, orders, create one option to send complete list of unprocessed requests to printer, then automatic move the list of unprocessed requests that were printed to the processed list.  Print catalogs on evelopes, print quote and orders on 8&frac12; x 11 paper, one/quote/order per page,  (((KEEP the option to print one at a time as we now do.)))");
+//	$results[] = array("Done"=>"01-25", "Text"=>"Name and address fields &#150; allow  an apostrophe for names such a O&rsquo;Reily.");
+//	$results[] = array("Done"=>"2007-02-14", "Text"=>"Process orders, quote, cat  &#150;   we would like to be able to enter the processed items  to mark for whatever reason,   rejected, pending, etc.");
+//	$results[] = array("Done"=>"2007-02-08", "Text"=>"Non Catalog II &#150; list model, desc, and price.");
+	$results[] = array("Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
+	$results[] = array("Done"=>"", "Text"=>"Processed order &#150; purge option.");
+	$results[] = array("Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
+	$results[] = array("Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
+	$results[] = array("Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
+	$results[] = array("Done"=>"2008-06-25", "Text"=>"Accounting on invoices – FL invoice #55385 – note the $.72 – which is tax added to the invoice on the ups charge. (ups charge is added to invoice when billed in year of shipment.)   Invoice is actually paid in full, no credit due,   and shows $.72 credit on the shop rmk.");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – invoice #55315 and  #55318 – two kn order – shows four knives  billing –  2 kn were deleted and changed to new models. Shows total qty of 4.  (((purged rmk program today)))");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – please format to line up the decimals.");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"Knife order specs – same as accounting on invoices -  #55315 and #55318 – shows four knives, 2 were deleted and change to new models. Shows qty of 4.   (rmk purged today)");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"KNIFE LIST - The KNV  part number is still added into total qty.  ((purged today)) ");
+	$results[] = array("Done"=>"", "Text"=>"Blist for 1/31/0 - List by invoice number, then within invoice-Program to list model numbers numerically, then alpha.");
+	$results[] = array("Done"=>"", "Text"=>"Dealers – next to the invoice number, same line, display dealer name in italics.");
+	$results[] = array("Done"=>"", "Text"=>"End of Blist –  display grand total of knives");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"#55933 – bill to and ship to address are not displayed");
+	$results[] = array("Done"=>"2008-03-24", "Text"=>"#67761 – calculate tax on subtotal amt");
+	$results[] = array("Done"=>"", "Text"=>"");
+	$results[] = array("Done"=>"", "Text"=>"");
+	
+	return $results;
+}
+
+function toDoPage(){
+	$results = "Web priority list <I>Last Updated Mar 1, 2007</I><BR>";
+	$results .= "<OL id='toDoList'>";
+	$items = toDoItems();
+	foreach ($items as $item) {
+		if(strlen($item['Text'])>0){
+			$results .= "<LI>";
+	
+			if(strlen($item['Done'] > 0)){
+				$results .= "<span class='done'>" . $item['Text'] . "</span>";
+			} else {
+				$results .= "<span>" . $item['Text'] . "</span>";
+			}
+			
+			if(strlen($item['Done'] > 0)){
+				$results .= "<B>";
+				$results .= $item['Done'];
+				$results .= "</B>";
+			}
+			$results .= "</LI>";
+		}
+	}
+	$results .= "</OL>";
+	
+	return $results;	
+}
 
 function loginScreen($name='', $passwd=''){
 	return "<B style='font-size:36; text-align:center; display:block;'>Login</B>" .

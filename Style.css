@@ -259,3 +259,5 @@ span.cap-g {
 	font-style: italic;
 	font-weight: bold; 
 }
+
+#toDoList span.done{ text-decoration: line-through; }
