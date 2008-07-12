@@ -163,4 +163,16 @@ mysql> create index KnifeInv on InvoiceEntries (Invoice);
 /*
 update orders set processed=0 where email='csdave2000@yahoo.com';
 select * from orders where email='csdave2000@yahoo.com';
+
+use mysql;
+delete from user where user='gtr';
+GRANT ALL PRIVILEGES ON *.* to 'gtr'@'carpus'  WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* to 'gtr'  WITH GRANT OPTION;
+UPDATE user set password = old_password('xxx') where user = 'gtr';
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('XXXXX');
+
+FLUSH PRIVILEGES;
+
+http://www.brennan.id.au/17-MySQL_Server.html
 */
