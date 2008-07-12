@@ -29,6 +29,112 @@ function dumpProps(obj, parent) {
       }
    }
 }
+function recomputeTotalRetail(form, newBaseRetail){
+	var featureTotal=0;
+	var qty=0;
+	for ( var _elem_num in form.elements){
+		var elem = form.elements[_elem_num];
+		var elemName = ""+elem.name; 
+		if(elemName == 'BaseRetail'){
+			elem.value = newBaseRetail;
+		} else if(elemName == 'Quantity'){
+			qty = parseFloat(elem.value);
+		} else if(elemName.substring(0, 15) == 'Addition_Price_'){
+			val = parseFloat(elem.value);
+			if(val > 0)
+				featureTotal += val; 	
+		}
+	}
+	for ( var _elem_num in form.elements){
+		var elem = form.elements[_elem_num]
+		if(elem.name == 'TotalRetail'){
+			elem.value = (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2);
+		}
+	}
+}
+function updateRetail(formName){
+	var form = document.getElementById(formName);
+	var baseRetailField = document.getElementById('BaseRetail');
+	recomputeTotalRetail(form, baseRetailField.value); 
+//	alert(baseRetailField.name);
+
+}
+
+function updatedFeature(featureName, formName, newValues){
+	var form = document.getElementById(formName);
+	var featurePriceName = "Addition_Price_" + featureName.substring(9, 10);
+//	alert(featurePriceName);
+	var baseRetail=0;
+	for ( var _elem_num in form.elements){
+		var elem = form.elements[_elem_num];
+		var elemName = ""+elem.name; 
+		if(elemName == 'BaseRetail'){
+			baseRetail = elem.value;
+		} else if(elemName == featurePriceName){
+			elem.value = newValues['BaseRetail']
+		}
+	}
+	recomputeTotalRetail(form, baseRetail);
+
+//	alert(featureName + ":" + formName + ":" + newValues['BaseRetail']);
+}
+
+function validPartCodeKey(KeyID){
+   switch(KeyID){
+      case 9: return false; // Tab
+      case 16: return false; // SHIFT
+      case 17:return false; // Ctrl
+      case 18:return false; // Alt
+      case 19:return false; // Pause
+      case 37:return false; // Left
+      case 38:return false; // Up
+      case 39:return false; // Right
+      case 40:return false; // Down
+   }
+//   alert(KeyID);
+   return true;
+}
+
+function featureFieldEdit(formName, field, keyEvent){
+	var KeyID = (window.event) ? event.keyCode : keyEvent.keyCode;
+	if(!validPartCodeKey(KeyID)) return false;
+	
+	fetchURL="partInfo.php?partCode="+field.value;
+	
+	xmlHttp=getXmlHttpObject()
+	if(!xmlHttp) alert("No xmlHttp object??");
+	xmlHttp.open("GET",fetchURL,true);
+	xmlHttp.send(null);
+	
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4)
+		{
+			var local=new Function("return "+xmlHttp.responseText)();
+			var form = document.getElementById(formName);
+			updatedFeature(field.name, formName, local);
+//			alert(formName);
+//			recomputeTotalRetail(form, local['BaseRetail']);
+		}
+	}
+}
+
+function newPart(formName, field){
+	fetchURL="partInfo.php?partCode="+field.value;
+
+	xmlHttp=getXmlHttpObject()
+	if(!xmlHttp) alert("No xmlHttp object??");
+	xmlHttp.open("GET",fetchURL,true);
+	xmlHttp.send(null);
+	
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4)
+		{
+			var local=new Function("return "+xmlHttp.responseText)();
+			var form = document.getElementById(formName);
+			recomputeTotalRetail(form, local['BaseRetail']);
+		}
+	}
+}
 
 function newInvoiceEntrySubmit(form){
 	for ( var _elem_num in form.elements){
@@ -102,7 +208,6 @@ function updateViewInvoiceLink(newInvNum){
 
 function updateLinks(divName, updateInfo)
 {
-	
 	theDiv = document.getElementById(divName);
 	if(theDiv != null){
 	  	var x=theDiv.getElementsByTagName("a");

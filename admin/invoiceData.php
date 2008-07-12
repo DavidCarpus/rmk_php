@@ -78,11 +78,12 @@ $results = array(	"InvoiceDetails"=>$invInfo,
 					"NewInvoiceEntry"=>$invoiceEntryForms->newInvoiceEntryForm($newInvoiceEntryFormValues, $partsFormClass)
 );
 if(array_key_exists('debug', $request)) {
-	debugStatement(dumpDBRecords($results));
-	echo $results['InvoiceKnifeList'];
-	echo $results['InvoicePayments'];
-	echo $results['InvoiceFinanceSummary'];
-	echo $results['NewInvoiceEntry'];
+	echo debugStatement(dumpDBRecord($invInfo));
+	echo debugStatement(dumpDBRecord($custInfo));
+	echo debugStatement($results['InvoiceKnifeList']);
+	echo debugStatement($results['InvoicePayments']);
+	echo debugStatement($results['InvoiceFinanceSummary']);
+	echo debugStatement($results['NewInvoiceEntry']);
 } else{
 	echo json_encode($results);
 }

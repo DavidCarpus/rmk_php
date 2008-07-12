@@ -70,6 +70,7 @@ function editForm(){
 	$results .= "\n";
 	$results .= $invoiceForms->details( $invoice );
 	$results .= $invoiceEntryForms->knifeListTable( $entries );
+	$formValues['entries'] = $entries;
 	$results .= $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
 	$results .="</div></div>";
 

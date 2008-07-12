@@ -45,10 +45,10 @@ class Base
 		if($readonly == 'true') $ro="readonly";
 
 		if($required)
-			return "<label for='$name' $labelJscript class='required'>$label</label>".
+			return "<label for='$name' $labelJscript class='required'>$label</label>\n".
 					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value'>";
 		else
-			return "<label $class $labelJscript for='$name' class='label-$name' >$label</label>".
+			return "<label $class $labelJscript for='$name' class='label-$name' >$label</label>\n".
 					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value'>";
 	}
 	

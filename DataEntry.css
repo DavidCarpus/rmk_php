@@ -56,6 +56,9 @@ fieldset {
 #CustomerSummary input#LastName{
 	width: 200px;
 }
+#CustomerSummary input#Suffix{
+	width: 40px;
+}
 
 
 
@@ -208,16 +211,30 @@ fieldset {
 #invoiceFinanceSummary .negValue	{width: 80px;	text-align: right;	float: left; display: block; padding-right: 20px; color:#FF0000; }
 
 /* ================================================================================ */
-#NewInvoiceEntry{ 	float: left;	display: block; width: 600px; }
+#NewInvoiceEntry{ 	float: left;	display: block; width: 800px; }
 #NewInvoiceEntry br{	clear: left;}
 
-#NewInvoiceEntry label { width: 140px; }
+#NewInvoiceEntry label { width: 120px; }
+#NewInvoiceEntry span { float: left;  display: block; }
 
-#NewInvoiceEntry input.Quantity { width: 40px; }
-#NewInvoiceEntry input.TotalRetail { width: 120px; }
+#NewInvoiceEntry input#Quantity { width: 40px; }
+#NewInvoiceEntry input#BaseRetail { width: 80px; }
+#NewInvoiceEntry input#PartDescription { width: 80px; }
+#NewInvoiceEntry input#TotalRetail { width: 80px; }
+
+#NewInvoiceEntry label.label-Quantity { width: 80px; }
+
+/*
+#NewInvoiceEntry input#FeatureList{ width: 120px; }
+#NewInvoiceEntry select{ width: 110px;  text-align: left;   float: left; display: block; }
+*/
 
 #NewInvoiceEntry input.btn{ width: 140px; }
-#NewInvoiceEntry select{ width: 110px;  text-align: left;   float: left; display: block; }
+
+#span_FeatureList .featureEntry { clear:left; width:800px; display: block; padding: 20px 120px 20px 50px; }
+#span_FeatureList .featureEntry input { float: left;	display: block; width: 45px; }
+#span_FeatureList .featureEntry label { float: left;	display: block; width: 90px; }
+
 
 /* ================================================================================ */
 #RemoveInvoiceEntry{
@@ -260,16 +277,16 @@ fieldset {
 }
 
 #CustomerInvoiceList .Invoice		{width: 80px;	text-align: left;	float: left; display: block;}
-#CustomerInvoiceList .DateOrdered	{width: 100px;	text-align: center; float: left; display: block; }
-#CustomerInvoiceList .DateEstimated	{width: 100px;	text-align: center; float: left; display: block;}
-#CustomerInvoiceList .DateShipped	{width: 100px;	text-align: center; float: left; display: block;}
+#CustomerInvoiceList .DateOrdered	{width: 120px;	text-align: center; float: left; display: block; }
+#CustomerInvoiceList .DateEstimated	{width: 120px;	text-align: center; float: left; display: block;}
+#CustomerInvoiceList .DateShipped	{width: 120px;	text-align: center; float: left; display: block;}
 #CustomerInvoiceList .TotalRetail	{width: 100px;	text-align: right; float: left; display: block;}
 #CustomerInvoiceList .Due			{width: 100px;	text-align: right; float: left; display: block;}
 
 #CustomerInvoiceList .HeaderInvoice			{width: 80px;	text-align: left;	float: left; display: block; font-weight: bold;}
-#CustomerInvoiceList .HeaderDateOrdered		{width: 100px;	text-align: center; float: left; display: block;  font-weight: bold;}
-#CustomerInvoiceList .HeaderDateEstimated	{width: 100px;	text-align: center; float: left; display: block; font-weight: bold;}
-#CustomerInvoiceList .HeaderDateShipped		{width: 100px;	text-align: center; float: left; display: block; font-weight: bold;}
+#CustomerInvoiceList .HeaderDateOrdered		{width: 120px;	text-align: center; float: left; display: block;  font-weight: bold;}
+#CustomerInvoiceList .HeaderDateEstimated	{width: 120px;	text-align: center; float: left; display: block; font-weight: bold;}
+#CustomerInvoiceList .HeaderDateShipped		{width: 120px;	text-align: center; float: left; display: block; font-weight: bold;}
 #CustomerInvoiceList .HeaderTotalRetail		{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
 #CustomerInvoiceList .HeaderDue				{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
 

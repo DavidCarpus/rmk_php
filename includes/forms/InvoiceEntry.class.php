@@ -1,9 +1,17 @@
 <?php
 include_once "Base.class.php";
+include_once INCLUDE_DIR. "db/InvoiceEntries.class.php";
+include_once INCLUDE_DIR. "db/Parts.class.php";
 
 class InvoiceEntry extends Base
 {
-	function __construct() {   }
+	private $invEntryClass;
+	private $partsClass;
+	
+	function __construct() {
+		$this->invEntryClass = new InvoiceEntries();
+		$this->partsClass = new Parts(); 
+	}
    
 	public function details( $entry, $formValues=array() ){
 		$formName="InvoiceEntryDetails";
@@ -17,6 +25,7 @@ class InvoiceEntry extends Base
 		{
 			if(!array_key_exists($name, $entry)) $entry[$name] = "";
 			if($name=="TotalRetail" || $name=="Price"  ) $entry[$name] = "$" . number_format($entry[$name] ,2);
+			
 			$ro = ( ($name == "TotalRetail" ) ? "true" : "false");
 			$results .=  $this->textField($name, $this->fieldDesc($name), false, $entry[$name],'',array(),$ro) . "\n";
 			if($this->isInternetExploder() && ($name=="TotalRetail"))
@@ -72,15 +81,15 @@ class InvoiceEntry extends Base
 	
 	function linkToEntryEdit( $entry ){
 		$url = "<a href='newInvoiceEntry.php?Invoice=" . $entry['Invoice'];
-		$url .= "&PartID=" . $entry['PartID']; 
-		$url .= "&Quantity=" . $entry['Quantity']; 
-		$url .= "&FeatureList=" . $this->knifeEntryAdditionsList($entry["Additions"]); 
+//		$url .= "&PartID=" . $entry['PartID']; 
+//		$url .= "&Quantity=" . $entry['Quantity']; 
+//		$url .= "&FeatureList=" . $this->knifeEntryAdditionsList($entry["Additions"]); 
 		$url .= "&Comment=" . $entry['Comment']; 
-		$url .= "&TotalRetail=" . $entry['TotalRetail']; 
+//		$url .= "&TotalRetail=" . $entry['TotalRetail']; 
 		
 		$url .= "&InvoiceEntryID=" . $entry['InvoiceEntryID']; 
 
-		$url .= "&submit=New+Item"; 
+		$url .= "&submit=Edit"; 
 		$url .= "'>Edit</a>";
 //		return $entry["PartDescription"];
 		return $url;
@@ -155,13 +164,83 @@ class InvoiceEntry extends Base
 		return "none";
 	}
 	
+
+	function invoiceEntryFeaturesFields($formName, $formValues){
+		$id = $formValues['InvoiceEntryID'];
+		$results = "";
+		$currEntry=null;
+		foreach ($formValues['entries'] as $entry) {
+			if($entry['InvoiceEntryID'] == $id){
+				$currEntry=$entry;
+			}
+		}
+		if($formValues['submit'] != 'Edit'){
+//			echo "get additions from form fields?";
+			$currEntry['Additions'] = array();
+			for($i=1; $i<= 8; $i++){
+				$partCode = $partPrice = "";
+				if(array_key_exists("Addition_$i", $formValues))		$partCode = $formValues["Addition_$i"];
+				if(array_key_exists("Addition_Price_$i", $formValues))		$partPrice = $formValues["Addition_Price_$i"];
+
+				$currEntry['Additions'][] = array("PartCode" => $partCode, "Price"=> $partPrice);			
+			}
+			
+		}
+		$i=1;
+		$results .=  "\n<span class='featureEntry'>\n";
+		$js['field']=" onkeyup='return featureFieldEdit(\"form_$formName\", this, event);'";
+		foreach ($currEntry['Additions'] as $addition) {
+			$results .=  $this->textField("Addition_$i", "Feature $i", false, $addition['PartCode'],  "", $js, false);
+			$results .=  $this->textField("Addition_Price_$i", "Price", false, $addition['Price'],  "", array(), false);
+			$results .=  "<BR>\n";
+			$i++;
+		}
+		
+		for(; $i<= 8; $i++){
+			$results .=  $this->textField("Addition_$i", "Feature $i", false, "",  "", $js, false);
+			$results .=  $this->textField("Addition_Price_$i", "Price", false, "",  "", array(), false);
+			$results .=  "<BR>\n";
+		}
+		$results .=  "</span>" . "\n";
+//		$results .=  $this->textField($name, $name, $err, $formValues[$name],  "", array(), false);
+//		$results .= debugStatement(dumpDBRecord($currEntry) . "</BR>--------</BR>" . dumpDBRecords($currEntry['Additions']));
+		
+		return $results;
+	}
+	
+	function getEntryFromHttpValues($formValues ){
+		$entry = array();;
+		if(array_key_exists("InvoiceEntryID", $formValues) && $formValues["InvoiceEntryID"] > 0){
+			$dbEntry = $this->invEntryClass->details($formValues["InvoiceEntryID"]);
+//		echo debugStatement(dumpDBRecord($dbEntry));
+			foreach (array("InvoiceEntryID", "Invoice", "PartID", "PartDescription", "Quantity", 
+							"TotalRetail" , "Comment") as $field) {
+				$entry[$field] = $dbEntry[$field];
+			}
+			$entry['BaseRetail'] = number_format($dbEntry['Price'],2);
+		} else {
+			$entry["InvoiceEntryID"]="";
+			$entry["Invoice"]=$formValues['Invoice'];
+			$entry["PartDescription"]=$formValues['PartDescription'];
+			$partPrice = $this->partsClass->currentYearPartPrice($entry['PartDescription']);
+			if($partPrice != NULL)
+				$entry['BaseRetail'] = number_format($partPrice['Price'] ,2);
+			}
+			
+		return $entry;
+	}
+	
 	function newInvoiceEntryForm($formValues, Part $partsFormClass ){
 		$formName="NewInvoiceEntry";
 		
 		$mode=$this->invEntryFormMode($formValues);
 		
-		if(!array_key_exists("InvoiceEntryID", $formValues)) $formValues["InvoiceEntryID"]="";
+//		if(!array_key_exists("InvoiceEntryID", $formValues)){		$formValues["InvoiceEntryID"]="";		}
 
+		$values = $this->getEntryFromHttpValues($formValues);
+//		echo debugStatement(dumpDBRecord($values));
+//		return;
+				
 		$errors = array();
 		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
 			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
@@ -169,11 +248,11 @@ class InvoiceEntry extends Base
 				
 		$results="";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='newInvoiceEntry.php' method='GET'>" . "\n" ;
+		$results .=  "<form id='form_$formName' name='$formName' action='newInvoiceEntry.php' method='GET'>" . "\n" ;
+		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "'>";
+		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "'>";
 		
 		if($mode=='none'){
-			$results .=  "<input type='hidden' name='Invoice' value='" . $formValues["Invoice"] . "'>";
-			$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $formValues["InvoiceEntryID"] . "'>";
 			$results .=  "<BR>" . $this->button("submit", "New Item");
 			$results .= "</form>";
 			$results .= "\n</div><!-- End $formName -- >\n";
@@ -184,30 +263,34 @@ class InvoiceEntry extends Base
 			$results .=  "<span id='$formName'>" . "\n";
 		}
 
-		$results .=  "<BR>";
-		$fields = array("PartID" , "Quantity", "TotalRetail" , "FeatureList" , "Comment");
+		$fields = array("PartDescription" , "BaseRetail",  "Quantity", "FeatureList" , "TotalRetail" , "Comment");
+		
 		foreach($fields as $name)
 		{
-			if(!array_key_exists($name, $formValues))		$formValues[$name]="";
+			if(!array_key_exists($name, $values))		$values[$name]="";
 
-//			$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
-//			$results .=  $this->textField('invoice_num', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
+			$err=(array_key_exists($name, $errors));
+
 			
-			$results .= "<span class='$name'>";
-			if($name == "PartID"){
-				$results .= $partsFormClass->knifeChoices($formValues[$name]);
-			}elseif($name == "TotalRetail"){
-				$results .=  $this->textField($name, $name, false, $formValues[$name],  $name, array(), false);
+			$results .= "<span id='span_$name'>";
+			if($name == "FeatureList"){
+				$results .= $this->invoiceEntryFeaturesFields($formName, $formValues);
+			} else 	if($name == "BaseRetail" || $name == "Quantity"){
+				$js['field']=" onkeyup='return updateRetail(\"form_$formName\");'";
+				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
+			} else if($name == "PartDescription"){
+				$js['field']="onkeyup='return newPart(\"form_$formName\", this);' onblur='return newPart(\"form_$formName\", this);'";
+				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
+			} else if($name == "TotalRetail"){
+				$results .=  $this->textField($name, $name, $err, number_format($values[$name],2),  "", array(), false);
 			} else{
-				$err=(array_key_exists($name, $errors));
-//				textField($name, $label, $required=false, $value='', $class='', $jscriptArray=array(), $readonly=false)
-				$results .=  $this->textField($name, $name, $err, $formValues[$name],  $name, array(), false);
+				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			}
-			$results .= "</span><BR>\n";
+			$results .= "</span>\n";
+			if($name == "TotalRetail" || $name == "FeatureList"){
+				$results .= "</BR>\n";		
+			}
 		}
-		$results .=  "<input type='hidden' name='Invoice' value='" . $formValues["Invoice"] . "'>";
-		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $formValues["InvoiceEntryID"] . "'>";
-		
 		$results .= "</span><!-- End $formName -- >\n";
 		
 		if($mode=='add' || $mode=='new' || $mode=='validate' ){
@@ -218,38 +301,49 @@ class InvoiceEntry extends Base
 		}
 		$results .= "</form>";
 		$results .= "\n</div><!-- End $formName -- >\n";
-//		$results .= $partsFormClass->knifeChoices();
-//		$results .= dumpDBRecord($formValues);
-		
+
 		return $results;
 	}
 	
-	function removeEntryForm($entryID, $entries){
+	function removeEntryForm($formValues, $entries){
 		$formName="RemoveInvoiceEntry";
+		$entryID = $formValues['InvoiceEntryID'];
 		
 		$results="";
 		$results .=  "<div id='$formName'>\n";
-		$record=NULL;
+//		$record=NULL;
+//		foreach ($entries as $entry) {
+//			if($entry['InvoiceEntryID'] == $entryID){
+//				$record = $entry;
+//				break;
+//			}	
+//		}
+		$values = $this->getEntryFromHttpValues($formValues);
 		foreach ($entries as $entry) {
 			if($entry['InvoiceEntryID'] == $entryID){
-				$record = $entry;
+				$values['FeatureList'] = "";
+				foreach ($entry['Additions'] as $addition) {
+					$values['FeatureList'] .= $addition['PartCode'] . ",";
+				}
+				$values['FeatureList'] = substr($values['FeatureList'], 0, strlen($values['FeatureList'])-1);
 				break;
 			}	
 		}
-		if(	$record == NULL){ return "System Error"; }
+//		echo debugStatement(dumpDBRecord($values));
+		if(	$values == NULL){ return "System Error"; }
 
 		$results .=  "<form name='$formName' action='invoiceEntryRemove.php' method='GET'>" . "\n" ;
 		
-		$fields = array("PartDescription" , "Description", "TotalRetail" , "FeatureList" , "Comment");
+		$fields = array("PartDescription" , "Quantity",  "TotalRetail" , "FeatureList" , "Comment");
 		foreach($fields as $name)
 		{
-			if(!array_key_exists($name, $formValues))		$formValues[$name]="";
+			if(!array_key_exists($name, $values))		$values[$name]="";
 			$results .= "<span class='$name'>";
-			$results .=  $this->textField($name, $name, $err, $record[$name],  $name, array(), false);
+			$results .=  $this->textField($name, $name, $err, $values[$name],  $name, array(), false);
 			$results .= "</span><BR>\n";
 		}
-		$results .=  "<input type='hidden' name='Invoice' value='" . $record["Invoice"] . "'>";
-		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $record["InvoiceEntryID"] . "'>";
+		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "'>";
+		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "'>";
 		$results .=  $this->button("submit", "Remove item from Invoice");
 		$results .=  "<BR>";
 		$results .= "</form>";

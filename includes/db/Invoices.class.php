@@ -28,7 +28,7 @@ class Invoices
 	}
 
 	function items($invNum){
-		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
+		$query = "Select IE.* from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
 		
 		return getDbRecords($query);
 	}
@@ -51,7 +51,7 @@ class Invoices
 	}
 	
 	function itemsWithAdditions($invNum){
-		$query = "Select * from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
+		$query = "Select IE.* from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
 
 		$entries = getDbRecords($query);
 		foreach ($entries as $key=>$entry){
@@ -100,12 +100,13 @@ class Invoices
 			if(!array_key_exists('additions', $entry))
 			$entry['additions'] = $this->additions($entry['InvoiceEntryID']);
 			// compute cost of entry (shold be done at 'entry'
-//			echo dumpDBRecord($entry );
+//			echo debugStatement(dumpDBRecord($entry ));
 			$results['TotalCost'] += 0+$entry['TotalRetail'];
 			$results['NonDiscountable'] += 0+$entry['NonDiscountable'];
 			if($entry['Taxable'])
 			{
 				$discountedRetail = ($entry['TotalRetail'] - $entry['NonDiscountable']) * (1-$results['Discount'])+$entry['NonDiscountable'];
+				
 				$results['Taxes'] += $discountedRetail * $results['TaxRate'];
 			}
 		}
@@ -118,9 +119,12 @@ class Invoices
 		if($results['Due'] > -0.01 && $results['Due'] < 0.01 )
 			$results['Due'] = 0;
 			
+//		echo debugStatement(dumpDBRecord($results));
+			
 		unset($results['Discount']);
 		unset($results['NonDiscountable']);
 		unset($results['NonTaxable']);
+		
 		
 		return $results;
 	}

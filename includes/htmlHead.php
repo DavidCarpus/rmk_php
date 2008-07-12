@@ -32,9 +32,9 @@ function getHTMLValue($key){
 }
 
 function debugStatement($statement){
-	if(!isDebugMachine() && !isDebugAccess() ) return;
-
-	return "<div class='debug'><HR ". $statement . "<BR><HR></div>";
+	if(! (isDebugMachine() || isDebugAccess() ) ) return;
+	
+	return "<div class='debug'><HR >". $statement . "<BR><HR></div>";
 }
 
 function dumpBackTrace(){
@@ -48,6 +48,7 @@ function dumpBackTrace(){
 
 function getBackTrace(){
 	$trace = debug_backtrace();
+	$stmt = "";
 	$cnt=0;
 	foreach($trace as $func){
 		if($cnt++ > 0){
@@ -62,9 +63,11 @@ function getBackTrace(){
 
 function dumpDBRecord($record){
 	$results = "";
-	if(count($record) <= 0)
+	if(count($record) <= 0 || !is_array($record)){
 		dumpBackTrace();
-		
+		return;
+	}
+	
 	foreach(array_keys($record) as $key){
 		$results .= "<B>$key</B> => ".$record[$key]."<BR>\n";
 	}
@@ -466,9 +469,10 @@ function getCurrPage(){
 }
 
 function isDebugMachine(){
+//	var_dump($_SERVER);
 	$address = '192.168.1.90';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		//~ echo "<HR>DEBUG MACHINE<HR>";
+//		echo "<HR>DEBUG MACHINE<HR>";
 		return true;
 	}
 
@@ -508,6 +512,7 @@ function isLocalAccess(){
 	return false;
 }
 function isDebugAccess(){
+	echo "Debug access?";
 	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
 	
 	return ($_SERVER['REMOTE_ADDR'] == '97.100.243.22'

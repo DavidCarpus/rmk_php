@@ -59,7 +59,7 @@ if(array_key_exists('submit', $formValues) && $formValues['submit'] == "Remove i
 					echo "\n\n";
 					echo $invoiceForms->details( $invoice );
 					echo "\n\n";
-					echo $invoiceEntryForms->removeEntryForm($formValues['InvoiceEntryID'], $entries);
+					echo $invoiceEntryForms->removeEntryForm($formValues, $entries);
 					echo "\n\n";
 					echo $invoiceEntryForms->knifeListTable( $entries );
 //					echo debugStatement(dumpDBRecord($formValues));
