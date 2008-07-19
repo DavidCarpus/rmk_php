@@ -84,7 +84,7 @@ class InvoiceEntry extends Base
 //		$url .= "&PartID=" . $entry['PartID']; 
 //		$url .= "&Quantity=" . $entry['Quantity']; 
 //		$url .= "&FeatureList=" . $this->knifeEntryAdditionsList($entry["Additions"]); 
-		$url .= "&Comment=" . $entry['Comment']; 
+//		$url .= "&Comment=" . urlencode($entry['Comment']); 
 //		$url .= "&TotalRetail=" . $entry['TotalRetail']; 
 		
 		$url .= "&InvoiceEntryID=" . $entry['InvoiceEntryID']; 

@@ -71,79 +71,53 @@ class InvoiceEntries
 				
 			$invoiceEntry[$field] = $values[$field];
 		}
-		$part = $this->partsClass->fetchCurrYearPart($values["PartID"]);
+		
+		$part = NULL;
+		if(array_key_exists("PartID", $values)) $part = $this->partsClass->fetchCurrYearPart($values["PartID"]);
 		if($part == NULL){
 			$part = $this->partsClass->currentYearPartPrice($values["PartDescription"]);
 		}
-//		echo debugStatement(dumpDBRecord($part));
+		
 		$invoiceEntry["PartDescription"] = $part['PartCode'];
 		$invoiceEntry["PartID"] = $part['PartID'];
 		$invoiceEntry["Price"] = $values['BaseRetail'];
 		$invoiceEntry["TotalRetail"] = $values['BaseRetail'];
-		$features = $this->getEnteredFeatures($values);
-		
-//		echo debugStatement(dumpDBRecords($features));
-		foreach ($features as $feature) {
-			$invoiceEntry["TotalRetail"] += $feature['Price'];
-		}
-		$invoiceEntry["TotalRetail"] *= $invoiceEntry["Quantity"];
 		
 		$invoiceEntry = saveRecord("InvoiceEntries", "InvoiceEntryID", $invoiceEntry);
+		
 		echo debugStatement(dumpDBRecord($invoiceEntry));
+		
 		$this->updateFeatures($invoiceEntry, $values);
+		
+		$this->updateInvoiceEntryTotals($invoiceEntry['InvoiceEntryID']);
+		$this->updateInvoiceTotals($invoiceEntry['Invoice']);
+		
+//		// update invoice total retail
+//		executeSQL("Update Invoices I set TotalRetail = " . 
+//			"(select sum(TotalRetail) from InvoiceEntries where Invoice=I.Invoice)" . 
+//			" where Invoice=" . $invoiceNum);	}
 	}
-	
-	function removeInvoiceItem($entryID, $entries, $invoice){
-		$invoiceEntry=NULL;
-		
-		$invoiceRetail = $invoice['TotalRetail'];
-		
-		foreach ($entries as $entry) {
-			if($entry['InvoiceEntryID'] == $entryID){
-				$invoiceEntry = $entry;
-				break;
-			}	
-		}
-		if(	$invoiceEntry == NULL){ return "System Error"; }
 
+	function removeInvoiceItem($entryID, $entries, $invoiceNum){
 		// Remove additions for this item from system
-//		executeSQL("Delete from InvoiceEntryAdditions where EntryID=" . $invoiceEntry['InvoiceEntryID']);
-		foreach ($record['Additions'] as $addition) {
-			// remove addition from item
-			deleteRecord("InvoiceEntryAdditions", "EntryID", $addition);
-			// reduce items total retail
-			$invoiceEntry['TotalRetail'] -= $addition['Price'];
-			$invoiceEntry['Price'] -= $addition['Price'] * $invoice['DiscountPercentage'];
-			$invoice['TotalRetail'] -= $addition['Price'];
-		}
+		executeSQL("Delete from InvoiceEntryAdditions where EntryID=$entryID");
 		
 		// remove $invoiceEntry from database
-		$nonItemfields = array("PartCode", "Description" , "Discountable" , "BladeItem" , "Sheath", "Active", "PartType", "SortField", "AskPrice");
-		foreach ($nonItemfields as $field) {
-			unset($invoiceEntry[$field]);
-		}		
-		deleteRecord("InvoiceEntries", "InvoiceEntryID", $invoiceEntry);
-//		echo debugStatement(dumpDBRecord($record));
+		executeSQL("Delete from InvoiceEntries where InvoiceEntryID=$entryID");
 		
-		// reduce invoice total retial
-		$invoice['TotalRetail'] -= $invoiceEntry['TotalRetail'];
-		// update invoice to record new pricing
-		saveRecord("Invoices", "Invoice", $invoice);
-//		echo debugStatement(dumpDBRecord($invoice));
+		// update invoice total retail
+		$this->updateInvoiceTotals($invoiceNum);
 	}
 	
 	
 	function updateFeatures($invoiceEntry, $values){
 		$features = $this->getEnteredFeatures($values);
-
-//		echo debugStatement(dumpDBRecords($features));
 		
 //		get additions for invEntryid
 		$query = "Select * from InvoiceEntryAdditions where EntryID=".$invoiceEntry['InvoiceEntryID'];
 		$currentAdditions = getDbRecords($query);
 
 		//	delete from db any additions removed
-//		echo debugStatement(dumpDBRecords($currentAdditions));
 		foreach ($currentAdditions as $currentAddition) {
 			if(!in_array($currentAddition['PartID'],$features)){
 				deleteRecord("InvoiceEntryAdditions", "AdditionID", $currentAddition);
@@ -152,22 +126,36 @@ class InvoiceEntries
 			}
 		}
 //		//	add any additions in list but not in DB
-//		echo debugStatement(dumpDBRecords($features));
 		foreach ($features as $feature) {
-//			$price = $this->partsClass->currentYearPartPrice($feature);
 			$record['AdditionID'] = 0;
 			$record['EntryID'] = $invoiceEntry['InvoiceEntryID'];
 			$record['PartID'] =$feature['PartID'];
 			$record['Price'] = $feature['Price'];
 			$record['Discounted'] = $feature['Discountable'];
 			saveRecord("InvoiceEntryAdditions", "AdditionID", $record);
-//			echo debugStatement("REcord:" . dumpDBRecord($record));
 		}
-//		select IE.Invoice, IE.PartDescription, TotalRetail, IE.Quantity,
-//((Select sum(price) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity
-			 
 	}
 	
+	
+	
+	function updateInvoiceEntryTotals($entryID){
+		executeSQL("Update InvoiceEntries IE set TotalRetail = " . 
+			"((Select COALESCE( SUM(price) , 0 ) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity" . 
+			" where InvoiceEntryID=" . $entryID);
+		echo debugStatement("Update InvoiceEntries IE set TotalRetail = " . 
+			"((Select COALESCE( SUM(price) , 0 ) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity" . 
+			" where InvoiceEntryID=" . $entryID);
+	}
+	
+	function updateInvoiceTotals($invoiceNum){
+		executeSQL("Update Invoices I set TotalRetail = " . 
+			"(select COALESCE( SUM(TotalRetail) , 0 ) from InvoiceEntries where Invoice=I.Invoice)" . 
+			" where Invoice=" . $invoiceNum);
+		
+		echo debugStatement("Update Invoices I set TotalRetail = " . 
+			"(select COALESCE( SUM(TotalRetail) , 0 ) from InvoiceEntries where Invoice=I.Invoice)" . 
+			" where Invoice=" . $invoiceNum);
+	}
 }
 
 ?>

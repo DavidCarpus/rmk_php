@@ -43,8 +43,8 @@ foreach($entries as $entry)
 
 $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
-//echo "Invoice Item : $mode<BR>";
-//echo dumpDBRecord($formValues);
+echo "Invoice Item : $mode<BR>";
+echo dumpDBRecord($formValues);
 
 
 function editForm(){
@@ -107,7 +107,7 @@ switch ($mode) {
 			}
 			$newURL = substr($newURL,0,strlen($newURL)-1);
 			$newLocation  = "newInvoiceEntry.php?".$newURL;
-			debugStatement("newLocation : $newLocation");
+//			debugStatement("newLocation : $newLocation");
 			$newLocation  = "newInvoiceEntry.php?".$newURL;
 			header("Location: $newLocation");
 		}

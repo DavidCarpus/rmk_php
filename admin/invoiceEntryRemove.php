@@ -38,7 +38,7 @@ $customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
 $entries = $invoiceClass->itemsWithAdditions( $invoiceNum ); // 56031
 
 if(array_key_exists('submit', $formValues) && $formValues['submit'] == "Remove item from Invoice"){
-	$invoiceEntries->removeInvoiceItem($formValues['InvoiceEntryID'], $entries, $invoice);
+	$invoiceEntries->removeInvoiceItem($formValues['InvoiceEntryID'], $entries, $invoiceNum);
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 } else {
 
