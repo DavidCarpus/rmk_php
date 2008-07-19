@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+
+.centerblock{
+	width:100%;
+	display:block; 
+	float: left;
+}
+
+.content{
+	display:block;
+	float: left;
+	clear: none;
+/*	margin: 20px 10px 10px 40px;*/
+	margin: 0px 0px 0px 0px;
+}
+
+.titlebar{	display: none;}
+.leftnavigation{	display: none;}
+.footer{	display: none;}
+.admintitlebar{	display: none;}
+.adminOrderNavigation{	display: none;}
+
+
+.requestTypeHeader {
+	text-align: left; 
+	font: bold 14px sans-serif; 
+	padding: 5px 0px 5px 10px; 
+	margin: 0px 0px 0px 0px; 
+	border-width: 0px; 
+	text-decoration: none; 
+}
+
+
+.adminOrderType{
+    font-size:18;
+	text-align: center; 
+	font-weight: bold; 
+}
+
+.noPageBreak{
+	page-break-after: always;
+}
+
+.printHide{ display: none;}
+
+
+
+.debug{
+display: none;
+}
+#customerReportHeader{
+	width: 800px;	
+	display: block;
+}
+
+#customerReportAddressHeader {
+	clear: none;
+	float: left;
+	display: block;
+	width: 100%;
+	/*	width: 840px;*/
+}
+
+
+
+#customerReportInvoiceHeader {
+	clear: none;
+	float: left;
+	display: block;
+	width: 100%;
+/*	width: 840px;*/
+	padding-bottom: 20px;
+}
+.leftHalf{
+	float: left;
+	width: 50%;
+}
+.rightHalf{
+	float: right;
+	width: 50%;
+}
+#customerReportInvoiceHeader .Value{
+	padding-left: 20px;
+}
+#customerReportInvoiceHeader .Label{
+	float: left;
+	width: 200px;
+}
+

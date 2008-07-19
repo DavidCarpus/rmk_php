@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+
+.debug{
+	clear: left;
+	float: left;	
+	display: block;
+}
+#customerReportHeader{
+	width: 800px;	
+	display: block;
+}
+
+#customerReportAddressHeader {
+	clear: none;
+	float: left;
+	display: block;
+	width: 100%;
+	/*	width: 840px;*/
+}
+
+
+
+#customerReportInvoiceHeader {
+	clear: none;
+	float: left;
+	display: block;
+	width: 100%;
+/*	width: 840px;*/
+	padding-bottom: 20px;
+}
+.leftHalf{
+	float: left;
+	width: 50%;
+}
+.rightHalf{
+	float: right;
+	width: 50%;
+}
+#customerReportInvoiceHeader .Value{
+	padding-left: 20px;
+}
+#customerReportInvoiceHeader .Label{
+	float: left;
+	width: 200px;
+}
+
