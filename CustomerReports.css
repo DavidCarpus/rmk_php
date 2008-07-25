@@ -5,9 +5,12 @@
 	clear: left;
 	float: left;	
 	display: block;
+	width: 100%;
+/*	border: thin solid #000000;*/
+	
 }
 #customerReportHeader{
-	width: 800px;	
+	width: 750px;	
 	display: block;
 }
 
@@ -16,7 +19,8 @@
 	float: left;
 	display: block;
 	width: 100%;
-	/*	width: 840px;*/
+	margin-bottom: 20px;
+	/*	width: 750px;*/
 }
 
 
@@ -26,17 +30,88 @@
 	float: left;
 	display: block;
 	width: 100%;
-/*	width: 840px;*/
-	padding-bottom: 20px;
+/*	width: 750px;*/
+	margin-bottom: 20px;
+	border-top: thin solid #000000;
+	border-bottom: thin solid #000000;	              
 }
-.leftHalf{
+#customerReportInvoicePageFooter {
+	display: block;
+	position: fixed;
+	bottom: 0;
+}
+
+#InvoiceEntriesTable {
+	clear: none;
 	float: left;
-	width: 50%;
+	display: block;
+	width: 750px;
+}
+#InvoiceEntriesTable_Header {
+	font-weight: bold; 
+	border-bottom: thin solid #000000;	              
+}
+
+#acknowledgmentFooter {
+	clear: left;
+	float: left;
+	display: block;
+	width: 760px;
+	padding-top:20px; 
+}
+
+#acknowledgmentFooter .comment{	clear: left;	float: left;	display: block; width: 330px;}
+
+#paymentBlock {	clear: none;	float: right;	display: block; }
+#invoiceTerms {	clear: none;	float: left;	display: block; width: 330px;}
+#invoicePayTo {	clear: none;	float: left;	display: block; width: 330px; padding-top:10px; padding-bottom:20px; }
+
+#paymentBlock .Label, .Value{ display: block; float: left; width: 140px; }
+#paymentBlock .Value{ text-align:right; }
+#paymentBlock .Label{ padding-left:60px; }
+
+#InvoiceEntriesTable .Quantity			{ float: left; display: block; width: 40px; }
+#InvoiceEntriesTable .Model				{ float: left; display: block; width: 100px; }
+#InvoiceEntriesTable .PartDescription	{ float: left; display: block; width: 400px; }
+
+#InvoiceEntriesTable .Price		{ float: left; display: block; text-align:right; width: 80px; }
+#InvoiceEntriesTable .Extended	{ float: left; display: block; text-align:right; width: 100px; }
+
+
+
+#InvoiceEntriesTable .HL_Quantity			{ background-color: #DDDDDD; float: left; display: block; width: 40px; }
+#InvoiceEntriesTable .HL_Model				{ background-color: #DDDDDD; float: left; display: block; width: 100px; }
+#InvoiceEntriesTable .HL_PartDescription	{ background-color: #DDDDDD; float: left; display: block; width: 400px; }
+
+#InvoiceEntriesTable .HL_Price		{ background-color: #DDDDDD; float: left; display: block; text-align:right; width: 80px; }
+#InvoiceEntriesTable .HL_Extended	{ background-color: #DDDDDD; float: left; display: block; text-align:right; width: 100px; }
+
+#InvoiceEntriesTable BR { clear:left;}
+
+.leftHalf{
+	clear: none;
+	float: left;
+	display: block;
+	width: 47%;
+/*	border:   0.05em solid #000;*/
 }
 .rightHalf{
+	clear: none;
 	float: right;
-	width: 50%;
+	display: block;
+	width: 47%;
 }
+
+.vertical{
+	clear: none;
+	float: left;
+	display: block;
+	width: 16px;
+	text-align: center;
+	margin-right: 5px;
+	border-right: thin solid #000000
+}
+
 #customerReportInvoiceHeader .Value{
 	padding-left: 20px;
 }

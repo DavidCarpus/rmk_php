@@ -36,6 +36,8 @@
 	text-align: center; 
 	font-weight: bold; 
 }
+#InvoiceEntriesTable .Quantity, .Model, .PartDescription, .Price, .Extended	{ border:   0.05em solid #000; }
+#InvoiceEntriesTable .HL_Quantity, .HL_Model, .HL_PartDescription, .HL_Price, .HL_Extended	{ border:   0.05em solid #000; }
 
 .noPageBreak{
 	page-break-after: always;
@@ -48,42 +50,5 @@
 .debug{
 display: none;
 }
-#customerReportHeader{
-	width: 800px;	
-	display: block;
-}
 
-#customerReportAddressHeader {
-	clear: none;
-	float: left;
-	display: block;
-	width: 100%;
-	/*	width: 840px;*/
-}
-
-
-
-#customerReportInvoiceHeader {
-	clear: none;
-	float: left;
-	display: block;
-	width: 100%;
-/*	width: 840px;*/
-	padding-bottom: 20px;
-}
-.leftHalf{
-	float: left;
-	width: 50%;
-}
-.rightHalf{
-	float: right;
-	width: 50%;
-}
-#customerReportInvoiceHeader .Value{
-	padding-left: 20px;
-}
-#customerReportInvoiceHeader .Label{
-	float: left;
-	width: 200px;
-}
 

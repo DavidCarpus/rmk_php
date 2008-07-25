@@ -132,6 +132,8 @@ function displayKnifeListInvoices($invoices){
 		$alt=1;
 		foreach($Invoice['entries'] as $entry){
 			$alt = (!$alt);
+//			echo dumpDBRecord( $entry );
+			
 			if($entry['BladeItem']){
 				$bladeListItems++;
 				$shadeTag="";
@@ -301,8 +303,10 @@ function displayInvoiceList($records){
 
 
 function knifeEntryAdditions_TableCell($entryID, $year){
-	global $parts;
-	$additions = fetchEntryAdditions($entryID);
+	global $parts, $Invoices;
+//	$additions = fetchEntryAdditions($entryID);
+	$additions =  $Invoices->additions($entryID);
+	
 	$sheaths = "  MA1 MA2 MAB MB MBB MC MC1 MCB MCR MFB 24B NHS FCH WS BLK LHS LS1 LS2 OK DK ";
 	$etching = "  ET1  ET2  ETC ETV NPN NPB EN1 EN2 EN3 EN4 EN5 MED  ";
 	$results = "";

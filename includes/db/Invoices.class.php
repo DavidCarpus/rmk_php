@@ -7,6 +7,8 @@ class Invoices
 	{
 		$query = "Select * from Invoices where Invoice=$invNum";
 		$invoice = getSingleDbRecord($query);	
+		if(!array_key_exists('entries', $invoice))
+			$invoice['entries'] = $this->items($invoice['Invoice']);
 		$costs = $this->computeCosts($invoice);
 //		debugStatement(dumpDBRecord($costs));
 //		$invoice['TotalRetail'] = "$" . number_format($costs['TotalCost'] ,2);
@@ -26,10 +28,11 @@ class Invoices
 		$query = "Select * from Payments where Invoice=$invNum";
 		return getDbRecords($query);
 	}
-
+	
 	function items($invNum){
-		$query = "Select IE.* from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
-		
+		$query = "Select IE.*, P.BladeItem from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID ".
+				" where Invoice=$invNum order by SortField";
+//		echo debugStatement($query);
 		return getDbRecords($query);
 	}
 	
@@ -61,6 +64,11 @@ class Invoices
 		return $entries;
 	}
 		
+//	function fetchEntryAdditions($invEntryID){
+//		$query = "Select * from InvoiceEntryAdditions  IEA left join Parts P on P.PartID = IEA.PartID where EntryID=$invEntryID order by AdditionID";
+//		return getDbRecords($query);
+//	}
+
 	function additions($entryID){
 		$query = "Select IA.*, P.PartCode from InvoiceEntryAdditions IA left join Parts P on P.PartID=IA.PartID where EntryID=$entryID order by AdditionID";
 		//		echo "<HR>" . $query . "<HR>";

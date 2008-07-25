@@ -17,16 +17,85 @@ class CustomerReports
 		$results= "";
 		$invoice = $this->invoiceClass->details($formValues['Invoice']);
 		$customer = $this->customerClass->fetchCustomer($invoice['CustomerID']);
+		if(!array_key_exists('entries', $invoice))
+			$invoice['entries'] = $this->invoiceClass->items($invoice['Invoice']);
 		
 		
 		$results .= "<div id='customerReportHeader'>";
 		$results .= $this->dateAndContact($invoice, $customer);
+		$results .= "\n";
 		$results .= $this->billandShipAddress($invoice, $customer);
+		$results .= "\n";
 		$results .= "</div>";
+		$results .= $this->entriesTable($invoice);
+		$results .= $this->acknowledgmentFooter($invoice, $customer);
 		
 //		$results .= debugStatement(  dumpDBRecord($invoice ) );
 		return $results;
 	}
+	
+	function acknowledgmentFooter(array $invoice, array $customer){
+		$results = ""; 
+		$results .= "<div id='acknowledgmentFooter'>";
+
+		$results .= $this->terms($customer);
+		$results .= $this->paymentBlock($invoice);
+		$results .= $this->payTo();
+		if(strlen($invoice['Comment']) > 0){
+			$results .= "<span class='comment'>" .$invoice['Comment']. "</span>";
+		}
+		
+		$results .= "</div>";	
+		
+		return $results;
+	}
+	
+	function paymentBlock(array $invoice){
+		
+		$costs = $this->invoiceClass->computeCosts($invoice);
+	
+		$results = ""; 
+		$results .= "<div id='paymentBlock'>";
+		$results .= "Last Payment Received on";
+		$results .= "</BR>";
+		foreach (array("Total"=>'TotalCost',"SubTotal"=>'Subtotal',"+Shipping"=>'Shipping',
+				"+Tax"=>'Taxes',"-Payments"=>'TotalPayments',"Balance"=>'Due') as $label=>$field) {
+				$results .= "<span class='Label'>" . $label. "</span>";
+				$results .= "<span class='value'>" . "$". number_format($costs[$field] ,2). "</span>";
+				$results .= "</BR>";
+		}
+		$results .= "</BR>";
+		$results .= "Shipping charges determined in year of shipment";
+		$results .= "</div>";	
+		return $results;	
+	}
+	
+	function terms(array $customer){
+		$results = ""; 
+		$results .= "<div id='invoiceTerms'>";
+		$results .= "Terms:Please pay net 21 days.";
+		$results .= "</BR>";
+		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
+		$results .= "Prior to scheduled ship date";
+		$results .= "</div>";	
+		return $results;	
+	}
+	
+	function payTo(){
+		$results = ""; 
+		$results .= "<div id='invoicePayTo'>";
+		$results .= "Pay To: Randall Made Knives";
+		$results .= "</BR>";
+		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
+		$results .= "P.O. Box 1988";
+		$results .= "</BR>";
+		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
+		$results .= "Orlando, FL 32802-1988";
+		$results .= "</div>";	
+		return $results;	
+	}
+	
+	
 	
 	function dateAndContact(array $invoice, array $customer){
 		$results= "";
@@ -39,6 +108,7 @@ class CustomerReports
 		$valuesR['DateShipped'] 	= array("Ship Date", 	date("m/d/Y",strtotime($invoice['DateShipped']))); 
 
 		$results .= "<div id='customerReportInvoiceHeader'>";
+		
 		$results .= "<div class='leftHalf'>";
 		foreach ($valuesL as $field=>$value) {
 			$results .= "<span class='Label'>" . $value[0] . "</span>";
@@ -46,6 +116,7 @@ class CustomerReports
 			$results .= "</BR>";
 		}
 		$results .= "</div>";
+		
 		$results .= "<div class='rightHalf'>";
 		foreach ($valuesR as $field=>$value) {
 			$results .= "<span class='Label'>" . $value[0] . "</span>";
@@ -53,7 +124,8 @@ class CustomerReports
 			$results .= "</BR>";
 		}
 		$results .= "</div>";
-		$results .= "</div>";
+		
+		$results .= "</div><!-- End customerReportInvoiceHeader -->";
 		return $results;
 	}
 	
@@ -73,25 +145,87 @@ class CustomerReports
 
 		$address .= $currAdd['CITY'] . ", ". $currAdd['STATE'] . " ". $currAdd['ZIP'];
 
+		$results .= "<div class='vertical'>B</BR>I</BR>L</BR>L</div>";
 		$results .= "<div class='leftHalf'>";
+		
 		$results .= $address  . "</BR>";
-		$results .= "</div>";
+		$results .= "</div><!-- End leftHalf -->";
 				
 		$billAddress=$address;
 		if($invoice['BillingAddressType'] == 1) $billAddress="SHOP SALE";
 		if($invoice['ShippingAddressType'] == 2) $billAddress="SAME";
 		if($invoice['ShippingAddressType'] == 3) $billAddress="PICK UP";
 		
+		$results .= "<div class='vertical'>S</BR>H</BR>I</BR>P</div>";
 		$results .= "<div class='rightHalf'>";
 		$results .= $billAddress . "</BR>";
-		$results .= "</div>";
+		$results .= "</div> <!-- End rightHalf -->";
 				
 		if($currAdd['COUNTRY'] <> '') $results .= $currAdd['COUNTRY'] . "</BR>";
 
 		$results .= "</span>";
 		
 //		$results .= debugStatement(  dumpDBRecord($customer ) );
-		$results .= debugStatement(  dumpDBRecord($invoice ) );
+		return $results;
+	}
+	
+	function entriesTable($invoice){
+		$results="";
+		if(!array_key_exists('entries', $invoice))
+			$invoice['entries'] = $this->invoiceClass->items($invoice['Invoice']);
+		
+		$results .= "\n<div id='InvoiceEntriesTable'>\n";
+
+		$results .= "<span id='InvoiceEntriesTable_Header'>";
+		$results .= "<span class='Quantity'>			Qty</span>";
+		$results .= "<span class='Model'>				Model</span>";
+		$results .= "<span class='PartDescription'>		Description</span>";
+		$results .= "<span class='Price'>				Price</span>";
+		$results .= "<span class='Extended'>			Extended</span>";
+		$results .= "</span>";
+		$cnt=0;
+		foreach ($invoice['entries'] as $entry) {
+			$hl = ($cnt%2==0 ? "HL_": "");
+			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
+			$results .= "<span class='". $hl . "Model'>" . 			$entry['PartDescription'] . "</span>";
+			$results .= "<span class='". $hl . "PartDescription'>" . 	$this->getInvEntryDesc($entry) . "</span>";
+			$results .= "<span class='". $hl . "Price'>" . 			$entry['TotalRetail'] . "</span>";
+			$results .= "<span class='". $hl . "Extended'>" . 		($entry['Quantity'] * $entry['TotalRetail']) . "</span>";
+			
+			if(strlen($entry['Comment']) > 0){
+//				$results .= "\n";
+				$results .= "</BR>\n";
+				$results .= "<span class='". $hl . "Quantity'>&nbsp;</span>";
+				$results .= "<span class='". $hl . "Model'>** Note **</span>";
+				$results .= "<span class='". $hl . "PartDescription'>" . $entry['Comment'] . "</span>";
+				$results .= "<span class='". $hl . "Price'>&nbsp;</span>";
+				$results .= "<span class='". $hl . "Extended'>&nbsp;</span>";
+			}
+//			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
+			
+//			$results .= dumpDBRecord($entry);
+				
+			$results .= "</BR>\n";
+			$cnt++;
+		}
+		$results .= "</div> <!-- End InvoiceEntriesTable -->\n";
+		return $results;
+	}
+	
+	function getInvEntryDesc($entry){
+		$additions =  $this->invoiceClass->additions($entry['InvoiceEntryID']);
+		$results ="";
+		$totalAdds=count($additions);
+		$cnt=0;
+		foreach($additions as $addition){
+			$code= $addition['PartCode'];
+			if($addition['Price'] <= 0)
+				$code = strtolower($code);
+			$results .= $code ;
+
+			if(++$cnt < $totalAdds)
+				$results .= ",";
+		}
 		return $results;
 	}
 	

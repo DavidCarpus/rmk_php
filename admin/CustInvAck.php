@@ -21,7 +21,7 @@ session_start();
  
 ?>
 <LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK href="../CustomerReports.css" rel="stylesheet" media='screen' type="text/css">
+<LINK href="../CustomerReports.css" rel="stylesheet" type="text/css">
 <LINK rel="stylesheet" type="text/css"	 media="print" href="../CustomerReportsPrint.css">	 
 
 <?php echo logo_header("admin", ".."); ?>
