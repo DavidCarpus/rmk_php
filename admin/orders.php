@@ -1,12 +1,16 @@
 <?php
 /* Created on Feb 8, 2006 */
-include_once "../includes/db/db.php";
-include_once "../includes/db/db_requests.php";
-include_once "../includes/htmlHead.php";
-include_once "../includes/orders.php";
-include_once "../includes/adminFunctions.php";
-include_once "../includes/order_administration.php";
+include_once "../config.php";
 
+include_once INCLUDE_DIR. "htmlHead.php";
+include_once INCLUDE_DIR. "adminFunctions.php";
+include_once INCLUDE_DIR. "orders.php";
+include_once INCLUDE_DIR. "order_administration.php";
+
+include_once DB_INC_DIR. "db.php";
+include_once DB_INC_DIR. "db_requests.php";
+
+include_once FORMS_DIR. "InvoiceEntry.class.php";
 
 $statusOptions = array(	array('id'=>"0", 'label'=>"Unprocessed"),
 						array('id'=>"1", 'label'=>"Processed"),
