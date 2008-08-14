@@ -40,6 +40,7 @@ function getBasicSingleDbRecord($tableName, $keyField, $keyValue){
 function getSingleDbRecord($query){
 	global $dbconfig;
 	$dbh=getDBConnection();
+//	dumpDB_ConnData();
 	mysql_select_db ($dbconfig['webDatabase']); 
 	
 	$results = array();
@@ -142,13 +143,21 @@ function setDB_Globals(){
 		$dbconfig['webDatabase']="newrmk";
 		$dbconfig['address']=$address;
 		
+	}
 //		$dbconfig['server'] = "www.randallknives.com";
 //		$dbconfig['username']="uplzcvgw_rmkweb";
 //		$dbconfig['password']="rmkskeet";
 //		$dbconfig['webDatabase']="uplzcvgw_rmk";
 //		$dbconfig['address']=$address;
-	}
-//	if($_SERVER['REMOTE_ADDR'] == '97.100.243.22') var_dump($dbconfig);
+	//	dumpDB_ConnData();
+}
+
+function dumpDB_ConnData(){
+	global $dbconfig, $dbConn;
+	
+	if($_SERVER['REMOTE_ADDR'] == '97.100.243.22') var_dump($dbconfig);
+	if($_SERVER['REMOTE_ADDR'] == '192.168.1.90') var_dump($dbconfig);
+	var_dump($dbConn);
 }
 
 //----------------------------------------------------
