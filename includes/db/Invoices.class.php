@@ -30,7 +30,7 @@ class Invoices
 	}
 	
 	function items($invNum){
-		$query = "Select IE.*, P.BladeItem from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID ".
+		$query = "Select IE.*, P.BladeItem, P.PartCode from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID ".
 				" where Invoice=$invNum order by SortField";
 //		echo debugStatement($query);
 		return getDbRecords($query);
