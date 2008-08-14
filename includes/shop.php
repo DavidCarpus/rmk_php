@@ -387,7 +387,8 @@ function orderSearchQueryForShop($form)
 			$orderCriteria = " ORDER BY Customers.LastName, Customers.FirstName, Invoice desc ";
 		}
 	}
-	if (!array_key_exists('searchOlder', $form)) //  || $form['searchOlder'] == "on"
+	if (!array_key_exists('searchOlder', $form) 
+		&& !array_key_exists('invoice_num', $form) ) //  || $form['searchOlder'] == "on"
 	{
 		$minDate = date("Y-m-d",strtotime(date("Y-m-d", time()) ." -1 year"));
 		$criteria .= "DateEstimated > '$minDate' AND ";
