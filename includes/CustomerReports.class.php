@@ -184,14 +184,15 @@ class CustomerReports
 		$results .= "<span class='Extended'>			Extended</span>";
 		$results .= "</span>";
 		$cnt=0;
+		$lncnt=0;
 		foreach ($invoice['entries'] as $entry) {
 			$hl = ($cnt%2==0 ? "HL_": "");
 			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
 			$results .= "<span class='". $hl . "Model'>" . 			$entry['PartDescription'] . "</span>";
 			$results .= "<span class='". $hl . "PartDescription'>" . 	$this->getInvEntryDesc($entry) . "</span>";
-			$results .= "<span class='". $hl . "Price'>" . 			$entry['TotalRetail'] . "</span>";
-			$results .= "<span class='". $hl . "Extended'>" . 		($entry['Quantity'] * $entry['TotalRetail']) . "</span>";
-			
+			$results .= "<span class='". $hl . "Price'>" . 			number_format($entry['TotalRetail'] ,2) . "</span>";
+			$results .= "<span class='". $hl . "Extended'>" . 		number_format(($entry['Quantity'] * $entry['TotalRetail']),2) . "</span>";
+
 			if(strlen($entry['Comment']) > 0){
 //				$results .= "\n";
 				$results .= "</BR>\n";
@@ -200,13 +201,20 @@ class CustomerReports
 				$results .= "<span class='". $hl . "PartDescription'>" . $entry['Comment'] . "</span>";
 				$results .= "<span class='". $hl . "Price'>&nbsp;</span>";
 				$results .= "<span class='". $hl . "Extended'>&nbsp;</span>";
+				$lncnt++;
 			}
 //			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
 			
 //			$results .= dumpDBRecord($entry);
 				
 			$results .= "</BR>\n";
+			if($lncnt == 24)
+			{
+				$results .= "</div> <!-- End InvoiceEntriesTable -->\n";
+				$results .= "\n<div id='InvoiceEntriesTable'>\n";
+			}
 			$cnt++;
+			$lncnt++;
 		}
 		$results .= "</div> <!-- End InvoiceEntriesTable -->\n";
 		return $results;
@@ -226,6 +234,8 @@ class CustomerReports
 			if(++$cnt < $totalAdds)
 				$results .= ",";
 		}
+		if($totalAdds==0)
+			$results .= "&nbsp;";
 		return $results;
 	}
 	
