@@ -31,7 +31,8 @@ class Parts
 		if( !array_key_exists($year, $this->partPrices) || count($this->partPrices[$year]) < 1){
 			$query = "Select Parts.*, PartPrices.Price  from Parts 
 				left join PartPrices on PartPrices.PartID = Parts.PartID 
-				where PartPrices.Year = $year";
+				where PartPrices.Year = $year
+				order by SortField";
 			$parts =  getDbRecords($query);
 			foreach($parts as $part){
 				$this->partPrices[$year][$part['PartID']] =  $part;
