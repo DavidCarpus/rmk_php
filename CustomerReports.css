@@ -56,15 +56,15 @@
 	clear: left;
 	float: left;
 	display: block;
-	width: 760px;
+	width: 750px;
 	padding-top:20px; 
 }
 
 #acknowledgmentFooter .comment{	clear: left;	float: left;	display: block; width: 330px;}
 
 #paymentBlock {	clear: none;	float: right;	display: block; }
-#invoiceTerms {	clear: none;	float: left;	display: block; width: 330px;}
-#invoicePayTo {	clear: none;	float: left;	display: block; width: 330px; padding-top:10px; padding-bottom:20px; }
+#invoiceTerms {	clear: none;	float: left;	display: block; width: 325px;}
+#invoicePayTo {	clear: none;	float: left;	display: block; width: 325px; padding-top:10px; padding-bottom:20px; }
 
 #paymentBlock .Label, .Value{ display: block; float: left; width: 140px; }
 #paymentBlock .Value{ text-align:right; }
@@ -117,6 +117,6 @@
 }
 #customerReportInvoiceHeader .Label{
 	float: left;
-	width: 200px;
+	width: 180px;
 }
 

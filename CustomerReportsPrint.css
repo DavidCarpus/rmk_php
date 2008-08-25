@@ -45,7 +45,10 @@
 
 .printHide{ display: none;}
 
-
+#acknowledgmentFooter {
+	position: fixed;
+	bottom: 0;
+}
 
 .debug{
 display: none;

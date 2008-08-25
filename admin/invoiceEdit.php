@@ -56,7 +56,10 @@ foreach($entries as $entry)
 	<div class="centerblock">
 		<?php echo adminToolbar(); ?>
 		<div class="content">
-			<?php 	echo $invoiceForms->invNum( $invoice );
+			<?php
+				 	echo $invoiceForms->invAcknowledgmentLink( $invoice );
+					echo "\n";
+				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
 					echo $customerForms->summary( $customer );
