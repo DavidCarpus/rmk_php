@@ -25,7 +25,22 @@ class Part extends Base
 		return $this->selection("PartID", $values, "Item", $default);
 	}
 	
-
+   	public function partPricing(){
+   		$parts = $this->partsClass->fetchParts(2008);
+   		$results="";
+		foreach ($parts as $part) {
+			$id = $part['PartID'];
+			$price = "$" . number_format($part['Price'] ,2) ;
+   			$results .= $part['PartCode'];
+//   			$results .= " - ";
+//   			$results .= $part['Description'];
+   			$results .= " - $price";
+   			$results .= "<BR>";
+		}	
+		return $results;
+	}
+	
+	
 	
 	
 }
