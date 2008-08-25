@@ -195,7 +195,8 @@ function toDoItems(){
 	$results[] = array("Done"=>"", "Text"=>"End of Blist –  display grand total of knives");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#55933 – bill to and ship to address are not displayed");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#67761 – calculate tax on subtotal amt");
-	$results[] = array("Done"=>"", "Text"=>"Shop - When searching by invoice, ignore 'older' flag");
+	$results[] = array("Done"=>"2008-08-14", "Text"=>"Shop - When searching by invoice, ignore 'older' flag");
+	$results[] = array("Done"=>"", "Text"=>"Add 'shop' to menu with same display restrictions as 'admin'");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	
