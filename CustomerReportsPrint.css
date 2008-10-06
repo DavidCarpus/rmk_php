@@ -37,7 +37,7 @@
 	font-weight: bold; 
 }
 #InvoiceEntriesTable .Quantity, .Model, .PartDescription, .Price, .Extended	{ border:   0.05em solid #000; }
-#InvoiceEntriesTable .HL_Quantity, .HL_Model, .HL_PartDescription, .HL_Price, .HL_Extended	{ border:   0.05em solid #000; }
+#InvoiceEntriesTable .HL_Quantity, .HL_Model, .HL_PartDescription, .HL_Price, .HL_Extended	{ background-color: #CCCCCC; border:   0.05em solid #000; }
 
 .noPageBreak{
 	page-break-after: always;

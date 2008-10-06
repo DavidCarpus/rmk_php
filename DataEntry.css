@@ -124,7 +124,7 @@ fieldset {
 
 .InvoiceKnifeListHL .PartDescription, .InvoiceKnifeListHL .Quantity, .InvoiceKnifeListHL .TotalRetail,
 	.InvoiceKnifeListHL .FeatureList,.InvoiceKnifeListHL .Comment
-	{background-color: #DDDDDD;}
+	{background-color: #CCCCCC;}
 
 
 #InvoiceKnifeList .sheath{
@@ -232,7 +232,7 @@ fieldset {
 #NewInvoiceEntry input.btn{ width: 140px; }
 
 #span_FeatureList .featureEntry { clear:left; width:800px; display: block; padding: 20px 120px 20px 50px; }
-#span_FeatureList .featureEntry input { float: left;	display: block; width: 45px; }
+#span_FeatureList .featureEntry input { float: left;	display: block; width: 50px; }
 #span_FeatureList .featureEntry label { float: left;	display: block; width: 90px; }
 
 
@@ -264,7 +264,7 @@ fieldset {
 
 .CustomerListsHL .FirstName, .CustomerListsHL .LastName, .CustomerListsHL .PhoneNumber,
 	.CustomerListsHL .Dealer
-	{background-color: #DDDDDD;}
+	{background-color: #CCCCCC;}
 
 #CustomerList br{
 	clear: left;
@@ -282,6 +282,8 @@ fieldset {
 #CustomerInvoiceList .DateShipped	{width: 120px;	text-align: center; float: left; display: block;}
 #CustomerInvoiceList .TotalRetail	{width: 100px;	text-align: right; float: left; display: block;}
 #CustomerInvoiceList .Due			{width: 100px;	text-align: right; float: left; display: block;}
+#CustomerInvoiceList .TCol1			{width: 100px;	text-align: right; float: left; display: block;}
+#CustomerInvoiceList .TCol2			{width: 100px;	text-align: right; float: left; display: block;}
 
 #CustomerInvoiceList .HeaderInvoice			{width: 80px;	text-align: left;	float: left; display: block; font-weight: bold;}
 #CustomerInvoiceList .HeaderDateOrdered		{width: 120px;	text-align: center; float: left; display: block;  font-weight: bold;}
@@ -289,11 +291,13 @@ fieldset {
 #CustomerInvoiceList .HeaderDateShipped		{width: 120px;	text-align: center; float: left; display: block; font-weight: bold;}
 #CustomerInvoiceList .HeaderTotalRetail		{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
 #CustomerInvoiceList .HeaderDue				{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
+#CustomerInvoiceList .HeaderTCol1				{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
+#CustomerInvoiceList .HeaderTCol2				{width: 100px;	text-align: right; float: left; display: block; font-weight: bold;}
 
 .CustomerInvoiceListItemHL .Invoice, .CustomerInvoiceListItemHL  .DateOrdered, 
 				.CustomerInvoiceListItemHL  .DateEstimated, .CustomerInvoiceListItemHL  .DateShipped, 
 				.CustomerInvoiceListItemHL  .TotalRetail, .CustomerInvoiceListItemHL .Due
-	{background-color: #DDDDDD;}
+	{background-color: #CCCCCC;}
 /*.CustomerInvoiceListHL .FirstName, .CustomerInvoiceListHL .LastName, .CustomerInvoiceListHL .PhoneNumber,
 	.CustomerInvoiceListHL .Dealer
 	{background-color: #DDDDDD;}

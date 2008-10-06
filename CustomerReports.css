@@ -79,12 +79,12 @@
 
 
 
-#InvoiceEntriesTable .HL_Quantity			{ background-color: #DDDDDD; float: left; display: block; width: 40px; }
-#InvoiceEntriesTable .HL_Model				{ background-color: #DDDDDD; float: left; display: block; width: 100px; }
-#InvoiceEntriesTable .HL_PartDescription	{ background-color: #DDDDDD; float: left; display: block; width: 400px; }
+#InvoiceEntriesTable .HL_Quantity			{ background-color: #CCCCCC; float: left; display: block; width: 40px; }
+#InvoiceEntriesTable .HL_Model				{ background-color: #CCCCCC; float: left; display: block; width: 100px; }
+#InvoiceEntriesTable .HL_PartDescription	{ background-color: #CCCCCC; float: left; display: block; width: 400px; }
 
-#InvoiceEntriesTable .HL_Price		{ background-color: #DDDDDD; float: left; display: block; text-align:right; width: 80px; }
-#InvoiceEntriesTable .HL_Extended	{ background-color: #DDDDDD; float: left; display: block; text-align:right; width: 100px; }
+#InvoiceEntriesTable .HL_Price		{ background-color: #CCCCCC; float: left; display: block; text-align:right; width: 80px; }
+#InvoiceEntriesTable .HL_Extended	{ background-color: #CCCCCC; float: left; display: block; text-align:right; width: 100px; }
 
 #InvoiceEntriesTable BR { clear:left;}
 
