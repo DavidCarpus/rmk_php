@@ -126,6 +126,7 @@ class Invoice extends Base
 		$formName="CustomerInvoiceList";
 		$results .=  "<div id='$formName'>" . "\n";
 		$fields = array('Invoice', 'DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'Due');
+//		, 'TCol1', 'TCol2'
 		foreach($fields as $field)
 		{
 			$results .= "<span class='Header$field'>";

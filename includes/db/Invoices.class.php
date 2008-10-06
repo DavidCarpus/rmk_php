@@ -179,10 +179,15 @@ class Invoices
 		$query .= " order by $sort";
 		$invoices = getDbRecords($query);
 		foreach ($invoices as $key=>$invoice) {
-			$costs = $this->computeCosts($invoice);
-			$invoice['TotalRetail'] = $costs['TotalCost'];
-			$invoice['Due'] = $costs['Due'];
-//			$invoice['ShippingAmount'] = $costs['Shipping'];
+//			$costs = $this->computeCosts($invoice);
+//			$invoice['TotalRetail'] = $costs['TotalCost'];
+//			$invoice['1'] = $costs['Due'];
+			
+			$invoice['Payments'] = $this->totalPayments($invoice['Invoice']); 
+			$invoice['Shipping'] = $invoice['ShippingAmount'];
+			$invoice['Due']= ($invoice['SubTotal'] + $invoice['ShippingAmount'] )* (1.0 + ($invoice['TaxPercentage']/100.0)) ;
+			$invoice['Due'] -= $invoice['Payments'];
+			
 			$invoices[$key] = $invoice;
 		}
 		return $invoices;
