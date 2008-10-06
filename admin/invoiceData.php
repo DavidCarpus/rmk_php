@@ -72,7 +72,7 @@ $newInvoiceEntryFormValues["Invoice"]=$invoiceNum;
 $results = array(	"InvoiceDetails"=>$invInfo, 
 					"CustomerSummary"=>$custInfo, 
 //					"Flags"=>$flags, 
-					"InvoiceKnifeList"=> $invoiceEntryForms->knifeListTable($entries),
+					"InvoiceKnifeList"=> $invoiceEntryForms->knifeListTable($entries, 0),
 					"InvoicePayments"=> $paymentForms->paymentListTable($invoiceNum, $payments),
 					"InvoiceFinanceSummary"=> $paymentForms->invoiceFinanceTable($costs),
 					"NewInvoiceEntry"=>$invoiceEntryForms->newInvoiceEntryForm($newInvoiceEntryFormValues, $partsFormClass)

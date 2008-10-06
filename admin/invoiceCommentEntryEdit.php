@@ -66,7 +66,7 @@ if(array_key_exists('submit', $formValues)){
 					echo "\n\n</HR>";
 					
 					$entries = $invoiceClass->itemsWithAdditions( $invoiceNum ); // 56031
-					echo $invoiceForms->knifeListTable( $entries );
+					echo $invoiceForms->knifeListTable( $entries, 0, $formValues );
 					
 				?>
 		</div>

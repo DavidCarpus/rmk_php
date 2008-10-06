@@ -103,7 +103,7 @@ class InvoiceEntry extends Base
 		return $url;
 	}
 	
-	function knifeListTable( $entries, $formValues=array() ){
+	function knifeListTable( $entries, $highlightEntryID, $formValues=array() ){
 		$formName="InvoiceKnifeList";
 		$fields = array("Part", "Quantity" , "TotalRetail" , "FeatureList" , "Comment", "Edit");
 		$results = "";
@@ -121,8 +121,15 @@ class InvoiceEntry extends Base
 //		$results .= "<span style='clear: left;display: block;'>";
 		$results .= "<span id='knifeListItem'>\n";
 		$cnt=1;
+		$highlight=false;
 		foreach ($entries as $entry){
-			if($cnt%2)
+			$highlight=false;
+			if($highlightEntryID > 0 && $highlightEntryID == $entry['InvoiceEntryID'])
+				$highlight=true;
+			if($highlightEntryID <= 0 && $cnt%2)
+				$highlight=true;
+				
+			if($highlight)
 				$results .= "<div class='InvoiceKnifeListHL'>\n";
 			foreach($fields  as $field){
 				if($field == "TotalRetail"){
@@ -141,10 +148,11 @@ class InvoiceEntry extends Base
 				}
 			}
 //			$results .= "</P>";
-			if($cnt%2)
+			if($highlight)
 				$results .= "</div>";
 			$cnt++;
 			$results .= "</BR>\n";
+//			$results .= $highlightEntryID . "++".  $entry['InvoiceEntryID'];
 		}
 		$results .= "</span>";
 	

@@ -72,7 +72,7 @@ foreach($entries as $entry)
 					echo "\n";
 					echo "\n";
 					$entries = $invoiceClass->itemsWithAdditions( $invoiceNum ); // 56031
-					echo $invoiceEntryForms->knifeListTable( $entries );
+					echo $invoiceEntryForms->knifeListTable( $entries, 0 );
 					echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
 					
 //					echo debugStatement(dumpDBRecord($formValues));;
