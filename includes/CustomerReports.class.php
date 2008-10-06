@@ -185,11 +185,14 @@ class CustomerReports
 		$results .= "</span>";
 		$cnt=0;
 		$lncnt=0;
+		$pg=1;
+		$lineCountPageBreak=23;
 		foreach ($invoice['entries'] as $entry) {
 			$hl = ($cnt%2==0 ? "HL_": "");
+			$invEntryDesc=$this->getInvEntryDesc($entry);
 			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
 			$results .= "<span class='". $hl . "Model'>" . 			$entry['PartDescription'] . "</span>";
-			$results .= "<span class='". $hl . "PartDescription'>" . 	$this->getInvEntryDesc($entry) . "</span>";
+			$results .= "<span class='". $hl . "PartDescription'>" .$invEntryDesc	 . "</span>";
 			$results .= "<span class='". $hl . "Price'>" . 			number_format($entry['TotalRetail'] ,2) . "</span>";
 			$results .= "<span class='". $hl . "Extended'>" . 		number_format(($entry['Quantity'] * $entry['TotalRetail']),2) . "</span>";
 
@@ -203,15 +206,19 @@ class CustomerReports
 				$results .= "<span class='". $hl . "Extended'>&nbsp;</span>";
 				$lncnt++;
 			}
+			if(strlen($invEntryDesc) > 30)
+				$lncnt++;
 //			$results .= "<span class='". $hl . "Quantity'>" . 		$entry['Quantity'] . "</span>";
 			
 //			$results .= dumpDBRecord($entry);
 				
-			$results .= "</BR>\n";
-			if($lncnt == 24)
+			$results .= "</BR>". "\n";
+			if($lncnt > 1 && ($lncnt > $lineCountPageBreak) )
 			{
 				$results .= "</div> <!-- End InvoiceEntriesTable -->\n";
 				$results .= "\n<div id='InvoiceEntriesTable'>\n";
+				$lineCountPageBreak=29;
+				$lncnt=0;
 			}
 			$cnt++;
 			$lncnt++;
