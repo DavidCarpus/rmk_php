@@ -37,14 +37,12 @@ $invoiceEntryForms = new InvoiceEntry();
 $invoice = $invoiceClass->details( $invoiceNum );
 $customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
 $entries = $invoiceClass->itemsWithAdditions( $invoiceNum );
-$invoice["KnifeCount"] = 0;
-foreach($entries as $entry)
-	$invoice["KnifeCount"] += $entry['Quantity'];
+$invoice["KnifeCount"] = $invoiceClass->computeKnifeCount($entries);
 
 $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
-echo "Invoice Item : $mode<BR>";
-echo dumpDBRecord($formValues);
+//echo "Invoice Item : $mode<BR>";
+//echo dumpDBRecord($formValues);
 
 
 function editForm(){
@@ -62,13 +60,13 @@ function editForm(){
 	$results .= adminToolbar();
 	$results .= "<div class='content'>";
 	$results .=  "Edit Mode";
-	$results .= $invoiceForms->invNum( $invoice );
+	$results .= $invoiceForms->invNum( $invoice);
 	$results .= "\n";
 	$results .= "\n";
 	$results .= $customerForms->tiny( $customer );
 	$results .= "\n";
 	$results .= "\n";
-	$results .= $invoiceForms->details( $invoice );
+	$results .= $invoiceForms->details( $invoice, "view"  );
 	$results .= $invoiceEntryForms->knifeListTable( $entries, $formValues["invoiceentryid"] );
 	$formValues['entries'] = $entries;
 	$results .= $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);

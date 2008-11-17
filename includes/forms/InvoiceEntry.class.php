@@ -113,6 +113,10 @@ class InvoiceEntry extends Base
 				$results .= "<span style='font-weight: bold;' class='PartDescription'>Part</span>";
 			else if($field == "Edit")
 				$results .= "<span style='font-weight: bold;' class='Admin'>Edit</span>";
+			else if($field == "TotalRetail")
+				$results .= "<span style='font-weight: bold;' class='TotalRetail'>Retail</span>";
+			else if($field == "FeatureList")
+				$results .= "<span style='font-weight: bold;' class='FeatureList'>Features</span>";
 			else
 				$results .= "<span style='font-weight: bold;' class='$field'>$field</span>";
 		}
@@ -229,7 +233,7 @@ class InvoiceEntry extends Base
 		} else {
 			$entry["InvoiceEntryID"]="";
 			$entry["Invoice"]=$formValues['Invoice'];
-			$entry["PartDescription"]=$formValues['PartDescription'];
+			$entry["PartDescription"]=array_key_exists("InvoiceEntryID", $formValues)?$formValues['PartDescription']:"";
 			$partPrice = $this->partsClass->currentYearPartPrice($entry['PartDescription']);
 			if($partPrice != NULL)
 				$entry['BaseRetail'] = number_format($partPrice['Price'] ,2);

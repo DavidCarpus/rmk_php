@@ -18,8 +18,8 @@ class Search extends Base
 			$JS = array();
 	//		$JS['field'] = "onBlur=\"search($formName);\"";
 			$results .=  $this->textField('searchValue', $this->fieldDesc('searchValue'), false, $formValues['searchValue'],"",$JS) ;
-			if(array_key_exists('customerID', $formValues)){
-				$results .=  "<input type='hidden' name='customerID' value='". $formValues['customerID'] . "'>";
+			if(array_key_exists('CustomerID', $formValues)){
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
 			}
 			$results .= "</form>";
 			$results .= "</div><!-- End $formName -- >\n";
@@ -27,7 +27,12 @@ class Search extends Base
 	}
 	
 	function getSearchType($formValues){
-		if(array_key_exists('customerID', $formValues) && is_numeric($formValues['customerID'])) return "customerid";
+		if(array_key_exists('CustomerID', $formValues) && is_numeric($formValues['CustomerID'])) return "CustomerID";
+//		echo gettype($formValues);
+		if(is_null($formValues) || (is_array($formValues) && !array_key_exists('searchValue', $formValues)) )
+		{
+			return "";
+		}
 		
 		$searchValue = $formValues['searchValue'];
 		if(is_numeric($searchValue)){
@@ -42,7 +47,10 @@ class Search extends Base
 		
 		if(is_numeric($searchValue)){
 			// invoice number search
-			return "phone";
+			if(strlen($searchValue) < 7) 
+				return "invoice";
+			else
+				return "phone";
 		}
 		
 		$searchValue = $formValues['searchValue'];
@@ -88,9 +96,9 @@ class Search extends Base
 				return $custClass->fetchCustomersByLname($formValues['searchValue']);
 //				return "Search by customer last name";
 			break;
-			case "customerid":{
+			case "CustomerID":{
 				$results = array();
-				$results[] = $custClass->fetchCustomer($formValues['customerID']);
+				$results[] = $custClass->fetchCustomer($formValues['CustomerID']);
 				//				debugStatement(dumpDBRecords($results));
 				return $results;
 //				return "Search by customer last name";
@@ -121,13 +129,20 @@ class Search extends Base
 			$results .=  "<div id='customerInvListBtns'>";
 			$results .=  "<form name='$formName' action='search.php' method='GET'>" ;
 			$results .=  "<input type='hidden' name='searchValue' value='" . $formValues["searchValue"] . "'>";
-			if(array_key_exists('customerID', $formValues)){
-				$results .=  "<input type='hidden' name='customerID' value='". $formValues['customerID'] . "'>";
+			if(array_key_exists('CustomerID', $formValues)){
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
 			}
 			$filter = "Older";
 			if($older) $filter = "Newer";
 			$results .=  $this->button("filter", $filter);
 			$results .= "</form>";
+			$results .=  "<form name='newInvoice' action='invoiceEdit.php' method='GET'>" ;
+			if(array_key_exists('CustomerID', $formValues)){
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
+			}
+			$results .=  $this->button("newInvoice", "New Invoice");
+			$results .= "</form>";
+			
 			$results .= "</div><!-- End customerInvListBtns -- >\n";
 		}
 		$results .= "</div><!-- End $formName -- >\n";

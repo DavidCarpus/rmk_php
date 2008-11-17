@@ -7,19 +7,19 @@ class Customer extends Base
        $this->name = "forms_Customer";
    }
    
-	public function summary($request){
+	public function summary($request, $readonly=false){
 		$formName="CustomerSummary";
 		
 		$results="\n";
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>"  . "\n";
 //		$results .=  "<legend>$formsName</legend>" . "\n";
-//		customerID as hidden field?
+//		CustomerID as hidden field?
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress');
 		foreach( $fields as $name)
 		{
 			if(!array_key_exists($name, $request)) $request[$name] = "";
-			$results .=  $this->textField($name, $this->fieldDesc($name), false, $request[$name]) . "\n";
+			$results .=  $this->textField($name, $this->fieldDesc($name), false, $request[$name],'',array(), $readonly) . "\n";
 			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
 					$results .=  "</BR>";
 		}
@@ -28,6 +28,7 @@ class Customer extends Base
 		
 		return $results;
 	}
+	
 	
 	public function tiny($request){
 		$formName="CustomerFullName";
@@ -48,7 +49,7 @@ class Customer extends Base
 	}
 	
 	public function linkToCustomer($customer){
-		$url = "<a href='search.php?customerID=" . urlencode($customer['CustomerID']);
+		$url = "<a href='search.php?CustomerID=" . urlencode($customer['CustomerID']);
 		$url .= "'>" .  $customer['PhoneNumber'] . "</a>";
 //		return $entry["PartDescription"];
 		return $url;
@@ -97,7 +98,7 @@ class Customer extends Base
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='customerEdit.php' method='GET'>"  . "\n";
 //		$results .=  "<legend>$formsName</legend>" . "\n";
-//		customerID as hidden field?
+//		CustomerID as hidden field?
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress');
 		foreach( $fields as $name)
 		{

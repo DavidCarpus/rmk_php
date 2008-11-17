@@ -19,7 +19,7 @@ class Base
 						'cctype'=> 'Credit Card Type', 'ccnumber'=> 'Credit Card Number','ccexpire'=> 'Expiration Date', 
 						'ccvcode'=>'VCode (<i>Last 3 digits on signature line</i>)', 'ccname'=> 'Name as it appears on card',
 						'comment'=>'Comment',
-						'Invoice'=>'Invoice Number',
+						'Invoice'=>'Inv. #',
 						'Prefix'=>'Title','LastName'=>'Last Name','FirstName'=>'First Name','Suffix'=>'Suffix',
 						'PhoneNumber'=> 'Phone Number','EMailAddress'=>'Email Address',
 						'DateOrdered'=>'Ordered','DateEstimated'=>'Estimated','DateShipped'=>'Shipped', "KnifeCount"=>"Knives",

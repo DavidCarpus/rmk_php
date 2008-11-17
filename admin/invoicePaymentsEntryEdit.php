@@ -63,7 +63,7 @@ foreach($entries as $entry)
 					echo "\n\n";
 					echo $customerForms->tiny( $customer );
 					echo "\n\n";
-					echo $invoiceForms->details( $invoice );
+					echo $invoiceForms->details( $invoice, true );
 					echo "\n\n";
 					echo $paymentForms->paymentListTable($invoiceNum, $payments, $formValues);
 					echo "\n\n";

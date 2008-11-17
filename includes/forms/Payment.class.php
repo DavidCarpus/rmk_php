@@ -116,7 +116,12 @@ class Payment extends Base
 		$results = "";
 		$results .=  "<div id='$formName'>\n";
 		foreach($fields  as $field){
-			$results .= "<span class='Header$field'>$field</span>";
+			if($field == "ExpirationDate")
+				$results .= "<span class='Header$field'>Expires</span>";
+			else if($field == "PaymentDate")
+				$results .= "<span class='Header$field'>Date</span>";
+			else
+				$results .= "<span class='Header$field'>$field</span>";
 		}
 		$results .= "</BR>";
 		$results .= "<span id='invoicePayments'>";

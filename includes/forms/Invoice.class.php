@@ -8,6 +8,19 @@ class Invoice extends Base
        $this->name = "MyDestructableClass";
    }
    
+   public function entryFormMode($formValues)
+   {
+   		if(array_key_exists("ERROR", $formValues) && strlen($formValues['ERROR']) > 0){return "validate";}	
+			
+		if(array_key_exists("submit", $formValues) && !is_numeric($formValues["Invoice"])){return "validate";}
+		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Update"){return "validate";}
+				
+		if(array_key_exists("Invoice", $formValues) && is_numeric($formValues["Invoice"])){return "edit";}
+		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Save"){return "save";}
+
+		return "new";	
+   }
+   
 	public function invNum( $invoice ){
 		$formName="InvoiceNum";
 		$this_page = basename($_SERVER['REQUEST_URI']);
@@ -31,7 +44,6 @@ class Invoice extends Base
 	}
 	
 
-
 	public function editComment($invoice){
 		$formName="InvoiceCommentEdit";
 		if(!array_key_exists('Comment', $invoice)) $invoice['Comment'] = "";
@@ -50,17 +62,27 @@ class Invoice extends Base
 		return $results;
 	}
 	
-	public function details($invoice){
+	public function details($invoice, $mode){
 		$formName="InvoiceDetails";
 		if(!array_key_exists('invoice_num', $invoice)) $invoice['invoice_num'] = "";
+
+		$errors = array();
+		if(array_key_exists("ERROR", $invoice) && count($invoice['ERROR']) > 0){
+			$errors=array_fill_keys(explode(",", $invoice['ERROR']), true);
+		}
+		$readOnly = !( ($mode == "edit") || ($mode == "new") );
 		
 		$results="";
+		
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='POST'>" . "\n" ;
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
 //		$results .=  "<legend>$formName</legend>" . "\n";
 		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount");
 		foreach($fields as $name)
 		{
+			$err=(array_key_exists($name, $errors));
+			
 			if( strncmp($name, "Date", 4) == 0 && strlen($invoice[$name]) > 9) // Trim off timestamp
 			{
 				$invoice[$name] = substr($invoice[$name], 0, 10);
@@ -79,14 +101,20 @@ class Invoice extends Base
 			if($name == "TotalRetail") $value = "$" . number_format($invoice['TotalRetail'] ,2);
 			if($name == "ShippingAmount") $value = "$" . number_format($invoice['ShippingAmount'] ,2);
 			
-			$results .=  $this->textField($name, $this->fieldDesc($name), false, $value,'',$JS) . "\n";
+			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value,'',$JS, $readOnly) . "\n";
 			if($this->isInternetExploder() && ( $name=="DateShipped"  || $name=="PONumber" ) )
 					$results .=  "</BR>";
 		}
+
+		if(array_key_exists('CustomerID', $invoice)) $results .=  $this->hiddenField('CustomerID', $invoice['CustomerID']);		
+		if(array_key_exists('Invoice', $invoice)) $results .=  $this->hiddenField('Invoice', $invoice['Invoice']);		
 		
-		
-		//		PO#, TotalRetail, Shipping$, ShippingInfo, ShippingLocation, discount
-//		totalPayments, totalknives		
+		//		PO#, TotalRetail, Shipping$, ShippingInfo, ShippingLocation, discount totalPayments, totalknives
+	
+		// Add buttons to save/update	
+		if($mode == "edit") 	$results .=  $this->button("submit", "Update");
+		if($mode == "new")		$results .=  $this->button("submit", "Save");
+
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >\n";
 		
@@ -94,7 +122,7 @@ class Invoice extends Base
 	}
 	
 	function invAcknowledgmentLink($invoice){
-		$results .= "<span class='invoiceAckLink'>";
+		$results = "<span class='invoiceAckLink'>";
 		$results .= "<a href='CustInvAck.php?Invoice=" . $invoice['Invoice'] . "'>Invoice Acknowledgement";
 		$results .= "</a></span>";
 		$results .= "</BR>";
@@ -124,7 +152,7 @@ class Invoice extends Base
 	
 	public function getCustomerInvoiceList($invoices){
 		$formName="CustomerInvoiceList";
-		$results .=  "<div id='$formName'>" . "\n";
+		$results =  "<div id='$formName'>" . "\n";
 		$fields = array('Invoice', 'DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'Due');
 //		, 'TCol1', 'TCol2'
 		foreach($fields as $field)

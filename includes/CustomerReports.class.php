@@ -152,9 +152,11 @@ class CustomerReports
 		$results .= "</div><!-- End leftHalf -->";
 				
 		$billAddress=$address;
-		if($invoice['BillingAddressType'] == 1) $billAddress="SHOP SALE";
-		if($invoice['ShippingAddressType'] == 2) $billAddress="SAME";
-		if($invoice['ShippingAddressType'] == 3) $billAddress="PICK UP";
+		if(array_key_exists('BillingAddressType', $invoice) ){
+			if($invoice['BillingAddressType'] == 1) $billAddress="SHOP SALE";
+			if($invoice['ShippingAddressType'] == 2) $billAddress="SAME";
+			if($invoice['ShippingAddressType'] == 3) $billAddress="PICK UP";
+		}
 		
 		$results .= "<div class='vertical'>S</BR>H</BR>I</BR>P</div>";
 		$results .= "<div class='rightHalf'>";

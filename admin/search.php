@@ -26,7 +26,9 @@ session_start();
 
 $formValues = getFormValues();
 $searchForms = new Search();
-if(array_key_exists('searchValue', $formValues) && $searchForms->getSearchType($formValues) == 'invoice'){
+$searchType = $searchForms->getSearchType($formValues);
+if($searchType == 'invoice'){
+//if(array_key_exists('searchValue', $formValues) && $searchForms->getSearchType($formValues) == 'invoice'){
 	$invoiceNum = $formValues['searchValue'];
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 }
@@ -40,13 +42,17 @@ if(array_key_exists('searchValue', $formValues) && $searchForms->getSearchType($
 		<div class="content">
 			<?php 	
 				echo $searchForms->searchScreen($formValues);
-				
-				$customers = $searchForms->getSearchResults($formValues);
-				if(count($customers) == 0){
-					$customerForms = new Customer();
-					echo $customerForms->newCustomerForm($formValues);
-				} else {				
-					echo $searchForms->displaySearchResults($customers, $formValues);
+				if(strlen($searchType) > 0)
+				{
+					echo $searchType;
+					
+					$customers = $searchForms->getSearchResults($formValues);
+					if(count($customers) == 0){
+						$customerForms = new Customer();
+						echo $customerForms->newCustomerForm($formValues);
+					} else {				
+						echo $searchForms->displaySearchResults($customers, $formValues);
+					}
 				}
 				
 //				echo debugStatement(dumpDBRecord($formValues));

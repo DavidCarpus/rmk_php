@@ -3,6 +3,65 @@ include_once "db.php";
 
 class Invoices
 {
+	public $validationError;
+	
+	function blank(){
+		$currDate = time();
+		$span=4*12;
+//		$currDate = strtotime("2008/11/09");
+		$estDate = strtotime(date("Y-m-d", $currDate)  . " + $span months" ); // Add 'backlog' time
+		$days = (5-date("N", $estDate));
+		$days = ($days < 0? $days+7:$days);
+		$estDate = strtotime(date("Y-m-d", $estDate) . "+ $days days"); // move est date to Fri
+
+		return array('DateOrdered'=>date("Y-m-d", $currDate),
+			'DateEstimated'=>date("Y-m-d", $estDate),
+			'DateShipped'=>"",
+			'TotalRetail'=>0,
+			'ShippingAmount'=>0,
+			'PONumber'=>"",
+			'ShippingInstructions'=>"",
+			'KnifeCount'=>0,
+		);
+	}
+	function addFormValues($invoice, $formValues)
+	{
+		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 
+			'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount", 'Invoice');
+		foreach($fields as $name)
+		{
+			if(array_key_exists($name, $formValues))
+			{
+				$invoice[$name] = $formValues[$name];
+			}
+		}
+		return $invoice;
+	}
+	
+	function validateNew($values)
+	{
+		$valid = true;
+		$this->validationError="";
+		
+		// strip $ from values
+		$values['TotalRetail'] = preg_replace("/\\$/", '', $values['TotalRetail']);
+		$values['ShippingAmount'] = preg_replace("/\\$/", '', $values['ShippingAmount']);
+		
+		if(!is_numeric($values['TotalRetail'])){$this->validationError .= "TotalRetail,"; $valid=false;}
+		if(!is_numeric($values['ShippingAmount'])){$this->validationError .= "ShippingAmount,"; $valid=false;}
+		
+		// trim extra comma
+		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
+		return $valid;
+	}
+	
+	function save($invoice)
+	{
+		unset($invoice["KnifeCount"]);
+		if(strlen($invoice["DateShipped"]) <=0) 		unset($invoice["DateShipped"]);
+		return saveRecord("Invoices", "Invoice", $invoice);
+	}
+	
 	function details($invNum)
 	{
 		$query = "Select * from Invoices where Invoice=$invNum";
@@ -30,12 +89,25 @@ class Invoices
 	}
 	
 	function items($invNum){
-		$query = "Select IE.*, P.BladeItem, P.PartCode from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID ".
+		$query = "Select IE.*, P.BladeItem, P.PartCode, P.PartType from InvoiceEntries IE ".
+				" left join Parts P on P.PartID = IE.PartID ".
+//				" left join PartTypes PPT on P.PartType=PPT.PartTypeID ".
 				" where Invoice=$invNum order by SortField";
 //		echo debugStatement($query);
 		return getDbRecords($query);
 	}
 	
+	function computeKnifeCount($entries ){
+		$cnt=0;
+		foreach($entries as $entry){
+			if($entry['PartType'] <> 99)
+			{
+				$cnt += $entry['Quantity'];
+				echo debugStatement(dumpDBRecord($entry) );
+			}
+		}
+		return $cnt;
+	}
 	function knifeListHelpItems($invNum){
 		$query = "select sum(Quantity) as Cnt, P.PartCode from InvoiceEntries IE
 					Left join Parts P on P.PartID = IE.PartID
@@ -54,8 +126,8 @@ class Invoices
 	}
 	
 	function itemsWithAdditions($invNum){
-		$query = "Select IE.* from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
-
+		$query = "Select IE.*, P.BladeItem, P.PartType from InvoiceEntries IE left join Parts P on P.PartID = IE.PartID  where Invoice=$invNum order by SortField";
+//		echo $query;
 		$entries = getDbRecords($query);
 		foreach ($entries as $key=>$entry){
 			$entries[$key]['Additions'] = $this->additions($entry['InvoiceEntryID']);
@@ -169,14 +241,15 @@ class Invoices
 		return $results;
 	}
 
-	public function getCustomerInvoices($customerID, $older=false, $sort="invoice DESC"){
+	public function getCustomerInvoices($CustomerID, $older=false, $sort="invoice DESC"){
 		if($older){
-			$query = "Select * from Invoices where CustomerID=$customerID";
+			$query = "Select * from Invoices where CustomerID=$CustomerID";
 		} else {
 			$years = 5;
-			$query = "SELECT * FROM Invoices I where customerid = $customerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
+			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
 		}
 		$query .= " order by $sort";
+
 		$invoices = getDbRecords($query);
 		foreach ($invoices as $key=>$invoice) {
 //			$costs = $this->computeCosts($invoice);

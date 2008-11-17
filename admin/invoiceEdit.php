@@ -2,20 +2,21 @@
 /* Created on Feb 8, 2006 */
 include_once "../config.php";
 
-include_once "../includes/db/db.php";
-include_once "../includes/db/db_requests.php";
-include_once "../includes/htmlHead.php";
-include_once "../includes/adminFunctions.php";
+include_once INCLUDE_DIR. "htmlHead.php";
+include_once INCLUDE_DIR. "adminFunctions.php";
 
-include_once "../includes/forms/Shop.class.php";
-include_once "../includes/forms/Invoice.class.php";
-include_once "../includes/forms/InvoiceEntry.class.php";
-include_once "../includes/forms/Customer.class.php";
-include_once "../includes/forms/Part.class.php";
-include_once "../includes/db/Parts.class.php";
-include_once "../includes/db/Customers.class.php";
-include_once "../includes/db/Invoices.class.php";
-include_once "../includes/db/Parts.class.php";
+include_once DB_INC_DIR. "db.php";
+include_once DB_INC_DIR. "db_requests.php";
+include_once DB_INC_DIR. "Parts.class.php";
+include_once DB_INC_DIR. "Customers.class.php";
+include_once DB_INC_DIR. "Invoices.class.php";
+include_once DB_INC_DIR. "Parts.class.php";
+
+include_once FORMS_DIR. "Shop.class.php";
+include_once FORMS_DIR. "Invoice.class.php";
+include_once FORMS_DIR. "InvoiceEntry.class.php";
+include_once FORMS_DIR. "Customer.class.php";
+include_once FORMS_DIR. "Part.class.php";
 
 session_start();
 //if(!loggedIn()){
@@ -39,16 +40,49 @@ $customerForms = new Customer();
 $partsFormClass = new Part();
 
 $formValues = getFormValues();
-$invoiceNum = $formValues['Invoice'];
-if($invoiceNum == 0 ) 	$invoiceNum = $formValues['invoice_num'];
 
-$customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
-$invoice = $invoiceClass->details( $invoiceNum );
-$entries = $invoiceClass->items($invoiceNum);
-$invoice["KnifeCount"] = 0;
-foreach($entries as $entry)
-	$invoice["KnifeCount"] += $entry['Quantity'];
+$mode=$invoiceForms->entryFormMode($formValues);
+//$formValues['mode'] = $mode;
 
+switch ($mode) {
+	case "new":
+		$invoice=$invoiceClass->blank();
+		$customer = $customerClass->fetchCustomer($formValues['CustomerID']);
+		$invoice['CustomerID'] = $customer['CustomerID'];
+		break;
+	case "edit":
+		$invoiceNum = $formValues['Invoice'];
+		if($invoiceNum == 0 ) 	$invoiceNum = $formValues['invoice_num'];
+		$customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
+		$invoice = $invoiceClass->details( $invoiceNum );
+		$entries = $invoiceClass->items($invoiceNum);
+		
+		$invoice['CustomerID'] = $customer['CustomerID'];
+		$invoice["KnifeCount"] = $invoiceClass->computeKnifeCount($entries);
+		break;
+	case "validate":
+		$invoice=$invoiceClass->blank();
+		$invoice = $invoiceClass->addFormValues($invoice, $formValues);
+		$customer = $customerClass->fetchCustomer($formValues['CustomerID']);
+		$invoice['TotalRetail'] = preg_replace("/\\$/", '', $invoice['TotalRetail']);
+		$invoice['ShippingAmount'] = preg_replace("/\\$/", '', $invoice['ShippingAmount']);
+		
+		$valid = $invoiceClass->validateNew($invoice);
+		if(!$valid){
+			$invoice['ERROR']= $invoiceClass->validationError;				
+		} else {
+			$knifeCnt = $invoice['KnifeCount']; // Need to save since it is 'unset' upon saving			
+			$invoice = $invoiceClass->save($invoice);
+			$invoice['KnifeCount'] = $knifeCnt;
+			$entries = $invoiceClass->items($invoiceNum);
+			unset($formValues["submit"]);
+			$mode="edit";
+		}
+		break;	
+	default:
+		break;
+}
+	
 ?>
 
 <?php echo logo_header("admin", ".."); ?>
@@ -65,17 +99,21 @@ foreach($entries as $entry)
 					echo $customerForms->summary( $customer );
 					echo "\n";
 					echo "\n";
-					echo $invoiceForms->details( $invoice );
+					echo $invoiceForms->details( $invoice, $mode );
 					echo "\n";
 					echo "\n";
-					echo $invoiceForms->buttonLinks( $invoice );					
-					echo "\n";
-					echo "\n";
-					$entries = $invoiceClass->itemsWithAdditions( $invoiceNum ); // 56031
-					echo $invoiceEntryForms->knifeListTable( $entries, 0 );
-					echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
-					
-//					echo debugStatement(dumpDBRecord($formValues));;
+					if($mode == "edit")
+					{
+						echo $invoiceForms->buttonLinks( $invoice );					
+						echo "\n";
+						echo "\n";
+						$entries = $invoiceClass->itemsWithAdditions( $invoice['Invoice'] ); // 56031
+						echo $invoiceEntryForms->knifeListTable( $entries, 0 );
+						echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
+					}
+//					echo debugStatement(dumpDBRecord($formValues) . $mode); // $invoice
+//					echo debugStatement(dumpDBRecord($invoice) ); 
+//					echo debugStatement(dumpDBRecord($customer) ); 
 					?>
 		</div>
 	</div>

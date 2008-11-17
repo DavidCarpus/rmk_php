@@ -28,6 +28,7 @@ class Customers
 	function fetchCustomersByLname($lastName){
 		$lastName = trim($lastName); 
 		$query = "Select C.* from Customers C where C.LastName like '%$lastName%'";
+		$query .= " order by C.LastName, C.FirstName";
 //		echo $query;
 		return getDbRecords($query);
 	}
@@ -35,6 +36,14 @@ class Customers
 		$firstName = trim($firstName); 
 		$lastName = trim($lastName); 
 		$query = "Select C.* from Customers C where C.LastName like '%$lastName%' and C.FirstName like '%$firstName%'";
+//		echo $query;
+		return getDbRecords($query);
+	}
+	
+	function fetchCustomersByPhone($phone)
+	{
+		$phone = trim($phone); 
+		$query = "Select C.* from Customers C where C.PhoneNumber like '%$phone%'";
 //		echo $query;
 		return getDbRecords($query);
 	}
