@@ -26,7 +26,7 @@ session_start();
 				<BR>
 				<a href='dealers.php'>Dealer List</a>
 				<BR>
-				<a href='Pricing.php'>Pricing (barely there, 2008 prices)</a>
+				<a href='Pricing.php'>Parts (Under Cunstruction)</a>
 				<BR>
 		</div>
 	</div>

@@ -260,4 +260,19 @@ span.cap-g {
 	font-weight: bold; 
 }
 
+#PartList{
+	float: left;
+	display: block;
+}
+
+
+#PartList br{
+	clear: left;
+}
+
+#PartList .PartCode	{width: 120px;  text-align: left;   float: left; display: block; }
+#PartList .Price			{width: 80px;  text-align: right; float: left; display: block; }
+
+
+
 #toDoList span.done{ text-decoration: line-through; }

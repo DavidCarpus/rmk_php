@@ -18,7 +18,8 @@ session_start();
  echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
  $formValues = getFormValues();
 $Parts = new Part();
- 
+$formValues['Year'] = 2005;
+
 ?>
 <LINK href="../Style.css" rel="stylesheet" type="text/css">
 <LINK href="../CustomerReports.css" rel="stylesheet" type="text/css">
@@ -32,7 +33,7 @@ $Parts = new Part();
 			<?php 	
 					echo "Pricing";
 					echo "</BR>";
-					echo $Parts->partPricing();
+					echo $Parts->partPricingTable($formValues);
 //					echo debugStatement(dumpDBRecord($formValues));;
 			?>
 		</div>

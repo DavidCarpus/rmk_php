@@ -16,6 +16,17 @@ class Parts
 		return $this->fetchPart($partID, $year);		
 	}
 	
+	function fetchAllPart($partid)
+	{
+		$part =  getBasicSingleDbRecord("Parts", "PartID", $partid);
+		
+		$query = "Select Year, Price from PartPrices 
+			where PartID = $partid " . 
+			" order by Year";
+		$part['Prices'] =  getDbRecords($query);
+		return $part;
+	}
+	
 	function fetchPart($partid, $year){
 		$this->fetchParts($year);
 		while( !array_key_exists($year, $this->partPrices)  && $year < 2020 ){
@@ -43,6 +54,20 @@ class Parts
 		return $this->partPrices[$year];
 	}
 	
+	function blank(){
+		return array('PartCode'=>"",
+			'Description'=>"",
+			'Discountable'=>0,
+			'BladeItem'=>0,
+			'Taxable'=>0,
+			'Sheath'=>0,
+			'Active'=>0,
+			'PartType'=>0,
+			'SortField'=>"",
+			'AskPrice'=>0,
+		);
+	}
+		
 	function currentYearPartPrice($partCode){
 		$year=date("Y");
 //		echo debugStatement("Fetch price for $partCode");

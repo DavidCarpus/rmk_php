@@ -103,7 +103,7 @@ class Invoices
 			if($entry['PartType'] <> 99)
 			{
 				$cnt += $entry['Quantity'];
-				echo debugStatement(dumpDBRecord($entry) );
+//				echo debugStatement(dumpDBRecord($entry) );
 			}
 		}
 		return $cnt;

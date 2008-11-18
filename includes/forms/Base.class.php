@@ -25,8 +25,9 @@ class Base
 						'DateOrdered'=>'Ordered','DateEstimated'=>'Estimated','DateShipped'=>'Shipped', "KnifeCount"=>"Knives",
 						 'TotalRetail'=>'Retail', 'ShippingAmount'=>'Shipping', 'PONumber'=>'PO#', 
 						 "ShippingInstructions"=>"Shipping Info", "Quantity"=>"Quantity",  "PartDescription"=>"Part",
-						 "Price"=>"Price", "Comment"=>"Comment", "searchValue"=>"Search Value"
-						 
+						 "Price"=>"Price", "Comment"=>"Comment", "searchValue"=>"Search Value",
+						 'PartCode'=> "PartCode", 'Description'=>"Description", 'Discountable'=>'Discountable', 
+						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable'
 						);
 //array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment')
 						//				'qty'=> 'Quantity', , ""=>""

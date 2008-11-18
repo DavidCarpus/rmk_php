@@ -370,3 +370,8 @@ span.helptext a:hover span {
     	text-align: left; 
     	text-decoration: none;
 }
+
+/* ================================================================================ */
+#PartEdit input		{width: 80px;}
+#PartEdit #PartCode		{width: 320px;}
+#PartEdit #Description		{width: 320px;}

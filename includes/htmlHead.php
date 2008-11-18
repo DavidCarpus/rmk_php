@@ -103,6 +103,7 @@ function dumpPOST_GET(){
 function checkbox($name, $label, $required=false, $value=''){
 	if($value == 'on') $checked='checked=1';
 	if($value == 1) $checked='checked=1';
+	if($value == 0) $checked='';
 	
 	if($required)
 		return "<input type='checkbox' id='$name'  name='$name' $checked>";
