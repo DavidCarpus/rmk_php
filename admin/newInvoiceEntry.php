@@ -50,10 +50,14 @@ function editForm(){
 		global $invoice,$customer,$entries, $partsFormClass;
 		global $formValues;
 		
+	$results .= "<html>\n";
+//	$results .= headSegment();
+
 	$results = "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 	$results .= "<LINK href='../Style.css'' rel='stylesheet' type='text/css'>";
 	$results .= "<LINK href='../print.css'' rel='stylesheet' type='text/css' media='print'>";
 	$results .= "<LINK href='../DataEntry.css'' rel='stylesheet' type='text/css' media='screen'>";
+	$results .= "\n<body  onLoad='defaultField(\"form_NewInvoiceEntry\",\"PartDescription\");'>\n";
 	$results .= logo_header("admin", "..");
 	$results .= "<div class='mainbody'>";
 	$results .= "<div class='centerblock'>";
@@ -72,8 +76,11 @@ function editForm(){
 	$results .= $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
 	$results .="</div></div>";
 
-		$results .= footer();
 	
+	$results .= footer();
+	$results .= "</body>";
+	$results .= "</html>";
+		
 	return $results;
 }
 

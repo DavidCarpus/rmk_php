@@ -109,6 +109,7 @@ fieldset {
 #InvoiceKnifeList{
 	float: left;
 	display: block;
+	width: 910px;
 }
 
 
@@ -142,6 +143,7 @@ fieldset {
 	float: left;
 	display: block;
 	 padding-right: 10px;
+	 width: 600px;
 }
 
 #invoicePayments br{
@@ -180,13 +182,31 @@ fieldset {
 	display: block;
 }
 /* ================================================================================ */
-#NewInvoicePayment{
+.NewInvoicePayment_UnHide{
+	clear: left;
+	float: left;
+	display: block;
+	visibility: visible;
+}
+.NewInvoicePayment_UnHide br{	clear: left;}
+
+.NewInvoicePayment{
 	clear: left;
 	float: left;
 	display: none;
+	visibility: hidden;
+/*
+	display: block;
+	visibility: visible;
+*/
+/*	
+	display: none;
+	visibility: hidden;
+*/
 }
 
-#NewInvoicePayment br{	clear: left;}
+
+.NewInvoicePayment br{	clear: left;}
 
 
 /* ================================================================================ */

@@ -36,6 +36,11 @@ function debugStatement($statement){
 	
 	return "<div class='debug'><HR >". $statement . "<BR><HR></div>";
 }
+function debugStatementHeaded($descStatement, $statement){
+	if(! (isDebugMachine() || isDebugAccess() ) ) return;
+	
+	return "<div class='debug'><B>$descStatement</B><BR><HR >$statement<HR></div>";
+}
 
 function dumpBackTrace(){
 	global $g_lastDebug ;

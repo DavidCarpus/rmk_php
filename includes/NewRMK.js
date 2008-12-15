@@ -29,6 +29,21 @@ function dumpProps(obj, parent) {
       }
    }
 }
+
+function defaultField(formName, fieldName)
+{
+	var form = document.getElementById(formName);
+	for ( var _elem_num in form.elements){
+		var elem = form.elements[_elem_num]
+		if(elem.name == fieldName){
+			elem.focus();
+			elem.select();
+		}
+	}
+//	document.form.field1.focus();
+//	document.form.field1.select();
+}
+
 function recomputeTotalRetail(form, newBaseRetail){
 	var featureTotal=0;
 	var qty=0;
@@ -153,16 +168,35 @@ function newInvoiceEntrySubmit(form){
 }
 
 function newPaymentSubmit(form){
-	for ( var _elem_num in form.elements){
-		var _elem = form.elements[_elem_num];
+//for(i=0; i<form.elements.length; i++){alert("Field is:" + form.elements[i].name);}		return false;
+	
+	for(i=0; i<form.elements.length; i++){
+//		alert("Test" + _elem_num);
+		var _elem = form.elements[i];
 		if(_elem.type == 'submit' ){
+//			dumpProps(_elem);
 			if( _elem.value == "Add Payment"){
-				var theDiv = document.getElementById('NewInvoicePayment');
-				_elem.value = "Submit";
+				var theDiv = document.getElementById('NewInvoicePaymentDiv');
+//				alert(theDiv.className);
+				theDiv.className="NewInvoicePayment_UnHide";
 				theDiv.style.display = "block";
+				theDiv.style.visibility = "visible";
+//				alert(theDiv.className);
+//				alert(theDiv.style.display+" : "+theDiv.style.visibility);
+//				alert(theDiv.style.display+" : "+theDiv.style.visibility);
+				_elem.value = "Submit";
+				break;
 			} else {
 				return true;
 			}
+		}
+	}
+
+	for(i=0; i<form.elements.length; i++){
+		var _elem = form.elements[i];
+		if(_elem.name == 'Payment' ){
+			_elem.focus();
+			_elem.select();
 		}
 	}
 	return false;

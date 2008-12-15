@@ -78,16 +78,17 @@ class Payment extends Base
 		}
 			
 		$results="";
-		$results .=  "<form name='$formName' action='newPayment.php' method='GET' onsubmit='return newPaymentSubmit(this)'>" . "\n" ;
+
+		$results .=  "\n<form name='$formName' action='newPayment.php' method='GET' onsubmit='return newPaymentSubmit(this)'>" . "\n" ;
 		if($editMode){
-			$results .=  "<span id='$formName"."Edit'>" . "\n";
+			$results .=  "\n<div class='$formName"."Edit'>" . "\n";
 		} else{
-			$results .=  "<span id='$formName'>" . "\n";
+			$results .=  "\n<div class='$formName' id='NewInvoicePaymentDiv'>" . "\n";
 		}
+
 		$fields = array("PaymentDate" , "Payment", "Number" , "VCode" , "ExpirationDate");
 		foreach($fields as $name)
 		{
-			$results .= "<span>";
 			$value="";
 			if(array_key_exists($name, $formValues)){
 				$value=$formValues[$name];
@@ -95,17 +96,15 @@ class Payment extends Base
 				$value=date("Y-m-d");
 			}
 			$results .=  "<input class='$name' name='$name' value='$value'>";
-			$results .= "</span>\n";
 		}
 		$results .=  "<input type='hidden' name='Invoice' value='$invoiceNumber'>";
-		$results .= "</span><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -- >\n";
 		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Submit"){
 			$results .=  "<BR>" . $this->button("submit", "Submit");
 		} else {
 			$results .=  "<BR>" . $this->button("submit", "Add Payment");
 		}
 		$results .= "</form>";
-//		$results .= dumpDBRecord($formValues);
 		
 		return $results;
 	}
