@@ -20,10 +20,13 @@ class Parts
 	{
 		$part =  getBasicSingleDbRecord("Parts", "PartID", $partid);
 		
-		$query = "Select Year, Price from PartPrices 
+		$query = "Select PartPriceID, Year, Price from PartPrices 
 			where PartID = $partid " . 
 			" order by Year";
-		$part['Prices'] =  getDbRecords($query);
+		$prices = getDbRecords($query);
+		foreach ($prices as $price){
+			$part['Prices'][$price['Year']] =  $price;
+		}
 		return $part;
 	}
 	
@@ -67,7 +70,24 @@ class Parts
 			'AskPrice'=>0,
 		);
 	}
+	
+	function save($part)
+	{
+		$prices = $part['Prices'];
+		unset($part['Prices']);
+		$part = saveRecord("Parts", "PartID", $part);
 		
+		foreach ($prices as $price)
+		{
+			$query="Update PartPrices set Price=" . $price['Price'] . 
+				" where Year=". $price['Year'] . " and PartID=" . $part['PartID'];
+			executeSQL($query);
+		}	
+		$part['Prices'] = $prices;
+		
+		return $part;
+	}
+	
 	function currentYearPartPrice($partCode){
 		$year=date("Y");
 //		echo debugStatement("Fetch price for $partCode");

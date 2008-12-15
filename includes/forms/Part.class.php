@@ -40,14 +40,39 @@ class Part extends Base
 	
 	function partEditLink($part)
 	{
-		 return "<a href='partEdit.php?PartID=" . $part['PartID'] . "'>" . $part['PartCode'] . "</a> \n";
+		$strikeStart="";
+		$strikeEnd="";
+		if(array_key_exists('Active', $part) && ($part['Active'] == 0 || $part['Active'] == '0'))
+		{ 
+			$strikeStart="<STRIKE>";
+			$strikeEnd="</STRIKE>";
+//			echo debugStatement("$strikeStart:" . dumpDBRecord($part));
+		}
+//		if($part['PartCode'] == '1-8')
+//			echo debugStatement("$strikeStart:" . dumpDBRecord($part));
+		 return "$strikeStart<a href='partEdit.php?PartID=" . $part['PartID'] . "'>" . $part['PartCode'] . "</a>$strikeEnd\n";
 //		return $part['PartCode'];
 	}
+	
+	function partFromFormValues($formValues)
+	{
+		$part = $this->partsClass->blank();
+		$part = $this->addFormValues($part,$formValues);
+		return $part;
+	}
+		
 	
 	function addFormValues($part, $formValues)
 	{
 		$fields = array('PartCode', 'Description', 'Discountable', 'BladeItem', 'Taxable', 
 		"PartID", "PartType", 'Active', "Sheath");
+		foreach (array('Discountable', 'BladeItem', 'Taxable', 'Active', 'Sheath') as $boolFld){
+			if(array_key_exists($boolFld, $formValues) && $formValues[$boolFld] == 'on') 
+				$formValues[$boolFld] = 1;
+			if(!array_key_exists($boolFld, $formValues)) 
+				$formValues[$boolFld] = 0;
+		}
+
 		foreach($fields as $name)
 		{
 			if(array_key_exists($name, $formValues))
@@ -59,7 +84,7 @@ class Part extends Base
 		for($year = 1988; $year<$maxYear; $year++){
 			if(array_key_exists($year, $formValues))
 			{
-				$part['Prices'][] = array('Year'=>$year, 'Price'=>$formValues[$year]);
+				$part['Prices'][$year] = array('Year'=>$year, 'Price'=>$formValues[$year]);
 			}
 		}
 		return $part;
