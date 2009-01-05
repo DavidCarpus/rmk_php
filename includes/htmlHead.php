@@ -508,11 +508,11 @@ function isLocalAccess(){
 		return true;
 	}
 	if($_SERVER['REMOTE_ADDR'] == gethostbyname("randallmade.dyndns.org")
-	 ||	$_SERVER['REMOTE_ADDR'] == '67.8.255.165'
 	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("carpus.homelinux.org") 
 	 ||	$_SERVER['REMOTE_ADDR'] == gethostbyname("grandall.dyndns.org") 
 	 ){
-				return true;
+//	 ||	$_SERVER['REMOTE_ADDR'] == '67.8.255.165'
+	 	return true;
 			}
 	
 	return false;

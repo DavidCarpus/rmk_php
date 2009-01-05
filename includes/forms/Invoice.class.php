@@ -34,7 +34,7 @@ class Invoice extends Base
 //		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
 			$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
 //		}
-		$results .=  $this->textField('invoice_num', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
+		$results .=  $this->textField('Invoice', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
 		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
 			$results .= " <a id='viewInvoiceLink' href='invoiceEdit.php?Invoice=" . $invoice['Invoice'] . "'>View Invoice</a>";
 		}

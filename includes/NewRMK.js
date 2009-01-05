@@ -268,7 +268,7 @@ function invoiceNumber(selfForm)
 	xmlHttp=getXmlHttpObject()
 	if(!xmlHttp) alert("No xmlHttp object??");
 	
-	xmlHttp.open("GET","invoiceData.php?invoice_num="+selfForm.invoice_num.value,true);
+	xmlHttp.open("GET","invoiceData.php?Invoice="+selfForm.Invoice.value,true);
 //	alert(selfForm.invoice_num.value);
   	xmlHttp.send(null);
   	
@@ -288,6 +288,9 @@ function invoiceNumber(selfForm)
 				 document.getElementById("InvoiceFinanceSummary").innerHTML = local['InvoiceFinanceSummary'];
 			if(document.getElementById("NewInvoiceEntry") != null)
 				 document.getElementById("NewInvoiceEntry").innerHTML = local['NewInvoiceEntry'];
+
+			if(document.getElementById("CustomerSummaryDisp") != null)
+				 document.getElementById("CustomerSummaryDisp").innerHTML = local['CustomerSummaryDisp'];
 
 			updateViewInvoiceLink(selfForm.invoice_num.value);
 			updateLinks("InvoiceDetailButtonLinks",local['InvoiceDetails'] );

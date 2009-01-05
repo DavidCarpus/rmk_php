@@ -27,7 +27,8 @@ class Base
 						 "ShippingInstructions"=>"Shipping Info", "Quantity"=>"Quantity",  "PartDescription"=>"Part",
 						 "Price"=>"Price", "Comment"=>"Comment", "searchValue"=>"Search Value",
 						 'PartCode'=> "PartCode", 'Description'=>"Description", 'Discountable'=>'Discountable', 
-						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable'
+						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable', 
+						 'Memo'=>'Memo', 'Dealer'=>'Dealer', 'Terms'=>'Terms', 'Discount'=>'Discount'
 						);
 //array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment')
 						//				'qty'=> 'Quantity', , ""=>""
@@ -95,13 +96,24 @@ class Base
 	}
 	
 	function checkbox($name, $label, $required=false, $value=''){
-		if($value == 'on') $checked='checked=1';
-		if($value == 1) $checked='checked=1';
+		$results="";
+		$checked="";
+//		echo debugStatement("Value:$value - chk:$checked");
+		if(is_numeric($value) && $value == 1) 	$checked='checked=1';
+		else if(!is_numeric($value) && $value=="on")	$checked='checked=1';
+//		echo debugStatement("Value:$value - chk:$checked #" . is_numeric($value));
 		
 		if($required)
-			return "<input type='checkbox' id='$name'  name='$name' class='checkbox' $checked>\n";
+			$results .= "<label for='$name' class='required'>$label</label>";
 		else
-			return "<input type='checkbox' id='$name' name='$name' class='checkbox' $checked>\n";
+			$results .= "<label for='$name' >$label</label>";
+		
+		if($required)
+			$results .= "<input type='checkbox' id='$name'  name='$name' class='checkbox' $checked>\n";
+		else
+			$results .= "<input type='checkbox' id='$name' name='$name' class='checkbox' $checked>\n";
+			
+		return $results;
 	}
 
 	function selection($name, $values, $label, $selected="", $autosubmit=false){

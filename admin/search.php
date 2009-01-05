@@ -44,7 +44,7 @@ if($searchType == 'invoice'){
 				echo $searchForms->searchScreen($formValues);
 				if(strlen($searchType) > 0)
 				{
-					echo $searchType;
+//					echo $searchType;
 					
 					$customers = $searchForms->getSearchResults($formValues);
 					if(count($customers) == 0){

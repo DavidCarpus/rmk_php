@@ -3,6 +3,9 @@ include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
 
+include_once DB_INC_DIR. "Customers.class.php";
+
+include_once FORMS_DIR. "Customer.class.php";
 
 session_start();
 //if(!loggedIn()){
@@ -12,6 +15,43 @@ session_start();
 //}
 
 $formValues = getFormValues();
+$customerClass = new Customers();
+$customerForms = new Customer();
+
+
+$mode=$customerForms->entryFormMode($formValues);
+$formValues['mode'] = $mode;
+
+switch ($mode) {
+	case "edit";
+		$customer = $customerClass->fetchCustomer($formValues['CustomerID']);
+//		echo debugStatement(dumpDBRecord($customer));
+		break;
+	case "new";
+		$customer = $customerClass->blank();
+		break;
+	case "validate":
+		$customer = $customerClass->blank();
+		$customer = $customerClass->addFormValues($customer, $formValues);
+		$customer['CustomerID'] = $formValues['CustomerID'];
+		
+		$valid = $customerClass->validate($customer);
+		if(!$valid){
+			$customer['ERROR']= $customerClass->validationError;				
+		} else {
+			if($formValues['Dealer']=='on') $customer['Dealer']=1;
+			
+			$customer = $customerClass->save($customer);
+//			echo debugStatement(dumpDBRecord($customer));
+			
+			$mode="edit";
+			header("Location: "."search.php?CustomerID=" . $formValues['CustomerID']);
+			return;
+		}
+		
+		break;
+}
+		
 
 ?>
 <LINK href="../Style.css" rel="stylesheet" type="text/css">
@@ -24,7 +64,8 @@ $formValues = getFormValues();
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php 	
-				echo (dumpDBRecord($formValues))
+				echo $customerForms->newCustomerForm( $customer );
+//				echo debugStatement(dumpDBRecord($formValues));
 				?>
 		</div>
 	</div>

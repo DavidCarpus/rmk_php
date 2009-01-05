@@ -121,7 +121,9 @@ class Search extends Base
 		} else {
 			$invoiceForms = new Invoice();
 			$invoiceDB = new Invoices();
-			$results .= $customerForms->summary( $searchResults[0] );
+			
+			$results .= $customerForms->display( $searchResults[0] );
+			
 			$older = (array_key_exists('filter', $formValues) && $formValues['filter'] == 'Older');
 			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older);
 			$results .= $invoiceForms->getCustomerInvoiceList($invoices);
@@ -132,6 +134,7 @@ class Search extends Base
 			if(array_key_exists('CustomerID', $formValues)){
 				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
 			}
+			
 			$filter = "Older";
 			if($older) $filter = "Newer";
 			$results .=  $this->button("filter", $filter);

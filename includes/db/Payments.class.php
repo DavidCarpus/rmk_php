@@ -53,6 +53,17 @@ class Payments
 		
 		return "unknown";
 	}
+	
+	function formatExpirationDate($date){
+		$date = str_replace(" ", "-",$date);
+		$date = str_replace("/", "-",$date);
+		$dateParts = split("-", $date);
+		if(strlen($dateParts[0]) <= 2 && strlen($dateParts[1]) == 4) $date = $dateParts[1] . "-" . $dateParts[0] . "-01";
+		if(strlen($dateParts[0]) == 2 && strlen($dateParts[1]) == 2) $date = "20" . $dateParts[1] . "-" . $dateParts[0] . "-01";
+		return date("Y-m-d", strtotime($date) );
+	}
+
+	
 	function validExpirationDate($date){
 		$date = str_replace(" ", "-",$date);
 		$date = str_replace("/", "-",$date);
@@ -88,7 +99,7 @@ class Payments
 		if($values['ExpirationDate'] == '') $values['ExpirationDate']=$values['PaymentDate'];
 		$payment = array("Invoice"=>$values['Invoice'],"Number"=>$values['Number'],"PaymentDate"=>$values['PaymentDate'],
 							"ExpirationDate"=>$values['ExpirationDate'],"Payment"=>$values['Payment'],"VCode"=>$values['VCode']);
-		debugStatement(dumpDBRecord($payment));
+		echo debugStatement(dumpDBRecord($payment));
 		saveRecord("Payments", "PaymentID", $payment);
 //		$sql = insertRecordSQL($payment, "PaymentID", "Payments");
 //		echo $sql;

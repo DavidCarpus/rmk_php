@@ -7,6 +7,25 @@ class Customer extends Base
        $this->name = "forms_Customer";
    }
    
+   public function display($request) {
+		$formName="CustomerSummaryDisp";
+   		$results="\n";
+		$results .=  "<div id='$formName'>\n";
+		$name = $request["Prefix"] . " " .$request["FirstName"] . " " .$request["LastName"] . " " .$request["Suffix"];
+		$custID=urlencode($request['CustomerID']);
+
+		$url = "<a href='customerEdit.php?CustomerID=$custID'>$name</a>";
+		$results .= $url;
+		
+		$results .= $request["EMailAddress"] . "</BR>\n";
+		$results .= $request["PhoneNumber"] . "</BR>\n";
+		$results .=  "</BR>";
+		$results .= "</div><!-- End $formName -- >\n";
+//		$results .= dumpDBRecord($request);
+		return $results;
+   }
+   
+   
 	public function summary($request, $readonly=false){
 		$formName="CustomerSummary";
 		
@@ -55,6 +74,15 @@ class Customer extends Base
 		return $url;
 	}
 	
+	public function entryFormMode($formValues){
+		if(!array_key_exists('CustomerID', $formValues)) return 'new';
+				
+		if(!array_key_exists('submit', $formValues)) return 'edit';
+		if($formValues['submit']=='Update Customer') return 'validate';
+		
+		return 'unk';
+	}
+	
 	public function customerList($customers){
 		$formName="CustomerList";
 		$fields = array("FirstName" , "LastName", "PhoneNumber" , "Dealer");
@@ -91,24 +119,52 @@ class Customer extends Base
 	}
 	
 	function newCustomerForm($formValues){
-		$formName="NewCustomer";
+		$formName="CustomerEdit";
 		if(array_key_exists('searchValue', $formValues)) $formValues['LastName'] = $formValues['searchValue'];
 		
 		$results="";
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='customerEdit.php' method='GET'>"  . "\n";
-//		$results .=  "<legend>$formsName</legend>" . "\n";
-//		CustomerID as hidden field?
-		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress');
+
+		$errors = array();
+		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
+			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
+		}
+		
+		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress', 'Memo', 'Terms', 'Discount');
 		foreach( $fields as $name)
 		{
+			$err=(array_key_exists($name, $errors));
+			
 			if(!array_key_exists($name, $request)) $request[$name] = "";
-			$results .=  $this->textField($name, $this->fieldDesc($name), false, $formValues[$name]) . "\n";
+			if($name == 'Memo'){
+//				$results .=  $this->textArea($name, $label, $required=false, $value='', $large=false);
+				$results .=  $this->textArea($name, $this->fieldDesc($name), $err, $formValues[$name], true);
+			}
+			else{
+				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
+			}
 //			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
 			$results .=  "</BR>";
 		}
-		$results .=  "<BR>" . $this->button("submit", "New Customer?");		
+		$isDealer = ($formValues['Dealer']=='1' || $formValues['Dealer']==1)?1:0;
+//				echo debugStatement("Dealer?: $isDealer : " . $formValues['Dealer']);
+		$results .=  $this->checkbox('Dealer', 'Dealer', (array_key_exists('Dealer', $errors)), $isDealer );
+		$results .=  "</BR>";
+		$results .=  $this->textField('TaxNumber', 'TaxNumber', false, $formValues['TaxNumber']) . "\n";
 		
+		if(!array_key_exists('CustomerID', $formValues))
+		{
+			$results .=  "<BR>" . $this->button("submit", "New Customer?");
+		}
+		else
+		{		
+			$results .=  $this->hiddenField('CustomerID', $formValues['CustomerID']);
+			$results .=  "<BR>" . $this->button("submit", "Update Customer");		
+		}
+
+		$results .=  debugStatement("CurrentAddress?</BR>Flag?</BR>Balance?</BR>CreditCardNumber/CreditCardExpiration?");
+
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >";
 //		$results .= debugStatement(dumpDBRecord($formValues));

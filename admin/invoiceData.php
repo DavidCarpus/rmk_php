@@ -11,21 +11,24 @@ include_once FORMS_DIR. "InvoiceEntry.class.php";
 include_once FORMS_DIR. "Invoice.class.php";
 include_once FORMS_DIR. "Payment.class.php";
 include_once FORMS_DIR. "Part.class.php";
+include_once FORMS_DIR. "Customer.class.php";
 
 $invoiceClass = new Invoices();
 $customerClass = new Customers();
 $paymentForms = new Payment();
 $partsFormClass = new Part();
 
+$customerForm = new Customer();
+
 $request = getFormValues();
 
-$invoiceNum = $request['invoice_num'];
+$InvoiceNum = $request['Invoice'];
 
-$customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
-$invoice = $invoiceClass->details( $invoiceNum );
+$customer = $customerClass->fetchCustomerForInvoice( $InvoiceNum );
+$invoice = $invoiceClass->details( $InvoiceNum );
 //$costs = $invoiceClass->computeCosts($invoice);
-$entries = $invoiceClass->itemsWithAdditions($invoiceNum);
-$payments = $invoiceClass->fetchInvoicePayments($invoiceNum);
+$entries = $invoiceClass->itemsWithAdditions($InvoiceNum);
+$payments = $invoiceClass->fetchInvoicePayments($InvoiceNum);
 $costs = $invoiceClass->computeCosts($invoice);
 
 $invoiceForms = new Invoice();
@@ -48,7 +51,7 @@ foreach( array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'Sh
 		$invInfo[$attrib] = "$" . number_format($invoice[$attrib] ,2);
 	}
 }
-$invInfo["invoice_num"]= $invoiceNum;
+$invInfo["Invoice"]= $InvoiceNum;
 $flags = array();
 //$flags["comment"] = (strlen($invoice["Comment"]) > 0);
 //$flags["TaxPercentage"] = $invoice["TaxPercentage"];
@@ -66,14 +69,17 @@ foreach( array('Prefix', 'FirstName', 'LastName', 'Suffix') as $attrib)
 	$custInfo["FullName"] .= $customer[$attrib] . " ";
 }
 
-$newInvoiceEntryFormValues["Invoice"]=$invoiceNum;
+$CustomerSummaryDisp = $customerForm->display($customer);
+
+$newInvoiceEntryFormValues["Invoice"]=$InvoiceNum;
 //$newInvoiceEntryFormValues["submit"]="New Item";
 
 $results = array(	"InvoiceDetails"=>$invInfo, 
 					"CustomerSummary"=>$custInfo, 
+					"CustomerSummaryDisp"=>$CustomerSummaryDisp, 
 //					"Flags"=>$flags, 
 					"InvoiceKnifeList"=> $invoiceEntryForms->knifeListTable($entries, 0),
-					"InvoicePayments"=> $paymentForms->paymentListTable($invoiceNum, $payments),
+					"InvoicePayments"=> $paymentForms->paymentListTable($InvoiceNum, $payments),
 					"InvoiceFinanceSummary"=> $paymentForms->invoiceFinanceTable($costs),
 					"NewInvoiceEntry"=>$invoiceEntryForms->newInvoiceEntryForm($newInvoiceEntryFormValues, $partsFormClass)
 );
@@ -84,6 +90,7 @@ if(array_key_exists('debug', $request)) {
 	echo debugStatement($results['InvoicePayments']);
 	echo debugStatement($results['InvoiceFinanceSummary']);
 	echo debugStatement($results['NewInvoiceEntry']);
+	echo debugStatement($results['CustomerSummaryDisp']);
 } else{
 	echo json_encode($results);
 }

@@ -42,7 +42,7 @@ $partsFormClass = new Part();
 $formValues = getFormValues();
 
 $mode=$invoiceForms->entryFormMode($formValues);
-//$formValues['mode'] = $mode;
+$formValues['mode'] = $mode;
 
 switch ($mode) {
 	case "new":
@@ -66,6 +66,8 @@ switch ($mode) {
 		$customer = $customerClass->fetchCustomer($formValues['CustomerID']);
 		$invoice['TotalRetail'] = preg_replace("/\\$/", '', $invoice['TotalRetail']);
 		$invoice['ShippingAmount'] = preg_replace("/\\$/", '', $invoice['ShippingAmount']);
+		$invoice['TotalRetail'] = preg_replace("/\\,/", '', $invoice['TotalRetail']);
+		$invoice['ShippingAmount'] = preg_replace("/\\,/", '', $invoice['ShippingAmount']);
 		
 		$valid = $invoiceClass->validateNew($invoice);
 		if(!$valid){
@@ -96,7 +98,7 @@ switch ($mode) {
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
-					echo $customerForms->summary( $customer );
+					echo $customerForms->display( $customer );
 					echo "\n";
 					echo "\n";
 					echo $invoiceForms->details( $invoice, $mode );

@@ -15,6 +15,16 @@ class Payment extends Base
 		return $results;
 	}
 	
+	function longToShortExpirationDate($date){
+		if($date == "") return "";
+		$date = str_replace(" ", "-",$date);
+		$date = str_replace("/", "-",$date);
+		$dateParts = split("-", $date);
+		if(strlen($dateParts[0]) <= 2 && strlen($dateParts[1]) == 4) $date = $dateParts[1] . "-" . $dateParts[0] . "-01";
+		if(strlen($dateParts[0]) == 2 && strlen($dateParts[1]) == 2) $date = "20" . $dateParts[1] . "-" . $dateParts[0] . "-01";
+		return date("m/Y", strtotime($date) );
+	}
+	
 	function confirmPaymentDelete($payment){
 		$formName="InvoicePaymentDeleteConfirm";
 		$fields = array("Payment" => "Payment" ,"Number" => "Number" ,"PaymentDate" => "PaymentDate" ,
@@ -140,7 +150,8 @@ class Payment extends Base
 				}else if($field == "ExpirationDate") {
 					$date = substr($payment[$field], 0, 10);
 					if($date == "0000-00-00") $date ="";
-					$results .= $date;
+					$results .= $this->longToShortExpirationDate($date);
+//					$results .= $date;
 				} else{
 					$results .= $payment[$field] ;
 				}
