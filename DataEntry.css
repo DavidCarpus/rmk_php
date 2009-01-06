@@ -366,6 +366,16 @@ fieldset {
 }	
 
 /* ================================================================================ */
+#CustomerSummaryDisp{
+	float: left;
+	display: block;
+}
+#CustomerSummaryDisp br{
+	clear: left;
+}	
+
+
+/* ================================================================================ */
 
 span.helptext {
     	position: relative;

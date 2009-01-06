@@ -439,6 +439,10 @@ function getToolbarPrefix(){
 	return $prefix;
 }
 
+function getImagePath($fileName){
+	return getBaseImageDir() . "/$fileName";
+}
+
 function getBaseImageDir(){
 	if(isCarpusServer()){
 		return  "/rmk/images";

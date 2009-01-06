@@ -113,13 +113,21 @@ class Part extends Base
 		// *********** Display part prices from array  ***************
 		foreach($data as $key=>$part)
 		{
-			$results .= "<span class='PartCode'>" . $this->partEditLink($part[$formValues['Year']]) . "</span>";
+			$firstYearPart = $part[$formValues['Year']];
+			$results .= "<span class='PartCode'>" . $this->partEditLink($firstYearPart) . "</span>";
 			$yearColumns=4;
 			for($year = $formValues['Year']; $yearColumns>0; $yearColumns--,$year++){
 //				$data[$part['PartCode']][$year] = number_format($part['Price']);
 //				echo debugStatement(dumpDBRecords($part));
 				$results .= "<span class='Price'>" . number_format($part[$year]['Price'],2) . "</span>";
 			}
+			$results .= "<span class='Price'>";
+			$results .= ($firstYearPart['Discountable']? "D": "&nbsp;&nbsp;");
+			$results .= ($firstYearPart['BladeItem']? "B": "&nbsp;&nbsp;");
+			$results .= ($firstYearPart['Taxable']? "T": "&nbsp;&nbsp;");
+			$results .= ($firstYearPart['Sheath']? "S": "&nbsp;&nbsp;");
+			$results .= "</span>";
+//			echo debugStatement(dumpDBRecord($firstYearPart));
 			$results .= "<BR>";
 		}
 		$results .= "</div>";

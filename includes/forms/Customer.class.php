@@ -16,11 +16,28 @@ class Customer extends Base
 
 		$url = "<a href='customerEdit.php?CustomerID=$custID'>$name</a>";
 		$results .= $url;
-		
+
 		$results .= $request["EMailAddress"] . "</BR>\n";
 		$results .= $request["PhoneNumber"] . "</BR>\n";
-		$results .=  "</BR>";
+
 		$results .= "</div><!-- End $formName -- >\n";
+
+		$results .=  "<div id='CustomerFlags' style='display: block; float: left;'>\n";
+		
+		if(array_key_exists('Memo', $request) && strlen($request['Memo'])>1){
+			$img = "<img ALIGN='top' src='" . getImagePath("memo.png") . "' border=0>";
+			$results .= "&nbsp; &nbsp;<span class='helptext'>";
+			$results .= "<a href='customerEdit.php?CustomerID=$custID'>";
+			$results .= "$img<span>" . $request["Memo"] . "</span></a>";
+			$results .= "</span>";
+			getImagePath("memo.png");
+		}
+		$results .= "</div><!-- End CustomerFlags -- >\n";
+		
+		
+		$results .=  "</BR>";
+		$results .=  "</BR>";
+		$results .=  "</BR>";
 //		$results .= dumpDBRecord($request);
 		return $results;
    }
@@ -42,6 +59,7 @@ class Customer extends Base
 			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
 					$results .=  "</BR>";
 		}
+		
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >";
 		
