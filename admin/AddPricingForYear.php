@@ -1,5 +1,6 @@
 <?php
-/* Created on Feb 8, 2006 */
+/* Created on Jan 6, 2009 */
+
 include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
@@ -16,14 +17,36 @@ session_start();
 //	session_destroy();
 //	header("Location: "."../");
 //}
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
- $formValues = getFormValues();
+echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+$formValues = getFormValues();
 $Parts = new Part();
 $partsDB = new Parts();
 
-$formValues['Year'] = $partsDB->maxPartPriceYear() - 3;
+$mode=$Parts->pricingEntryFormMode($formValues);
+$formValues['mode'] = $mode;
+
+switch ($mode) {
+	case "entry":
+		break;
+	case "validate":
+   		$partPrices = $Parts->extractNewPricingFromSubmission($formValues);
+		// validate all entries are blank or numeric
+		$valid = $Parts->validateNewPricing($partPrices);
+		if(!$valid){
+			$formValues['ERROR']= $Parts->validationError;	
+			$formValues['Year'] = $formValues['submit'];
+		} else { // If they all are
+   			foreach ($partPrices as $partPrice) { // save them all
+   				$partsDB->savePrice($partPrice);
+   			}
+//			redirect to 'pricing.php'
+			header("Location: "."Pricing.php");
+		}
+		break;
+}
 
 ?>
+
 <LINK href="../Style.css" rel="stylesheet" type="text/css">
 <LINK href="../CustomerReports.css" rel="stylesheet" type="text/css">
 <LINK rel="stylesheet" type="text/css"	 media="print" href="../CustomerReportsPrint.css">	 
@@ -34,10 +57,9 @@ $formValues['Year'] = $partsDB->maxPartPriceYear() - 3;
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php 	
-//					echo "Pricing";
+//					echo "Pricing - $mode";
 //					echo "</BR>";
-					echo $Parts->partPricingTable($formValues);
-//					echo debugStatement(dumpDBRecord($formValues));;
+					echo $Parts->newPricingTable($formValues);				
 			?>
 		</div>
 	</div>

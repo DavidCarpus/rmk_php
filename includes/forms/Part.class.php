@@ -6,9 +6,11 @@ include_once INCLUDE_DIR. "db/Parts.class.php";
 class Part extends Base
 {
 	public $partsClass;
+	public $validationError;
 	
 	function __construct() {
        $this->partsClass = new Parts();
+       $this->validationError="";
    }
    
    public function entryFormMode($formValues)
@@ -22,6 +24,15 @@ class Part extends Base
 		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Save"){return "save";}
 
 		return "edit";	
+   }
+   public function pricingEntryFormMode($formValues){
+   		if(array_key_exists("ERROR", $formValues) && strlen($formValues['ERROR']) > 0){return "validate";}	
+		if(array_key_exists("Year", $formValues)){return "entry";}
+   		
+		if(array_key_exists("submit", $formValues)){return "validate";}
+		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Save"){return "save";}
+		
+		return "validate";	
    }
    
 	public function knifeChoices($default=0){
@@ -90,23 +101,133 @@ class Part extends Base
 		return $part;
 	}
 	
+   	public function newPricingTable($formValues){
+		$results = "";
+		$results .=  "<div id='PartList'>\n";
+		
+   		$errors = array();
+		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
+			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
+//			$results .=  debugStatement("Errors - " . print_r($errors, true));
+		}
+		
+		$formName="PartList";
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='POST'>" . "\n" ;
+		
+		$yearColumns=3;
+		$minYear=$formValues['Year']-$yearColumns;
+		$data=$this->getPartPricingArray($minYear, $yearColumns);
+		$results .= "<span style='font-weight: bold;' class='PartCode'>Part</span>";
+		for ($year= $formValues['Year']-$yearColumns; $yearColumns>0; $yearColumns--,$year++) {
+			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";;
+		}
+		$results .=  $this->button("submit", $formValues['Year']);
+		$results .= "<BR>";
+		
+   			// *********** Display part prices from array  ***************
+		foreach($data as $key=>$part)
+		{
+//			echo debugStatement(print_r($part,true));
+			$firstYearPart = $part[$minYear];
+			$results .= "<span class='PartCode'>" . $this->partEditLink($firstYearPart) . "</span>";
+			$yearColumns=3;
+			for($year = $minYear; $yearColumns>0; $yearColumns--,$year++){
+				$results .= "<span class='Price'>" . number_format($part[$year]['Price'],2) . "</span>";
+//				$results .= "<span class='Price'>$year</span>";
+			}
+			$fieldName = $firstYearPart['PartID'] . "_" . $formValues['Year'];
+			
+			
+			$adjustment=$part[$year-1]['Price'] - $part[$year-2]['Price'];
+			
+			if(array_key_exists($fieldName, $formValues)){
+				$newValue = $formValues[$fieldName];
+				// if error, highlight adjustment
+				if(array_key_exists($fieldName, $errors))				
+					$adjustment = "<span style='color:#FF0000;'> ERROR</span> ";
+			} else{			
+				$newValue = $part[$year-1]['Price'] + $adjustment;
+				$newValue = number_format($newValue,2);
+			}
+			$field =  $this->textField($fieldName, "", false, $newValue) . "\n";
+			
+			$results .= "<span class='Price'>$field</span>  $adjustment";
+//			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
+			$results .= "<BR>";
+		}
+		
+//		$results .=  $formName;
+		$results .= "</form>";
+		$results .= "</div>";
+		
+		return $results;
+   	}
+   	
+   	function extractNewPricingFromSubmission($formValues){
+   		$results = array();
+   		foreach ($formValues as $key=>$value) {
+   			if(strpos($key, "_") > 0){
+   				$tmp=split("_", $key);
+   				$part['PartID'] = $tmp[0];
+   				$part['Year'] = $tmp[1];
+   				$part['Price'] = $value;
+   				$results[$part['PartID']] = $part;
+   			}
+   		}
+   		return $results;
+   	}
+   	
+   	function validateNewPricing($partPrices){
+   		$valid=true;
+   		$this->validationError ="";
+   		foreach ($partPrices as $part) {
+   			if( ! is_numeric($part['Price'])) {
+   				$fieldName = $part['PartID'] . "_" . $part['Year'];
+   				$this->validationError .= $fieldName . ","; 
+   				$valid = false;
+   			}
+//   			echo (dumpDBRecord($part)). "</BR>";
+   		}
+   		// trim extra comma
+		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
+   		return $valid;
+   	}
+   	
+   	function getPartPricingArray($minYear, $numYears=4){
+   		$results=array();
+		$yearColumns=$numYears;
+//		echo $minYear;
+		for($year = $minYear; $yearColumns>0; $yearColumns--,$year++){
+			$parts = $this->partsClass->fetchParts($year);
+			foreach ($parts as $part) {
+//				$data[$part['PartCode']][$year] = number_format($part['Price']);
+				$results[$part['PartCode']][$year] = $part;
+			}
+		}
+		return $results;   		
+   	}
+	
+   	public function partOptionFlags($part){
+		$results = "";
+   		$results .= ($part['Discountable']? "D": "&nbsp;&nbsp;");
+		$results .= ($part['BladeItem']? "B": "&nbsp;&nbsp;");
+		$results .= ($part['Taxable']? "T": "&nbsp;&nbsp;");
+		$results .= ($part['Sheath']? "S": "&nbsp;&nbsp;");
+		$results .= ($part['Active']? "&nbsp;&nbsp;":"<B>X</B>");
+		return $results;   		
+   	}
+   	
    	public function partPricingTable($formValues){
-   		$results="";
 		$formName="PartList";
 		$results = "";
 		$results .=  "<div id='$formName'>\n";
    		
 		// **** Print header and load part prices into data array  **********
-		$data=array();
 		$yearColumns=4;
+		$data=$this->getPartPricingArray($formValues['Year'], $yearColumns);
 		$results .= "<span style='font-weight: bold;' class='PartCode'>Part</span>";
-		for($year = $formValues['Year']; $yearColumns>0; $yearColumns--,$year++){
-			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";
-			$parts = $this->partsClass->fetchParts($year);
-			foreach ($parts as $part) {
-//				$data[$part['PartCode']][$year] = number_format($part['Price']);
-				$data[$part['PartCode']][$year] = $part;
-			}
+		for ($year= $formValues['Year']; $yearColumns>0; $yearColumns--,$year++) {
+			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";;
 		}
 		$results .= "<BR>";
 		
@@ -117,20 +238,16 @@ class Part extends Base
 			$results .= "<span class='PartCode'>" . $this->partEditLink($firstYearPart) . "</span>";
 			$yearColumns=4;
 			for($year = $formValues['Year']; $yearColumns>0; $yearColumns--,$year++){
-//				$data[$part['PartCode']][$year] = number_format($part['Price']);
-//				echo debugStatement(dumpDBRecords($part));
 				$results .= "<span class='Price'>" . number_format($part[$year]['Price'],2) . "</span>";
 			}
-			$results .= "<span class='Price'>";
-			$results .= ($firstYearPart['Discountable']? "D": "&nbsp;&nbsp;");
-			$results .= ($firstYearPart['BladeItem']? "B": "&nbsp;&nbsp;");
-			$results .= ($firstYearPart['Taxable']? "T": "&nbsp;&nbsp;");
-			$results .= ($firstYearPart['Sheath']? "S": "&nbsp;&nbsp;");
-			$results .= "</span>";
-//			echo debugStatement(dumpDBRecord($firstYearPart));
+			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
 			$results .= "<BR>";
 		}
 		$results .= "</div>";
+		$year = $this->partsClass->maxPartPriceYear()+1;
+		
+		
+		$results = "<a href='AddPricingForYear.php?Year=$year'>Add Pricing for $year</a>" . $results;
 		
 		return $results;
 	}

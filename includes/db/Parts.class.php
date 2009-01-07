@@ -57,6 +57,10 @@ class Parts
 		return $this->partPrices[$year];
 	}
 	
+	function maxPartPriceYear(){
+		return getIntFromDB("select max(year) from PartPrices");
+	}
+	
 	function blank(){
 		return array('PartCode'=>"",
 			'Description'=>"",
@@ -69,6 +73,13 @@ class Parts
 			'SortField'=>"",
 			'AskPrice'=>0,
 		);
+	}
+	
+	function savePrice($partPrice){
+		$sql = insertRecordSQL($partPrice, "PartPriceID", "PartPrices" );
+		executeSQL($sql);		
+//		echo debugStatement($sql);
+//		$part = saveRecord("Parts", "PartID", $part);
 	}
 	
 	function save($part)

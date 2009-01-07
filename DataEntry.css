@@ -344,7 +344,7 @@ fieldset {
 {
 	float: left;
 	display: block;
-	text-align: right;
+	text-align: left;
 	width: 220px;
 }
 #CustomerEdit label

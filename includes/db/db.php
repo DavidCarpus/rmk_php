@@ -20,6 +20,7 @@ function getDbRecords($query){
 	if($dbresults == null)
 		return $results;
 	$num = mysql_num_rows($dbresults);
+//	echo debugStatement($num . $query);
 	for($i=0; $i<$num; $i++){
 		$results[$i] = mysql_fetch_array($dbresults, MYSQL_ASSOC);
 	}
