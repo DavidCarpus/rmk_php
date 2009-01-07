@@ -130,6 +130,12 @@ class Search extends Base
 			
 			$older = (array_key_exists('filter', $formValues) && $formValues['filter'] == 'Older');
 			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
+			if(count($invoices) < 2){
+				$older = true;
+				$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
+			}
+			
+			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
 //			$results .= debugStatement(dumpDBRecords($invoices));
 			$results .= $invoiceForms->getCustomerInvoiceList($invoices);
 
