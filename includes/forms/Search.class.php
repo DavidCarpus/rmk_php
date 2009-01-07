@@ -27,7 +27,11 @@ class Search extends Base
 	}
 	
 	function getSearchType($formValues){
-		if(array_key_exists('CustomerID', $formValues) && is_numeric($formValues['CustomerID'])) return "CustomerID";
+		if(array_key_exists('CustomerID', $formValues) 
+			&& is_numeric($formValues['CustomerID'])
+			&& (!array_key_exists('searchValue', $formValues) || strlen($formValues['searchValue']) == 0)
+			) 
+			return "CustomerID";
 //		echo gettype($formValues);
 		if(is_null($formValues) || (is_array($formValues) && !array_key_exists('searchValue', $formValues)) )
 		{
@@ -69,7 +73,7 @@ class Search extends Base
 		// invoice numbers should already be taken care of
 		// get customers matching criteria entered
 		$searchType = $this->getSearchType($formValues);
-//		echo $searchType;
+		echo $searchType;
 		$custClass = new Customers();
 		switch ($searchType) {
 //			case "invoice":
@@ -125,12 +129,14 @@ class Search extends Base
 			$results .= $customerForms->display( $searchResults[0] );
 			
 			$older = (array_key_exists('filter', $formValues) && $formValues['filter'] == 'Older');
-			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older);
+			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
+//			$results .= debugStatement(dumpDBRecords($invoices));
 			$results .= $invoiceForms->getCustomerInvoiceList($invoices);
 
 			$results .=  "<div id='customerInvListBtns'>";
 			$results .=  "<form name='$formName' action='search.php' method='GET'>" ;
-			$results .=  "<input type='hidden' name='searchValue' value='" . $formValues["searchValue"] . "'>";
+			if(array_key_exists('searchValue', $formValues) )
+				$results .=  "<input type='hidden' name='searchValue' value='" . $formValues["searchValue"] . "'>";
 			if(array_key_exists('CustomerID', $formValues)){
 				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
 			}

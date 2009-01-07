@@ -245,10 +245,13 @@ class Invoices
 		if($older){
 			$query = "Select * from Invoices where CustomerID=$CustomerID";
 		} else {
-			$years = 5;
-			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
+//			$years = 4;
+//			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
+			$months = 4;
+			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateestimated > date_sub(now(), INTERVAL '$months' month)";
 		}
 		$query .= " order by $sort";
+//		echo $query;
 
 		$invoices = getDbRecords($query);
 		foreach ($invoices as $key=>$invoice) {
