@@ -59,7 +59,7 @@ if(array_key_exists('submit', $formValues) && $formValues['submit'] == "Confirm 
 					echo "\n\n";
 					echo $customerForms->tiny( $customer );
 					echo "\n\n";
-					echo $invoiceForms->details( $invoice );
+					echo $invoiceForms->details( $invoice, "view" );
 					echo "\n\n";
 					echo $paymentForms->confirmPaymentDelete($payment);
 				?>

@@ -7,6 +7,15 @@ class Customer extends Base
        $this->name = "forms_Customer";
    }
    
+   function displayWithFlags($cust){
+   		$results="";
+   		$results .= "<span style='display: block; float: left; width: 600; clear:right;'>\n\n";
+   		$results .= $this->display( $cust );
+		$results .= $this->customerFlags( $cust );
+		$results .= "</span><!-- End displayWithFlags -- >\n\n";
+		return $results;
+   }
+   
    public function display($request) {
 		$formName="CustomerSummaryDisp";
    		$results="\n";
@@ -14,34 +23,33 @@ class Customer extends Base
 		$name = $request["Prefix"] . " " .$request["FirstName"] . " " .$request["LastName"] . " " .$request["Suffix"];
 		$custID=urlencode($request['CustomerID']);
 
-		$url = "<a href='customerEdit.php?CustomerID=$custID'>$name</a>";
+		$url = "<a href='customerEdit.php?CustomerID=$custID'>$name</a>\n";
 		$results .= $url;
 
-		$results .= $request["EMailAddress"] . "</BR>\n";
-		$results .= $request["PhoneNumber"] . "</BR>\n";
-
+		if(array_key_exists("EMailAddress", $request))
+			$results .= $request["EMailAddress"] . "</BR>\n";
+		if(array_key_exists("PhoneNumber", $request))
+			$results .= $request["PhoneNumber"] . "</BR>\n";
+	
 		$results .= "</div><!-- End $formName -- >\n";
-
-		$results .=  "<div id='CustomerFlags' style='display: block; float: left;'>\n";
 		
-		if(array_key_exists('Memo', $request) && strlen($request['Memo'])>1){
-			$img = "<img ALIGN='top' src='" . getImagePath("memo.png") . "' border=0>";
-			$results .= "&nbsp; &nbsp;<span class='helptext'>";
-			$results .= "<a href='customerEdit.php?CustomerID=$custID'>";
-			$results .= "$img<span>" . $request["Memo"] . "</span></a>";
-			$results .= "</span>";
-			getImagePath("memo.png");
-		}
-		$results .= "</div><!-- End CustomerFlags -- >\n";
-		
-		
-		$results .=  "</BR>";
-		$results .=  "</BR>";
-		$results .=  "</BR>";
 //		$results .= dumpDBRecord($request);
 		return $results;
    }
    
+   function customerFlags($request){
+   		$results =  "<span id='CustomerFlags'>\n";
+		if(array_key_exists('Memo', $request) && strlen($request['Memo'])>1){
+			$custID = $request['CustomerID'];
+			$results .= "<span class='helptext'>";
+			$results .= "<a href='customerEdit.php?CustomerID=$custID'>";
+			$img = "<img ALIGN='top' src='" . getImagePath("memo.png") . "' border=0>";
+			$results .= "$img<span>" . $request["Memo"] . "</span></a>";
+			$results .= "</span><!-- End HelpText -- >\n";
+		}
+		$results .= "</span><!-- End CustomerFlags -- >\n";
+		return $results;
+   }
    
 	public function summary($request, $readonly=false){
 		$formName="CustomerSummary";
@@ -93,6 +101,7 @@ class Customer extends Base
 	}
 	
 	public function entryFormMode($formValues){
+		if($formValues['submit']=='New Customer?') return 'validate';
 		if(!array_key_exists('CustomerID', $formValues)) return 'new';
 				
 		if(!array_key_exists('submit', $formValues)) return 'edit';
@@ -136,6 +145,34 @@ class Customer extends Base
 		return $results;
 	}
 	
+	function addressForm($formValues){
+		$results ="";
+//		$results .= debugStatement(dumpDBRecord($formValues));
+		
+		$errors = array();
+		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
+			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
+		}
+//		$results .= debugStatement(dumpDBRecord($formValues));
+		
+		$results .=  "</BR></BR>";
+		$fields = array('ADDRESS1', 'ADDRESS2', 'CITY', 'STATE', 'ZIP', 'COUNTRY', 'ZONE');
+		foreach( $fields as $name)
+		{
+			$err=(array_key_exists($name, $errors));
+			
+			if(!array_key_exists($name, $formValues)) $formValues[$name] = "";
+			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
+			$results .=  "</BR>";
+		}
+		$fields = array('AddressID', 'AddressType', 'CustomerID', 'PrimaryCustomerAddress', 'CorrectedAddressID', 'TimesUsed');
+		foreach( $fields as $name)
+		{
+			$results .=  $this->hiddenField($name, $formValues[$name]);
+		}
+		return $results;
+	}
+	
 	function newCustomerForm($formValues){
 		$formName="CustomerEdit";
 		if(array_key_exists('searchValue', $formValues)) $formValues['LastName'] = $formValues['searchValue'];
@@ -154,7 +191,7 @@ class Customer extends Base
 		{
 			$err=(array_key_exists($name, $errors));
 			
-			if(!array_key_exists($name, $request)) $request[$name] = "";
+			if(!array_key_exists($name, $formValues)) $formValues[$name] = "";
 			if($name == 'Memo'){
 //				$results .=  $this->textArea($name, $label, $required=false, $value='', $large=false);
 				$results .=  $this->textArea($name, $this->fieldDesc($name), $err, $formValues[$name], true);
@@ -162,6 +199,10 @@ class Customer extends Base
 			else{
 				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
 			}
+			if($name == 'LastName' && array_key_exists('CustomerID', $formValues) && $formValues['CustomerID'] > 0){
+				$results .= "<a href='search.php?CustomerID=" . $formValues['CustomerID'] ."'>Customer Invoices</a>";
+			}
+			
 //			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
 			$results .=  "</BR>";
 		}
@@ -171,6 +212,9 @@ class Customer extends Base
 		$results .=  "</BR>";
 		$results .=  $this->textField('TaxNumber', 'TaxNumber', false, $formValues['TaxNumber']) . "\n";
 		
+		$formValues['CurrrentAddress']['ERROR']=$formValues['ERROR'];
+		$results .= $this->addressForm($formValues['CurrrentAddress']);
+
 		if(!array_key_exists('CustomerID', $formValues))
 		{
 			$results .=  "<BR>" . $this->button("submit", "New Customer?");
@@ -181,7 +225,7 @@ class Customer extends Base
 			$results .=  "<BR>" . $this->button("submit", "Update Customer");		
 		}
 
-		$results .=  debugStatement("CurrentAddress?</BR>Flag?</BR>Balance?</BR>CreditCardNumber/CreditCardExpiration?");
+		$results .=  debugStatement("Flag?</BR>Balance?</BR>CreditCardNumber/CreditCardExpiration?");
 
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >";

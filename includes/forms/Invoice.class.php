@@ -52,7 +52,7 @@ class Invoice extends Base
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='GET'>" . "\n" ;
-		$results .=  $this->textArea('Comment', 'Comment', false, $invoice['Comment']) . "\n";
+		$results .=  $this->textArea('Comment','Invoice Comment', false, $invoice['Comment']) . "\n";
 		$results .=  $this->hiddenField('Invoice', $invoice['Invoice']);
 		$results .=  "<BR>";
 		$results .=  $this->button("submit", "Save_Update");
@@ -122,11 +122,9 @@ class Invoice extends Base
 	}
 	
 	function invAcknowledgmentLink($invoice){
-		$results = "<span class='invoiceAckLink'>";
+		$results = "<span id='invoiceAckLink'>";
 		$results .= "<a href='CustInvAck.php?Invoice=" . $invoice['Invoice'] . "'>Invoice Acknowledgement";
 		$results .= "</a></span>";
-		$results .= "</BR>";
-		$results .= "</BR>";
 		return $results;
 	}
 	

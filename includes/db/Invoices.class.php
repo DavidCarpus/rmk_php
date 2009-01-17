@@ -242,14 +242,16 @@ class Invoices
 	}
 
 	public function getCustomerInvoices($CustomerID, $older=false, $sort="invoice DESC"){
+//		$years = 4;
+//		$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
+		$months = 5;
+			
 		if($older){
-			$query = "Select * from Invoices where CustomerID=$CustomerID";
+			$query = "Select * from Invoices where CustomerID=$CustomerID and dateestimated <= date_sub(now(), INTERVAL '$months' month)";
 		} else {
-//			$years = 4;
-//			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";
-			$months = 4;
 			$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateestimated > date_sub(now(), INTERVAL '$months' month)";
 		}
+
 		$query .= " order by $sort";
 //		echo $query;
 

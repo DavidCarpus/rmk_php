@@ -73,7 +73,7 @@ class Search extends Base
 		// invoice numbers should already be taken care of
 		// get customers matching criteria entered
 		$searchType = $this->getSearchType($formValues);
-		echo $searchType;
+//		echo $searchType;
 		$custClass = new Customers();
 		switch ($searchType) {
 //			case "invoice":
@@ -126,16 +126,19 @@ class Search extends Base
 			$invoiceForms = new Invoice();
 			$invoiceDB = new Invoices();
 			
-			$results .= $customerForms->display( $searchResults[0] );
+			$formValues['CustomerID']=$searchResults[0]['CustomerID'];
 			
+			$results.= $customerForms->displayWithFlags( $searchResults[0] );
+
 			$older = (array_key_exists('filter', $formValues) && $formValues['filter'] == 'Older');
 			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
 			if(count($invoices) < 2){
 				$older = true;
 				$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
 			}
-			
-			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, "DateEstimated ASC");
+			$sort = "DateEstimated ASC";
+			if($older) $sort = "DateEstimated DESC";
+			$invoices = $invoiceDB->getCustomerInvoices($searchResults[0]['CustomerID'], $older, $sort );
 //			$results .= debugStatement(dumpDBRecords($invoices));
 			$results .= $invoiceForms->getCustomerInvoiceList($invoices);
 

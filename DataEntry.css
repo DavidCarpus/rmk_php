@@ -65,7 +65,7 @@ fieldset {
 #InvoiceDetails,
 #InvoiceEntryDetails
 {
-	clear: none;
+	clear: right;
 	display: block;
 	padding-top: 10px;
 	padding-bottom: 20px;
@@ -180,6 +180,11 @@ fieldset {
 #InvoiceCommentEdit {
 	float: left;
 	display: block;
+}
+#InvoiceCommentEdit input{
+	width: 110px;
+		float: right;
+/*	padding-left: 120px;*/
 }
 /* ================================================================================ */
 .NewInvoicePayment_UnHide{
@@ -369,12 +374,18 @@ fieldset {
 #CustomerSummaryDisp{
 	float: left;
 	display: block;
+/*	background-color: #00FFCC;*/
 }
-#CustomerSummaryDisp br{
-	clear: left;
-}	
 
+#CustomerFlags{
+	display: block; 
+	float: left;
+/*	background-color: green;*/
+}
 
+#CustomerFlags span.helptext a:hover span { 
+    width: 375px; padding: 5px; 
+}
 /* ================================================================================ */
 
 span.helptext {

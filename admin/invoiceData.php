@@ -70,6 +70,8 @@ foreach( array('Prefix', 'FirstName', 'LastName', 'Suffix') as $attrib)
 }
 
 $CustomerSummaryDisp = $customerForm->display($customer);
+$CustomerFlags = $customerForm->customerFlags($customer);
+$invoiceAckLink=$invoiceForms->invAcknowledgmentLink($invoice);
 
 $newInvoiceEntryFormValues["Invoice"]=$InvoiceNum;
 //$newInvoiceEntryFormValues["submit"]="New Item";
@@ -77,6 +79,8 @@ $newInvoiceEntryFormValues["Invoice"]=$InvoiceNum;
 $results = array(	"InvoiceDetails"=>$invInfo, 
 					"CustomerSummary"=>$custInfo, 
 					"CustomerSummaryDisp"=>$CustomerSummaryDisp, 
+					"CustomerFlags"=>$CustomerFlags, 
+					"invoiceAckLink"=>$invoiceAckLink, 
 //					"Flags"=>$flags, 
 					"InvoiceKnifeList"=> $invoiceEntryForms->knifeListTable($entries, 0),
 					"InvoicePayments"=> $paymentForms->paymentListTable($InvoiceNum, $payments),
@@ -91,6 +95,7 @@ if(array_key_exists('debug', $request)) {
 	echo debugStatement($results['InvoiceFinanceSummary']);
 	echo debugStatement($results['NewInvoiceEntry']);
 	echo debugStatement($results['CustomerSummaryDisp']);
+	echo debugStatement($results['CustomerFlags']);
 } else{
 	echo json_encode($results);
 }

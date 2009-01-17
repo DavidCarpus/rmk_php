@@ -70,13 +70,14 @@ function executeSQL($sql){
 }
 
 function saveRecord($tableName, $keyField, $record){
-	if($record[$keyField] > 0){
+	if(array_key_exists($keyField, $record) && $record[$keyField] > 0){
 		$sql = updateRecordSQL($record, $keyField, $tableName);
 		executeSQL($sql);
+//		echo debugStatement($sql);
 	}else{
 		$sql = insertRecordSQL($record, $keyField, $tableName);
 		executeSQL($sql);
-//		debugStatement($sql);
+//		echo debugStatement($sql);
 //		echo "<HR>$sql<HR>";
 		$record[$keyField] = mysql_insert_id();		
 	}

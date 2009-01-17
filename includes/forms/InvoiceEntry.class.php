@@ -275,7 +275,10 @@ class InvoiceEntry extends Base
 			$results .=  "<span id='$formName'>" . "\n";
 		}
 
-		$fields = array("PartDescription" , "BaseRetail",  "Quantity", "FeatureList" , "TotalRetail" , "Comment");
+		if(!array_key_exists("Quantity", $values))		$values["Quantity"]="1";
+		if($values["Quantity"]=="") $values["Quantity"]="1";
+		
+		$fields = array("Quantity", "PartDescription" , "BaseRetail",  "FeatureList" , "TotalRetail" , "Comment");
 		
 		foreach($fields as $name)
 		{
@@ -286,7 +289,7 @@ class InvoiceEntry extends Base
 			
 			$results .= "<span id='span_$name'>";
 			if($name == "FeatureList"){
-				$results .= $this->invoiceEntryFeaturesFields($formName, $formValues);
+				$results .= $this->invoiceEntryFeaturesFields($formName, $values);
 			} else 	if($name == "BaseRetail" || $name == "Quantity"){
 				$js['field']=" onkeyup='return updateRetail(\"form_$formName\");'";
 				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);

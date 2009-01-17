@@ -61,7 +61,7 @@ foreach($entries as $entry)
 			<?php 	
 					echo $invoiceForms->invNum( $invoice );
 					echo "\n\n";
-					echo $customerForms->display( $customer );
+					echo $customerForms->displayWithFlags( $customer );
 					echo "\n\n";
 					echo $invoiceForms->details( $invoice, true );
 					echo "\n\n";

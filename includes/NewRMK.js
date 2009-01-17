@@ -291,6 +291,11 @@ function invoiceNumber(selfForm)
 
 			if(document.getElementById("CustomerSummaryDisp") != null)
 				 document.getElementById("CustomerSummaryDisp").innerHTML = local['CustomerSummaryDisp'];
+			if(document.getElementById("CustomerFlags") != null)
+				 document.getElementById("CustomerFlags").innerHTML = local['CustomerFlags'];
+			if(document.getElementById("invoiceAckLink") != null)
+				 document.getElementById("invoiceAckLink").innerHTML = local['invoiceAckLink'];
+
 
 			updateViewInvoiceLink(selfForm.invoice_num.value);
 			updateLinks("InvoiceDetailButtonLinks",local['InvoiceDetails'] );

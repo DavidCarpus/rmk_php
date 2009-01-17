@@ -14,6 +14,7 @@ include_once DB_INC_DIR. "Customers.class.php";
 include_once FORMS_DIR. "Shop.class.php";
 include_once FORMS_DIR. "Invoice.class.php";
 include_once FORMS_DIR. "Customer.class.php";
+include_once FORMS_DIR. "InvoiceEntry.class.php";
 
 session_start();
 //if(!loggedIn()){
@@ -33,6 +34,7 @@ $invoiceForms = new Invoice();
 $customerForms = new Customer();
 $invoiceClass = new Invoices(); 
 $customerClass = new Customers();
+$invoiceEntryForms = new InvoiceEntry();
 
 $formValues = getFormValues();
 $invoiceNum = $formValues['Invoice'];
@@ -58,16 +60,15 @@ if(array_key_exists('submit', $formValues)){
 			<?php 	
 					echo $invoiceForms->invNum( $invoice );
 					echo "\n\n";
-					echo $customerForms->tiny( $customer );
+					echo $customerForms->displayWithFlags( $customer );
 					echo "\n\n";
-					echo $invoiceForms->details( $invoice );
+					echo $invoiceForms->details( $invoice, "view" );
 					echo "\n\n</HR>";
 					echo $invoiceForms->editComment( $invoice );
 					echo "\n\n</HR>";
 					
 					$entries = $invoiceClass->itemsWithAdditions( $invoiceNum ); // 56031
-					echo $invoiceForms->knifeListTable( $entries, 0, $formValues );
-					
+					echo $invoiceEntryForms->knifeListTable( $entries, 0 );				
 				?>
 		</div>
 	</div>

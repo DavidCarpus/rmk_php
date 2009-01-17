@@ -94,11 +94,12 @@ switch ($mode) {
 		<div class="content">
 			<?php
 				 	echo $invoiceForms->invAcknowledgmentLink( $invoice );
-					echo "\n";
+				 	echo "</BR>\n";
+				 	echo "</BR>\n";
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
-					echo $customerForms->display( $customer );
+					echo $customerForms->displayWithFlags( $customer );					
 					echo "\n";
 					echo "\n";
 					echo $invoiceForms->details( $invoice, $mode );
@@ -113,7 +114,7 @@ switch ($mode) {
 						echo $invoiceEntryForms->knifeListTable( $entries, 0 );
 						echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
 					}
-//					echo debugStatement(dumpDBRecord($formValues) . $mode); // $invoice
+//					echo debugStatement(dumpDBRecord($formValues)); // $invoice
 //					echo debugStatement(dumpDBRecord($invoice) ); 
 //					echo debugStatement(dumpDBRecord($customer) ); 
 					?>

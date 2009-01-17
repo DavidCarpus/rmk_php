@@ -29,6 +29,7 @@ switch ($mode) {
 		break;
 	case "new";
 		$customer = $customerClass->blank();
+		$customer = $customerClass->addFormValues($customer, $formValues);
 		break;
 	case "validate":
 		$customer = $customerClass->blank();
@@ -40,12 +41,15 @@ switch ($mode) {
 			$customer['ERROR']= $customerClass->validationError;				
 		} else {
 			if($formValues['Dealer']=='on') $customer['Dealer']=1;
-			
+			if(!array_key_exists('CustomerID', $formValues) || $customer['CustomerID'] <= 0){
+				unset($customer['CustomerID']);
+			}
 			$customer = $customerClass->save($customer);
 //			echo debugStatement(dumpDBRecord($customer));
+//			echo debugStatement(dumpDBRecord($customer['CurrentAddress']));
 			
 			$mode="edit";
-			header("Location: "."search.php?CustomerID=" . $formValues['CustomerID']);
+			header("Location: "."search.php?CustomerID=" . $customer['CustomerID']);
 			return;
 		}
 		

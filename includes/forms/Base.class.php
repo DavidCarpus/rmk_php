@@ -8,8 +8,11 @@ class Base
 	function fieldDesc($field){
 		$lookup = array('name'=>'Full Name','email'=>'Email Address',
 						'address1'=>'Billing Address', 'address2'=>'&nbsp;', 'address3'=>'&nbsp;',
+						'ADDRESS1'=>'Billing Address', 'ADDRESS2'=>'&nbsp;', 'ADDRESS3'=>'&nbsp;',
 						'city'=>'City','state'=>'State/Province', 'zip'=>'Zip/Postal Code', 
+						'CITY'=>'City','STATE'=>'State/Province', 'ZIP'=>'Zip/Postal Code', 
 						'country'=>'Country', 
+						'COUNTRY'=>'Country', 
 						'phone'=> 'Phone Number *','fax'=> 'Fax Number',
 						'shipaddress1'=> 'Shipping Address', 
 						'shipaddress2'=> '(If other than Billing address)', 'shipaddress3'=> '&nbsp;', 
@@ -28,7 +31,8 @@ class Base
 						 "Price"=>"Price", "Comment"=>"Comment", "searchValue"=>"Search Value",
 						 'PartCode'=> "PartCode", 'Description'=>"Description", 'Discountable'=>'Discountable', 
 						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable', 
-						 'Memo'=>'Memo', 'Dealer'=>'Dealer', 'Terms'=>'Terms', 'Discount'=>'Discount'
+						 'Memo'=>'Memo', 'Dealer'=>'Dealer', 'Terms'=>'Terms', 'Discount'=>'Discount',
+						 'ZONE'=>'Zone'
 						);
 //array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment')
 						//				'qty'=> 'Quantity', , ""=>""

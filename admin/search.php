@@ -32,7 +32,13 @@ if($searchType == 'invoice'){
 	$invoiceNum = $formValues['searchValue'];
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 }
-
+if(strlen($searchType) > 0)
+{
+	$customers = $searchForms->getSearchResults($formValues);
+}
+if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
+	header("Location: "."customerEdit.php?LastName=" . $formValues['searchValue']);
+}
 ?>
 
 <?php echo logo_header("admin", ".."); ?>
@@ -42,19 +48,10 @@ if($searchType == 'invoice'){
 		<div class="content">
 			<?php 	
 				echo $searchForms->searchScreen($formValues);
-				if(strlen($searchType) > 0)
-				{
-//					echo $searchType;
-					
-					$customers = $searchForms->getSearchResults($formValues);
-					if(count($customers) == 0){
-						$customerForms = new Customer();
-						echo $customerForms->newCustomerForm($formValues);
-					} else {				
-						echo $searchForms->displaySearchResults($customers, $formValues);
-					}
-				}
 				
+				if(count($customers) > 0){
+					echo $searchForms->displaySearchResults($customers, $formValues);
+				}
 //				echo debugStatement(dumpDBRecord($formValues));
 					?>
 		</div>

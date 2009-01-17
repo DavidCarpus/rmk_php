@@ -19,7 +19,14 @@ class Customers
 			'Suffix' => '',
 			'Terms' =>  '',
 			'TaxNumber' =>'',
-			'EMailAddress' => '' 
+			'EMailAddress' => '', 
+			'CurrentAddress'=>array('AddressID'=> 0, 
+					'AddressType'=> 0, 
+					'CustomerID'=> 0, 
+					'PrimaryCustomerAddress'=> 0, 
+					'CorrectedAddressID'=> 0, 
+					'TimesUsed'=> 0)
+			
 			//'CreditCardNumber' =>
 			//'CreditCardExpiration' =>
 			//'CurrrentAddress' => Array
@@ -36,9 +43,22 @@ class Customers
 				$customer[$name] = $formValues[$name];
 			}
 		}
+		$fields = array('AddressID', 'AddressType', 'CustomerID', 'PrimaryCustomerAddress', 'CorrectedAddressID', 'TimesUsed',
+					'ADDRESS1', 'ADDRESS2', 'CITY', 'STATE', 'ZIP', 'COUNTRY', 'ZONE');		
+		foreach($fields as $name)
+		{
+			if(array_key_exists($name, $formValues))
+			{
+				$customer['CurrentAddress'][$name] = $formValues[$name];
+			}
+		}
 		return $customer;
 	}
-
+	function isValidPhoneNumber($number){
+		if(strlen($number) < 7) return false;
+		return true;
+	}
+	
 	function validate($values){
 		$valid = true;
 		$this->validationError="";
@@ -48,6 +68,7 @@ class Customers
 		
 		if(!is_numeric($values['Discount'])){$this->validationError .= "Discount,"; $valid=false;}
 		if(!is_numeric($values['Terms'])){$this->validationError .= "Terms,"; $valid=false;}
+		if(!$this->isValidPhoneNumber($values['PhoneNumber'])){$this->validationError .= "PhoneNumber,"; $valid=false;}
 		
 		// trim extra comma
 		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
@@ -100,7 +121,18 @@ class Customers
 	}
 	function save($customer)
 	{
-		return saveRecord("Customers", "CustomerID", $customer);
+		// remember the address Data
+		$address = $customer['CurrentAddress'];
+		unset($customer['CurrentAddress']);
+		// Save customer
+		$customer = saveRecord("Customers", "CustomerID", $customer);
+		
+		// Update address' customer ID and save
+		$address['CustomerID']=$customer['CustomerID'];
+		$address = saveRecord("Address", "AddressID", $address);
+		// reset the customers 'current' address to what was saved
+		$customer['CurrentAddress']=$address;
+		return $customer;
 	}
 }
 ?>
