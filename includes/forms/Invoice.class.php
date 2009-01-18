@@ -121,13 +121,27 @@ class Invoice extends Base
 		return $results;
 	}
 	
-	function invAcknowledgmentLink($invoice){
+	function invoiceReportLinks($invoice){
 		$results = "<span id='invoiceAckLink'>";
-		$results .= "<a href='CustInvAck.php?Invoice=" . $invoice['Invoice'] . "'>Invoice Acknowledgement";
-		$results .= "</a></span>";
+		
+		$results .= $this->invAcknowledgmentLink($invoice); 
+		$results .= " &nbsp; &nbsp; ";
+		$results .= $this->invInvoiceLink($invoice);
+		$results .= "</span>";
 		return $results;
 	}
 	
+	function invAcknowledgmentLink($invoice){
+		$results .= "<a href='CustInvAck.php?Invoice=" . $invoice['Invoice'] . "'>Order Acknowledgement";
+		$results .= "</a>";
+		return $results;
+	}
+	function invInvoiceLink($invoice){
+		$results .= "<a href='CustInv.php?Invoice=" . $invoice['Invoice'] . "'>Invoice";
+		$results .= "</a>";
+		return $results;
+	}
+		
 	function buttonLinks($invoice){
 		$formName="InvoiceDetailButtonLinks";
 		if(!array_key_exists('Invoice', $invoice)) $invoice['Invoice'] = "";

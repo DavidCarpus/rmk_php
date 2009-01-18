@@ -71,7 +71,7 @@ foreach( array('Prefix', 'FirstName', 'LastName', 'Suffix') as $attrib)
 
 $CustomerSummaryDisp = $customerForm->display($customer);
 $CustomerFlags = $customerForm->customerFlags($customer);
-$invoiceAckLink=$invoiceForms->invAcknowledgmentLink($invoice);
+$invoiceAckLink=$invoiceForms->invoiceReportLinks($invoice);
 
 $newInvoiceEntryFormValues["Invoice"]=$InvoiceNum;
 //$newInvoiceEntryFormValues["submit"]="New Item";

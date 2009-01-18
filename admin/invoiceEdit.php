@@ -93,7 +93,7 @@ switch ($mode) {
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php
-				 	echo $invoiceForms->invAcknowledgmentLink( $invoice );
+				 	echo $invoiceForms->invoiceReportLinks( $invoice );
 				 	echo "</BR>\n";
 				 	echo "</BR>\n";
 				 	echo $invoiceForms->invNum( $invoice );
