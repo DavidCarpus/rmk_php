@@ -60,7 +60,16 @@
 	padding-top:20px; 
 }
 
+#invoiceFooter {
+	clear: left;
+	float: left;
+	display: block;
+	width: 750px;
+	padding-top:20px; 
+}
+
 #acknowledgmentFooter .comment{	clear: left;	float: left;	display: block; width: 330px;}
+#invoiceFooter .comment{	clear: left;	float: left;	display: block; width: 330px;}
 
 #paymentBlock {	clear: none;	float: right;	display: block; }
 #invoiceTerms {	clear: none;	float: left;	display: block; width: 325px;}

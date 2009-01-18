@@ -2,6 +2,7 @@
 include_once "../config.php";
 include_once DB_INC_DIR. "Invoices.class.php";
 include_once DB_INC_DIR. "Customers.class.php";
+include_once DB_INC_DIR. "Payments.class.php";
 
 class CustomerReports
 {
@@ -11,6 +12,27 @@ class CustomerReports
 	public function __construct() {
        $this->invoiceClass = new Invoices();
        $this->customerClass = new Customers();
+	}
+	
+	function invoice($formValues){
+		$results= "";
+		$invoice = $this->invoiceClass->details($formValues['Invoice']);
+		$customer = $this->customerClass->fetchCustomer($invoice['CustomerID']);
+		if(!array_key_exists('entries', $invoice))
+			$invoice['entries'] = $this->invoiceClass->items($invoice['Invoice']);
+		
+		
+		$results .= "<div id='customerReportHeader'>";
+		$results .= $this->dateAndContact($invoice, $customer);
+		$results .= "\n";
+		$results .= $this->billandShipAddress($invoice, $customer);
+		$results .= "\n";
+		$results .= "</div>";
+		$results .= $this->entriesTable($invoice);
+		$results .= $this->invoiceFooter($invoice, $customer);
+		
+//		$results .= debugStatement(  dumpDBRecord($invoice ) );
+		return $results;		
 	}
    
 	function acknowledgment($formValues){
@@ -38,19 +60,57 @@ class CustomerReports
 		$results = ""; 
 		$results .= "<div id='acknowledgmentFooter'>";
 
-		$results .= $this->terms($customer);
-		$results .= $this->paymentBlock($invoice);
+//		$results .= $this->terms($customer);
+		$results .= $this->paymentBlock($invoice, true);
 		$results .= $this->payTo();
-		if(strlen($invoice['Comment']) > 0){
-			$results .= "<span class='comment'>" .$invoice['Comment']. "</span>";
-		}
+//		if(strlen($invoice['Comment']) > 0){
+//			$results .= "<span class='comment'>" .$invoice['Comment']. "</span>";
+//		}
+		$results .= $this->invoiceFooterComment($invoice, false);
+		
 		
 		$results .= "</div>";	
 		
 		return $results;
 	}
 	
-	function paymentBlock(array $invoice){
+	function invoiceFooter(array $invoice, array $customer){
+		$results = ""; 
+		$results .= "<div id='invoiceFooter'>";
+
+		$results .= $this->terms($customer);
+		$results .= $this->paymentBlock($invoice);
+		$results .= $this->payTo();
+		$results .= $this->invoiceFooterComment($invoice);
+//		if(strlen($invoice['Comment']) > 0){
+//			$results .= "<span class='comment'>" .$invoice['Comment']. "</span>";
+//		}
+		
+		$results .= "</div>";	
+		
+		return $results;
+	}
+	
+	function invoiceFooterComment($invoice, $replaceCarat=true){
+		$results = ""; 
+		if(strlen($invoice['Comment']) > 0){
+			$comment = $invoice['Comment'];
+			$caratLoc = strpos($comment, "^");
+			if($replaceCarat){
+				if($caratLoc > 0){
+					$payments = new Payments();
+					$CC = $payments->getLastCC_ForInvoice($invoice['Invoice']);
+					$comment = str_replace("^", $CC,$comment);
+				}
+			} else{
+				$comment = str_replace("^", "",$comment);
+			}
+			$results .= "<span class='comment'>$comment</span>";
+		}
+		return $results;
+	}
+	
+	function paymentBlock(array $invoice, $shipChargesComment=false){
 		
 		$costs = $this->invoiceClass->computeCosts($invoice);
 	
@@ -64,8 +124,10 @@ class CustomerReports
 				$results .= "<span class='value'>" . "$". number_format($costs[$field] ,2). "</span>";
 				$results .= "</BR>";
 		}
-		$results .= "</BR>";
-		$results .= "Shipping charges determined in year of shipment";
+		if($shipChargesComment){
+			$results .= "</BR>";
+			$results .= "Shipping charges determined in year of shipment";
+		}
 		$results .= "</div>";	
 		return $results;	
 	}

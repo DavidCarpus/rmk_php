@@ -16,8 +16,12 @@ class Payments
 	
 	function validatePayment($values){
 		$isCC=false;
-		if(is_numeric($values['Number']) ){
-			if(strlen($values['Number']) > 6) $isCC=true;
+		$ccNumber = $values['Number'];
+		$ccNumber = str_replace(" ", "",$ccNumber);
+		$ccNumber = str_replace("-", "",$ccNumber);
+		
+		if(is_numeric($ccNumber) ){
+			if(strlen($ccNumber) > 6) $isCC=true;
 		}
 		if($isCC && !$this->validateCC($values) ){
 			echo debugStatement($this->validationError);
@@ -39,7 +43,7 @@ class Payments
 		if($cctype == "unknown") { $this->validationError="Invalid CC Type"; return false;}
 		if(!is_numeric($values['VCode']) ) { $this->validationError="Invalid VCode"; return false;}
 		if(!$this->validExpirationDate($values['ExpirationDate']) ) { $this->validationError="Invalid Expration Date"; return false;}
-		if(!$this->validateNumber($values['Number']) ) { $this->validationError="Invalid Number"; return false;}
+		if(!$this->validateNumber($ccNumber) ) { $this->validationError="Invalid Number"; return false;}
 		
 //		echo debugStatement("Valid CC");
 		return true;
@@ -96,6 +100,8 @@ class Payments
 	
 	function saveNewPayment($values){
 		echo "saveNewPayment";
+		$values['Number'] = str_replace(" ", "",$values['Number']);
+		$values['Number'] = str_replace("-", "",$values['Number']);
 		if($values['ExpirationDate'] == '') $values['ExpirationDate']=$values['PaymentDate'];
 		$payment = array("Invoice"=>$values['Invoice'],"Number"=>$values['Number'],"PaymentDate"=>$values['PaymentDate'],
 							"ExpirationDate"=>$values['ExpirationDate'],"Payment"=>$values['Payment'],"VCode"=>$values['VCode']);
@@ -105,6 +111,12 @@ class Payments
 //		echo $sql;
 	}
 	
-	
+	function getLastCC_ForInvoice($invoiceNum){
+		$record = getSingleDbRecord("SELECT Number FROM Payments P where P.`Invoice`=$invoiceNum and length(Number) > 10 order by PaymentDate DESC");
+		if(sizeof($record) > 0)
+			return $record['Number'];
+		else
+			return "TODO:getLastCC-$invoiceNum";
+	}
 }
 ?>
