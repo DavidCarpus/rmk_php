@@ -85,7 +85,7 @@ class InvoiceEntries
 		
 		$invoiceEntry = saveRecord("InvoiceEntries", "InvoiceEntryID", $invoiceEntry);
 		
-		echo debugStatement(dumpDBRecord($invoiceEntry));
+//		echo debugStatement(dumpDBRecord($invoiceEntry));
 		
 		$this->updateFeatures($invoiceEntry, $values);
 		
@@ -142,9 +142,9 @@ class InvoiceEntries
 		executeSQL("Update InvoiceEntries IE set TotalRetail = " . 
 			"((Select COALESCE( SUM(price) , 0 ) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity" . 
 			" where InvoiceEntryID=" . $entryID);
-		echo debugStatement("Update InvoiceEntries IE set TotalRetail = " . 
-			"((Select COALESCE( SUM(price) , 0 ) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity" . 
-			" where InvoiceEntryID=" . $entryID);
+//		echo debugStatement("Update InvoiceEntries IE set TotalRetail = " . 
+//			"((Select COALESCE( SUM(price) , 0 ) from InvoiceEntryAdditions IA where IE.InvoiceEntryID = IA.EntryID)+ IE.Price )*IE.Quantity" . 
+//			" where InvoiceEntryID=" . $entryID);
 	}
 	
 	function updateInvoiceTotals($invoiceNum){
@@ -152,9 +152,9 @@ class InvoiceEntries
 			"(select COALESCE( SUM(TotalRetail) , 0 ) from InvoiceEntries where Invoice=I.Invoice)" . 
 			" where Invoice=" . $invoiceNum);
 		
-		echo debugStatement("Update Invoices I set TotalRetail = " . 
-			"(select COALESCE( SUM(TotalRetail) , 0 ) from InvoiceEntries where Invoice=I.Invoice)" . 
-			" where Invoice=" . $invoiceNum);
+//		echo debugStatement("Update Invoices I set TotalRetail = " . 
+//			"(select COALESCE( SUM(TotalRetail) , 0 ) from InvoiceEntries where Invoice=I.Invoice)" . 
+//			" where Invoice=" . $invoiceNum);
 	}
 }
 
