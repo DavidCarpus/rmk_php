@@ -99,13 +99,13 @@ class Payments
 	}
 	
 	function saveNewPayment($values){
-		echo "saveNewPayment";
+//		echo "saveNewPayment";
 		$values['Number'] = str_replace(" ", "",$values['Number']);
 		$values['Number'] = str_replace("-", "",$values['Number']);
 		if($values['ExpirationDate'] == '') $values['ExpirationDate']=$values['PaymentDate'];
 		$payment = array("Invoice"=>$values['Invoice'],"Number"=>$values['Number'],"PaymentDate"=>$values['PaymentDate'],
 							"ExpirationDate"=>$values['ExpirationDate'],"Payment"=>$values['Payment'],"VCode"=>$values['VCode']);
-		echo debugStatement(dumpDBRecord($payment));
+//		echo debugStatement(dumpDBRecord($payment));
 		saveRecord("Payments", "PaymentID", $payment);
 //		$sql = insertRecordSQL($payment, "PaymentID", "Payments");
 //		echo $sql;
