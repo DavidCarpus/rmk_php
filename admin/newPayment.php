@@ -23,9 +23,9 @@ $invoiceNum = $formValues['Invoice'];
 $paymentsClass = new Payments();
 
 if($paymentsClass->validatePayment($formValues)){
+	if($formValues['ExpirationDate'] == NULL) $formValues['ExpirationDate']=date("Y-m-d");
 	$formValues['ExpirationDate'] = $paymentsClass->formatExpirationDate($formValues['ExpirationDate']);
-	
-	echo debugStatement(dumpDBRecord($formValues));
+//	echo debugStatement(dumpDBRecord($formValues));
 	$paymentsClass->saveNewPayment($formValues);
  	header("Location: "."invoicePaymentsEntryEdit.php?Invoice=$invoiceNum");
 } else {
