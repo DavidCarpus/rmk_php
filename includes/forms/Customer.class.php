@@ -26,9 +26,9 @@ class Customer extends Base
 		$url = "<a href='customerEdit.php?CustomerID=$custID'>$name</a>\n";
 		$results .= $url;
 
-		if(array_key_exists("EMailAddress", $request))
+		if($request != NULL && array_key_exists("EMailAddress", $request))
 			$results .= $request["EMailAddress"] . "</BR>\n";
-		if(array_key_exists("PhoneNumber", $request))
+		if($request != NULL && array_key_exists("PhoneNumber", $request))
 			$results .= $request["PhoneNumber"] . "</BR>\n";
 	
 		$results .= "</div><!-- End $formName -- >\n";
@@ -39,7 +39,7 @@ class Customer extends Base
    
    function customerFlags($request){
    		$results =  "<span id='CustomerFlags'>\n";
-		if(array_key_exists('Memo', $request) && strlen($request['Memo'])>1){
+		if($request != NULL && array_key_exists('Memo', $request) && strlen($request['Memo'])>1){
 			$custID = $request['CustomerID'];
 			$results .= "<span class='helptext'>";
 			$results .= "<a href='customerEdit.php?CustomerID=$custID'>";
@@ -84,6 +84,7 @@ class Customer extends Base
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix');
 		foreach( $fields as $name)
 		{
+//			if($request != NULL && !array_key_exists($name, $request)) $request[$name] = "";
 			if(!array_key_exists($name, $request)) $request[$name] = "";
 			$results .= $request[$name] . " ";
 		}
