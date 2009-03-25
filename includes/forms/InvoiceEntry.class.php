@@ -181,10 +181,12 @@ class InvoiceEntry extends Base
 		$id = $formValues['InvoiceEntryID'];
 		$results = "";
 		$currEntry=null;
+		if(array_key_exists("entries", $formValues)){	
 		foreach ($formValues['entries'] as $entry) {
 			if($entry['InvoiceEntryID'] == $id){
 				$currEntry=$entry;
 			}
+		}
 		}
 		if($formValues['submit'] != 'Edit'){
 //			echo "get additions from form fields?";
