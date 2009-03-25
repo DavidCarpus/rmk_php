@@ -146,17 +146,32 @@ function setDB_Globals(){
 		$dbconfig['address']=$address;
 		
 	}
-//		$dbconfig['server'] = "www.randallknives.com";
+	$address = 'localhost';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="rmkweb";
+		$dbconfig['password']="rmkskeet";
+		$dbconfig['webDatabase']="newrmk";
+		$dbconfig['address']=$address;
+		
+	}
+	//		$dbconfig['server'] = "www.randallknives.com";
 //		$dbconfig['username']="uplzcvgw_rmkweb";
 //		$dbconfig['password']="rmkskeet";
 //		$dbconfig['webDatabase']="uplzcvgw_rmk";
 //		$dbconfig['address']=$address;
-	//	dumpDB_ConnData();
+//		dumpDB_ConnData();
+//		var_dump($dbconfig);
 }
 
 function dumpDB_ConnData(){
 	global $dbconfig, $dbConn;
 	
+	echo "Test";
+	if($dbConn == NULL){
+		echo "No DBConfig for " . $_SERVER['REMOTE_ADDR'] . "?";
+		return;
+	}
 	if($_SERVER['REMOTE_ADDR'] == '97.100.243.22') var_dump($dbconfig);
 	if($_SERVER['REMOTE_ADDR'] == '192.168.1.90') var_dump($dbconfig);
 	var_dump($dbConn);
