@@ -170,6 +170,17 @@ GRANT ALL PRIVILEGES ON *.* to 'gtr'@'carpus'  WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* to 'gtr'  WITH GRANT OPTION;
 UPDATE user set password = old_password('xxx') where user = 'gtr';
 
+use mysql;
+delete from user where user='rmkweb';
+GRANT ALL PRIVILEGES ON *.* to 'rmkweb';
+UPDATE user set password = old_password('xxx') where user = 'rmkweb';
+
+use mysql;
+delete from user where user='rmkweb';
+delete from db where user='rmkweb';
+GRANT ALL PRIVILEGES ON newrmk.* to 'rmkweb'@'localhost' IDENTIFIED BY 'xxxx';
+
+
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('XXXXX');
 
 FLUSH PRIVILEGES;
