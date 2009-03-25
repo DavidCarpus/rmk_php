@@ -17,7 +17,6 @@ session_start();
 //	session_destroy();
 //	header("Location: "."../");
 //}
-echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 $formValues = getFormValues();
 $Parts = new Part();
 $partsDB = new Parts();
@@ -33,17 +32,21 @@ switch ($mode) {
 		// validate all entries are blank or numeric
 		$valid = $Parts->validateNewPricing($partPrices);
 		if(!$valid){
+			echo "Not Valid";
 			$formValues['ERROR']= $Parts->validationError;	
 			$formValues['Year'] = $formValues['submit'];
 		} else { // If they all are
+//			echo "Valid, Redirecting";
    			foreach ($partPrices as $partPrice) { // save them all
    				$partsDB->savePrice($partPrice);
    			}
 //			redirect to 'pricing.php'
 			header("Location: "."Pricing.php");
+			return;
 		}
 		break;
 }
+echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 
 ?>
 
