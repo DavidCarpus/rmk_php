@@ -43,6 +43,7 @@ $formValues = getFormValues();
 
 $mode=$invoiceForms->entryFormMode($formValues);
 $formValues['mode'] = $mode;
+//echo debugStatement(dumpDBRecord($formValues));
 
 switch ($mode) {
 	case "new":
@@ -56,7 +57,6 @@ switch ($mode) {
 		$customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
 		$invoice = $invoiceClass->details( $invoiceNum );
 		$entries = $invoiceClass->items($invoiceNum);
-		
 		$invoice['CustomerID'] = $customer['CustomerID'];
 		$invoice["KnifeCount"] = $invoiceClass->computeKnifeCount($entries);
 		break;
@@ -68,6 +68,7 @@ switch ($mode) {
 		$invoice['ShippingAmount'] = preg_replace("/\\$/", '', $invoice['ShippingAmount']);
 		$invoice['TotalRetail'] = preg_replace("/\\,/", '', $invoice['TotalRetail']);
 		$invoice['ShippingAmount'] = preg_replace("/\\,/", '', $invoice['ShippingAmount']);
+		$invoice['CustomerID'] = $formValues['CustomerID'];
 		
 		$valid = $invoiceClass->validateNew($invoice);
 		if(!$valid){
@@ -99,6 +100,7 @@ switch ($mode) {
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
+					debugStatement( $invoiceNum );
 					echo $customerForms->displayWithFlags( $customer );					
 					echo "\n";
 					echo "\n";
@@ -112,6 +114,7 @@ switch ($mode) {
 						echo "\n";
 						$entries = $invoiceClass->itemsWithAdditions( $invoice['Invoice'] ); // 56031
 						echo $invoiceEntryForms->knifeListTable( $entries, 0 );
+						$formValues['Invoice'] = $invoice['Invoice'];
 						echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
 					}
 //					echo debugStatement(dumpDBRecord($formValues)); // $invoice
