@@ -1,10 +1,19 @@
 <?php
 session_start(); 
 /* Created on Feb 4, 2006 */
-include_once "../includes/db/db.php";
-include_once "../includes/db/db_requests.php";
-include_once "../includes/htmlHead.php";
-include_once "../includes/orders.php";
+include_once "../config.php";
+
+include_once INCLUDE_DIR. "htmlHead.php";
+include_once INCLUDE_DIR. "orders.php";
+include_once INCLUDE_DIR. "email.php";
+
+include_once DB_INC_DIR. "db.php";
+include_once DB_INC_DIR. "db_requests.php";
+
+//include_once "../includes/db/db.php";
+//include_once "../includes/db/db_requests.php";
+//include_once "../includes/htmlHead.php";
+//include_once "../includes/orders.php";
 ?>
 
 <html>
@@ -43,17 +52,35 @@ function processOrders(){
 			break;
 		case 'uservalidated':
 			$form = getFormValues();
-//			print "<HR>";print_r($form);print "<HR>";
+//			echo debugStatement(dumpDBRecord($form));
 			if(getHTMLValue('submit') == "Edit Quote" || getHTMLValue('submit') == "Edit Order"){
 				echo orderForm($fields, $form);
 			}else{
 //				debugStatement(dumpDBRecord($form));
 //				debugStatement(dumpDBRecord($fields));
-				saveOrder($fields, $form);
-				if($form['ordertype'] == 'Quote')
-					echo str_replace("\n","<BR>\n",getQuoteRequestAcknowledgment($fields, $form));
-				else
-					echo str_replace("\n","<BR>\n",getOrderAcknowledgment($fields, $form));
+				$address = '192.168.1.90';
+				if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) != $address ){
+					saveOrder($fields, $form);
+				}
+				$ack = "";
+				$emailSubject="";
+				if($form['ordertype'] == 'Quote'){
+					$ack = str_replace("\n","<BR>\n",getQuoteRequestAcknowledgment($fields, $form));
+					$emailSubject="Quote Request Acknowledgment";
+				} else{
+					$ack = str_replace("\n","<BR>\n",getOrderAcknowledgment($fields, $form));
+					$emailSubject="Order Request Acknowledgment";
+				}
+				echo $ack;
+				if($form['email'] != ''){
+//					echo debugStatement($ack . dumpDBRecord($form));
+					$form['from']='BLANK';
+					$form['subject'] = $emailSubject;
+					$form['customername']="";
+					$form['to']=$form['email'];
+					$form['message']=$ack;
+					saveAndSend($form, true);
+				}
 			}
 
 			break;			
@@ -81,18 +108,27 @@ function getQuoteRequestAcknowledgment($fields, $data){
 function getOrderAcknowledgment($fields, $data){
 	$results = "<H2>Order REQUEST acknowledgement</H2>";
 			
-	$results = $results . "Thank you for the order request.\n\n";
-	$results = $results . "An &quot;order acknowledgement&quot; will be forwarded via post office within three weeks.\n\n";
-	$results = $results . "The acknowledgement will outline knife order specifications, the scheduled ship date and also a deposit record.  " .
-			"If you do not receive an &quot;order acknowledgement&quot; it is imperative to contact Randall Knives to verify complete order specs. " .
-			"and deposit records.<HR>";
+//	$results = $results . "Thank you for the order request.\n\n";
+//	$results = $results . "An &quot;order acknowledgement&quot; will be forwarded via post office within three weeks.\n\n";
+//	$results = $results . "The acknowledgement will outline knife order specifications, the scheduled ship date and also a deposit record.  " .
+//			"If you do not receive an &quot;order acknowledgement&quot; it is imperative to contact Randall Knives to verify complete order specs. " .
+//			"and deposit records.<HR>";
+	
+$results = $results . "Thank you for your order request with Randall Made Knives.\n\n";
+$results = $results . "Full Name:". $data['name'] . "\n";
+$results = $results . "Order request date:". date("F j Y") . "\n";
+$results = $results . "Model Number:". $data['model'] . "\n";
+$results = $results . "An 'order acknowledgement' will be forwarded via post office within 21 days.\n\n";
+$results = $results . "The acknowledgement will outline knife order specifications, the scheduled ship date and also a deposit record.   If you do not receive an order acknowledgement, it is imperative to contact Randall Made Knives to verify complete order specs and deposit records.\n\n";
+$results = $results . "<I>All order requests are subject to approval  and confirmation by Randall Made Knives.</I>\n\n";
 			
-	$entry = array();
-	foreach($fields as $field){
-		if($data[$field] != ''){
-			$results = $results . fieldDesc($field) . " <B>" . $data[$field] . "</B>\n";
-		}
-	}
+//	$entry = array();
+//	foreach($fields as $field){
+//		if($data[$field] != ''){
+//			$results = $results . fieldDesc($field) . " <B>" . $data[$field] . "</B>\n";
+//		}
+//	}
+//	$results = $results . dumpDBRecord($data);
 	return $results = $results . "\n";
 }
 
