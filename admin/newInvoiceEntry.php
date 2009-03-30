@@ -43,6 +43,7 @@ $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
 //echo "Invoice Item : $mode<BR>";
 //echo dumpDBRecord($formValues);
+//echo debugStatement("Mode:$mode");
 
 
 function editForm(){
@@ -73,8 +74,9 @@ function editForm(){
 	$results .= $invoiceForms->details( $invoice, "view"  );
 	$results .= $invoiceEntryForms->knifeListTable( $entries, $formValues["invoiceentryid"] );
 	$formValues['entries'] = $entries;
-	$results .= $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
+	$results .= $invoiceEntryForms->invoiceEntryEditForm($formValues, $partsFormClass);
 	$results .="</div></div>";
+//	echo dumpDBRecords($entries);
 
 	
 	$results .= footer();
@@ -86,12 +88,9 @@ function editForm(){
 
 switch ($mode) {
 	case "validate":
-		if($invoiceEntryClass->validateNew($formValues)){
+		if($invoiceEntryClass->validateNewEdit($formValues)){
 			$invoiceEntryClass->save($formValues);
 		 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
-		} else {
-			$formValues['ERROR']=$invoiceEntryClass->validationError;
-			echo editForm();
 		}
 	break;
 	case "new":
@@ -101,7 +100,8 @@ switch ($mode) {
 		
 	case "add":
 	case "update":
-		if($invoiceEntryClass->validateNew($formValues)){
+		
+		if($invoiceEntryClass->validateNewEdit($formValues)){
 			$invoiceEntryClass->save($formValues);
 		 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 		} else {

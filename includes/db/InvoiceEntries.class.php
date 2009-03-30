@@ -35,15 +35,17 @@ class InvoiceEntries
 		return $features;
 	}
 	
-	function validateNew($values){
+	function validateNewEdit($values){
 		$valid = true;
 		$this->validationError="";
 //		echo debugStatement(dumpDBRecord($values));
 		$features = $this->getEnteredFeatures($values);
+//		echo debugStatement(dumpDBRecord($features));
 		// TODO: check entered features
 		
 		if(count($features) > 0){
 			foreach ($features as $feature) {
+//				echo debugStatement("Check feature".dumpDBRecord($feature));
 				$price = $this->partsClass->currentYearPartPrice($feature['PartCode']);
 				if($price == NULL) {$this->validationError .= "FeatureList,"; $valid=false;}
 //				echo $feature . "<BR>";

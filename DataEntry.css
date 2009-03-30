@@ -238,25 +238,25 @@ fieldset {
 #invoiceFinanceSummary .negValue	{width: 80px;	text-align: right;	float: left; display: block; padding-right: 20px; color:#FF0000; }
 
 /* ================================================================================ */
-#NewInvoiceEntry{ 	float: left;	display: block; width: 800px; }
-#NewInvoiceEntry br{	clear: left;}
+#InvoiceEntryEdit{ 	float: left;	display: block; width: 800px; }
+#InvoiceEntryEdit br{	clear: left;}
 
-#NewInvoiceEntry label { width: 120px; }
-#NewInvoiceEntry span { float: left;  display: block; }
+#InvoiceEntryEdit label { width: 120px; }
+#InvoiceEntryEdit span { float: left;  display: block; }
 
-#NewInvoiceEntry input#Quantity { width: 40px; }
-#NewInvoiceEntry input#BaseRetail { width: 80px; }
-#NewInvoiceEntry input#PartDescription { width: 80px; }
-#NewInvoiceEntry input#TotalRetail { width: 80px; }
+#InvoiceEntryEdit input#Quantity { width: 40px; }
+#InvoiceEntryEdit input#BaseRetail { width: 80px; }
+#InvoiceEntryEdit input#PartDescription { width: 80px; }
+#InvoiceEntryEdit input#TotalRetail { width: 80px; }
 
-#NewInvoiceEntry label.label-Quantity { width: 80px; }
+#InvoiceEntryEdit label.label-Quantity { width: 80px; }
 
 /*
 #NewInvoiceEntry input#FeatureList{ width: 120px; }
 #NewInvoiceEntry select{ width: 110px;  text-align: left;   float: left; display: block; }
 */
 
-#NewInvoiceEntry input.btn{ width: 140px; }
+#InvoiceEntryEdit input.btn{ width: 140px; }
 
 #span_FeatureList .featureEntry { clear:left; width:800px; display: block; padding: 20px 120px 20px 50px; }
 #span_FeatureList .featureEntry input { float: left;	display: block; width: 50px; }

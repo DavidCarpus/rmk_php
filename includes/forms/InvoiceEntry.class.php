@@ -181,6 +181,7 @@ class InvoiceEntry extends Base
 		$id = $formValues['InvoiceEntryID'];
 		$results = "";
 		$currEntry=null;
+
 		if(array_key_exists("entries", $formValues)){	
 		foreach ($formValues['entries'] as $entry) {
 			if($entry['InvoiceEntryID'] == $id){
@@ -198,7 +199,6 @@ class InvoiceEntry extends Base
 
 				$currEntry['Additions'][] = array("PartCode" => $partCode, "Price"=> $partPrice);			
 			}
-			
 		}
 		$i=1;
 		$results .=  "\n<span class='featureEntry'>\n";
@@ -244,16 +244,18 @@ class InvoiceEntry extends Base
 		return $entry;
 	}
 	
-	function newInvoiceEntryForm($formValues, Part $partsFormClass ){
-		$formName="NewInvoiceEntry";
+	function invoiceEntryEditForm($formValues, Part $partsFormClass ){
+		$formName="InvoiceEntryEdit";
 		
 		$mode=$this->invEntryFormMode($formValues);
 		
 //		if(!array_key_exists("InvoiceEntryID", $formValues)){		$formValues["InvoiceEntryID"]="";		}
 
 		$values = $this->getEntryFromHttpValues($formValues);
-//		echo debugStatement(dumpDBRecord($values));
-//		return;
+//		echo debugStatement(dumpDBRecord($formValues));
+		if(array_key_exists("entries", $formValues))	$values['entries'] = $formValues['entries']; 
+		if(array_key_exists("submit", $formValues))	$values['submit'] = $formValues['submit']; 
+		//		return;
 				
 		$errors = array();
 		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){

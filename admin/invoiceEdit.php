@@ -115,7 +115,7 @@ switch ($mode) {
 						$entries = $invoiceClass->itemsWithAdditions( $invoice['Invoice'] ); // 56031
 						echo $invoiceEntryForms->knifeListTable( $entries, 0 );
 						$formValues['Invoice'] = $invoice['Invoice'];
-						echo $invoiceEntryForms->newInvoiceEntryForm($formValues, $partsFormClass);
+						echo $invoiceEntryForms->InvoiceEntryEditForm($formValues, $partsFormClass);
 					}
 //					echo debugStatement(dumpDBRecord($formValues)); // $invoice
 //					echo debugStatement(dumpDBRecord($invoice) ); 
