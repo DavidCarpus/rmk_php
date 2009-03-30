@@ -16,7 +16,17 @@ session_start();
 //	header("Location: "."../");
 //}
 
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+$formValues = getFormValues();
+$searchForms = new Search();
+$searchType = $searchForms->getSearchType($formValues);
+$formValues['searchType'] = $searchType;
+if($searchType == 'invoice'){
+//if(array_key_exists('searchValue', $formValues) && $searchForms->getSearchType($formValues) == 'invoice'){
+	$invoiceNum = $formValues['searchValue'];
+	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
+}
+
+echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 ?>
 <LINK href="../Style.css" rel="stylesheet" type="text/css">
 <LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
@@ -24,14 +34,6 @@ session_start();
 
 <?php
 
-$formValues = getFormValues();
-$searchForms = new Search();
-$searchType = $searchForms->getSearchType($formValues);
-if($searchType == 'invoice'){
-//if(array_key_exists('searchValue', $formValues) && $searchForms->getSearchType($formValues) == 'invoice'){
-	$invoiceNum = $formValues['searchValue'];
-	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
-}
 if(strlen($searchType) > 0)
 {
 	$customers = $searchForms->getSearchResults($formValues);
@@ -52,7 +54,7 @@ if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 				if(count($customers) > 0){
 					echo $searchForms->displaySearchResults($customers, $formValues);
 				}
-//				echo debugStatement(dumpDBRecord($formValues));
+				echo debugStatement(dumpDBRecord($formValues));
 					?>
 		</div>
 	</div>
