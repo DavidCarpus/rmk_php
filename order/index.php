@@ -70,10 +70,23 @@ function processOrders(){
 					$emailSubject="Quote Request Acknowledgment";
 				} else{
 					$ack = str_replace("\n","<BR>\n",getOrderAcknowledgment($fields, $form));
+					
 					$emailSubject="Order Request Acknowledgment";
 				}
 				echo $ack;
 				if($form['email'] != ''){
+					$ack = str_replace("<BR>","",$ack);
+					$ack = str_replace("<I>","",$ack);
+					$ack = str_replace("</I>","",$ack);
+					$ack = str_replace("<H2>Order REQUEST acknowledgement</H2>","",$ack);
+					
+					$ack = $ack . "Randall Made Knives\n";
+					$ack = $ack . "4857 South Orange Blossom Trail\n";
+					$ack = $ack . "Orlando FL 32839\n";
+					$ack = $ack . "Telephone (407) 855-8075\n";
+					$ack = $ack . "Fax (407) 855-9054\n";
+					$ack = $ack . "www.randallknives.com\n";
+					
 //					echo debugStatement($ack . dumpDBRecord($form));
 					$form['from']='BLANK';
 					$form['subject'] = $emailSubject;
@@ -118,11 +131,13 @@ function getOrderAcknowledgment($fields, $data){
 $results = $results . "Thank you for your order request with Randall Made Knives.\n\n";
 $results = $results . "Full Name:". $data['name'] . "\n";
 $results = $results . "Order request date:". date("F j Y") . "\n";
-$results = $results . "Model Number:". $data['model'] . "\n";
+$results = $results . "Model Number:". $data['model'] . "\n\n";
 $results = $results . "An 'order acknowledgement' will be forwarded via post office within 21 days.\n\n";
 $results = $results . "The acknowledgement will outline knife order specifications, the scheduled ship date and also a deposit record.   If you do not receive an order acknowledgement, it is imperative to contact Randall Made Knives to verify complete order specs and deposit records.\n\n";
 $results = $results . "<I>All order requests are subject to approval  and confirmation by Randall Made Knives.</I>\n\n";
 			
+
+
 //	$entry = array();
 //	foreach($fields as $field){
 //		if($data[$field] != ''){
