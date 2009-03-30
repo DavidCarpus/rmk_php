@@ -20,6 +20,7 @@ include_once DB_INC_DIR. "db_requests.php";
 <?php echo headSegment("../Style.css"); ?>
 <body>
 
+<?php echo logo_header(""); ?>
 <div class="mainbody">
 	<div class="centerblock">
 		<?php echo toolbar(); ?>
