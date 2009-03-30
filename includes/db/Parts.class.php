@@ -102,13 +102,13 @@ class Parts
 	function currentYearPartPrice($partCode){
 		$year=date("Y");
 //		echo debugStatement("Fetch price for $partCode");
+		$partCode=trim(strtoupper($partCode));
 		if( count($this->currentlyAvailibleParts) < 1){
 			$query = "Select Parts.*, PartPrices.Price  from Parts 
 				left join PartPrices on PartPrices.PartID = Parts.PartID 
 				where PartPrices.Year = $year";
 //			echo $query;
 			$parts =  getDbRecords($query);
-//			echo debugStatement(dumpDBRecords($parts));
 			$currPart = NULL;
 			foreach($parts as $part){
 				$this->currentlyAvailibleParts[$part['PartCode']] =  $part;
