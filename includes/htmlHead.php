@@ -522,7 +522,6 @@ function isLocalAccess(){
 	return false;
 }
 function isDebugAccess(){
-	echo "Debug access?";
 	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
 	
 	return ($_SERVER['REMOTE_ADDR'] == '97.100.243.22'
