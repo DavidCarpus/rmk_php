@@ -485,7 +485,8 @@ function isDebugMachine(){
 //		echo "<HR>DEBUG MACHINE<HR>";
 		return true;
 	}
-
+//		return true;
+	
 	//~ if($_SERVER['REMOTE_ADDR'] =='70.118.199.240'){
 		//~ echo "<HR>DEBUG MACHINE<HR>";
 		//~ return true;

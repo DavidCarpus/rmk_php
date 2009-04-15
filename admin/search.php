@@ -54,7 +54,7 @@ if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 				if(count($customers) > 0){
 					echo $searchForms->displaySearchResults($customers, $formValues);
 				}
-				echo debugStatement(dumpDBRecord($formValues));
+//				echo debugStatement(dumpDBRecord($formValues));
 					?>
 		</div>
 	</div>
