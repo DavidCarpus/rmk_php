@@ -65,12 +65,11 @@ fieldset {
 #InvoiceDetails,
 #InvoiceEntryDetails
 {
-	clear: right;
 	display: block;
-	padding-top: 10px;
+	padding-top: 20px;
 	padding-bottom: 20px;
 	float: left;
-	width: 810px;
+	width: 750px;
 }
 
 #InvoiceDetails input,
@@ -230,6 +229,7 @@ fieldset {
 	float: left;
 	display: block;
 	padding-left: 20px;
+	width: 210px;
 }
 #invoiceFinanceSummary br{	clear: left;}
 
@@ -301,6 +301,7 @@ fieldset {
 	float: left;
 	display: block;
 	padding-right: 10px;
+	width: 750px;
 }
 
 #CustomerInvoiceList .Invoice		{width: 80px;	text-align: left;	float: left; display: block;}
@@ -379,7 +380,8 @@ fieldset {
 
 #CustomerFlags{
 	display: block; 
-	float: left;
+	float: left;.
+	width: 375px; 
 /*	background-color: green;*/
 }
 
