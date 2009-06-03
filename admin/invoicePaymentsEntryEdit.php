@@ -4,6 +4,7 @@ include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
 include_once INCLUDE_DIR. "adminFunctions.php";
+include_once INCLUDE_DIR. "links.php";
 
 include_once DB_INC_DIR. "db.php";
 include_once DB_INC_DIR. "db_requests.php";
@@ -59,6 +60,7 @@ foreach($entries as $entry)
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php 	
+					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum));
 					echo $invoiceForms->invNum( $invoice );
 					echo "\n\n";
 					echo $customerForms->displayWithFlags( $customer );

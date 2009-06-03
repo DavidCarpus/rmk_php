@@ -4,6 +4,7 @@ include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
 include_once INCLUDE_DIR. "adminFunctions.php";
+include_once INCLUDE_DIR. "links.php";
 
 include_once DB_INC_DIR. "db.php";
 include_once DB_INC_DIR. "db_requests.php";
@@ -69,6 +70,7 @@ switch ($mode) {
 		$invoice['TotalRetail'] = preg_replace("/\\,/", '', $invoice['TotalRetail']);
 		$invoice['ShippingAmount'] = preg_replace("/\\,/", '', $invoice['ShippingAmount']);
 		$invoice['CustomerID'] = $formValues['CustomerID'];
+		$invoiceNum = $invoice['Invoice'];
 		
 		$valid = $invoiceClass->validateNew($invoice);
 		if(!$valid){
@@ -94,9 +96,7 @@ switch ($mode) {
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php
-				 	echo $invoiceForms->invoiceReportLinks( $invoice );
-				 	echo "</BR>\n";
-				 	echo "</BR>\n";
+					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum));
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
