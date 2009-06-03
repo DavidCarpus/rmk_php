@@ -34,7 +34,7 @@ function getIntFromDB($query){
 }
 
 function getBasicSingleDbRecord($tableName, $keyField, $keyValue){
-	$query = "Select * from " . $tableName . " where $keyField=".$keyValue;
+	$query = "Select * from " . $tableName . " where $keyField=\"".$keyValue."\"";
 	return getSingleDbRecord($query);
 }
 
@@ -167,7 +167,6 @@ function setDB_Globals(){
 function dumpDB_ConnData(){
 	global $dbconfig, $dbConn;
 	
-	echo "Test";
 	if($dbConn == NULL){
 		echo "No DBConfig for " . $_SERVER['REMOTE_ADDR'] . "?";
 		return;
