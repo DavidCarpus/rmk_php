@@ -133,7 +133,10 @@ class Invoice extends Base
 		$label = ((strlen($invoice["Comment"]) > 0) ? "Edit" : "Add"). " Comment";
 		$results .= "<span class='helptext'>";
 		$results .= "<a href='invoiceCommentEntryEdit.php?Invoice=" . $invoice['Invoice'] . "'>";
-		$results .= "$label<span>" . $invoice["Comment"] . "</span></a>";
+		$results .= $label;
+		if(strlen($invoice["Comment"]) > 0){
+			$results .= "<span>" . $invoice["Comment"] . "</span></a>";
+		}
 		$results .= "</span>";
 		$results .= "&nbsp; &nbsp;";
 		$label = "Edit Payments";
