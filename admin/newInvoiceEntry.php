@@ -38,6 +38,7 @@ $invoice = $invoiceClass->details( $invoiceNum );
 $customer = $customerClass->fetchCustomerForInvoice( $invoiceNum );
 $entries = $invoiceClass->itemsWithAdditions( $invoiceNum );
 $invoice["KnifeCount"] = $invoiceClass->computeKnifeCount($entries);
+$formValues['DefaultDiscount']=$customer['Discount'];
 
 $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
@@ -58,7 +59,7 @@ function editForm(){
 	$results .= "<LINK href='../Style.css'' rel='stylesheet' type='text/css'>";
 	$results .= "<LINK href='../print.css'' rel='stylesheet' type='text/css' media='print'>";
 	$results .= "<LINK href='../DataEntry.css'' rel='stylesheet' type='text/css' media='screen'>";
-	$results .= "\n<body  onLoad='defaultField(\"form_NewInvoiceEntry\",\"PartDescription\");'>\n";
+	$results .= "\n<body  onLoad='defaultField(\"form_InvoiceEntryEdit\",\"PartDescription\");'>\n";
 	$results .= logo_header("admin", "..");
 	$results .= "<div class='mainbody'>";
 	$results .= "<div class='centerblock'>";
