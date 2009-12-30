@@ -32,7 +32,7 @@ class Base
 						 'PartCode'=> "PartCode", 'Description'=>"Description", 'Discountable'=>'Discountable', 
 						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable', 
 						 'Memo'=>'Memo', 'Dealer'=>'Dealer', 'Terms'=>'Terms', 'Discount'=>'Discount',
-						 'ZONE'=>'Zone'
+						 'ZONE'=>'Zone', 'TaxPercentage'=>'Tax Rate'
 						);
 //array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment')
 						//				'qty'=> 'Quantity', , ""=>""

@@ -70,7 +70,7 @@ class Invoice extends Base
 		if(array_key_exists("ERROR", $invoice) && count($invoice['ERROR']) > 0){
 			$errors=array_fill_keys(explode(",", $invoice['ERROR']), true);
 		}
-		$readOnly = !( ($mode == "edit") || ($mode == "new") );
+		$readOnly = !( ($mode == "edit") || ($mode == "new") || $mode == "err" );
 		
 		$results="";
 		
@@ -78,7 +78,9 @@ class Invoice extends Base
 		$results .=  "<form name='$formName' action='invoiceEdit.php' method='POST'>" . "\n" ;
 //		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
 //		$results .=  "<legend>$formName</legend>" . "\n";
-		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount");
+//		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . dumpDBRecord($values));
+		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', 
+			"PONumber", "ShippingInstructions", "KnifeCount", "TaxPercentage");
 		foreach($fields as $name)
 		{
 			$err=(array_key_exists($name, $errors));
@@ -112,7 +114,7 @@ class Invoice extends Base
 		//		PO#, TotalRetail, Shipping$, ShippingInfo, ShippingLocation, discount totalPayments, totalknives
 	
 		// Add buttons to save/update	
-		if($mode == "edit") 	$results .=  $this->button("submit", "Update");
+		if($mode == "edit" || $mode == "err") 	$results .=  $this->button("submit", "Update");
 		if($mode == "new")		$results .=  $this->button("submit", "Save");
 
 		$results .= "</form>";

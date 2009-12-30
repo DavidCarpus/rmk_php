@@ -15,6 +15,21 @@ class InvoiceEntries
 	{
 		return getBasicSingleDbRecord("InvoiceEntries", "InvoiceEntryID", $entryID);
 	}
+	
+	public function features($entryID)
+	{
+		
+//				$query = "Select IE.*, P.BladeItem, P.PartCode, P.PartType, P.Description as LongDescription from InvoiceEntries IE ".
+//				" left join Parts P on P.PartID = IE.PartID ".
+////				" left join PartTypes PPT on P.PartType=PPT.PartTypeID ".
+//				" where Invoice=$invNum order by SortField";
+				
+				
+		$query = "Select IE.Price, P.Description, P.PartCode from InvoiceEntryAdditions IE ";
+		$query .= " left join Parts P on P.PartID = IE.PartID";
+		$query .= " where EntryID=$entryID  order by SortField";
+		return getDbRecords($query);
+	}
 
 	function getEnteredFeatures($formValues){
 		$features=array();
@@ -58,6 +73,7 @@ class InvoiceEntries
 		if(!is_numeric($values['Quantity'])){$this->validationError .= "Quantity,"; $valid=false;}
 		if(!is_numeric($values['BaseRetail'])){$this->validationError .= "BaseRetail,"; $valid=false;}
 		if(!is_numeric($values['Invoice'])) {$this->validationError .= "Invoice,"; $valid=false;}
+		if(!is_numeric($values['Discount'])) {$this->validationError .= "Discount,"; $valid=false;}
 		
 		// trim extra comma
 		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
@@ -79,11 +95,15 @@ class InvoiceEntries
 		if($part == NULL){
 			$part = $this->partsClass->currentYearPartPrice($values["PartDescription"]);
 		}
+//		echo debugStatement(dumpDBRecord($part));
 		
 		$invoiceEntry["PartDescription"] = $part['PartCode'];
 		$invoiceEntry["PartID"] = $part['PartID'];
+		$invoiceEntry["Taxable"] = $part['Taxable'];
 		$invoiceEntry["Price"] = $values['BaseRetail'];
 		$invoiceEntry["TotalRetail"] = $values['BaseRetail'];
+		$invoiceEntry["Discounted"] = $part['Discountable'];
+		$invoiceEntry["DiscountPercentage"] = $values['Discount'];
 		
 		$invoiceEntry = saveRecord("InvoiceEntries", "InvoiceEntryID", $invoiceEntry);
 		

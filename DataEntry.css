@@ -229,11 +229,11 @@ fieldset {
 	float: left;
 	display: block;
 	padding-left: 20px;
-	width: 210px;
+	width: 230px;
 }
 #invoiceFinanceSummary br{	clear: left;}
 
-#invoiceFinanceSummary .label		{width: 80px;	text-align: left;	float: left; display: block; }
+#invoiceFinanceSummary .label		{width: 90px;	text-align: left;	float: left; display: block; }
 #invoiceFinanceSummary .value		{width: 110px;	text-align: right;	float: left; display: block; padding-right: 20px;}
 #invoiceFinanceSummary .negValue	{width: 80px;	text-align: right;	float: left; display: block; padding-right: 20px; color:#FF0000; }
 
@@ -248,6 +248,7 @@ fieldset {
 #InvoiceEntryEdit input#BaseRetail { width: 80px; }
 #InvoiceEntryEdit input#PartDescription { width: 80px; }
 #InvoiceEntryEdit input#TotalRetail { width: 80px; }
+#InvoiceEntryEdit input#Discount { width: 50px; }
 
 #InvoiceEntryEdit label.label-Quantity { width: 80px; }
 

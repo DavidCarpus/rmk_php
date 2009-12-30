@@ -27,7 +27,7 @@ class Invoices
 	function addFormValues($invoice, $formValues)
 	{
 		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 
-			'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount", 'Invoice');
+			'ShippingAmount', "PONumber", "ShippingInstructions", "KnifeCount", 'Invoice', 'TaxPercentage');
 		foreach($fields as $name)
 		{
 			if(array_key_exists($name, $formValues))
@@ -49,6 +49,14 @@ class Invoices
 		
 		if(!is_numeric($values['TotalRetail'])){$this->validationError .= "TotalRetail,"; $valid=false;}
 		if(!is_numeric($values['ShippingAmount'])){$this->validationError .= "ShippingAmount,"; $valid=false;}
+		if(!is_numeric($values['TaxPercentage'])){$this->validationError .= "TaxPercentage,"; $valid=false;}
+		
+		// Validate entered dates
+//		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . $values['DateShipped'] . ":" .strtotime($values['DateShipped']));
+		if(!strtotime($values['DateOrdered'])){$this->validationError .= "DateOrdered,"; $valid=false;}
+		if(!strtotime($values['DateEstimated'])){$this->validationError .= "DateEstimated,"; $valid=false;}
+		if(!strtotime($values['DateShipped'])){$this->validationError .= "DateShipped,"; $valid=false;}
+//		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . $this->validationError);
 		
 		// trim extra comma
 		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
@@ -68,6 +76,7 @@ class Invoices
 		$invoice = getSingleDbRecord($query);	
 		if(!array_key_exists('entries', $invoice))
 			$invoice['entries'] = $this->items($invoice['Invoice']);
+			
 		$costs = $this->computeCosts($invoice);
 //		debugStatement(dumpDBRecord($costs));
 //		$invoice['TotalRetail'] = "$" . number_format($costs['TotalCost'] ,2);
@@ -83,13 +92,21 @@ class Invoices
 		return 0+getIntFromDB("Select sum(Payment) from Payments where Invoice=$invNum");
 	}
 
+	function lastPaymentDate($invNum)
+	{
+		$payments=$this->fetchInvoicePayments($invNum);
+		if(sizeof($payments) == 0) return "";
+		return strtotime($payments[sizeof($payments)-1]['PaymentDate']);
+	}
+	
 	function fetchInvoicePayments($invNum){
-		$query = "Select * from Payments where Invoice=$invNum";
+		$query = "Select * from Payments where Invoice=$invNum order by PaymentDate";
+//		echo debugStatement($query);
 		return getDbRecords($query);
 	}
 	
 	function items($invNum){
-		$query = "Select IE.*, P.BladeItem, P.PartCode, P.PartType from InvoiceEntries IE ".
+		$query = "Select IE.*, P.BladeItem, P.PartCode, P.PartType, P.Description as LongDescription from InvoiceEntries IE ".
 				" left join Parts P on P.PartID = IE.PartID ".
 //				" left join PartTypes PPT on P.PartType=PPT.PartTypeID ".
 				" where Invoice=$invNum order by SortField";
@@ -199,7 +216,7 @@ class Invoices
 		if($results['Due'] > -0.01 && $results['Due'] < 0.01 )
 			$results['Due'] = 0;
 			
-//		echo debugStatement(dumpDBRecord($results));
+//		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . dumpDBRecord($results));
 			
 		unset($results['Discount']);
 		unset($results['NonDiscountable']);

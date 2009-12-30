@@ -226,11 +226,13 @@ class InvoiceEntry extends Base
 		$entry = array();;
 		if(array_key_exists("InvoiceEntryID", $formValues) && $formValues["InvoiceEntryID"] > 0){
 			$dbEntry = $this->invEntryClass->details($formValues["InvoiceEntryID"]);
-//		echo debugStatement(dumpDBRecord($dbEntry));
+//			echo debugStatement(__FILE__. ":" .__FUNCTION__ . ":" . dumpDBRecord($dbEntry));
 			foreach (array("InvoiceEntryID", "Invoice", "PartID", "PartDescription", "Quantity", 
 							"TotalRetail" , "Comment") as $field) {
 				$entry[$field] = $dbEntry[$field];
 			}
+			if($entry["Discount"] == "" && $dbEntry["DiscountPercentage"] != "") $entry["Discount"] = $dbEntry["DiscountPercentage"]; 			
+//			echo debugStatement(__FILE__. ":" .__FUNCTION__ . " : " . dumpDBRecord($entry));
 			$entry['BaseRetail'] = number_format($dbEntry['Price'],2);
 		} else {
 			$entry["InvoiceEntryID"]="";
@@ -252,7 +254,7 @@ class InvoiceEntry extends Base
 //		if(!array_key_exists("InvoiceEntryID", $formValues)){		$formValues["InvoiceEntryID"]="";		}
 
 		$values = $this->getEntryFromHttpValues($formValues);
-//		echo debugStatement(dumpDBRecord($formValues));
+//		echo debugStatement(__FILE__. ":" .__FUNCTION__ . ":" . dumpDBRecord($formValues));
 		if(array_key_exists("entries", $formValues))	$values['entries'] = $formValues['entries']; 
 		if(array_key_exists("submit", $formValues))	$values['submit'] = $formValues['submit']; 
 		//		return;
@@ -263,6 +265,7 @@ class InvoiceEntry extends Base
 		}
 				
 		$results="";
+		$results .=  "<a name='$formName'></a>\n";
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form id='form_$formName' name='$formName' action='newInvoiceEntry.php' method='GET'>" . "\n" ;
 		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "'>";
@@ -279,10 +282,14 @@ class InvoiceEntry extends Base
 			$results .=  "<span id='$formName'>" . "\n";
 		}
 
-		if(!array_key_exists("Quantity", $values))		$values["Quantity"]="1";
-		if($values["Quantity"]=="") $values["Quantity"]="1";
-		
-		$fields = array("Quantity", "PartDescription" , "BaseRetail",  "FeatureList" , "TotalRetail" , "Comment");
+		if(!array_key_exists("Quantity", $values) || $values["Quantity"]=="")
+		{
+			$values["Quantity"]="1";
+			$values["Discount"]=$formValues["DefaultDiscount"];
+		}
+		if($values["Discount"] == "" && $values["DiscountPercentage"] != "") $values["Discount"] = $values["DiscountPercentage"]; 
+				
+		$fields = array("Quantity", "PartDescription" , "BaseRetail",  "Discount", "FeatureList" , "TotalRetail" , "Comment");
 		
 		foreach($fields as $name)
 		{
@@ -302,11 +309,13 @@ class InvoiceEntry extends Base
 				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
 			} else if($name == "TotalRetail"){
 				$results .=  $this->textField($name, $name, $err, number_format($values[$name],2),  "", array(), false);
+			} else if($name == "Discount"){
+				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			} else{
 				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			}
 			$results .= "</span>\n";
-			if($name == "TotalRetail" || $name == "FeatureList"){
+			if($name == "Discount" || $name == "FeatureList"){
 				$results .= "</BR>\n";		
 			}
 		}
@@ -351,7 +360,7 @@ class InvoiceEntry extends Base
 //		echo debugStatement(dumpDBRecord($values));
 		if(	$values == NULL){ return "System Error"; }
 
-		$results .=  "<form name='$formName' action='invoiceEntryRemove.php' method='GET'>" . "\n" ;
+		$results .=  "<form id='form_$formName' name='$formName' action='invoiceEntryRemove.php' method='GET'>" . "\n" ;
 		
 		$fields = array("PartDescription" , "Quantity",  "TotalRetail" , "FeatureList" , "Comment");
 		foreach($fields as $name)
