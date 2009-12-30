@@ -72,9 +72,11 @@ switch ($mode) {
 		$invoice['CustomerID'] = $formValues['CustomerID'];
 		$invoiceNum = $invoice['Invoice'];
 		
+//		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . dumpDBRecord($invoice));
 		$valid = $invoiceClass->validateNew($invoice);
 		if(!$valid){
-			$invoice['ERROR']= $invoiceClass->validationError;				
+			$invoice['ERROR']= $invoiceClass->validationError;	
+			$mode="err";			
 		} else {
 			$knifeCnt = $invoice['KnifeCount']; // Need to save since it is 'unset' upon saving			
 			$invoice = $invoiceClass->save($invoice);
