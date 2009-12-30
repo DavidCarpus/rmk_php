@@ -13,8 +13,10 @@ setDB_Globals();
 function getDbRecords($query){
 	global $dbconfig;
 	$dbh=getDBConnection();
+//	dumpDB_ConnData();
+//	echo debugStatement($query);
+//	dumpBackTrace();
 	mysql_select_db ($dbconfig['webDatabase']); 
-	
 	$results = array();
 	$dbresults = mysql_query($query);
 	if($dbresults == null)
@@ -119,7 +121,7 @@ function setDB_Globals(){
 		$dbconfig['address']=$address;
 	}
 		
-	$address = '192.168.1.99';
+	$address = '192.168.1.110';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		$dbconfig['server'] = "localhost";
 		$dbconfig['username']="rmkweb";
@@ -166,14 +168,16 @@ function setDB_Globals(){
 
 function dumpDB_ConnData(){
 	global $dbconfig, $dbConn;
-	
+	$dbConn = getDBConnection();
+//	$dbconfig['dbh']
 	if($dbConn == NULL){
 		echo "No DBConfig for " . $_SERVER['REMOTE_ADDR'] . "?";
 		return;
 	}
 	if($_SERVER['REMOTE_ADDR'] == '97.100.243.22') var_dump($dbconfig);
 	if($_SERVER['REMOTE_ADDR'] == '192.168.1.90') var_dump($dbconfig);
-	var_dump($dbConn);
+	if($_SERVER['REMOTE_ADDR'] == '192.168.1.110') var_dump($dbconfig);
+	//	var_dump($dbConn);
 }
 
 //----------------------------------------------------

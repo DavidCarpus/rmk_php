@@ -26,7 +26,11 @@ if($searchType == 'invoice'){
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 }
 
+echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 ?>
+<LINK href="../Style.css" rel="stylesheet" type="text/css">
+<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
+<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
 
 <?php
 
@@ -37,12 +41,7 @@ if(strlen($searchType) > 0)
 if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 	header("Location: "."customerEdit.php?LastName=" . $formValues['searchValue']);
 }
-echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
-
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
