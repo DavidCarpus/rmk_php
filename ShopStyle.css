@@ -260,6 +260,26 @@ div.catalogblockdetaillist{
 	margin-left: auto;
 	margin-right: auto;
 }
+.knifelistsummary{
+	border-collapse: collapse;
+	border-style: solid;
+	margin: 0 auto; 
+/*	margin: 30px 10px 10px 10px;*/
+	width:900px;
+/*	empty-cells:show;*/
+	border-width: 2px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.knifelistsummary td.partcode {
+	width:120px;
+	padding-left:5px;
+}
+.knifelistsummary td.quantity {
+	width:20px; 
+	text-align: right;
+}
+
 td.partcode{
 	width:60px; 
 	text-align: left;

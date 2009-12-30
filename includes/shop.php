@@ -90,7 +90,40 @@ function knifeList($form){
 		$custInv[] = $Invoice;
 		$custid=$Invoice['CustomerID'];
 	}
+
+	$results .= knifeListSummary($records);
 	$results .= "</P>";
+	
+	return $results;
+}
+
+function knifeListSummary($invoices)
+{
+	global $parts, $Invoices;
+	$results = ""; 
+	$totals=array();
+	foreach($invoices as $Invoice){
+		if(!array_key_exists('entries', $Invoice))
+			$Invoice['entries'] = $Invoices->items($Invoice['Invoice']);
+			
+		foreach($Invoice['entries'] as $entry){
+			if($entry['BladeItem']){
+				if(!array_key_exists($entry['PartCode'], $totals))
+					$totals[$entry['PartCode']]=0;
+				$totals[$entry['PartCode']] += $entry['Quantity'];
+			}
+		}
+	}
+	ksort($totals);
+	$colCnt=1;
+	$results ="\n\n<TABLE class='knifelistsummary' border='1'>";
+	$results .= "<TR>";
+	foreach($totals as $partCode=>$cnt){
+		$results .= "<TD class='quantity' align=right>$cnt</TD><TD class='partcode'>$partCode</TD>";
+		if(($colCnt++)%6 == 0)
+			$results .= "</TR><TR>";
+	}
+	$results .="</TABLE>";
 	return $results;
 }
 
