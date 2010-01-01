@@ -33,9 +33,9 @@ function catalogProcessing(){
 			
 		default:
 			echo "<div id='cataloglist'>";
-			echo "<B>Catalog Categories</B><BR>";
+			echo "<B>Catalog Categories</B><br />";
 			echo getCategoryList();
-			echo "<a style='text-decoration: none;' href='nonCat2.php'>Non Catalog Knives</a>". "<BR>\n";		
+			echo "<a style='text-decoration: none;' href='nonCat2.php'>Non Catalog Knives</a>". "<br />\n";		
 			echo "</div>";
 //			echo dumpPOST_GET();
 	}
@@ -57,7 +57,7 @@ function getCategoryList(){
 		$photos = getDbRecords("Select * from knifephotos where catalogcategories_id=" . $category['id']);
 		if(count($photos) > 0 )
 			if($category['label'] != "Non-Catalog II Knives")
-				$results = $results . viewcategorylink($category) . "<BR>\n";		
+				$results = $results . viewcategorylink($category) . "<br />\n";		
 	}	
 	return $results;
 }
@@ -76,7 +76,7 @@ function getCategoryDropdown($tag=''){
 }
 
 function quickCategorySelection($id){
-	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 	$results = $results .  "<center>Select Catalog Category:&nbsp;&nbsp;";
 	$results = $results .  getCategoryDropdown($id);
 	$results = $results .  hiddenField('action','viewcategory');		
@@ -107,8 +107,8 @@ function getModelDetails($id){
 //	$results = $results . "<img width=300 style='padding:20px 20px 0px 0px;' src='$image' align=left >";
 	$results = $results . "<img style='padding:0px 20px 0px 0px;' src='$image' align=left >";
 //	
-	$results = $results .  '<B>'. $model['piclabel'] . " ) " .htmlizeText($model['model']) ."</B><BR>";
-	$results = $results .  htmlizeText($model["description"]) . "<BR>";
+	$results = $results .  '<B>'. $model['piclabel'] . " ) " .htmlizeText($model['model']) ."</B><br />";
+	$results = $results .  htmlizeText($model["description"]) . "<br />";
 	if($model["weight"] != '') $results = $results .  "<I>" . $model["weight"] .  "</I> &nbsp; ";
 	if($model["price"] != '') $results = $results . $model["price"] .  "";
 	if($model["note"] != '') $results = $results . "<HR><i>". htmlizeText($model["note"]) .  "</i>";
@@ -125,15 +125,15 @@ function getModelDetails($id){
 //	echo $query;
 	$models = getDbRecords($query);
 		
-	$results = $results . "<BR><BR>";
+	$results = $results . "<br /><br />";
 	 
 	$results = $results . "<div class=catalogblockdetaillist>";
 	$results = $results . "<H4>Other ".viewcategorylink($category)."</H4>";
 	foreach($models as $model){
 		if($model['knifemodels_id'] != $id){ // only list OTHER models for this photo
-			$results = $results .  modelDetailLink($model) ."<BR>";
+			$results = $results .  modelDetailLink($model) ."<br />";
 		} else{
-			$results = $results .  "<B>".modelDetailLink($model) ."</B><BR>";
+			$results = $results .  "<B>".modelDetailLink($model) ."</B><br />";
 		}
 	}
 	$results = $results . "</div>\n"; 
@@ -174,7 +174,7 @@ function getShortCategoryList($category){
 //		
 //		// display associated models (short form)
 		foreach($models as $model){
-			$results = $results .  modelDetailLink($model) ."<BR>";
+			$results = $results .  modelDetailLink($model) ."<br />";
 		}
 //		$results = $results . "Test"; 
 		
@@ -196,12 +196,12 @@ function photoList($id){
 
 		$query="Select * from knifemodels where catalogcategories_id=$id and piclabel in ( $labels ) order by piclabel";
 //		print $query;
-		$results = $results . photoQuickLink($photo['photo_id'], $id, $cnt++).  "<BR>";
+		$results = $results . photoQuickLink($photo['photo_id'], $id, $cnt++).  "<br />";
 		$models = getDbRecords($query);
 //		$results = $results . "<UL>";
 		foreach($models as $model){
 //			$results = $results .   "<LI>" . $model['model'] .  "</LI>";
-			$results = $results .   " &nbsp; &nbsp; " . modelDetailLink($model).  "<BR>";
+			$results = $results .   " &nbsp; &nbsp; " . modelDetailLink($model).  "<br />";
 		}
 //		$results = $results . "</UL>";
 	}
@@ -225,7 +225,7 @@ function getCategoryModels($category){
 	if($adminArea )
 		return getAdminCategoryModels($category);
 	
-	$results = $results . "<BR>";
+	$results = $results . "<br />";
 	$results = $results . quickCategorySelection($category['catalogcategories_id']);
 	$id = $category['catalogcategories_id'];
 	
@@ -234,20 +234,20 @@ function getCategoryModels($category){
 	foreach($models as $model){
 		if($model['piclabel'] != '')
 			$results = $results .  "<B>" . $model['piclabel'] .  "</B>) ";
-		$results = $results .  "<B>" . $model["model"] .  "</B>" . " &nbsp; " .  $model["description"] . "<BR>";
+		$results = $results .  "<B>" . $model["model"] .  "</B>" . " &nbsp; " .  $model["description"] . "<br />";
 		$results = $results .  "<B>";
 		if($model["weight"] != '') $results = $results .  "<I>" . $model["weight"] .  "</I> &nbsp; ";
 		if($model["price"] != '') $results = $results . $model["price"] .  "";
-		$results = $results .  "</B><BR>";
-//			$results = $results .  "<B><I>" . $model["weight"] .  "</I>" . " &nbsp; " .  $model["price"] .  "</B><BR>";
-		$results = $results .  "<BR>\n";
+		$results = $results .  "</B><br />";
+//			$results = $results .  "<B><I>" . $model["weight"] .  "</I>" . " &nbsp; " .  $model["price"] .  "</B><br />";
+		$results = $results .  "<br />\n";
 	}
 	$photos = getDbRecords("Select * from knifephotos where catalogcategories_id=$id");
 	
 	return $results ;
 }
 function getAdminCategoryModels($category){
-	$results = $results . "<BR>";
+	$results = $results . "<br />";
 	$results = $results . quickCategorySelection($category['catalogcategories_id']);
 	$id = $category['catalogcategories_id'];
 	$models = getDbRecords("Select * from knifemodels where catalogcategories_id=$id order by piclabel");
@@ -257,28 +257,28 @@ function getAdminCategoryModels($category){
 			$results = $results .  "<B>" . $model['piclabel'] .  "</B>) ";
 		$results = $results .  "<B>" .  $model["model"] . "</B>";
 //			$results = $results .  " &nbsp; " .  $model["description"];
-		$results = $results .  "<BR>\n";
+		$results = $results .  "<br />\n";
 	}
-	$results = $results . "<BR>" . addModelLink($category);
+	$results = $results . "<br />" . addModelLink($category);
 
-	$results = $results .  "<BR>" .adminCategoryPhotos($category);
+	$results = $results .  "<br />" .adminCategoryPhotos($category);
 	
 	return $results ;
 }
 function adminCategoryPhotos($category){
 	$photos = getDbRecords("Select * from knifephotos where catalogcategories_id=" . $category['catalogcategories_id']);
 
-	$results = $results . "<HR><B>Photos</B><BR>";
+	$results = $results . "<HR><B>Photos</B><br />";
 
 	foreach($photos as $photo){
 		$results = $results . removeModelPhotoLink($photo['photo_id']). " - ";
 		$results = $results . editModelPhotoLink($photo['photo_id']). " - ";
 		
 		$results = $results  .$photo['photo_labels'];
-		$results = $results . "<BR>";
+		$results = $results . "<br />";
 //		$results = $results . print_r($photo, true);
 	}	
-	$results = $results . "<BR>" . addCategoryPhotoLink($category) . "<BR>";
+	$results = $results . "<br />" . addCategoryPhotoLink($category) . "<br />";
 	return $results;
 }
 

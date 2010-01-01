@@ -117,15 +117,15 @@ class CustomerReports
 		$results = ""; 
 		$results .= "<div id='paymentBlock'>";
 		$results .= "Last Payment Received on";
-		$results .= "</BR>";
+		$results .= "<br />";
 		foreach (array("Total"=>'TotalCost',"SubTotal"=>'Subtotal',"+Shipping"=>'Shipping',
 				"+Tax"=>'Taxes',"-Payments"=>'TotalPayments',"Balance"=>'Due') as $label=>$field) {
 				$results .= "<span class='Label'>" . $label. "</span>";
 				$results .= "<span class='value'>" . "$". number_format($costs[$field] ,2). "</span>";
-				$results .= "</BR>";
+				$results .= "<br />";
 		}
 		if($shipChargesComment){
-			$results .= "</BR>";
+			$results .= "<br />";
 			$results .= "Shipping charges determined in year of shipment";
 		}
 		$results .= "</div>";	
@@ -136,7 +136,7 @@ class CustomerReports
 		$results = ""; 
 		$results .= "<div id='invoiceTerms'>";
 		$results .= "Terms:Please pay net 21 days.";
-		$results .= "</BR>";
+		$results .= "<br />";
 		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
 		$results .= "Prior to scheduled ship date";
 		$results .= "</div>";	
@@ -147,10 +147,10 @@ class CustomerReports
 		$results = ""; 
 		$results .= "<div id='invoicePayTo'>";
 		$results .= "Pay To: Randall Made Knives";
-		$results .= "</BR>";
+		$results .= "<br />";
 		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
 		$results .= "P.O. Box 1988";
-		$results .= "</BR>";
+		$results .= "<br />";
 		$results .= "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;";
 		$results .= "Orlando, FL 32802-1988";
 		$results .= "</div>";	
@@ -175,7 +175,7 @@ class CustomerReports
 		foreach ($valuesL as $field=>$value) {
 			$results .= "<span class='Label'>" . $value[0] . "</span>";
 			$results .= "<span class='value'>" . $value[1] . "</span>";
-			$results .= "</BR>";
+			$results .= "<br />";
 		}
 		$results .= "</div>";
 		
@@ -183,7 +183,7 @@ class CustomerReports
 		foreach ($valuesR as $field=>$value) {
 			$results .= "<span class='Label'>" . $value[0] . "</span>";
 			$results .= "<span class='value'>" . $value[1] . "</span>";
-			$results .= "</BR>";
+			$results .= "<br />";
 		}
 		$results .= "</div>";
 		
@@ -199,18 +199,18 @@ class CustomerReports
 		
 		$address = $customer['FirstName'] . " ";
 		$address .= $customer['LastName'];
-		$address .= "</BR>";
+		$address .= "<br />";
 		
-		if($currAdd['ADDRESS0'] <> '') $address .= $currAdd['ADDRESS0'] . "</BR>";
-		if($currAdd['ADDRESS1'] <> '') $address .= $currAdd['ADDRESS1'] . "</BR>";
-		if($currAdd['ADDRESS2'] <> '') $address .= $currAdd['ADDRESS2'] . "</BR>";
+		if($currAdd['ADDRESS0'] <> '') $address .= $currAdd['ADDRESS0'] . "<br />";
+		if($currAdd['ADDRESS1'] <> '') $address .= $currAdd['ADDRESS1'] . "<br />";
+		if($currAdd['ADDRESS2'] <> '') $address .= $currAdd['ADDRESS2'] . "<br />";
 
 		$address .= $currAdd['CITY'] . ", ". $currAdd['STATE'] . " ". $currAdd['ZIP'];
 
-		$results .= "<div class='vertical'>B</BR>I</BR>L</BR>L</div>";
+		$results .= "<div class='vertical'>B<br />I<br />L<br />L</div>";
 		$results .= "<div class='leftHalf'>";
 		
-		$results .= $address  . "</BR>";
+		$results .= $address  . "<br />";
 		$results .= "</div><!-- End leftHalf -->";
 				
 		$billAddress=$address;
@@ -220,12 +220,12 @@ class CustomerReports
 			if($invoice['ShippingAddressType'] == 3) $billAddress="PICK UP";
 		}
 		
-		$results .= "<div class='vertical'>S</BR>H</BR>I</BR>P</div>";
+		$results .= "<div class='vertical'>S<br />H<br />I<br />P</div>";
 		$results .= "<div class='rightHalf'>";
-		$results .= $billAddress . "</BR>";
+		$results .= $billAddress . "<br />";
 		$results .= "</div> <!-- End rightHalf -->";
 				
-		if($currAdd['COUNTRY'] <> '') $results .= $currAdd['COUNTRY'] . "</BR>";
+		if($currAdd['COUNTRY'] <> '') $results .= $currAdd['COUNTRY'] . "<br />";
 
 		$results .= "</span>";
 		
@@ -262,7 +262,7 @@ class CustomerReports
 
 			if(strlen($entry['Comment']) > 0){
 //				$results .= "\n";
-				$results .= "</BR>\n";
+				$results .= "<br />\n";
 				$results .= "<span class='". $hl . "Quantity'>&nbsp;</span>";
 				$results .= "<span class='". $hl . "Model'>** Note **</span>";
 				$results .= "<span class='". $hl . "PartDescription'>" . $entry['Comment'] . "</span>";
@@ -276,7 +276,7 @@ class CustomerReports
 			
 //			$results .= dumpDBRecord($entry);
 				
-			$results .= "</BR>". "\n";
+			$results .= "<br />". "\n";
 			if($lncnt > 1 && ($lncnt > $lineCountPageBreak) )
 			{
 				$results .= "</div> <!-- End InvoiceEntriesTable -->\n";

@@ -13,16 +13,16 @@ function listFAQ(){
 	
 	$results = $results . "<a name='index'></a>";
 	foreach($faq as $question){
-		$results = $results . localHref($question) . "<BR>";
+		$results = $results . localHref($question) . "<br />";
 	}
 	
-	$results = $results . "<BR><BR>";
+	$results = $results . "<br /><br />";
 	
 	foreach($faq as $question){
 		$results = $results . "<a name='" . $question['faq_id'] . "'></a>";
-		$results = $results . "<BR>";
-		$results = $results . "<B>" . $question['question'] . "</B><BR>";
-		$results = $results . "<I>" . $question['answer'] . "</I>" . "<BR>" . topLink() ;
+		$results = $results . "<br />";
+		$results = $results . "<B>" . $question['question'] . "</B><br />";
+		$results = $results . "<I>" . $question['answer'] . "</I>" . "<br />" . topLink() ;
 	}
 //	$results = $results .  "<a href='". $_SERVER['PHP_SELF']. "'>TOP</a>";
 //	$results = $results .  topLink();

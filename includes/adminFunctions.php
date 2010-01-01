@@ -73,16 +73,16 @@ function searchEmails($parameters){
 }
 
 function emailSentSearchForm($parameters){
-	$results .= "<form  class='printHide' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results .= "<form  class='printHide' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 
-	$results .= textField('desc', "Description", false, $parameters['desc']) . "<BR>\n" ;
-	$results .= textField('message', "Message", false, $parameters['message']) . "<BR>\n" ;
-	$results .= textField('address', "Email Address", false, $parameters['address']) . "<BR>\n" ;
-	$results .= textField('startdate', "Date - Start", false, $parameters['startdate'], 'date') . "<BR>" ;
-	$results .= textField('enddate', "End ", false, $parameters['enddate'], 'date') . "<BR>\n" ;
+	$results .= textField('desc', "Description", false, $parameters['desc']) . "<br />\n" ;
+	$results .= textField('message', "Message", false, $parameters['message']) . "<br />\n" ;
+	$results .= textField('address', "Email Address", false, $parameters['address']) . "<br />\n" ;
+	$results .= textField('startdate', "Date - Start", false, $parameters['startdate'], 'date') . "<br />" ;
+	$results .= textField('enddate', "End ", false, $parameters['enddate'], 'date') . "<br />\n" ;
 
 	$results .= hiddenField('action','searchemails') . "\n";
-	$results .= "<BR>\n";
+	$results .= "<br />\n";
 	$results .= "<center><input class='btn' type='submit' name='submit' value='Find' ></center>\n" ;
 	$results .= "</form>";
 	return $results;
@@ -91,7 +91,7 @@ function emailSentSearchForm($parameters){
 function emailSentDetail($parameters){
 	$email = getBasicSingleDbRecord('emails', 'email_id', $parameters['email_id']);
 	foreach($email as $field=>$value){
-		echo "$field == " . str_replace("\n", "<BR>\n",$value)."<BR>\n";
+		echo "$field == " . str_replace("\n", "<br />\n",$value)."<br />\n";
 	}
 }
 
@@ -99,7 +99,7 @@ function browseEmailsSent($parameters){
 	$startid = $parameters['startid'];
 	$records = getEmails($startid, 10);
 	$results = displayEmails($records);
-	return "<B>Not Fully Implemented</B><BR>" . $results;
+	return "<B>Not Fully Implemented</B><br />" . $results;
 }
 
 function displayEmails($records){
@@ -147,8 +147,8 @@ function loginProcessing(){
 	$password = getHTMLValue('password');
 	
 	if(validLogin($login, $password)){
-		echo "Login validated <BR>";
-		echo " < < < Select area to administrate from menu to the left<BR>";
+		echo "Login validated <br />";
+		echo " < < < Select area to administrate from menu to the left<br />";
 //		return adminMenu();
 		$_SESSION['loginValidated'] = 1;
 		$_SESSION['loggedinuser'] = $login;
@@ -204,7 +204,7 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <I>Last Updated Mar 1, 2007</I><BR>";
+	$results = "Web priority list <I>Last Updated Mar 1, 2007</I><br />";
 	$results .= "<OL id='toDoList'>";
 	$items = toDoItems();
 	foreach ($items as $item) {
@@ -232,12 +232,12 @@ function toDoPage(){
 
 function loginScreen($name='', $passwd=''){
 	return "<B style='font-size:36; text-align:center; display:block;'>Login</B>" .
-			"<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" .
-			textField('login', 'User Name', true, $name). "<BR><BR>" .
-			"<label for='passwd' class='required'>Password</label><input type='password' name='password' value='".$passwd."'><BR>\n" .
-//			textField('password', 'Password', true, $passwd). "<BR>".
+			"<form action='". $_SERVER['PHP_SELF']. "' method='post'>" .
+			textField('login', 'User Name', true, $name). "<br /><br />" .
+			"<label for='passwd' class='required'>Password</label><input type='password' name='password' value='".$passwd."'><br />\n" .
+//			textField('password', 'Password', true, $passwd). "<br />".
 			hiddenField('action','Save').
-			"<BR>" .
+			"<br />" .
 			"<input type='submit' name='submit' value='Login' >" .
 			"</form>\n";
 }

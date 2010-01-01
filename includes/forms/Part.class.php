@@ -93,9 +93,10 @@ class Part extends Base
 		}
 		$maxYear=date("Y") + 10; // Current year +10
 		for($year = 1988; $year<$maxYear; $year++){
-			if(array_key_exists($year, $formValues))
+			$yearPriceField="price_" . $year;
+			if(array_key_exists($yearPriceField, $formValues))
 			{
-				$part['Prices'][$year] = array('Year'=>$year, 'Price'=>$formValues[$year]);
+				$part['Prices'][$year] = array('Year'=>$year, 'Price'=>$formValues[$yearPriceField]);
 			}
 		}
 		return $part;
@@ -112,7 +113,7 @@ class Part extends Base
 		}
 		
 		$formName="PartList";
-		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='POST'>" . "\n" ;
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>" . "\n" ;
 		
 		$yearColumns=3;
 		$minYear=$formValues['Year']-$yearColumns;
@@ -122,7 +123,7 @@ class Part extends Base
 			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";;
 		}
 		$results .=  $this->button("submit", $formValues['Year']);
-		$results .= "<BR>";
+		$results .= "<br />";
 		
    			// *********** Display part prices from array  ***************
 		foreach($data as $key=>$part)
@@ -153,7 +154,7 @@ class Part extends Base
 			
 			$results .= "<span class='Price'>$field</span>  $adjustment";
 //			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
-			$results .= "<BR>";
+			$results .= "<br />";
 		}
 		
 //		$results .=  $formName;
@@ -186,7 +187,7 @@ class Part extends Base
    				$this->validationError .= $fieldName . ","; 
    				$valid = false;
    			}
-//   			echo (dumpDBRecord($part)). "</BR>";
+//   			echo (dumpDBRecord($part)). "<br />";
    		}
    		// trim extra comma
 		if(strlen($this->validationError) > 0) $this->validationError = substr($this->validationError,0,strlen($this->validationError)-1);
@@ -229,7 +230,7 @@ class Part extends Base
 		for ($year= $formValues['Year']; $yearColumns>0; $yearColumns--,$year++) {
 			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";;
 		}
-		$results .= "<BR>";
+		$results .= "<br />";
 		
 		// *********** Display part prices from array  ***************
 		foreach($data as $key=>$part)
@@ -241,7 +242,7 @@ class Part extends Base
 				$results .= "<span class='Price'>" . number_format($part[$year]['Price'],2) . "</span>";
 			}
 			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
-			$results .= "<BR>";
+			$results .= "<br />";
 		}
 		$results .= "</div>";
 		$year = $this->partsClass->maxPartPriceYear()+1;
@@ -257,7 +258,7 @@ class Part extends Base
 		$formName="PartEdit";
 		$results = "";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='partEdit.php' method='POST'>" . "\n" ;
+		$results .=  "<form name='$formName' action='partEdit.php' method='post'>" . "\n" ;
 		
 		$errors = array();
 		if(array_key_exists("ERROR", $partWithPrices) && count($partWithPrices['ERROR']) > 0){
@@ -272,7 +273,7 @@ class Part extends Base
 			$value = (array_key_exists($name, $partWithPrices)? $partWithPrices[$name]: "");
 			if($name == 'Discountable')
 			{
-				$results .= "<BR>";
+				$results .= "<br />";
 			}
 			if($name == 'Discountable' || $name == 'BladeItem' || $name == 'Taxable' 
 			|| $name == 'Active' || $name == 'Sheath')
@@ -284,21 +285,21 @@ class Part extends Base
 			}
 			else {
 				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value) . "\n";
-				$results .= "<BR>";
+				$results .= "<br />";
 			}
 //			$results .= $name . ":" . $value ;
-//			$results .= "<BR>";
+//			$results .= "<br />";
 		}
-		$results .= "<BR>";
-		$results .= "<BR>";
+		$results .= "<br />";
+		$results .= "<br />";
 		
 		if (array_key_exists($name, $partWithPrices))
 		{
 		foreach($partWithPrices['Prices'] as $price){
 				$val = number_format($price['Price'],2);
-				$results .=  $this->textField($price['Year'], $price['Year'], $err, $val) . "\n";
+				$results .=  $this->textField("price_".$price['Year'], $price['Year'], $err, $val) . "\n";
 //				$results .= $part['Year'] . " - : - " . $part['Price'];
-				$results .= "<BR>";
+				$results .= "<br />";
 			}
 		}
 		$hiddenFields = array('PartID', 'PartType');

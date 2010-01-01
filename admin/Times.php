@@ -68,43 +68,43 @@ function getTable2(){
 			$greyend = "</span>";
 		}
 		
-		$dates = $dates . $row[0] . "<BR>\n"; 
-		$hours = $hours . $row[1] . "<BR>\n";
-		$bill = $bill . ($row[1] * $rate) . "<BR>\n";
+		$dates = $dates . $row[0] . "<br />\n"; 
+		$hours = $hours . $row[1] . "<br />\n";
+		$bill = $bill . ($row[1] * $rate) . "<br />\n";
 		$totalHrs = $totalHrs + $row[1];
-		$totalHrDisplay = $totalHrDisplay . $greystart . $totalHrs. $greyend . "<BR>\n";
-		$totalBill = $totalBill . $greystart . ($totalHrs* $rate). $greyend . "<BR>\n";
+		$totalHrDisplay = $totalHrDisplay . $greystart . $totalHrs. $greyend . "<br />\n";
+		$totalBill = $totalBill . $greystart . ($totalHrs* $rate). $greyend . "<br />\n";
 	}
 	
 	$style = 'display:block; width:90px; left:0px; position: relative; float:left; text-align: center;';	
 	$results = $results . "<div id='timesheet'>";
 
 	$results = $results . "<div style='" . $style . "'>"; 
-	$results = $results . "Date<BR>"; 
+	$results = $results . "Date<br />"; 
 	$results = $results . $dates; 
 	$results = $results . "</div>";
 
 	$results = $results . "<div style='" . $style . "'>"; 
-	$results = $results . "Hours<BR>"; 
+	$results = $results . "Hours<br />"; 
 	$results = $results . $hours; 
 	$results = $results . "</div>";
 
 	$results = $results . "<div style='" . $style . "'>"; 
-	$results = $results . "Bill<BR>"; 
+	$results = $results . "Bill<br />"; 
 	$results = $results . $bill; 
 	$results = $results . "</div>";
 	
 	$results = $results . "<div style='" . $style . "'>"; 
-	$results = $results . "Total Hours<BR>"; 
+	$results = $results . "Total Hours<br />"; 
 	$results = $results . $totalHrDisplay; 
-	$results = $results . "Paid<BR>"; 
-	$results = $results . "Remaining<BR>"; 
+	$results = $results . "Paid<br />"; 
+	$results = $results . "Remaining<br />"; 
 	$results = $results . "</div>";
 	
 	$results = $results . "<div style='" . $style . "'>"; 
-	$results = $results . "Total Bill<BR>"; 
+	$results = $results . "Total Bill<br />"; 
 	$results = $results . $totalBill; 
-	$results = $results . $totalPaid . "<BR>";
+	$results = $results . $totalPaid . "<br />";
 	$results = $results . ($charges - $totalPaid);
 	$results = $results . "</div>";
 	

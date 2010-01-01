@@ -61,7 +61,7 @@ echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'>
 		<div class="content">
 			<?php 	
 //					echo "Pricing - $mode";
-//					echo "</BR>";
+//					echo "<br />";
 					echo $Parts->newPricingTable($formValues);				
 			?>
 		</div>

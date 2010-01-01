@@ -84,7 +84,7 @@ function knifeList($form){
 	foreach($records as $Invoice){
 		if($custid==0) $custid=$Invoice['CustomerID'];
 		if($custid != $Invoice['CustomerID']){
-			$results .= displayKnifeListInvoices($custInv) . "<BR>";
+			$results .= displayKnifeListInvoices($custInv) . "<br />";
 			$custInv=array();
 		}
 		$custInv[] = $Invoice;
@@ -289,7 +289,7 @@ function displayInvoiceDetailsForShop($record){
 	$results .= "<TR>";
 
 	$results .=  "</TABLE>";
-	$results .=  "</BR>";
+	$results .=  "<br />";
 	
 	$record['entries'] = $Invoices->items($record['Invoice']);
 	
@@ -297,7 +297,7 @@ function displayInvoiceDetailsForShop($record){
 	
 	$costs = $Invoices->computeCosts($record);
 
-	$results .=  "</BR>";
+	$results .=  "<br />";
 	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs double checking) vvvvvvvvvvvvvvvvvvvv";
 	$results .= "<TABLE>";
 	$results .=  "<TR><TD><B>TotalCost</B></TD><TD align=right>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";

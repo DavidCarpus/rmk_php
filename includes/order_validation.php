@@ -37,8 +37,8 @@ function checkDigitCreditCard($cctype, $ccNumber){
 			$sum = $sum + ($ccNumber[$i+1]);
 		return ($sum%10 == 0);
 //	}
-//	echo "<BR>" . $ccNumber . "<BR>";
-//	echo $sum%10 . "<BR>";
+//	echo "<br />" . $ccNumber . "<br />";
+//	echo $sum%10 . "<br />";
 }
 function checkCC_Date($date){
 	$date = trim($date." ");

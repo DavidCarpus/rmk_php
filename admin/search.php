@@ -26,24 +26,34 @@ if($searchType == 'invoice'){
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
 }
 
-echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
-
 <?php
-
 if(strlen($searchType) > 0)
 {
 	$customers = $searchForms->getSearchResults($formValues);
 }
 if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 	header("Location: "."customerEdit.php?LastName=" . $formValues['searchValue']);
+	return;
 }
+
+//echo debugStatement(dumpDBRecord($formValues));
+//echo debugStatement(dumpDBRecords($customers));
+
+//<LINK href="../Style.css" rel="stylesheet" type="text/css">
+//<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
+//<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
+
+echo headSegments("RMK Search", array("../Style.css", "", "../DataEntry.css"), "../print.css");
+
 ?>
 
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
+
 <?php echo logo_header("admin", ".."); ?>
+
 <div class="mainbody">
 	<div class="centerblock">
 		<?php echo adminToolbar(); ?>
@@ -59,4 +69,10 @@ if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 		</div>
 	</div>
 	<?php echo footer(); ?>
+	
 </div>
+
+</body>
+</html>
+
+	

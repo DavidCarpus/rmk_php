@@ -66,16 +66,16 @@ function processOrders(){
 				$ack = "";
 				$emailSubject="";
 				if($form['ordertype'] == 'Quote'){
-					$ack = str_replace("\n","<BR>\n",getQuoteRequestAcknowledgment($fields, $form));
+					$ack = str_replace("\n","<br />\n",getQuoteRequestAcknowledgment($fields, $form));
 					$emailSubject="Quote Request Acknowledgment";
 				} else{
-					$ack = str_replace("\n","<BR>\n",getOrderAcknowledgment($fields, $form));
+					$ack = str_replace("\n","<br />\n",getOrderAcknowledgment($fields, $form));
 					
 					$emailSubject="Order Request Acknowledgment";
 				}
 				echo $ack;
 				if($form['email'] != ''){
-					$ack = str_replace("<BR>","",$ack);
+					$ack = str_replace("<br />","",$ack);
 					$ack = str_replace("<I>","",$ack);
 					$ack = str_replace("</I>","",$ack);
 					$ack = str_replace("<H2>Order REQUEST acknowledgement</H2>","",$ack);
@@ -178,7 +178,7 @@ function getSubmissionValidation($form){
 			$results = $results . "<TD>";
 			$results = $results .  "<B style='$valuestyle'>" . $value . "</B>";
 			$results = $results . "</TD>";
-//			$results = $results .  "<BR>\n";
+//			$results = $results .  "<br />\n";
 			$fields = $fields . hiddenField($label,$value) . "\n";
 			$results = $results . "</TR>";
 //		} else{
@@ -187,7 +187,7 @@ function getSubmissionValidation($form){
 	}
 	$results = $results . "</Table>";
 	
-	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 	$results = $results . $fields;
 	$results = $results . hiddenField('action','uservalidated') . "\n";
 	$results = $results . "<input class='btn' type='submit' name='submit' value='Confirm " .$form['ordertype'] . "' >\n" ;
@@ -279,46 +279,46 @@ function orderForm($fields, $values){
 	$results = $results . htmlizeText($prefix);
 
 	
-	$results = $results . "<BR><BR>";
-	$results = $results . "<div style='color:red'>These fields are required. Your order/quote will not process if they are empty.</div>". "<BR>\n" ;
-	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results . "<br /><br />";
+	$results = $results . "<div style='color:red'>These fields are required. Your order/quote will not process if they are empty.</div>". "<br />\n" ;
+	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 
 	
-	$results = $results . requiredTextField('name', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('email', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('address1', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('address2', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('address3', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('city', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('state', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('zip', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('country', $values). "<BR>\n" ;
-	$results = $results . requiredTextField('phone', $values). "<BR>\n" ;
-//	$results = $results . optionalTextField('fax', $values). "<BR>\n" ;
-	$results = $results . "It is the policy of Randall Made Knives NOT to disseminate names, addresses, or phone numbers to any person, organization or company.<BR>";
-	$results = $results . optionalTextField('shipaddress1', $values). "<BR>\n" ;
-	$results = $results . optionalTextField('shipaddress2', $values). "<BR>\n" ;
-	$results = $results . optionalTextField('shipaddress3', $values). "<BR>\n" ;
-	$results = $results . "<BR>";
-	$results = $results . optionField('ordertype', "Interest", array('Quote','Order'), $values['ordertype'], true). "<BR>\n" ;
-//	$results = $results . optionalTextField('qty', $values). "<BR>\n" ;
+	$results = $results . requiredTextField('name', $values). "<br />\n" ;
+	$results = $results . requiredTextField('email', $values). "<br />\n" ;
+	$results = $results . requiredTextField('address1', $values). "<br />\n" ;
+	$results = $results . requiredTextField('address2', $values). "<br />\n" ;
+	$results = $results . requiredTextField('address3', $values). "<br />\n" ;
+	$results = $results . requiredTextField('city', $values). "<br />\n" ;
+	$results = $results . requiredTextField('state', $values). "<br />\n" ;
+	$results = $results . requiredTextField('zip', $values). "<br />\n" ;
+	$results = $results . requiredTextField('country', $values). "<br />\n" ;
+	$results = $results . requiredTextField('phone', $values). "<br />\n" ;
+//	$results = $results . optionalTextField('fax', $values). "<br />\n" ;
+	$results = $results . "It is the policy of Randall Made Knives NOT to disseminate names, addresses, or phone numbers to any person, organization or company.<br />";
+	$results = $results . optionalTextField('shipaddress1', $values). "<br />\n" ;
+	$results = $results . optionalTextField('shipaddress2', $values). "<br />\n" ;
+	$results = $results . optionalTextField('shipaddress3', $values). "<br />\n" ;
+	$results = $results . "<br />";
+	$results = $results . optionField('ordertype', "Interest", array('Quote','Order'), $values['ordertype'], true). "<br />\n" ;
+//	$results = $results . optionalTextField('qty', $values). "<br />\n" ;
 	$results = $results . hiddenField('qty','1') . "\n";
-	$results = $results . optionalTextField('model', $values). "<BR>\n" ;
-	$results = $results . optionalTextField('bladelength', $values). "<BR>\n" ;
-	$results = $results . textArea('note', fieldDesc('note'), false, $values['note']). "<BR>\n" ;
-	$results = $results . "<BR>";
-	$results = $results . optionField('cctype', "Creditcard Type", array('Mastercard' , 'Visa', 'Discover'), $values['cctype'], false). "<BR>\n" ;
-	$results = $results . optionalTextField('ccnumber', $values). "<BR>\n" ;
+	$results = $results . optionalTextField('model', $values). "<br />\n" ;
+	$results = $results . optionalTextField('bladelength', $values). "<br />\n" ;
+	$results = $results . textArea('note', fieldDesc('note'), false, $values['note']). "<br />\n" ;
+	$results = $results . "<br />";
+	$results = $results . optionField('cctype', "Creditcard Type", array('Mastercard' , 'Visa', 'Discover'), $values['cctype'], false). "<br />\n" ;
+	$results = $results . optionalTextField('ccnumber', $values). "<br />\n" ;
 	
-	$results = $results . optionalTextField('ccexpire', $values). "<BR>\n" ;
-	$results = $results . optionalTextField('ccvcode', $values). "<BR><BR><BR>\n" ;
-	$results = $results . optionalTextField('ccname', $values). "<BR>\n" ;
-	$results = $results . "<BR>";
+	$results = $results . optionalTextField('ccexpire', $values). "<br />\n" ;
+	$results = $results . optionalTextField('ccvcode', $values). "<br /><br /><br />\n" ;
+	$results = $results . optionalTextField('ccname', $values). "<br />\n" ;
+	$results = $results . "<br />";
 	$results = $results . "<center><input class='btn' type='submit' name='submit' value='Submit Request' ></center>\n" ;
 	$results = $results . hiddenField('action','validateorder') . "\n";
 	$results = $results . "</form>\n";
 
-	$results = $results . "<BR>";	
+	$results = $results . "<br />";	
 	
 	$postfix = "*Important: Your phone number will act as your customer account number.". "\n" .
 		"Randall Made Knives' \"Certification Guarantee\" entitles you to a full product refund should you elect to return the unused knife. (See Catalog, page 40.)\n" .

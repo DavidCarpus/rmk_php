@@ -34,12 +34,12 @@ function getHTMLValue($key){
 function debugStatement($statement){
 	if(! (isDebugMachine() || isDebugAccess() ) ) return;
 	
-	return "<div class='debug'><HR >". $statement . "<BR><HR></div>";
+	return "<div class='debug'><hr />". $statement . "<br /><hr /></div>";
 }
 function debugStatementHeaded($descStatement, $statement){
 	if(! (isDebugMachine() || isDebugAccess() ) ) return;
 	
-	return "<div class='debug'><B>$descStatement</B><BR><HR >$statement<HR></div>";
+	return "<div class='debug'><b>$descStatement</b><br /><hr />$statement<hr /></div>";
 }
 
 function dumpBackTrace(){
@@ -57,10 +57,10 @@ function getBackTrace(){
 	$cnt=0;
 	foreach($trace as $func){
 		if($cnt++ > 0){
-			//~ $stmt .=  print_r($func, true) . "</BR>";
+			//~ $stmt .=  print_r($func, true) . "<br />";
 			$file = $func['file'] ;
 			$file = str_replace("/var/www/html/Intranet/", "", $file);
-			$stmt .=  $file ."(" .  $func['line'] . ")-" .$func['function'] ."</BR>";
+			$stmt .=  $file ."(" .  $func['line'] . ")-" .$func['function'] ."<br />";
 		}
 	}
 	return debugStatement($stmt);
@@ -74,7 +74,7 @@ function dumpDBRecord($record){
 	}
 	
 	foreach(array_keys($record) as $key){
-		$results .= "<B>$key</B> => ".$record[$key]."<BR>\n";
+		$results .= "<b>$key</b> => ".$record[$key]."<br />\n";
 	}
 		
 	return $results;
@@ -83,7 +83,7 @@ function dumpDBRecord($record){
 function dumpDBRecords($records){
 	$results = "";
 	foreach($records as $record){
-		$results .= dumpDBRecord($record)."<BR>\n";
+		$results .= dumpDBRecord($record)."<br />\n";
 	}
 		
 	return $results;
@@ -96,25 +96,25 @@ function dumpPOST_GET(){
 	$results .= "<div style='clear:both'>";
 	foreach(array_keys($_POST) as $key){
 		$value = $_POST[$key];
-		$results .= "<B> $key </B> : $value <BR>\n";
+		$results .= "<B> $key </B> : $value <br />\n";
 	}
 	foreach(array_keys($_GET) as $key){
 		$value = $_GET[$key];
-		$results .= "<B> $key </B> : $value <BR>\n";
+		$results .= "<B> $key </B> : $value <br />\n";
 	}
 	$results .= "</div>";
 	return $results;
 }
 function checkbox($name, $label, $required=false, $value=''){
-	if($value == 'on') $checked='checked=1';
-	if($value == 1) $checked='checked=1';
+	if($value == 'on') $checked='checked="checked"';
+	if($value == 1) $checked='checked="checked"';
 	if($value == 0) $checked='';
 	
 	if($required)
-		return "<input type='checkbox' id='$name'  name='$name' $checked>";
+		return "<input type='checkbox' id='$name'  name='$name' $checked />";
 	else
 //		return "<label for='$name' >$label</label><input type='checkbox' id='$name' name='$name' $checked>";
-		return "<input type='checkbox' id='$name' name='$name' $checked>";
+		return "<input type='checkbox' id='$name' name='$name' $checked />";
 		
 //	echo "<label for='realtorblast' class='required'>Realtor Newsletter</label><input type='checkbox' name='realtorblast'>";
 		
@@ -207,7 +207,7 @@ function selection($name, $values, $label, $selected="", $autosubmit=false){
 	if(count($values) > 0){
 		foreach($values as $value){
 //			print_r($value);
-//			print "<BR>";
+//			print "<br />";
 			$results = $results."<option value='" . $value['id'] . "'";
 			if($value['id'] == $selected)
 				$results = $results." SELECTED ";
@@ -223,9 +223,39 @@ function headSegment($stylesheet="Style.css"){
 	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
 			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
 			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n".
-			"<LINK href='$printStyle' media='print' rel='stylesheet' type='text/css'></head>\n"
+			"<LINK href='$printStyle' media='print' rel='stylesheet' type='text/css'>".
+			"<meta http-equiv='Content-type' content='text/html;charset=UTF-8' /></head>\n"
 			;
 }
+function headSegments($title="rmk", $stylesheets=array("Style.css"), $printStyle){
+	
+	$results="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' " . 
+			"'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>\n".
+			"<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>\n" .
+			"<head><meta http-equiv='Content-Language' content='en' />\n" .
+			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />\n";
+	
+	$results .=	"<title>$title</title>\n";
+	
+	foreach ($stylesheets as $style)
+	{
+			$results .= "<link href='$style' rel='stylesheet' type='text/css' />\n";
+	}
+	$results .=	"<link rel='stylesheet' type='text/css'	 media='print' href='$printStyle' />\n";
+	
+	$results .=	"<meta http-equiv='Content-type' content='text/html;charset=UTF-8' />\n";
+	$results .=	"</head>\n";
+	return $results;
+	
+//		$printStyle = str_replace(".css", "_Print.css", $stylesheet);
+//	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
+//			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
+//			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n".
+//			"<LINK href='$printStyle' media='print' rel='stylesheet' type='text/css'>".
+//			"<meta http-equiv='Content-type' content='text/html;charset=UTF-8' /></head>\n"
+//			;
+}
+
 
 function logo_header($section, $prefix="."){
 //	$prefix = ".";
@@ -251,12 +281,12 @@ function logo_header($section, $prefix="."){
 			
 		$results = $results .  "<div class='".$headerid."titlebar' >";
 //		$results = $results .  "<div id='".$headerid."header' style='text-align:left;'>";
-		$results = $results .  "<img ALIGN='top' src='$image3'>";
+		$results = $results .  "<img align='top' src='$image3' alt='globe' />";
 		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 //		$results = $results .  "</div>\n";
 		
-		$results = $results .  "<img ALIGN='top' src='$image1' >";
+		$results = $results .  "<img align='top' src='$image1'  alt='logo' />";
 //		$results = $results .  "&reg;<SMALL><SUP>TM</SUP></SMALL>";
 		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
@@ -407,7 +437,7 @@ function toolbar(){
 	}
 	
 	$results = $results . "</div>\n";
-//	$results = $results . $_SERVER['PHP_SELF'] . "<BR>\n";
+//	$results = $results . $_SERVER['PHP_SELF'] . "<br />\n";
 	return $results;
 }
 
@@ -460,14 +490,14 @@ function getBaseImageDir(){
 
 function footer(){
 return "\n<div class='footer'>" .
-		"<HR>\n" .
-		"<B>Randall Made Knives</B><BR>\n" .
-		"4857 South Orange Blossom Trail<BR>\n" .
-		"Orlando, Florida 32839<BR>\n" .
-		"Phone: 407-855-8075<BR>\n" .
-		"Fax: 407-855-9054<BR>\n" .
-		"<a href='" . getToolbarPrefix() . "/email.php?to=webmessages'>Send Us a message</a><BR>\n" .
-		"</div class='footer'>\n\n";	
+		"<hr />\n" .
+		"<b>Randall Made Knives</b><br />\n" .
+		"4857 South Orange Blossom Trail<br />\n" .
+		"Orlando, Florida 32839<br />\n" .
+		"Phone: 407-855-8075<br />\n" .
+		"Fax: 407-855-9054<br />\n" .
+		"<a href='" . getToolbarPrefix() . "/email.php?to=webmessages'>Send Us a message</a><br />\n" .
+		"</div>";	
 }
 
 function getCurrPage(){

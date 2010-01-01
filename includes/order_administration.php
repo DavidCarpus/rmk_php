@@ -13,7 +13,7 @@ function getNextOrder($order){
 	$query="select *,UNIX_TIMESTAMP(datesubmitted) as submission_date  from orders where  $id $type $processed order by orders_id LIMIT 1";
 
 //	$query="select * from orders where orders_id > $id and ordertype = $type order by orders_id LIMIT 1";
-//	print $query . "<BR>\n";
+//	print $query . "<br />\n";
 	$order = getSingleDbRecord($query);
 	return $order;
 }
@@ -26,7 +26,7 @@ function getPrevOrder($order){
 	$processed = " and processed=$processed";
 	
 	$query="select *,UNIX_TIMESTAMP(datesubmitted) as submission_date  from orders where  $id $type $processed order by orders_id DESC LIMIT 1";
-//	print $query . "<BR>\n";
+//	print $query . "<br />\n";
 	$order = getSingleDbRecord($query);
 	return $order;
 }

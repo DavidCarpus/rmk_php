@@ -21,7 +21,7 @@ include_once "includes/htmlHead.php";
 //----------     1    2    3    4   5     6    7    8    9   10   11   12   13   14   15   16
 $left =  array(170, 160, 130, 120, 90,  50,   30, 470, 450, 430, 400, 370, 350, 320, 290, 270);
 $top =   array( 85, 160, 230, 290, 360, 430, 500,  70, 125, 180, 240, 300, 360, 420, 490, 570);
-$desc = array("<BR><P style=' margin:0px 20px 20px 20px;''><B>#12-9&quot; #14 grind Sportsman&rsquo;s Bowie</B> 9&quot; blade with #14 grind, 1-5/8&quot; wide, of &frac14;&quot; stock (Stainless shown).  Top cutting edge sharpened (approx. 3-&frac34;&quot;).  5&quot; (approx.) leather handle, brass lugged hilt and duralumin butt cap.  Made to meet the demand for a heavy-duty sporting knife of the Bowie type.  This Bowie available with #25 handle.   (#25 handle, nickel silver forward curved hilt with duralumin butt cap shown.)  Supplied with Model C sheath. (Wt. 18-20 oz.)</P>",
+$desc = array("<br /><P style=' margin:0px 20px 20px 20px;''><B>#12-9&quot; #14 grind Sportsman&rsquo;s Bowie</B> 9&quot; blade with #14 grind, 1-5/8&quot; wide, of &frac14;&quot; stock (Stainless shown).  Top cutting edge sharpened (approx. 3-&frac34;&quot;).  5&quot; (approx.) leather handle, brass lugged hilt and duralumin butt cap.  Made to meet the demand for a heavy-duty sporting knife of the Bowie type.  This Bowie available with #25 handle.   (#25 handle, nickel silver forward curved hilt with duralumin butt cap shown.)  Supplied with Model C sheath. (Wt. 18-20 oz.)</P>",
 				"<P style=' margin:0px 20px 20px 20px;''><B>#16-7&quot;Special Fighter</B>	7&quot;blade of &frac14;&quot;stainless.  Top cutting edge sharpened approx. 3 inches.  (Model #1 blade) Extra heavy 7/8&quot;wide tang runs through channel in handle.  Brass #1 double hilt.  Approx. 4 &frac12;&quot;handle of black micarta.  (option: Green micarta)   Wrist thong.  (Note-standard with finger grip handle; single finger grip and border patrol available at additional charge.) Supplied with Model A sheath. (Wt. 14 oz.)#16-7&quot;Special Fighter</P>",	
 				"<P style=' margin:0px 20px 20px 20px;''><B>Trailblazer</B> 5 &frac34;&quot; blade of &frac14;&quot; stock.    Brass single hilt.   New 13-spacer configuration includes red micarta sections,    stag handle,   brass 1/16&quot; butt plate.  An ideal all-around  heavy-duty sportsman&rsquo;s knife.    Options available: stainless blade, nickel silver hilt and butt plate,   or #25 handle configuration with single brass hilt  or single nickel silver hilt.   Supplied with Model A sheath.  (Wt. 9-11 oz.)</P>",
 				"<P style=' margin:0px 20px 20px 20px;''><B>Combat Companion </B>5&quot; blade of &frac14;&quot; stock. (Stainless shown.) Top cutting edge sharpened.  Brass double hilt.   4 &frac12;&quot; leather handle.  Duralumin butt cap.  A light-weight military design knife. Supplied with Model A sheath. (Wt. 9 oz.</P>",
@@ -102,7 +102,7 @@ if (ereg( 'MSIE ([0-9].[0-9]{1,2})',$HTTP_USER_AGENT,$log_version)) {
 for($i=0; $i< count($left); $i++ ) {
 //	echo "#imap #knife".($i+1)." {left:".$left[$i]."px; top:".$top[$i]."px; z-index:20;}\n";
 	echo "<dd id='knife".($i+1)."' ><a id='link_knife".($i+1)."' title='Knife ".($i+1)."' href='noncat2_".($i+1).".php''>".
-		"<em></em><span><img src='images/catalog/cat2-".($i+1).".jpg' alt='Knife ".($i+1)." - close-up' title='Knife ".($i+1)."' /><BR>".
+		"<em></em><span><img src='images/catalog/cat2-".($i+1).".jpg' alt='Knife ".($i+1)." - close-up' title='Knife ".($i+1)."' /><br />".
 		$desc[$i]."</span></a></dd>\n";
 }
 ?>

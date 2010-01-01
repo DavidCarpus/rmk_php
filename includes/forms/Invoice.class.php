@@ -28,18 +28,18 @@ class Invoice extends Base
 		$results="";
 //		$results .=  "<legend>$formName</legend>";
 		$results .=  "<div id='$formName'>";
-//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-		$results .=  "<form name='$formName' action='invoiceEdit.php' method='GET'>" ;
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='get'>" ;
 		$JS = array();
 //		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
-			$JS['field'] = "onBlur=\"invoiceNumber($formName);\"";
+			$JS['field'] = "onblur=\"invoiceNumber($formName);\"";
 //		}
 		$results .=  $this->textField('Invoice', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
 		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
 			$results .= " <a id='viewInvoiceLink' href='invoiceEdit.php?Invoice=" . $invoice['Invoice'] . "'>View Invoice</a>";
 		}
 		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		return $results;
 	}
 	
@@ -51,13 +51,13 @@ class Invoice extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='GET'>" . "\n" ;
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='get'>" . "\n" ;
 		$results .=  $this->textArea('Comment','Invoice Comment', false, $invoice['Comment']) . "\n";
 		$results .=  $this->hiddenField('Invoice', $invoice['Invoice']);
-		$results .=  "<BR>";
+		$results .=  "<br />";
 		$results .=  $this->button("submit", "Save_Update");
 		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		
 		return $results;
 	}
@@ -75,8 +75,8 @@ class Invoice extends Base
 		$results="";
 		
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='invoiceEdit.php' method='POST'>" . "\n" ;
-//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='post'>" . "\n" ;
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>" . "\n" ;
 //		$results .=  "<legend>$formName</legend>" . "\n";
 //		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . dumpDBRecord($values));
 		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', 
@@ -95,7 +95,7 @@ class Invoice extends Base
 //			$JS['label']="onmouseover='showHint(this.htmlFor);'";
 			$JS['label']=$this->helpTextJS("ajax-tooltip.html");
 			
-//			if( $name=="KnifeCount" ) $JS['field'] = " disabled='true' " . $this->helpTextJS($formName, $name, "Test Help text<BR>Line2");
+//			if( $name=="KnifeCount" ) $JS['field'] = " disabled='true' " . $this->helpTextJS($formName, $name, "Test Help text<br />Line2");
 			if( $name=="KnifeCount" ) $JS['field'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			if( $name=="KnifeCount" ) $JS['label'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			
@@ -105,7 +105,7 @@ class Invoice extends Base
 			
 			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value,'',$JS, $readOnly) . "\n";
 			if($this->isInternetExploder() && ( $name=="DateShipped"  || $name=="PONumber" ) )
-					$results .=  "</BR>";
+					$results .=  "<br />";
 		}
 
 		if(array_key_exists('CustomerID', $invoice)) $results .=  $this->hiddenField('CustomerID', $invoice['CustomerID']);		
@@ -118,7 +118,7 @@ class Invoice extends Base
 		if($mode == "new")		$results .=  $this->button("submit", "Save");
 
 		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		
 		return $results;
 	}
@@ -137,13 +137,15 @@ class Invoice extends Base
 		$results .= "<a href='invoiceCommentEntryEdit.php?Invoice=" . $invoice['Invoice'] . "'>";
 		$results .= $label;
 		if(strlen($invoice["Comment"]) > 0){
-			$results .= "<span>" . $invoice["Comment"] . "</span></a>";
+			$results .= "<span>" . $invoice["Comment"] . "</span>";
 		}
+		$results .= "</a>";
+		
 		$results .= "</span>";
 		$results .= "&nbsp; &nbsp;";
 		$label = "Edit Payments";
 		$results .= "<a href='invoicePaymentsEntryEdit.php?Invoice=" . $invoice['Invoice'] . "'>$label</a>";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 //		$results .= dumpDBRecord($invoice);
 		return $results;
 	}
@@ -163,8 +165,8 @@ class Invoice extends Base
 			}
 			$results .= "</span>\n";
 		}
-		$results .= "<BR>\n";
-		$results .= "<span id='CustomerInvoices'>\n";
+		$results .= "<br />\n";
+//		$results .= "<span id='CustomerInvoices'>\n";
 		$cnt=1;
 		foreach($invoices as $invoice)
 		{
@@ -189,10 +191,10 @@ class Invoice extends Base
 			}
 			if($cnt%2)
 				$results .= "</div>";
-			$cnt++;			$results .= "<BR>\n";
+			$cnt++;			$results .= "<br />\n";
 		}
-		$results .= "</span>";
-		$results .= "</div><!-- End $formName -- >\n";
+//		$results .= "</span>";
+		$results .= "</div><!-- End $formName -->\n";
 		return $results;
 	}
 	

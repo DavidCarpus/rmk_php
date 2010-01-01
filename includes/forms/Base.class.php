@@ -48,18 +48,18 @@ class Base
 //		$labelJscript = $jscriptArray["label"];
 //		$fieldJscript = $jscriptArray["field"];
 		$ro = "";
-		if($readonly == 'true') $ro="readonly";
+		if($readonly == 'true') $ro="readonly='readonly'";
 
 		if($required)
 			return "<label for='$name' $labelJscript class='required'>$label</label>\n".
-					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value'>";
+					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value' />";
 		else
 			return "<label $class $labelJscript for='$name' class='label-$name' >$label</label>\n".
-					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value'>";
+					"<input $ro $class id='$name' name='$name' $fieldJscript value='$value' />";
 	}
 	
 	public function hiddenField($name, $value) {
-		return "<INPUT TYPE='hidden' NAME='".$name."' value='".htmlizeFormValue($value)."'>";
+		return "<input type='hidden' name='".$name."' value='".htmlizeFormValue($value)."' />";
 	}
 	
 	function optionField($name, $label, $values, $default='' , $required=false){
@@ -72,9 +72,9 @@ class Base
 		}
 		foreach($values as $value){
 			if($default == $value)
-				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' checked>$value";
+				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' checked />$value";
 			else 
-				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option'>$value"; 
+				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' />$value"; 
 	//		$results = $results. "type='radio'";
 		}
 		return $results;
@@ -96,7 +96,7 @@ class Base
 	}
 
 	function button($name, $value, $class="btn"){
-		return "<input class='btn' type='submit' name='$name' value='$value' >" ;
+		return "<input class='btn' type='submit' name='$name' value='$value' />" ;
 	}
 	
 	function checkbox($name, $label, $required=false, $value=''){
@@ -138,7 +138,7 @@ class Base
 			foreach($values as $value){
 				$results = $results."<option value='" . $value['id'] . "'";
 				if($value['id'] == $selected)
-					$results = $results." SELECTED ";
+					$results = $results." selected ";
 				$results = $results.">".$value['label']."</option>";
 			}
 		}

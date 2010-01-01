@@ -21,7 +21,7 @@ function emailRequestProcessing(){
 			}
 			break;
 		default:
-			echo "Email Processing<BR>Coming soon:" . $action;
+			echo "Email Processing<br />Coming soon:" . $action;
 			dumpPOST_GET();
 	}
 }
@@ -73,15 +73,15 @@ function saveAndSend($form, $quiet=false){
 //	}
 	
 	if(isDevelopmentMachine() ){ 
-		print "The following message will be 'sent':<BR>";
+		print "The following message will be 'sent':<br />";
 		print  "<HR>".$form['message'] . "-" . $dbRecord['messagebody'] . "<HR>";
 	}
 		
 	if(!isDevelopmentMachine() && !$mail->Send()){ 
-		$error = $error . 'Unable to send email to:' . $form['to'] . "<BR>\n";
+		$error = $error . 'Unable to send email to:' . $form['to'] . "<br />\n";
 	}else{
 		if(!$quiet){
-			print "The following message was 'sent':<BR>";
+			print "The following message was 'sent':<br />";
 			print  "<HR>".$form['message'] . "-" . $dbRecord['messagebody'] . "<HR>";
 		}
 	}
@@ -103,19 +103,19 @@ function isDevelopmentMachine(){
 
 function validateForm($form){
 	if(! validate_email($form['from']) && $form['from']!='BLANK') 
-		$results = $results . " Invalid From EmailAddress.<BR>\n";
+		$results = $results . " Invalid From EmailAddress.<br />\n";
 	if(! validate_email($form['to']) && $form['to']!='BLANK') 	
-		$results = $results . " Invalid To EmailAddress.<BR>\n";
+		$results = $results . " Invalid To EmailAddress.<br />\n";
 	if($form['message']=='' ) 
-		$results = $results . " Blank Message.<BR>\n";
+		$results = $results . " Blank Message.<br />\n";
 	if($form['subject']=='' ) 
-		$results = $results . " Blank Subject.<BR>\n";
+		$results = $results . " Blank Subject.<br />\n";
 	return $results;
 //	dumpPOST_GET();
 }
 
 function emailForm($form){
-	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 
 	$results = $results . textField('customername', "From Name:", false, $form['customername']);
 
@@ -127,22 +127,22 @@ function emailForm($form){
 		$results = $results . hiddenField('from','BLANK') . "\n";
 
 	
-//	$results = $results . "<BR>";
+//	$results = $results . "<br />";
 	$to = $form['to'];
 	if($to == 'webmessages')	$to .= "@randallknives.com";
 		 
 	if($to != 'BLANK'){
 		$results = $results . hiddenField('to',$to) . "\n";
 //		$results = $results . textField('to', "To", false, $to);
-		$results = $results . "<BR>";
+		$results = $results . "<br />";
 	}else{
 		$results = $results . hiddenField('to','BLANK') . "\n";
 	}
 		
 	$results = $results . textField('subject', "Subject", false, $form['subject']);
-	$results = $results . "<BR>";
+	$results = $results . "<br />";
 	$results = $results . textArea('message', "Message", false, $form['message'], true);
-	$results = $results . "<BR>";
+	$results = $results . "<br />";
 		
 	$results = $results . hiddenField('action','emailsubmitted') . "\n";
 	$results = $results . "<input class='btn' type='submit' name='submit' value='Send' >\n" ;
@@ -185,7 +185,7 @@ function orderDetail($order){
 	$cols=array('left'=>"", 'right'=>"");
 
 	
-	$results = $results . "<BR><div class='orderdetail' style='width:700px'>";
+	$results = $results . "<br /><div class='orderdetail' style='width:700px'>";
 	$results = $results . "<table border=1>";
 
 	foreach($fields as $field){

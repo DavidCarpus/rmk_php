@@ -20,18 +20,7 @@ include_once FORMS_DIR. "Customer.class.php";
 include_once FORMS_DIR. "Part.class.php";
 
 session_start();
-//if(!loggedIn()){
-//	$_SESSION['loginValidated'] = 0;
-//	session_destroy();
-//	header("Location: "."../");
-//}
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
-?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
 
-<?php
 $invoiceClass = new Invoices(); 
 $customerClass = new Customers();
 
@@ -89,8 +78,13 @@ switch ($mode) {
 	default:
 		break;
 }
-	
+
+echo headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 ?>
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -127,3 +121,6 @@ switch ($mode) {
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

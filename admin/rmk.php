@@ -23,11 +23,11 @@ session_start();
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 				<a href='search.php'>Search system</a>
-				<BR>
+				<br />
 				<a href='dealers.php'>Dealer List</a>
-				<BR>
+				<br />
 				<a href='Pricing.php'>Parts (Under Construction)</a>
-				<BR>
+				<br />
 		</div>
 	</div>
 	<?php echo footer(); ?>

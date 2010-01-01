@@ -13,11 +13,11 @@ $formValues = getFormValues();
 if (isset($formValues['d']) && $formValues['d']==2){
   echo '<html><body>';
   echo "<a href=" . $_SERVER['PHP_SELF'] . "?Invoice=".$formValues['Invoice']."&d=1>Debug</a>";
-  echo "</BR>";
+  echo "<br />";
   echo "<a href=" . $_SERVER['PHP_SELF'] . "?Invoice=".$formValues['Invoice']."&reportType=ack>View Ack</a>";
-  echo "</BR>";
+  echo "<br />";
   echo "<a href=" . $_SERVER['PHP_SELF'] . "?Invoice=".$formValues['Invoice']."&reportType=inv>Extended Inv</a>";
-  echo "</BR>";
+  echo "<br />";
   echo "<a href=" . $_SERVER['PHP_SELF'] . "?Invoice=".$formValues['Invoice']."&reportType=dlrinv>View Inv</a>";
   echo '</body></html>';
   return;
@@ -55,7 +55,7 @@ if (isset($formValues['reportType']) && $formValues['reportType']=='dlrinv'){
 
 if (isset($formValues['d']) && $formValues['d']==1){
   $pdfcode = $pdf->output(1);
-  $pdfcode = str_replace("\n","\n<br>",htmlspecialchars($pdfcode));
+  $pdfcode = str_replace("\n","\n<br />",htmlspecialchars($pdfcode));
   echo '<html><body>';
   echo trim($pdfcode);
   echo '</body></html>';

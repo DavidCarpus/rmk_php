@@ -42,7 +42,7 @@ $formValues['DefaultDiscount']=$customer['Discount'];
 
 $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
-//echo "Invoice Item : $mode<BR>";
+//echo "Invoice Item : $mode<br />";
 //echo dumpDBRecord($formValues);
 //echo debugStatement("Mode:$mode");
 
@@ -52,14 +52,18 @@ function editForm(){
 		global $invoice,$customer,$entries, $partsFormClass;
 		global $formValues;
 		
-	$results .= "<html>\n";
+//	$results = "<html>\n";
 //	$results .= headSegment();
 
-	$results = "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
-	$results .= "<LINK href='../Style.css'' rel='stylesheet' type='text/css'>";
-	$results .= "<LINK href='../print.css'' rel='stylesheet' type='text/css' media='print'>";
-	$results .= "<LINK href='../DataEntry.css'' rel='stylesheet' type='text/css' media='screen'>";
-	$results .= "\n<body  onLoad='defaultField(\"form_InvoiceEntryEdit\",\"PartDescription\");'>\n";
+	$results .= headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.css"), "../print.css");
+	
+//	$results = "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+//	$results .= "<LINK href='../Style.css'' rel='stylesheet' type='text/css'>";
+//	$results .= "<LINK href='../print.css'' rel='stylesheet' type='text/css' media='print'>";
+//	$results .= "<LINK href='../DataEntry.css'' rel='stylesheet' type='text/css' media='screen'>";
+
+	$results .= "\n<body  onload='defaultField(\"form_InvoiceEntryEdit\",\"PartDescription\");'>\n";
+	$results .=  "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>";
 	$results .= logo_header("admin", "..");
 	$results .= "<div class='mainbody'>";
 	$results .= "<div class='centerblock'>";

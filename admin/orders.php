@@ -69,7 +69,7 @@ function processAdminOrders3(){
 	switch ($action) {
 		case 'selecttype':
 			echo getOrderTypeSelection();
-			echo "<BR>";			
+			echo "<br />";			
 			echo orderSearchForm($parameters);
 			break;
 
@@ -82,19 +82,19 @@ function processAdminOrders3(){
 	
 		case 'updateorders':
 //			debugStatement(dumpDBRecord($parameters));
-			echo "<BR>";
+			echo "<br />";
 			$query = "Update orders set processed=" . $parameters['status'] . " WHERE orders_id in (" . $parameters['order_list'] . ")";
-//			debugStatement($query . "<BR><BR>");
+//			debugStatement($query . "<br /><br />");
 			executeSQL($query);
 			echo getOrderTypeSelection();
-			echo "<BR>";			
+			echo "<br />";			
 			echo orderSearchForm($parameters);
 			
 //			$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders WHERE orders_id in (" . $parameters['order_list'] . ")";
 //			$records = getDbRecords($query);
 //			$orderIDs = split(",", $parameters['order_list']);
 //			foreach($records as $order){
-//				echo dumpDBRecord($order) . "<BR><BR>\n";
+//				echo dumpDBRecord($order) . "<br /><br />\n";
 //			}
 			break;
 	
@@ -119,7 +119,7 @@ function processAdminOrders3(){
 			echo editableOrderDetail($request);
 			break;
 		default:
-			echo "Order Processing - Undeveloped function:" . $action . "<BR>\n";
+			echo "Order Processing - Undeveloped function:" . $action . "<br />\n";
 			$record = getFormValues();
 			debugStatement(dumpDBRecord($record));
 			break;
@@ -164,7 +164,7 @@ function searchOrders($parameters){
 //	debugStatement($filter);
 	$cnt = getIntFromDB("Select count(*) from orders $filter"); 
 	if($cnt > $MAX_LIST_LEN){
-		return "<H2>Criteria returned > $MAX_LIST_LEN records ($cnt). Please narrow down search criteria.</H2><BR>\n";
+		return "<H2>Criteria returned > $MAX_LIST_LEN records ($cnt). Please narrow down search criteria.</H2><br />\n";
 	}
 	$requests = getRequests($filter);
 //	debugStatement(count($requests));
@@ -185,7 +185,7 @@ function getDefaultRequests($parameters){
 //	debugStatement(count($records) . " - " . $query);
 	$prepend="";
 	if(count($records) > 20){
-		$prepend = "Only displaying first 40 records. Processes 40 at a time.<BR>\n";
+		$prepend = "Only displaying first 40 records. Processes 40 at a time.<br />\n";
 	}
 	return $prepend . getOrderList2($records);
 }
@@ -288,7 +288,7 @@ function getOrderList2($records){
 		$prepend="";
 		foreach($statusOptions as $option){
 			if($option['id'] == $currStatus){
-				$prepend = "All these requests are :<B>" . $option['label'] . "</B><BR>\n";
+				$prepend = "All these requests are :<B>" . $option['label'] . "</B><br />\n";
 				break;
 			}
 		}
@@ -309,7 +309,7 @@ function bulkSetStatusForm($orderlist, $defaultStatusSet){
 		if($option['label'] != 'Unprocessed')
 			$statusOptionsNoUnprocess[] = $option;
 	}
-	$results .= "<form class='printHide' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results .= "<form class='printHide' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 //	$results .= "<label for='status' >Set status of below to:</label>";
 	$results .= "<input class='btn' type='submit' name='submit' value='To change, click here after selecting new status to right.' >" ;
 	$results .= selection("status", $statusOptionsNoUnprocess , "", $defaultStatusSet, false). "\n" ;
@@ -341,7 +341,7 @@ function editableOrderDetail($order){
 	$fields = fields();
 	$cols=array('left'=>"", 'right'=>"");
 	
-	$results = $results . "<BR><div class='orderdetail' style='width:700px'>";
+	$results = $results . "<br /><div class='orderdetail' style='width:700px'>";
 	$results = $results . "<table border=1>";
 
 	foreach($fields as $field){
@@ -395,10 +395,10 @@ function editableOrderDetail($order){
 	$results .=  "</table>";
 
 	global $statusOptions;
-	$results .= '<BR>';
-	$results .= "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results .= '<br />';
+	$results .= "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 	$results .= "<label for='status' >Status</label>";
-	$results .= selection("status", $statusOptions , "", $order['processed'], false). "<BR>\n" ;
+	$results .= selection("status", $statusOptions , "", $order['processed'], false). "<br />\n" ;
 	$results .= "<label for='comment' >Comment/Note</label>";
 	$results .= textArea('comment', "", false, $value=$order['comment']); 
 	$results .= "<center><input class='btn' type='submit' name='submit' value='Update' ></center>\n" ;
@@ -415,25 +415,25 @@ function orderSearchForm($parameters){
 	global $requestTypeOptions;
 	global $statusOptions;
 	
-	$results .= "<form  class='printHide' action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results .= "<form  class='printHide' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 
 	$results .= "<label for='requesttype' >RequestType</label>";
-	$results .= selection("requesttype", $requestTypeOptions , "", $parameters['requesttype'], true). "<BR>\n" ;
+	$results .= selection("requesttype", $requestTypeOptions , "", $parameters['requesttype'], true). "<br />\n" ;
 
 	$results .= "<label for='status' >Status</label>";
-	$results .= selection("status", $statusOptions , "", $parameters['status'], false). "<BR>\n" ;
+	$results .= selection("status", $statusOptions , "", $parameters['status'], false). "<br />\n" ;
 
-	$results .= textField('name', fieldDesc('name'), false, $parameters['name']) . "<BR>\n" ;
-	$results .= textField('phone', fieldDesc('phone'), false, $parameters['phone']) . "<BR>\n" ;
-	$results .= textField('startdate', "Date - Start", false, $parameters['startdate'], 'date') . "<BR>" ;
-	$results .= textField('enddate', "End ", false, $parameters['enddate'], 'date') . "<BR>\n" ;
-//	$results .= textField('phone', fieldDesc('phone'), false, "") . "<BR>\n" ;
+	$results .= textField('name', fieldDesc('name'), false, $parameters['name']) . "<br />\n" ;
+	$results .= textField('phone', fieldDesc('phone'), false, $parameters['phone']) . "<br />\n" ;
+	$results .= textField('startdate', "Date - Start", false, $parameters['startdate'], 'date') . "<br />" ;
+	$results .= textField('enddate', "End ", false, $parameters['enddate'], 'date') . "<br />\n" ;
+//	$results .= textField('phone', fieldDesc('phone'), false, "") . "<br />\n" ;
 	
 
 
 	$results .= hiddenField('startid',$parameters['startid']) . "\n";
 	$results .= hiddenField('action','searchorders') . "\n";
-	$results .= "<BR>\n";
+	$results .= "<br />\n";
 	$results .= "<center><input class='btn' type='submit' name='submit' value='Find' ></center>\n" ;
 	$results .= "</form>";
 	return $results;
@@ -456,29 +456,29 @@ function dateAsEDT($dbDate){
 
 function getOrderTypeSelection($default='', $processed=''){
 	$results ="";
-	$results = $results .  "<center><B>Select UnProcessed Order Type:</B><BR>";
+	$results = $results .  "<center><B>Select UnProcessed Order Type:</B><br />";
 	foreach(getOrderTypes() as $ordertype){
 		$results = $results .  "<a href='" . $_SERVER['PHP_SELF'] . 
 			"?action=list&requesttype_id=" . $ordertype['id'] . "&status=0'>" . $ordertype['label'] .
 			"</a> ( ".
 			getRequestCount($ordertype['id'], false).
-			" )<BR>";
+			" )<br />";
 	}
 	$results = $results .  "</center>";
 	
 	$results = $results .  "<HR>";
 	
-	$results .= "<B>For other than UnProcessed, Search:</B><BR>";
+	$results .= "<B>For other than UnProcessed, Search:</B><br />";
 //	$results .= orderSearchForm();
 	
-//	$results = $results .  "<center><B>Select Processed Order Type:</B><BR>";
+//	$results = $results .  "<center><B>Select Processed Order Type:</B><br />";
 ////	$parameters['status']
 //	foreach(getOrderTypes() as $ordertype){
 //		$results = $results .  "<a href='" . $_SERVER['PHP_SELF'] . 
 //			"?action=list&requesttype_id=" . ($ordertype['id']) . "&status=1'>" . $ordertype['label'] .
 //			"</a> ( ".
 //			getRequestCount($ordertype['id'], true).
-//			" )<BR>";
+//			" )<br />";
 //	}
 
 //	$results .= "</center>";
@@ -489,14 +489,14 @@ function getOrderTypeSelection($default='', $processed=''){
 }
 
 function basicOrderSearch(){
-	$results .= "<BR>\n";
-	$results .= "<BR>\n";
+	$results .= "<br />\n";
+	$results .= "<br />\n";
 	
-	$results .= "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-	$results .= textField('name', fieldDesc('name'), false, "") . "<BR>\n" ;
-	$results .= textField('phone', fieldDesc('phone'), false, "") . "<BR>\n" ;
+	$results .= "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
+	$results .= textField('name', fieldDesc('name'), false, "") . "<br />\n" ;
+	$results .= textField('phone', fieldDesc('phone'), false, "") . "<br />\n" ;
 	$results .= hiddenField('action','searchorders') . "\n";
-	$results .= "<BR>\n";
+	$results .= "<br />\n";
 	$results .= "<center><input class='btn' type='submit' name='submit' value='Search' ></center>\n" ;
 	$results .= "</form>\n";
 	return $results;
@@ -633,7 +633,7 @@ function printableOrders($orders, $start, $cnt){
 					break;
 			}
 			if($desc != '&nbsp;' && $desc != '' && $desc != ' ' && trim($value) != '')
-				$results = $results . $desc . " - <B>" . $value. "</B><BR>";
+				$results = $results . $desc . " - <B>" . $value. "</B><br />";
 		}
 	}	
 	return $results;

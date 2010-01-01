@@ -51,15 +51,15 @@ function faqAdminProcessing(){
 			echo addFAQLink();
 			break;
 		default:
-			echo "Administrate Frequently Asked Questions.<br>\n";
-			echo "Unknown action: " . $action . "<br>";
+			echo "Administrate Frequently Asked Questions.<br />\n";
+			echo "Unknown action: " . $action . "<br />";
 			dumpPOST_GET();
 	}
 }
 function deleteValidationForm($faq){
 	$results = $results .  "<center><h2> Confirm Deletion:</h2></center>";
 	$results = $results .  "<center><h2>" . $faq['question'] . "</h2></center>";
-	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 //			echo hiddenField('catalogcategories_id',$model['catalogcategories_id']);
 	$results = $results .  hiddenField('action','validatedeletion');
 	$results = $results .  hiddenField('id',$faq['faq_id']);
@@ -80,10 +80,10 @@ function saveFAQEntry($question){
 	return saveRecord('faq', 'faq_id', $question);
 }
 function editFAQ($question){
-	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 	$results = $results . "<center>";
-	$results = $results . textArea('question', 'Question', true, $question['question'], true). "<BR>\n" ;
-	$results = $results . textArea('answer', 'Answer', true, $question['answer'], true). "<BR>\n" ;
+	$results = $results . textArea('question', 'Question', true, $question['question'], true). "<br />\n" ;
+	$results = $results . textArea('answer', 'Answer', true, $question['answer'], true). "<br />\n" ;
 	$results = $results . hiddenField('faq_id',$question['faq_id']);		
 	$results = $results . hiddenField('action','save');		
 	$results = $results . "<input style='color: red;' type='submit' name='submit' value='Submit' >\n" ;
@@ -94,10 +94,10 @@ function editFAQ($question){
 
 function listFAQ($faq){
 //	if(count($faq) > 0)
-//		$results = $results . "<BR>";
+//		$results = $results . "<br />";
 	foreach($faq as $question){
 		$results = $results . editFAQLink($question) . " - ";
-		$results = $results . deleteFAQLink($question) . " - " . $question["question"] . "<BR>";
+		$results = $results . deleteFAQLink($question) . " - " . $question["question"] . "<br />";
 	}
 	return $results;
 }

@@ -26,8 +26,8 @@ function rmkHeaderLinks($header)
 	$results = "<span id='invoiceAckLink'>";
 	if(array_key_exists("ACK", $header) ) $results .= invAcknowledgmentLink($header['ACK']) . "&nbsp;&nbsp;";
 	if(array_key_exists("INV", $header) ) $results .= invInvoiceLink($header['INV']);
-	$results .= "</BR>\n";
-	$results .= "</BR>\n";
+	$results .= "<br />\n";
+	$results .= "<br />\n";
 	$results .= "</span>";
 	
 	return $results;

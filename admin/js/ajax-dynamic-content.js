@@ -53,7 +53,7 @@ function ajax_loadContent(divId,url)
 	dynamicContent_ajaxObjects[ajaxIndex] = new sack();
 	
 	if(url.indexOf('?')>=0){
-		dynamicContent_ajaxObjects[ajaxIndex].method='GET';
+		dynamicContent_ajaxObjects[ajaxIndex].method='get';
 		var string = url.substring(url.indexOf('?'));
 		url = url.replace(string,'');
 		string = string.replace('?','');

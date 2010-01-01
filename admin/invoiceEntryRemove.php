@@ -41,14 +41,17 @@ $mode=$invoiceForms->entryFormMode($formValues);
 if(array_key_exists('submit', $formValues) && $formValues['submit'] == "Remove item from Invoice"){
 	$invoiceEntries->removeInvoiceItem($formValues['InvoiceEntryID'], $entries, $invoiceNum);
 	header("Location: "."invoiceEdit.php?Invoice=$invoiceNum");
-} else {
+}
+//<LINK href="../Style.css" rel="stylesheet" type="text/css">
+//<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
+//<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
+echo headSegments("RMK Remove Item from Invoice", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 ?>
-<script type='text/javascript' src='../includes/NewRMK.js?<?php echo time() ?>'></SCRIPT>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
 
-<body  onLoad='defaultField("form_RemoveInvoiceEntry","PartDescription");'>
+<body  onload='defaultField("form_RemoveInvoiceEntry","PartDescription");'>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
+
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -65,10 +68,12 @@ if(array_key_exists('submit', $formValues) && $formValues['submit'] == "Remove i
 					echo $invoiceEntryForms->removeEntryForm($formValues, $entries);
 					echo "\n\n";
 					echo $invoiceEntryForms->knifeListTable( $entries, $formValues['InvoiceEntryID'] );
-//					echo debugStatement(dumpDBRecord($formValues));
+					echo debugStatement(dumpDBRecords($entries));
 				?>
 		</div>
 	</div>
 	<?php echo footer(); ?>
 </div>
-<?php } ?>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ class InvoiceEntry extends Base
 
 		$results="\n";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='GET'>"  . "\n";
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='get'>"  . "\n";
 		$results .=  "<legend>$formName</legend>" . "\n";
 		$fields = array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment');
 		foreach( $fields as $name)
@@ -29,7 +29,7 @@ class InvoiceEntry extends Base
 			$ro = ( ($name == "TotalRetail" ) ? "true" : "false");
 			$results .=  $this->textField($name, $this->fieldDesc($name), false, $entry[$name],'',array(),$ro) . "\n";
 			if($this->isInternetExploder() && ($name=="TotalRetail"))
-					$results .=  "</BR>";
+					$results .=  "<br />";
 		}
 		$results .= "</form>";
 		
@@ -87,9 +87,9 @@ class InvoiceEntry extends Base
 //		$url .= "&Comment=" . urlencode($entry['Comment']); 
 //		$url .= "&TotalRetail=" . $entry['TotalRetail']; 
 		
-		$url .= "&InvoiceEntryID=" . $entry['InvoiceEntryID']; 
+		$url .= "&amp;InvoiceEntryID=" . $entry['InvoiceEntryID']; 
 
-		$url .= "&submit=Edit"; 
+		$url .= "&amp;submit=Edit"; 
 		$url .= "'>Edit</a>";
 //		return $entry["PartDescription"];
 		return $url;
@@ -97,7 +97,7 @@ class InvoiceEntry extends Base
 	
 	function linkToEntryRemove( $entry ){
 		$url = "<a href='invoiceEntryRemove.php?InvoiceEntryID=" . $entry['InvoiceEntryID'] ;
-		$url .= "&Invoice=" . $entry['Invoice'];
+		$url .= "&amp;Invoice=" . $entry['Invoice'];
 		$url .=  "'>Remove</a>";
 //		return $entry["PartDescription"];
 		return $url;
@@ -121,9 +121,9 @@ class InvoiceEntry extends Base
 				$results .= "<span style='font-weight: bold;' class='$field'>$field</span>";
 		}
 		$results .= "\n";
-//		$results .= "</BR>";
+//		$results .= "<br />";
 //		$results .= "<span style='clear: left;display: block;'>";
-		$results .= "<span id='knifeListItem'>\n";
+		$results .= "<div id='knifeListItem'>\n";
 		$cnt=1;
 		$highlight=false;
 		foreach ($entries as $entry){
@@ -155,12 +155,12 @@ class InvoiceEntry extends Base
 			if($highlight)
 				$results .= "</div>";
 			$cnt++;
-			$results .= "</BR>\n";
+			$results .= "<br />\n";
 //			$results .= $highlightEntryID . "++".  $entry['InvoiceEntryID'];
 		}
-		$results .= "</span>";
+		$results .= "</div>";
 	
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -->\n";
 //		return count($entries) . " Entries";
 		return $results;
 	}
@@ -206,18 +206,18 @@ class InvoiceEntry extends Base
 		foreach ($currEntry['Additions'] as $addition) {
 			$results .=  $this->textField("Addition_$i", "Feature $i", false, $addition['PartCode'],  "", $js, false);
 			$results .=  $this->textField("Addition_Price_$i", "Price", false, $addition['Price'],  "", array(), false);
-			$results .=  "<BR>\n";
+			$results .=  "<br />\n";
 			$i++;
 		}
 		
 		for(; $i<= 8; $i++){
 			$results .=  $this->textField("Addition_$i", "Feature $i", false, "",  "", $js, false);
 			$results .=  $this->textField("Addition_Price_$i", "Price", false, "",  "", array(), false);
-			$results .=  "<BR>\n";
+			$results .=  "<br />\n";
 		}
 		$results .=  "</span>" . "\n";
 //		$results .=  $this->textField($name, $name, $err, $formValues[$name],  "", array(), false);
-//		$results .= debugStatement(dumpDBRecord($currEntry) . "</BR>--------</BR>" . dumpDBRecords($currEntry['Additions']));
+//		$results .= debugStatement(dumpDBRecord($currEntry) . "<br />--------<br />" . dumpDBRecords($currEntry['Additions']));
 		
 		return $results;
 	}
@@ -267,20 +267,20 @@ class InvoiceEntry extends Base
 		$results="";
 		$results .=  "<a name='$formName'></a>\n";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form id='form_$formName' name='$formName' action='newInvoiceEntry.php' method='GET'>" . "\n" ;
-		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "'>";
-		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "'>";
+		$results .=  "<form id='form_$formName' name='$formName' action='newInvoiceEntry.php' method='get'>" . "\n" ;
+		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "' />";
+		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "' />";
 		
 		if($mode=='none'){
-			$results .=  "<BR>" . $this->button("submit", "New Item");
+			$results .=  "<br />" . $this->button("submit", "New Item");
 			$results .= "</form>";
-			$results .= "\n</div><!-- End $formName -- >\n";
+			$results .= "\n</div><!-- End $formName -->\n";
 			return $results;			
 		}
 		
-		if($mode=='add' || $mode=='edit'){
-			$results .=  "<span id='$formName'>" . "\n";
-		}
+//		if($mode=='add' || $mode=='edit'){
+//			$results .=  "<div id='$formName'>" . "\n";
+//		}
 
 		if(!array_key_exists("Quantity", $values) || $values["Quantity"]=="")
 		{
@@ -289,7 +289,7 @@ class InvoiceEntry extends Base
 		}
 		if($values["Discount"] == "" && $values["DiscountPercentage"] != "") $values["Discount"] = $values["DiscountPercentage"]; 
 				
-		$fields = array("Quantity", "PartDescription" , "BaseRetail",  "Discount", "FeatureList" , "TotalRetail" , "Comment");
+		$fields = array("Quantity", "PartDescription" , "BaseRetail",  "Discount", "FeatureList" , "InvoiceEntry_TotalRetail" , "Comment");
 		
 		foreach($fields as $name)
 		{
@@ -307,8 +307,10 @@ class InvoiceEntry extends Base
 			} else if($name == "PartDescription"){
 				$js['field']="onkeyup='return newPart(\"form_$formName\", this);' onblur='return newPart(\"form_$formName\", this);'";
 				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
-			} else if($name == "TotalRetail"){
-				$results .=  $this->textField($name, $name, $err, number_format($values[$name],2),  "", array(), false);
+//			} else if($name == "TotalRetail"){
+//				$results .=  $this->textField($name, $name, $err, number_format($values[$name],2),  "", array(), false);
+			} else if($name == "InvoiceEntry_TotalRetail"){
+				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values[$name],2),  "", array(), false);
 			} else if($name == "Discount"){
 				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			} else{
@@ -316,19 +318,19 @@ class InvoiceEntry extends Base
 			}
 			$results .= "</span>\n";
 			if($name == "Discount" || $name == "FeatureList"){
-				$results .= "</BR>\n";		
+				$results .= "<br />\n";		
 			}
 		}
-		$results .= "</span><!-- End $formName -- >\n";
+//		$results .= "</div><!-- End $formName -->\n";
 		
 		if($mode=='add' || $mode=='new' || $mode=='validate' ){
-			$results .=  "<BR>" . $this->button("submit", "Submit");
+			$results .=  "<br />" . $this->button("submit", "Submit");
 		}
 		if($mode=='edit'){
-			$results .=  "<BR>" . $this->button("submit", "Update");
+			$results .=  "<br />" . $this->button("submit", "Update");
 		}
-		$results .= "</form>";
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "</form></div>";
+		$results .= "\n</div><!-- End $formName -->\n";
 
 		return $results;
 	}
@@ -360,22 +362,27 @@ class InvoiceEntry extends Base
 //		echo debugStatement(dumpDBRecord($values));
 		if(	$values == NULL){ return "System Error"; }
 
-		$results .=  "<form id='form_$formName' name='$formName' action='invoiceEntryRemove.php' method='GET'>" . "\n" ;
+		$results .=  "<form id='form_$formName' name='$formName' action='invoiceEntryRemove.php' method='get'>" . "\n" ;
 		
-		$fields = array("PartDescription" , "Quantity",  "TotalRetail" , "FeatureList" , "Comment");
+		$fields = array("PartDescription" , "Quantity",  "InvoiceEntryRemove_TotalRetail" , "FeatureList" , "Comment");
 		foreach($fields as $name)
 		{
 			if(!array_key_exists($name, $values))		$values[$name]="";
 			$results .= "<span class='$name'>";
-			$results .=  $this->textField($name, $name, $err, $values[$name],  $name, array(), false);
-			$results .= "</span><BR>\n";
+			if($name == "InvoiceEntryRemove_TotalRetail"){
+				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values["TotalRetail"],2),  "", array(), false);
+			}
+			else{
+				$results .=  $this->textField($name, $name, $err, $values[$name],  '', array(), false);
+			}
+			$results .= "</span><br />\n";
 		}
-		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "'>";
-		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "'>";
+		$results .=  "<input type='hidden' name='Invoice' value='" . $values["Invoice"] . "' />";
+		$results .=  "<input type='hidden' name='InvoiceEntryID' value='" . $values["InvoiceEntryID"] . "' />";
 		$results .=  $this->button("submit", "Remove item from Invoice");
-		$results .=  "<BR>";
+		$results .=  "<br />";
 		$results .= "</form>";
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -->\n";
 		
 		return $results;
 		

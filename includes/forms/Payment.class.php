@@ -8,9 +8,9 @@ class Payment extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>" . "\n" ;
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>" . "\n" ;
 		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		
 		return $results;
 	}
@@ -32,7 +32,7 @@ class Payment extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='GET'>" . "\n" ;
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='get'>" . "\n" ;
 		foreach($fields  as $label=>$field){
 			$value = $payment[$field];
 			if($label == "PaymentDate" || $label == "ExpirationDate"){
@@ -41,12 +41,12 @@ class Payment extends Base
 				$value="$" . number_format($payment[$field] ,2) ;
 			}
 			$results .= "<span class='label'>$label</span><span class='value'>$value</span>";
-			$results .= "<BR>\n";			
+			$results .= "<br />\n";			
 		}
 		$results .=  "<input type='hidden' name='PaymentID' value='". $payment['PaymentID'] . "'>";
-		$results .=  "<BR>" . $this->button("submit", "Confirm Payment Deletion");		
+		$results .=  "<br />" . $this->button("submit", "Confirm Payment Deletion");		
 		$results .= "</form>\n";
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 				
 		return $results;
 	}
@@ -72,10 +72,10 @@ class Payment extends Base
 			$class = "value";
 			if($value < 0) $class = "negValue";
 			$results .= "<span class='$class'>$ " .  number_format($value ,2). "</span>";
-			$results .= "<BR>";
+			$results .= "<br />";
 		}
 		
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -->\n";
 //		$results .= dumpDBRecord($costs);
 		return $results;
 	}
@@ -89,7 +89,7 @@ class Payment extends Base
 			
 		$results="";
 
-		$results .=  "\n<form name='$formName' action='newPayment.php' method='GET' onsubmit='return newPaymentSubmit(this)'>" . "\n" ;
+		$results .=  "\n<form name='$formName' action='newPayment.php' method='get' onsubmit='return newPaymentSubmit(this)'>" . "\n" ;
 		if($editMode){
 			$results .=  "\n<div class='$formName"."Edit'>" . "\n";
 		} else{
@@ -105,14 +105,14 @@ class Payment extends Base
 			} else if($name == "PaymentDate"){
 				$value=date("Y-m-d");
 			}
-			$results .=  "<input class='$name' name='$name' value='$value'>";
+			$results .=  "<input class='$name' name='$name' value='$value' />";
 		}
-		$results .=  "<input type='hidden' name='Invoice' value='$invoiceNumber'>";
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .=  "<input type='hidden' name='Invoice' value='$invoiceNumber' />";
+		$results .= "\n</div><!-- End $formName -->\n";
 		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Submit"){
-			$results .=  "<BR>" . $this->button("submit", "Submit");
+			$results .=  "<br />" . $this->button("submit", "Submit");
 		} else {
-			$results .=  "<BR>" . $this->button("submit", "Add Payment");
+			$results .=  "<br />" . $this->button("submit", "Add Payment");
 		}
 		$results .= "</form>";
 		
@@ -132,7 +132,7 @@ class Payment extends Base
 			else
 				$results .= "<span class='Header$field'>$field</span>";
 		}
-		$results .= "</BR>";
+		$results .= "<br />";
 		$results .= "<span id='invoicePayments'>";
 		$cnt=1;
 		foreach ($payments as $payment){
@@ -161,13 +161,13 @@ class Payment extends Base
 			if($cnt%2)
 				$results .= "</div>";
 			$cnt++;
-			$results .= "</BR>";
+			$results .= "<br />";
 		}
 		$results .= "</span>";
 
-		$results .= "</BR>";
+		$results .= "<br />";
 		$results .= $this->newPaymentEntryForm($invoiceNumber, $formValues);
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -->\n";
 //		$results .= dumpDBRecords($payments);
 		
 //		return count($entries) . " Entries";

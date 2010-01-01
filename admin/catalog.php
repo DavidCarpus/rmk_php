@@ -25,7 +25,7 @@ function catalogAdminProcessing(){
 			print getCategoryModels($category);
 			break;
 		case 'list':
-			echo "<BR><BR><BR>";
+			echo "<br /><br /><br />";
 //			echo quickCategorySelection(0);
 			print getCategoryList();
 			break;
@@ -100,14 +100,14 @@ function catalogAdminProcessing(){
 			break;
 			
 		default:
-			echo "Unknown action: " . $action . "<br>";
+			echo "Unknown action: " . $action . "<br />";
 			dumpPOST_GET();
 	}
 }
 //function deleteValidationForm($faq){
 //	$results = $results .  "<center><h2> Confirm Deletion:</h2></center>";
 //	$results = $results .  "<center><h2>" . $faq['question'] . "</h2></center>";
-//	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+//	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 ////			echo hiddenField('catalogcategories_id',$model['catalogcategories_id']);
 //	$results = $results .  hiddenField('action','validatedeletion');
 //	$results = $results .  hiddenField('id',$faq['faq_id']);
@@ -118,17 +118,17 @@ function catalogAdminProcessing(){
 //}
 function addEditPhotoForm($category, $photo){
 	$results = $results .  "<center><h2>Photo: " . $category['category'] . "</h2></center>";
-	$results = $results .  "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='POST'>";
+	$results = $results .  "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='post'>";
 	
-	$results = $results . textField('photo_labels', 'Picture labels', true, $photo['photo_labels']). "<BR>\n" ;
+	$results = $results . textField('photo_labels', 'Picture labels', true, $photo['photo_labels']). "<br />\n" ;
 	if(!($photo['photo_id'] > 0)){
-		$results = $results . "<BR>";
+		$results = $results . "<br />";
 		$results = $results . "<label for='files' >File:</label>";	
-		$results = $results . "<input type='file' name='files'/><BR>";
+		$results = $results . "<input type='file' name='files'/><br />";
 		$results = $results . hiddenField('MAX_FILE_SIZE','2000000');
 	}
 	
-	$results = $results . "<BR>";
+	$results = $results . "<br />";
 	$results = $results . hiddenField('action','savemodelphoto');
 	$results = $results . hiddenField('catalogcategories_id',$category['catalogcategories_id']);
 	$results = $results . hiddenField('photo_id',$photo['photo_id']);
@@ -141,7 +141,7 @@ function addEditPhotoForm($category, $photo){
 function deleteValidationForm($model){
 	$results = $results .  "<center><h2> Confirm Deletion:</h2></center>";
 	$results = $results .  "<center><h2>" . $model['model'] . "</h2></center>";
-	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 //			echo hiddenField('catalogcategories_id',$model['catalogcategories_id']);
 	$results = $results .  hiddenField('action','validatedeletion');
 	$results = $results .  hiddenField('id',$model['knifemodels_id']);
@@ -159,7 +159,7 @@ function deletePhotoValidationForm($photo){
 	
 	$results = $results .  "<center><h2> Confirm Deletion:</h2></center>";
 	$results = $results . "<img style='padding:0px 20px 0px 0px;' src='$image' align=left >";
-	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+	$results = $results .  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 //			echo hiddenField('catalogcategories_id',$model['catalogcategories_id']);
 	$results = $results .  hiddenField('action','validatephotodeletion');
 	$results = $results .  hiddenField('id',$photo['photo_id']);
@@ -169,14 +169,14 @@ function deletePhotoValidationForm($photo){
 }
 
 function editModel($model){
-//	$results = $results . "Form to edit/add new Model<BR>\n";
-	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
-	$results = $results . textField('model', 'Model', true, $model['model']). "<BR>\n" ;
-	$results = $results . textArea('description', 'Description', true, $model['description'], true). "<BR>\n" ;
-	$results = $results . textField('weight', 'Weight', true, $model['weight']). "<BR>\n" ;
-	$results = $results . textField('price', 'Price', true, $model['price']). "<BR>\n" ;
-	$results = $results . textArea('note', 'Note', true, $model['note']). "<BR>\n" ;
-	$results = $results . textField('piclabel', 'Picture label', true, $model['piclabel']). "<BR>\n" ;
+//	$results = $results . "Form to edit/add new Model<br />\n";
+	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
+	$results = $results . textField('model', 'Model', true, $model['model']). "<br />\n" ;
+	$results = $results . textArea('description', 'Description', true, $model['description'], true). "<br />\n" ;
+	$results = $results . textField('weight', 'Weight', true, $model['weight']). "<br />\n" ;
+	$results = $results . textField('price', 'Price', true, $model['price']). "<br />\n" ;
+	$results = $results . textArea('note', 'Note', true, $model['note']). "<br />\n" ;
+	$results = $results . textField('piclabel', 'Picture label', true, $model['piclabel']). "<br />\n" ;
 	$results = $results . hiddenField('action','Save') . "\n";
 	$results = $results . hiddenField('knifemodels_id',$model['knifemodels_id']) . "\n";
 	$results = $results . hiddenField('catalogcategories_id',$model['catalogcategories_id']) . "\n";
@@ -260,13 +260,13 @@ function processFileUpload($formValues, $tmp_name, $name){
 	
 //	echo "<HR>" . $dest . "<HR>";
 	if ( $dest != '' ) {
-//		echo "source=>dest: ---  $source => $dest<BR>$primary<HR>";
+//		echo "source=>dest: ---  $source => $dest<br />$primary<HR>";
         if ( move_uploaded_file( $tmp_name, $dest ) ) {
 			saveRecord('knifephotos', 'photo_id', $photoinfo);
 			chmod($dest, 0755);
-//            echo 'File successfully stored.<BR>';
+//            echo 'File successfully stored.<br />';
         } else {
-            echo "File could not be stored. $source => $dest<BR>";
+            echo "File could not be stored. $source => $dest<br />";
         }
     } 
 }

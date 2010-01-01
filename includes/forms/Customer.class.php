@@ -9,10 +9,10 @@ class Customer extends Base
    
    function displayWithFlags($cust){
    		$results="";
-   		$results .= "<span style='display: block; float: left; width: 600; clear:right;'>\n\n";
+   		$results .= "<div style='display: block; float: left; width: 600; clear:right;'>\n\n";
    		$results .= $this->display( $cust );
 		$results .= $this->customerFlags( $cust );
-		$results .= "</span><!-- End displayWithFlags -- >\n\n";
+		$results .= "</div><!-- End displayWithFlags -->\n\n";
 		return $results;
    }
    
@@ -27,11 +27,11 @@ class Customer extends Base
 		$results .= $url;
 
 		if($request != NULL && array_key_exists("EMailAddress", $request))
-			$results .= $request["EMailAddress"] . "</BR>\n";
+			$results .= $request["EMailAddress"] . "<br />\n";
 		if($request != NULL && array_key_exists("PhoneNumber", $request))
-			$results .= $request["PhoneNumber"] . "</BR>\n";
+			$results .= $request["PhoneNumber"] . "<br />\n";
 	
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		
 //		$results .= dumpDBRecord($request);
 		return $results;
@@ -43,11 +43,11 @@ class Customer extends Base
 			$custID = $request['CustomerID'];
 			$results .= "<span class='helptext'>";
 			$results .= "<a href='customerEdit.php?CustomerID=$custID'>";
-			$img = "<img ALIGN='top' src='" . getImagePath("memo.png") . "' border=0>";
+			$img = "<img align='top' src='" . getImagePath("memo.png") . "' border='0' alt='memo' />";
 			$results .= "$img<span>" . $request["Memo"] . "</span></a>";
-			$results .= "</span><!-- End HelpText -- >\n";
+			$results .= "</span><!-- End HelpText -->\n";
 		}
-		$results .= "</span><!-- End CustomerFlags -- >\n";
+		$results .= "</span><!-- End CustomerFlags -->\n";
 		return $results;
    }
    
@@ -56,7 +56,7 @@ class Customer extends Base
 		
 		$results="\n";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='POST'>"  . "\n";
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>"  . "\n";
 //		$results .=  "<legend>$formsName</legend>" . "\n";
 //		CustomerID as hidden field?
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress');
@@ -65,7 +65,7 @@ class Customer extends Base
 			if(!array_key_exists($name, $request)) $request[$name] = "";
 			$results .=  $this->textField($name, $this->fieldDesc($name), false, $request[$name],'',array(), $readonly) . "\n";
 			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
-					$results .=  "</BR>";
+					$results .=  "<br />";
 		}
 		
 		$results .= "</form>";
@@ -89,8 +89,8 @@ class Customer extends Base
 			$results .= $request[$name] . " ";
 		}
 		
-		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >";
+//		$results .= "</form>";
+		$results .= "</div><!-- End $formName -->";
 		return $results;
 	}
 	
@@ -119,7 +119,7 @@ class Customer extends Base
 		foreach($fields  as $field){
 			$results .= "<span class='Header$field'>$field</span>";
 		}
-		$results .= "</BR>";
+		$results .= "<br />";
 		$cnt=1;
 		foreach ($customers as $customer){
 			if($cnt%2)
@@ -136,10 +136,10 @@ class Customer extends Base
 			if($cnt%2)
 				$results .= "</div>";
 			$cnt++;
-			$results .= "</BR>";
+			$results .= "<br />";
 		}
 
-		$results .= "\n</div><!-- End $formName -- >\n";
+		$results .= "\n</div><!-- End $formName -->\n";
 //		$results .= dumpDBRecords($payments);
 		
 //		return count($entries) . " Entries";
@@ -156,7 +156,7 @@ class Customer extends Base
 		}
 //		$results .= debugStatement(dumpDBRecord($formValues));
 		
-		$results .=  "</BR></BR>";
+		$results .=  "<br /><br />";
 		$fields = array('ADDRESS1', 'ADDRESS2', 'CITY', 'STATE', 'ZIP', 'COUNTRY', 'ZONE');
 		foreach( $fields as $name)
 		{
@@ -164,7 +164,7 @@ class Customer extends Base
 			
 			if(!array_key_exists($name, $formValues)) $formValues[$name] = "";
 			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
-			$results .=  "</BR>";
+			$results .=  "<br />";
 		}
 		$fields = array('AddressID', 'AddressType', 'CustomerID', 'PrimaryCustomerAddress', 'CorrectedAddressID', 'TimesUsed');
 		foreach( $fields as $name)
@@ -180,7 +180,7 @@ class Customer extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='customerEdit.php' method='GET'>"  . "\n";
+		$results .=  "<form name='$formName' action='customerEdit.php' method='get'>"  . "\n";
 
 		$errors = array();
 		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
@@ -205,12 +205,12 @@ class Customer extends Base
 			}
 			
 //			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
-			$results .=  "</BR>";
+			$results .=  "<br />";
 		}
 		$isDealer = ($formValues['Dealer']=='1' || $formValues['Dealer']==1)?1:0;
 //				echo debugStatement("Dealer?: $isDealer : " . $formValues['Dealer']);
 		$results .=  $this->checkbox('Dealer', 'Dealer', (array_key_exists('Dealer', $errors)), $isDealer );
-		$results .=  "</BR>";
+		$results .=  "<br />";
 		$results .=  $this->textField('TaxNumber', 'TaxNumber', false, $formValues['TaxNumber']) . "\n";
 		
 		$formValues['CurrrentAddress']['ERROR']=$formValues['ERROR'];
@@ -218,15 +218,15 @@ class Customer extends Base
 
 		if(!array_key_exists('CustomerID', $formValues))
 		{
-			$results .=  "<BR>" . $this->button("submit", "New Customer?");
+			$results .=  "<br />" . $this->button("submit", "New Customer?");
 		}
 		else
 		{		
 			$results .=  $this->hiddenField('CustomerID', $formValues['CustomerID']);
-			$results .=  "<BR>" . $this->button("submit", "Update Customer");		
+			$results .=  "<br />" . $this->button("submit", "Update Customer");		
 		}
 
-		$results .=  debugStatement("Flag?</BR>Balance?</BR>CreditCardNumber/CreditCardExpiration?");
+		$results .=  debugStatement("Flag?<br />Balance?<br />CreditCardNumber/CreditCardExpiration?");
 
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -- >";
@@ -234,7 +234,7 @@ class Customer extends Base
 		
 		return $results;
 //		$results = "New Customer Form";
-//		$results .= "</BR>";
+//		$results .= "<br />";
 //		$results .= dumpDBRecord($formValues);
 //		return $results;
 	}

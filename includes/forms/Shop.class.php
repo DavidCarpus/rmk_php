@@ -11,7 +11,7 @@ class ShopForms extends Base
 	public function orderSearchForm($request){
 		global $sortOptions;
 		$results="";
-		$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='POST'>" ;
+		$results .=  "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 		$results .=  "<P>" . $this->textField('invoice_num', fieldDesc('invoice_num'), false, $request['invoice_num']). "</P>\n" ;
 		$results .= "<P>" . $this->textField('firstname', fieldDesc('firstname'), false, $request['firstname']). "</P>\n" ;
 		$results .= "<P>" . $this->textField('lastname', fieldDesc('lastname'), false, $request['lastname']). "</P>\n" ;

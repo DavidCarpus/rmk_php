@@ -14,15 +14,15 @@ class Search extends Base
 			if(!array_key_exists('searchValue', $formValues)) $formValues['searchValue'] = "";
 			$results="";
 			$results .=  "<div id='$formName'>";
-			$results .=  "<form name='$formName' action='search.php' method='GET'>" ;
+			$results .=  "<form name='$formName' action='search.php' method='get'>" ;
 			$JS = array();
 	//		$JS['field'] = "onBlur=\"search($formName);\"";
 			$results .=  $this->textField('searchValue', $this->fieldDesc('searchValue'), false, $formValues['searchValue'],"",$JS) ;
 			if(array_key_exists('CustomerID', $formValues)){
-				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "' />";
 			}
 			$results .= "</form>";
-			$results .= "</div><!-- End $formName -- >\n";
+			$results .= "</div><!-- End $formName -->\n";
 			return $results;
 	}
 	
@@ -144,27 +144,27 @@ class Search extends Base
 			$results .= $invoiceForms->getCustomerInvoiceList($invoices);
 
 			$results .=  "<div id='customerInvListBtns'>";
-			$results .=  "<form name='$formName' action='search.php' method='GET'>" ;
+			$results .=  "<form name='$formName' action='search.php' method='get'>" ;
 			if(array_key_exists('searchValue', $formValues) )
-				$results .=  "<input type='hidden' name='searchValue' value='" . $formValues["searchValue"] . "'>";
+				$results .=  "<input type='hidden' name='searchValue' value='" . $formValues["searchValue"] . "' />";
 			if(array_key_exists('CustomerID', $formValues)){
-				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "' />";
 			}
 			
 			$filter = "Older";
 			if($older) $filter = "Newer";
 			$results .=  $this->button("filter", $filter);
 			$results .= "</form>";
-			$results .=  "<form name='newInvoice' action='invoiceEdit.php' method='GET'>" ;
+			$results .=  "<form name='newInvoice' action='invoiceEdit.php' method='get'>" ;
 			if(array_key_exists('CustomerID', $formValues)){
-				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "'>";
+				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "' />";
 			}
 			$results .=  $this->button("newInvoice", "New Invoice");
 			$results .= "</form>";
 			
-			$results .= "</div><!-- End customerInvListBtns -- >\n";
+			$results .= "</div><!-- End customerInvListBtns -->\n";
 		}
-		$results .= "</div><!-- End $formName -- >\n";
+		$results .= "</div><!-- End $formName -->\n";
 		return $results;
 	}
 	

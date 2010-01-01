@@ -16,17 +16,18 @@ session_start();
 //	session_destroy();
 //	header("Location: "."../");
 //}
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
- $formValues = getFormValues();
+$formValues = getFormValues();
 $Parts = new Part();
 $partsDB = new Parts();
 
 $formValues['Year'] = $partsDB->maxPartPriceYear() - 3;
-
+ 
+echo headSegments("RMK Part Pricing", array("../Style.css", "", "../CustomerReports.css"), "../CustomerReportsPrint.css");
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK href="../CustomerReports.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../CustomerReportsPrint.css">	 
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -35,7 +36,7 @@ $formValues['Year'] = $partsDB->maxPartPriceYear() - 3;
 		<div class="content">
 			<?php 	
 //					echo "Pricing";
-//					echo "</BR>";
+//					echo "<br />";
 					echo $Parts->partPricingTable($formValues);
 //					echo debugStatement(dumpDBRecord($formValues));;
 			?>
@@ -43,3 +44,6 @@ $formValues['Year'] = $partsDB->maxPartPriceYear() - 3;
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

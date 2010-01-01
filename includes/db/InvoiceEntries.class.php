@@ -63,7 +63,7 @@ class InvoiceEntries
 //				echo debugStatement("Check feature".dumpDBRecord($feature));
 				$price = $this->partsClass->currentYearPartPrice($feature['PartCode']);
 				if($price == NULL) {$this->validationError .= "FeatureList,"; $valid=false;}
-//				echo $feature . "<BR>";
+//				echo $feature . "<br />";
 //				echo debugStatement(dumpDBRecord($price));
 			}
 		}

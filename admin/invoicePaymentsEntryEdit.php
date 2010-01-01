@@ -24,14 +24,7 @@ session_start();
 //	session_destroy();
 //	header("Location: "."../");
 //}
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 
-?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
-
-<?php
 $invoiceForms = new Invoice();
 $customerForms = new Customer();
 $paymentForms = new Payment();
@@ -52,7 +45,12 @@ foreach($entries as $entry)
 	$invoice["KnifeCount"] += $entry['Quantity'];
 
 	
+echo headSegments("RMK Edit Invoice Payments", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 ?>
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -77,3 +75,6 @@ foreach($entries as $entry)
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

@@ -224,7 +224,7 @@ function escape_MySQL($string){
 
 function htmlizeText($text){
 	$text = str_replace("\\","",$text);			
-	$text = str_replace("\n","<BR>\n",$text);
+	$text = str_replace("\n","<br />\n",$text);
 	$text = str_replace("\'", "&rsquo;", $text);
 	$text = str_replace("\"", "&quot;", $text);
 	$text = str_replace(" 1/4,", " ".chr(189)." ", $text);

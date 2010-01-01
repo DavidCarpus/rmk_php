@@ -30,6 +30,8 @@ switch ($mode) {
 			$part = $PartsDB->fetchAllPart($formValues['PartID']);
 			
 		$part = $Parts->addFormValues($part, $formValues);
+//		echo debugStatement(dumpDBRecords($part['Prices']) ); 
+		
 		$part = $PartsDB->save($part);
 		header("Location: "."Pricing.php");
 		break;
@@ -37,15 +39,13 @@ switch ($mode) {
 		echo debugStatement("Unknown mode: $mode");
 		break;
 }
-//echo debugStatement("formValues:</BR>" . dumpDBRecord($formValues));
-//echo debugStatement("part:</BR>" . dumpDBRecord($part) . dumpDBRecords($part['Prices'])  ); 
-//echo debugStatement("part2:</BR>" . dumpDBRecord($part2) . dumpDBRecords($part2['Prices'])   ); 
-		
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+
+echo headSegments("RMK Edit Part", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 
 <?php echo logo_header("admin", ".."); ?>
@@ -62,3 +62,6 @@ switch ($mode) {
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

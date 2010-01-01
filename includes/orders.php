@@ -23,7 +23,7 @@ function fields(){
 function displayErrors($errors){
 	foreach($errors as $error){
 		print "<div style='color:red'>";
-		print $error . "<BR>\n";
+		print $error . "<br />\n";
 		print "</div>";
 	}
 }

@@ -235,7 +235,7 @@ class Invoices
 	function shipAddressString($invoice){
 		$customers = new Customers();
 		if( $invoice['ShippingInfo'] != NULL && strlen($invoice['ShippingInfo']) > 0){
-			return str_replace("|", "<BR>", $invoice['ShippingInfo']);
+			return str_replace("|", "<br />", $invoice['ShippingInfo']);
 		}
 		// Get customer current address
 		$customer = $customers->fetchCustomer($invoice['CustomerID']);
@@ -246,15 +246,15 @@ class Invoices
 	function addressString($address){
 		$results = "";
 		$results .= $address['ADDRESS0'];
-		if(strlen($address['ADDRESS0']) > 0) $results .= "<BR>";
+		if(strlen($address['ADDRESS0']) > 0) $results .= "<br />";
 		$results .= $address['ADDRESS1'];
-		if(strlen($address['ADDRESS1']) > 0) $results .= "<BR>";
+		if(strlen($address['ADDRESS1']) > 0) $results .= "<br />";
 		$results .= $address['ADDRESS2'];
-		if(strlen($address['ADDRESS2']) > 0) $results .= "<BR>";
+		if(strlen($address['ADDRESS2']) > 0) $results .= "<br />";
 		$results .= $address['CITY'] . " ";
 		$results .= $address['STATE'] . " ";
 		$results .= $address['ZIP'] . " ";
-		$results = str_replace("\|", "<BR>", $results);
+		$results = str_replace("\|", "<br />", $results);
 		return $results;
 	}
 
