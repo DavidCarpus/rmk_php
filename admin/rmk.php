@@ -3,18 +3,17 @@ include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
 
-session_start();
-//if(!loggedIn()){
-//	$_SESSION['loginValidated'] = 0;
-//	session_destroy();
-//	header("Location: "."../");
-//}
 
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+if (!authenticate()){
+	return;
+}
+
+echo headSegments("RMK Order Managment System", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 
 <?php echo logo_header("admin", ".."); ?>
@@ -28,7 +27,11 @@ session_start();
 				<br />
 				<a href='Pricing.php'>Parts (Under Construction)</a>
 				<br />
+				<a href='adminRequests.php'>Admin requests (Under Construction)</a>
+				<br />
 		</div>
 	</div>
+	<?php //echo logoutLink() . " : " . $_SERVER['PHP_AUTH_USER']. " : " . $_SESSION['session_id']; ?> 
 	<?php echo footer(); ?>
 </div>
+	

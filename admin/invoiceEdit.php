@@ -92,7 +92,7 @@ echo headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.cs
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php
-					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum));
+					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum), $customer['Dealer']);
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";

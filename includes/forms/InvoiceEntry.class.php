@@ -137,19 +137,20 @@ class InvoiceEntry extends Base
 				$results .= "<div class='InvoiceKnifeListHL'>\n";
 			foreach($fields  as $field){
 				if($field == "TotalRetail"){
-					$results .= "<span class='$field'>" . "$" . number_format($entry[$field] ,2) . "</span>\n";
+					$results .= "<span class='$field'>" . "$" . number_format($entry[$field] ,2) . "</span>";
 				}elseif($field == "FeatureList"){
-					$results .= "<span class='FeatureList'>" . $this->knifeEntryAdditions($entry["Additions"]). "&nbsp;</span>\n";
+					$results .= "<span class='FeatureList'>" . $this->knifeEntryAdditions($entry["Additions"]). "&nbsp;</span>";
 				}elseif($field == "Part"){
-					$results .= "<span class='PartDescription'>" .  $entry["PartDescription"]  . "</span>\n";
+					$results .= "<span class='PartDescription'>" .  $entry["PartDescription"]  . "</span>";
 				}elseif($field == "Edit"){
 					$results .= "<span class='Admin'>" .  $this->linkToEntryEdit( $entry ) . " " .
 														$this->linkToEntryRemove($entry).
-								"</span>\n";
+								"</span>";
 					
 				}else{
-					$results .= "<span class='$field'>" . $entry[$field] . "&nbsp;</span>\n";
+					$results .= "<span class='$field'>" . $entry[$field] . "&nbsp;</span>";
 				}
+//				$results .= "\n";
 			}
 //			$results .= "</P>";
 			if($highlight)
@@ -202,10 +203,11 @@ class InvoiceEntry extends Base
 		}
 		$i=1;
 		$results .=  "\n<span class='featureEntry'>\n";
-		$js['field']=" onkeyup='return featureFieldEdit(\"form_$formName\", this, event);'";
 		foreach ($currEntry['Additions'] as $addition) {
+			$js['field']=" onkeyup='return featureFieldEdit(\"form_$formName\", this, event);'";
 			$results .=  $this->textField("Addition_$i", "Feature $i", false, $addition['PartCode'],  "", $js, false);
-			$results .=  $this->textField("Addition_Price_$i", "Price", false, $addition['Price'],  "", array(), false);
+			$js['field']=" onkeyup='return recomputeTotalRetail(document.getElementById(\"form_$formName\"), -1);'";
+			$results .=  $this->textField("Addition_Price_$i", "Price", false, $addition['Price'],  "", $js, false);
 			$results .=  "<br />\n";
 			$i++;
 		}

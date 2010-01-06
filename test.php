@@ -1,3 +1,4 @@
+<?phpinfo()?>
 <?php
 //===================================================================================================
 // this is the php file which creates the readme.pdf file, this is not seriously 

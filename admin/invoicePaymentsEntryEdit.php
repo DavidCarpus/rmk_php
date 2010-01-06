@@ -58,7 +58,7 @@ echo headSegments("RMK Edit Invoice Payments", array("../Style.css", "", "../Dat
 		<?php echo adminToolbar(); ?>
 		<div class="content">
 			<?php 	
-					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum));
+					echo rmkHeaderLinks(array("ACK"=>$invoiceNum,"INV"=>$invoiceNum), $customer['Dealer']);
 					echo $invoiceForms->invNum( $invoice );
 					echo "\n\n";
 					echo $customerForms->displayWithFlags( $customer );

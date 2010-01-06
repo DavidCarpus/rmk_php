@@ -32,15 +32,25 @@ class Base
 						 'PartCode'=> "PartCode", 'Description'=>"Description", 'Discountable'=>'Discountable', 
 						 'BladeItem'=>'BladeItem', 'Taxable'=>'Taxable', 
 						 'Memo'=>'Memo', 'Dealer'=>'Dealer', 'Terms'=>'Terms', 'Discount'=>'Discount',
-						 'ZONE'=>'Zone', 'TaxPercentage'=>'Tax Rate'
-						);
+						 'ZONE'=>'Zone', 'TaxPercentage'=>'Tax Rate',
+						 'fromaddress'=>'From Email', 'toaddress'=>'To Email','start_datesubmitted'=>'Sent (Start)','end_datesubmitted'=>'Sent (End)','messagesubject'=>'Subject',
+		);
 //array('PartDescription', 'Quantity', 'TotalRetail', 'Price', 'Comment')
 						//				'qty'=> 'Quantity', , ""=>""
 		return $lookup[$field];
 	}
+	function htmlizeFormValue($original){
+			$results = $original;
+	//		$results = str_replace("'", "&apos;", $results);
+	//		$results = str_replace("`", "&apos;", $results); 
+			$results = str_replace("'", "&#39;", $results);
+			$results = str_replace("`", "&#39;", $results);
+			$results = stripcslashes($results);
+			return $results; 
+	}
 
 	public function textField($name, $label, $required=false, $value='', $class='', $jscriptArray=array(), $readonly=false){
-		$value = htmlizeFormValue($value);
+		$value = $this->htmlizeFormValue($value);
 		if($class != '') $class = " class='$class'";
 //		var_dump($jscriptArray);
 		$labelJscript = (array_key_exists("label", $jscriptArray) ?  $jscriptArray["label"]: "");
@@ -59,31 +69,28 @@ class Base
 	}
 	
 	public function hiddenField($name, $value) {
-		return "<input type='hidden' name='".$name."' value='".htmlizeFormValue($value)."' />";
+		return "<input type='hidden' name='".$name."' value='".$this->htmlizeFormValue($value)."' />";
+//		return "<input type='hidden' name='".$name."' value='$value' />";
 	}
 	
 	function optionField($name, $label, $values, $default='' , $required=false){
-		$value = htmlizeFormValue($value);
+		$value = $this->htmlizeFormValue($value);
 		if(strlen($label) > 0){
-			if($required)
-				$results = "<label for='$name' class='required'>$label</label>";
-			else
-				$results="<label for='$name'>$label</label>";
+			$rqdClass = ($required) ? "class='required'" : "";
+			$results="<label for='$name' $rqdClass>$label</label>";
 		}
 		foreach($values as $value){
-			if($default == $value)
-				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' checked />$value";
-			else 
-				$results = $results. "&nbsp;&nbsp;<input name='$name' value='$value' type='radio' class='option' />$value"; 
-	//		$results = $results. "type='radio'";
+			$chked = ($default == $value) ? "checked" : "";
+			$results .= "<span class='optionblock'>";
+			$results .= "<input name='$name' value='$value' type='radio' class='option' $chked />$value";
+			$results .= "</span>";
 		}
 		return $results;
-	//	return print_r($values, true);
 	}
 	
 	function textArea($name, $label, $required=false, $value='', $large=false){
 		$results="";
-		
+		$value = $this->htmlizeFormValue($value);
 		if($required)
 			$results = "<label for='$name' class='required'>$label</label><textarea $class id='$name' name='$name'>$value</textarea>";
 		else
@@ -121,13 +128,13 @@ class Base
 	}
 
 	function selection($name, $values, $label, $selected="", $autosubmit=false){
-//		echo debugStatement($selected);
+//		echo debugStatement(print_r($values));
 		$results = "";
 		if($label != '')
 			$results .= "<label for='$name' >$label</label>";
 		$results .= "<select size='1' name='$name'";
 		if($autosubmit){
-			$results .= " onChange='submit()' ";
+			$results .= " onchange=\"submit();\" ";
 		}
 		$results = $results.">";
 		if($autosubmit){

@@ -9,12 +9,9 @@ include_once DB_INC_DIR. "db_requests.php";
 include_once FORMS_DIR. "Search.class.php";
 include_once FORMS_DIR. "Customer.class.php";
 
-session_start();
-//if(!loggedIn()){
-//	$_SESSION['loginValidated'] = 0;
-//	session_destroy();
-//	header("Location: "."../");
-//}
+if (!authenticate()){
+	return;
+}
 
 $formValues = getFormValues();
 $searchForms = new Search();
@@ -40,12 +37,7 @@ if(count($customers) == 0 && strlen($formValues['searchValue'])>0){
 //echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($customers));
 
-//<LINK href="../Style.css" rel="stylesheet" type="text/css">
-//<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-//<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
-
 echo headSegments("RMK Search", array("../Style.css", "", "../DataEntry.css"), "../print.css");
-
 ?>
 
 <body>

@@ -1,15 +1,12 @@
-<?php
-/* Created on Feb 11, 2006 */
-include_once "../includes/db/db.php";
-include_once "../includes/htmlHead.php";
+<?php /* Created on Feb 11, 2006 */
+include_once "../config.php";
 
-session_start();
-if(!loggedIn()){
-	$_SESSION['loginValidated'] = 0;
-	session_destroy();
-	header("Location: "."../");
+include_once INCLUDE_DIR. "htmlHead.php";
+include_once DB_INC_DIR. "db.php";
+
+if (!authenticate("../")){
+	return;
 }
-
 
 function faqAdminProcessing(){
 	$action = getHTMLValue('action');

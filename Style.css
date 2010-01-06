@@ -278,3 +278,86 @@ span.cap-g {
 
 
 #toDoList span.done{ text-decoration: line-through; }
+
+#EmailSearch 
+{
+	float: left;
+	display: block;
+	width:300px; 
+}
+#EmailSearch label { width:120px; float:left; clear: left; padding-right: 10px; }
+#EmailSearch input { width:120px; padding-left: 5px; }
+
+#EmailList  { width:810px; display: block; float: left;	padding-top: 20px; }
+#EmailList a { width:330px; display: block; float: left;}
+#EmailList .subject { width:320px; display: block; float: left; }
+#EmailList .date { width:110px; display: block; float: left;}
+
+#EmailDetailView { width:810px; display: block; float: left;	padding-top: 20px; }
+
+#OrdersSearch { width:310px; display: block; float: left; }
+#OrdersSearch label { width:140px; float:left; clear: left; padding-right: 10px; }
+#OrdersSearch select{ width:130px; display: block; float: left;  }
+#OrdersSearch input{ width:120px; display: block; float: left; }
+#OrdersSearch input.btn{ width:210px; display: block; float: left;}
+
+#RequestList  {  display: block; float: left;}
+#RequestList .req_label { width:210px; float: left; }
+#RequestList .req_val { display: block; float: left; }
+#RequestList #comment {  width:260px; height:60px;  display: block; float: left; }
+
+
+
+.req_label {clear: left; display: block; float: left; border-style:solid; border-width:thin;}
+.req_val { display: block; float: left;  border-style:solid; border-width:thin;}
+
+#CatalogRequest {  width:535px; display: block; float: left; margin-top: 10px; background-color: #FFFF99;}
+#CatalogRequest .req_label {width:230px;}
+#CatalogRequest .req_val { width:300px;}
+
+#QuoteRequest {  display: block; float: left; margin-top: 10px; background-color: #FF9900;}
+#QuoteRequest .req_label {width:230px; }
+#QuoteRequest .req_val { width:300px; }
+
+#OrderRequest {  display: block; float: left; margin-top: 10px; background-color: #BBBBBB;}
+#OrderRequest .req_label {width:230px; }
+#OrderRequest .req_val { width:300px; }
+
+#AdminCategorySelect {  width:550px; display: block; float: left; margin-top: 10px; }
+#AdminCategorySelect label {width:160px; display: block; float: left; clear: left; }
+#AdminCategorySelect select { width:340px; display: block; float: left; }
+
+#editModelForm {  width:550px; display: block; float: left; margin-top: 30px; }
+#editModelForm label {width:120px; display: block; float: left; clear: left; }
+#editModelForm input {width:210px; display: block; float: left; }
+#editModelForm input.btn {width:210px; display: block; float: left; clear:left;}
+#editModelForm #description {width:410px; height:110px; display: block; float: left; }
+#editModelForm #note {width:410px; height:60px; display: block; float: left; }
+#editModelForm #piclabel {width:30px; display: block; float: left; }
+
+#photoblock {  width:550px; display: block; float: left; margin-left: 30px;  }
+
+#editCategoryForm {  display: block; float: left; margin-top: 30px; }
+#editCategoryForm label {width:80px; display: block; float: left; clear: left; }
+#editCategoryForm #category {width:310px; display: block; float: left; clear: left; }
+#editCategoryForm .btn {width:120px; display: block; float: left; clear: left; margin-top: 10px; }
+
+.photoblocks {  display: block; float: left; clear: left; }
+
+.editphotoblock {  width:250px;  height:280px; display: block; float: left; margin-top: 10px;}
+.editphotoblock label {width:80px; display: block; clear: left; }
+.editphotoblock img {width:210px; display: block; margin-left: 10px; }
+.editphotoblock input {width:100px; display: block; }
+
+#unprocessedrequests {  width:380px;  display: block; float: left; margin-top: 10px;}
+#unprocessedrequests .label {width:80px; display: block; float: left; background-color: #FF2200;}
+#unprocessedrequests .value {width:40px; display: block; float: left; background-color: #BBBBBB; }
+
+#basicPaymentForm { width:560px;  display: block; float: left;}
+#basicPaymentForm label {width:230px; clear: left; }
+#basicPaymentForm input {width:180px; display: block; float: left; }
+#basicPaymentForm .optionblock {display: block; float: left; padding-right: 10px; }
+#basicPaymentForm input.option  {width:15px;  }
+
+/* background-color: #BBBBBB; */
+/* background-color: #FF2200; reddish*/

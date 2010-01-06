@@ -48,20 +48,12 @@ $mode=$invoiceEntryForms->invEntryFormMode($formValues);
 
 
 function editForm(){
-		global $invoiceForms,$customerForms,$invoiceEntryForms;
-		global $invoice,$customer,$entries, $partsFormClass;
-		global $formValues;
+	global $invoiceForms,$customerForms,$invoiceEntryForms;
+	global $invoice,$customer,$entries, $partsFormClass;
+	global $formValues;
 		
-//	$results = "<html>\n";
-//	$results .= headSegment();
-
 	$results .= headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 	
-//	$results = "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
-//	$results .= "<LINK href='../Style.css'' rel='stylesheet' type='text/css'>";
-//	$results .= "<LINK href='../print.css'' rel='stylesheet' type='text/css' media='print'>";
-//	$results .= "<LINK href='../DataEntry.css'' rel='stylesheet' type='text/css' media='screen'>";
-
 	$results .= "\n<body  onload='defaultField(\"form_InvoiceEntryEdit\",\"PartDescription\");'>\n";
 	$results .=  "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>";
 	$results .= logo_header("admin", "..");
@@ -82,7 +74,6 @@ function editForm(){
 	$results .= $invoiceEntryForms->invoiceEntryEditForm($formValues, $partsFormClass);
 	$results .="</div></div>";
 //	echo dumpDBRecords($entries);
-
 	
 	$results .= footer();
 	$results .= "</body>";

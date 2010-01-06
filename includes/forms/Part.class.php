@@ -230,7 +230,7 @@ class Part extends Base
 		for ($year= $formValues['Year']; $yearColumns>0; $yearColumns--,$year++) {
 			$results .= "<span style='font-weight: bold;' class='Price'>$year</span>";;
 		}
-		$results .= "<br />";
+		$results .= "<br />\n";
 		
 		// *********** Display part prices from array  ***************
 		foreach($data as $key=>$part)
@@ -242,7 +242,7 @@ class Part extends Base
 				$results .= "<span class='Price'>" . number_format($part[$year]['Price'],2) . "</span>";
 			}
 			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
-			$results .= "<br />";
+			$results .= "<br />\n";
 		}
 		$results .= "</div>";
 		$year = $this->partsClass->maxPartPriceYear()+1;

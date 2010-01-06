@@ -8,6 +8,62 @@
 
 $debugMachineRoot="/rmk";
 
+
+function authenticate($failRedirect="../"){
+	if (!isset($_SERVER['PHP_AUTH_USER'])) {
+		header('WWW-Authenticate: Basic realm="RMK Admin"');
+	    header('HTTP/1.0 401 Unauthorized');
+	    header("Location: ".$failRedirect);
+//	    return false;
+	    echo 'Text to send if user hits Cancel button';
+	    exit;
+	} else {
+		$formValues=getFormValues();
+//		echo debugStatement(dumpDBRecord($formValues));
+		if (isset($formValues['logout']) && $formValues['logout'] > 0) {
+			if(session_id() != ""){
+				unset($_SESSION['session_id']);
+				session_destroy();
+			}
+//			echo debugStatement(dumpDBRecord($_SERVER));
+//			header('WWW-Authenticate: Basic realm="RMK Admin"');
+//		    header('HTTP/1.0 401 Unauthorized');
+//		    return false;
+		} else {
+			session_start();
+			if(!isset($_SESSION['session_id'])){
+				session_regenerate_id();
+				$_SESSION['session_id'] = session_id();
+			}
+		}
+//		    session_regenerate_id();
+		//		    $_SESSION['session_id'] = session_id();
+		return true;
+//	    echo "<p>Hello {$_SERVER['PHP_AUTH_USER']}.</p>";
+//	    echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
+	}
+//	header("Location: ".$failRedirect);
+}
+
+function logoutLink(){
+	$currURL="http";
+	if($_SERVER['HTTPS'])	$currURL='https';
+	$currURL.="://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'];
+//	return $currURL;
+	if(! strrpos($currURL,"logout=1")){
+		if(strrpos($currURL,"php?")){
+			$currURL.= "&logout=1";
+		} else {
+			$currURL.= "?logout=1";
+		}
+	}
+	return  "<a href='$currURL'>Logout</a>";;
+//	 $_SERVER['PHP_AUTH_USER'] and $_SERVER['PHP_AUTH_PW']
+}
+
+
+
+
 function dumpServerVariables(){
 	echo getServerVariables();
 }
@@ -33,7 +89,6 @@ function getHTMLValue($key){
 
 function debugStatement($statement){
 	if(! (isDebugMachine() || isDebugAccess() ) ) return;
-	
 	return "<div class='debug'><hr />". $statement . "<br /><hr /></div>";
 }
 function debugStatementHeaded($descStatement, $statement){
@@ -330,10 +385,16 @@ function adminToolbar(){
 			
 		$results = $results . "<a $selectedStyle href='$realprefix/admin/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
-	if(array_key_exists('loginValidated', $_SESSION) && $_SESSION['loginValidated'] == 1)
-		$results = $results . "<a href='$prefix/admin/logout.php'>LOGOUT</a>\n";
-	else
-		$results = $results . "<a href='$prefix/admin/logout.php'>LOGIN</a>\n";
+	if(isset($_SERVER['PHP_AUTH_USER']) && ! empty($_SESSION['session_id'])){
+//		$results .= logoutLink();
+	} else{
+		$results .= "<a href='$prefix/admin/'>LOGIN</a>\n";
+	}
+//	logoutLink()
+//	if(array_key_exists('loginValidated', $_SESSION) && $_SESSION['loginValidated'] == 1)
+//		$results = $results . "<a href='$prefix/admin/logout.php'>LOGOUT</a>\n";
+//	else
+//		$results = $results . "<a href='$prefix/admin/logout.php'>LOGIN</a>\n";
 
 	//########### Development machine not set up for secure pages at this point  #####
 	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
@@ -356,6 +417,7 @@ function shopToolbar(){
 //	array('', ''),
 				array('knife_list.php', 'Knife List'),
 				array('view_invoice.php', 'View Order'),
+				array('../index.php', 'Home'),
 				);
 	$results = "";
 	$currPage=getCurrPage();
@@ -401,6 +463,7 @@ function toolbar(){
 				array('faq.php', 'F.A.Q.'),
 				array('catalogrequest.php', 'Catalog Request'),
 				array('order/index.php', 'Order Form'),
+				array('order/payments.php', 'Payment Form'),
 //				array('admin/', 'Administrate'),
 				array('index.php', 'Home'),
 				);
@@ -414,7 +477,10 @@ function toolbar(){
 	//~ $debugMachineRoot
 	foreach($menu as $option){
 		$realprefix = $prefix;
-		if($option[0] == 'order/index.php' || $option[0] == 'catalogrequest.php'){
+		if($option[0] == 'order/index.php' || 
+			$option[0] == 'order/payments.php'  || 
+			$option[0] == 'catalogrequest.php'
+			){
 			$realprefix = str_replace("http://", "https://", $realprefix);
 		}
 		$selectedStyle="";
@@ -429,6 +495,7 @@ function toolbar(){
 			){
 		$prefix = str_replace("http://", "https://", $prefix);
 		$results = $results . "<a href='$prefix/admin/'>Administrate</a>\n";
+		$results = $results . "<a href='$prefix/shop/'>Shop</a>\n";
 	}
 	
 	//########### Development machine not set up for secure pages at this point  #####

@@ -45,24 +45,33 @@ function defaultField(formName, fieldName)
 }
 
 function recomputeTotalRetail(form, newBaseRetail){
+//	alert("Recompute Total" + form.name);
 	var featureTotal=0;
 	var qty=0;
 	for ( var _elem_num in form.elements){
 		var elem = form.elements[_elem_num];
 		var elemName = ""+elem.name; 
 		if(elemName == 'BaseRetail'){
-			elem.value = newBaseRetail;
+			if(newBaseRetail >= 0)
+				elem.value = newBaseRetail;
+			else
+				newBaseRetail = elem.value;
 		} else if(elemName == 'Quantity'){
 			qty = parseFloat(elem.value);
 		} else if(elemName.substring(0, 15) == 'Addition_Price_'){
 			val = parseFloat(elem.value);
-			if(val > 0)
-				featureTotal += val; 	
+			if(val > 0){
+				featureTotal += val;
+			}
 		}
+//		alert(form.elements['TotalRetail']);
 	}
+//	alert("New total1?:" + (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2))
 	for ( var _elem_num in form.elements){
-		var elem = form.elements[_elem_num]
-		if(elem.name == 'TotalRetail'){
+		var elem = form.elements[_elem_num];
+//		if(elem.name == 'TotalRetail'){
+		if(elem.name == 'InvoiceEntry_TotalRetail'){			
+//			alert("New total?:" + qty + "\n Base: " + newBaseRetail + "\n +Features:" + featureTotal + "\n=" + (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2))
 			elem.value = (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2);
 		}
 	}
@@ -127,14 +136,16 @@ function featureFieldEdit(formName, field, keyEvent){
 			var local=new Function("return "+xmlHttp.responseText)();
 			var form = document.getElementById(formName);
 			updatedFeature(field.name, formName, local);
-//			alert(formName);
-//			recomputeTotalRetail(form, local['BaseRetail']);
+//			alert(local);
+//			dumpProps(local);
+			recomputeTotalRetail(form, -1);
 		}
 	}
 }
 
 function newPart(formName, field){
-	fetchURL="partInfo.php?partCode="+field.value;
+	fetchURL="partInfo.php?partCode="+escape(field.value);
+//	alert(fetchURL);
 
 	xmlHttp=getXmlHttpObject()
 	if(!xmlHttp) alert("No xmlHttp object??");

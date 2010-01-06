@@ -13,6 +13,7 @@ setDB_Globals();
 function getDbRecords($query){
 	global $dbconfig;
 	$dbh=getDBConnection();
+//	echo debugStatement(dumpDBRecord($dbconfig));
 //	dumpDB_ConnData();
 //	echo debugStatement($query);
 //	dumpBackTrace();
