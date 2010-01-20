@@ -179,12 +179,12 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <I>Last Updated Mar 1, 2007</I><br />";
-	$results .= "<OL id='toDoList'>";
+	$results = "Web priority list <i>Last Updated Mar 1, 2007</i><br />";
+	$results .= "<ol id='toDoList'>";
 	$items = toDoItems();
 	foreach ($items as $item) {
 		if(strlen($item['Text'])>0){
-			$results .= "<LI>";
+			$results .= "<li>";
 	
 			if(strlen($item['Done'] > 0)){
 				$results .= "<span class='done'>" . $item['Text'] . "</span>";
@@ -193,14 +193,14 @@ function toDoPage(){
 			}
 			
 			if(strlen($item['Done'] > 0)){
-				$results .= "<B>";
+				$results .= "<b>";
 				$results .= $item['Done'];
-				$results .= "</B>";
+				$results .= "</b>";
 			}
-			$results .= "</LI>";
+			$results .= "</li>\n";
 		}
 	}
-	$results .= "</OL>";
+	$results .= "</ol>";
 	
 	return $results;	
 }

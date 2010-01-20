@@ -10,6 +10,7 @@ $debugMachineRoot="/rmk";
 
 
 function authenticate($failRedirect="../"){
+	return true;
 	if (!isset($_SERVER['PHP_AUTH_USER'])) {
 		header('WWW-Authenticate: Basic realm="RMK Admin"');
 	    header('HTTP/1.0 401 Unauthorized');
@@ -390,11 +391,6 @@ function adminToolbar(){
 	} else{
 		$results .= "<a href='$prefix/admin/'>LOGIN</a>\n";
 	}
-//	logoutLink()
-//	if(array_key_exists('loginValidated', $_SESSION) && $_SESSION['loginValidated'] == 1)
-//		$results = $results . "<a href='$prefix/admin/logout.php'>LOGOUT</a>\n";
-//	else
-//		$results = $results . "<a href='$prefix/admin/logout.php'>LOGIN</a>\n";
 
 	//########### Development machine not set up for secure pages at this point  #####
 	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
@@ -413,10 +409,14 @@ function shopToolbar(){
 //		return $_SERVER['REMOTE_ADDR'];
 		
 	$prefix = getToolbarPrefix();
+//	$menu = array(
+//				array('knife_list.php', 'Knife List'),
+//				array('view_invoice.php', 'View Order'),
+//				array('../index.php', 'Home'),
+//				);
 	$menu = array(
-//	array('', ''),
-				array('knife_list.php', 'Knife List'),
-				array('view_invoice.php', 'View Order'),
+				array('.', 'Knife List'),
+				array('./index.php?invoicesearch', 'View Order'),
 				array('../index.php', 'Home'),
 				);
 	$results = "";
@@ -516,6 +516,14 @@ function getToolbarPrefix(){
 		$secureLocation = false;
 		$prefix = $prefix . $debugMachineRoot;
 	}
+	if(isShopServer() ){
+		$secureLocation = true;
+		$prefix = $prefix . "/rmk/";
+	}
+	if(isShopTestServer() ){
+		$secureLocation = true;
+		$prefix = $prefix . "/testrmk/";
+	}
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57'){
 		$secureLocation = false;
 		$prefix = $prefix . "/~uplzcvgw";
@@ -563,7 +571,7 @@ return "\n<div class='footer'>" .
 		"Orlando, Florida 32839<br />\n" .
 		"Phone: 407-855-8075<br />\n" .
 		"Fax: 407-855-9054<br />\n" .
-		"<a href='" . getToolbarPrefix() . "/email.php?to=webmessages'>Send Us a message</a><br />\n" .
+		"<a href='" . getToolbarPrefix() . "/sendMessage.php'>Send Us a message</a><br />\n" .
 		"</div>";	
 }
 
@@ -600,9 +608,28 @@ function isCarpusServer(){
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		return true;
 	}
+	$address = 'carpus.homelinux.org';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
 	return false;
 }
+function isShopServer(){
+	$address = '192.168.1.110';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+	return false;
+}
+function isShopTestServer(){
+	$currPage=$_SERVER['PHP_SELF'];
+	if(strrpos($currPage,"testrmk") > 0) return true;
+	return false;
+}
+
 $carpusServer=isCarpusServer();
+$shopServer=isShopServer();
+$shopTestServer=isShopTestServer();
 
 function isLocalAccess(){
 	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;

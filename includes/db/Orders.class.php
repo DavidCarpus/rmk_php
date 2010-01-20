@@ -3,6 +3,26 @@ include_once "db.php";
 
 class Orders
 {
+	public $validationError;	
+	
+	public function customerOrderFormValidation($formValues){
+		$valid=true;
+		
+		$requiredFields = array();
+		if($formValues["ordertype"] == "Order"){
+			$requiredFields = array("name", "email", "address1", "city", "state", "zip", "country", "phone",
+									"cctype", "ccnumber", "ccexpire", "ccvcode", "ccname", );			
+		}else{
+			$requiredFields = array("name", "email", "address1", "city", "state", "zip", "country", "phone", "ordertype");
+		}
+		
+		foreach ($requiredFields as $field){
+			if($formValues[$field] == ""){$this->validationError .= "$field,"; $valid=false;continue;}			
+		}	
+		
+		return $valid;
+	}
+	
 	function search($searchValues){
 		$filter=array();
 		if($searchValues['requesttype'] > 0){
@@ -66,6 +86,11 @@ class Orders
 //		$query = "Select count(*) as cnt from orders WHERE $processed AND $ordertype";
 //		$record = getSingleDbRecord($query);
 //		return $record['cnt']; 
+	}
+	public function getSingleRequest($requestID)
+	{
+		$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders where orders_id=$requestID";
+		return getSingleDbRecord($query);
 	}
 
 }

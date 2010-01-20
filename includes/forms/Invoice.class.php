@@ -5,7 +5,7 @@ class Invoice extends Base
 {
 	function __construct() {
 //       print "In constructor\n";
-       $this->name = "MyDestructableClass";
+       $this->name = "InvoiceForms";
    }
    
    public function entryFormMode($formValues)
@@ -28,13 +28,15 @@ class Invoice extends Base
 		$results="";
 //		$results .=  "<legend>$formName</legend>";
 		$results .=  "<div id='$formName'>";
-//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
-		$results .=  "<form name='$formName' action='invoiceEdit.php' method='get'>" ;
-		$JS = array();
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='$this->formMode'>" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='$this->formMode'>" ;
+
+		$options=array();
 //		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
-			$JS['field'] = "onblur=\"invoiceNumber($formName);\"";
+			$options['jscript']=array("field"=>"onblur=\"invoiceNumber($formName);\"");
 //		}
-		$results .=  $this->textField('Invoice', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
+		$results .=  $this->textField('Invoice', $this->fieldDesc('Invoice'),  $invoice['Invoice'],$options, "", "", "", "");
+//		$results .=  $this->textField('Invoice', $this->fieldDesc('Invoice'), false, $invoice['Invoice'],"",$JS) ;
 		if(substr($this_page,0,strlen("invoiceEdit.php")) != "invoiceEdit.php"){
 			$results .= " <a id='viewInvoiceLink' href='invoiceEdit.php?Invoice=" . $invoice['Invoice'] . "'>View Invoice</a>";
 		}
@@ -51,8 +53,8 @@ class Invoice extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='get'>" . "\n" ;
-		$results .=  $this->textArea('Comment','Invoice Comment', false, $invoice['Comment']) . "\n";
+		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='$this->formMode'>" . "\n" ;
+		$results .=  $this->textArea('Comment','Invoice Comment',  $invoice['Comment'], $options, "", "", "", "");
 		$results .=  $this->hiddenField('Invoice', $invoice['Invoice']);
 		$results .=  "<br />";
 		$results .=  $this->button("submit", "Save_Update");
@@ -75,16 +77,14 @@ class Invoice extends Base
 		$results="";
 		
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='invoiceEdit.php' method='post'>" . "\n" ;
-//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>" . "\n" ;
+		$results .=  "<form name='$formName' action='invoiceEdit.php' method='$this->formMode'>" . "\n" ;
+//		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='$this->formMode'>" . "\n" ;
 //		$results .=  "<legend>$formName</legend>" . "\n";
 //		echo debugStatement(__FILE__ .":". __FUNCTION__.":" . dumpDBRecord($values));
 		$fields = array('DateOrdered', 'DateEstimated', 'DateShipped', 'TotalRetail', 'ShippingAmount', 
 			"PONumber", "ShippingInstructions", "KnifeCount", "TaxPercentage");
 		foreach($fields as $name)
 		{
-			$err=(array_key_exists($name, $errors));
-			
 			if( strncmp($name, "Date", 4) == 0 && strlen($invoice[$name]) > 9) // Trim off timestamp
 			{
 				$invoice[$name] = substr($invoice[$name], 0, 10);
@@ -93,17 +93,28 @@ class Invoice extends Base
 
 //			$results .=  "\n";
 //			$JS['label']="onmouseover='showHint(this.htmlFor);'";
-			$JS['label']=$this->helpTextJS("ajax-tooltip.html");
+//			$JS['label']=$this->helpTextJS("ajax-tooltip.html");
 			
 //			if( $name=="KnifeCount" ) $JS['field'] = " disabled='true' " . $this->helpTextJS($formName, $name, "Test Help text<br />Line2");
-			if( $name=="KnifeCount" ) $JS['field'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
-			if( $name=="KnifeCount" ) $JS['label'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
+//			if( $name=="KnifeCount" ) $JS['field'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
+//			if( $name=="KnifeCount" ) $JS['label'] = $this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']);
 			
 			$value = $invoice[$name];
 			if($name == "TotalRetail") $value = "$" . number_format($invoice['TotalRetail'] ,2);
 			if($name == "ShippingAmount") $value = "$" . number_format($invoice['ShippingAmount'] ,2);
 			
-			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value,'',$JS, $readOnly) . "\n";
+			$options=array();
+//			if( $name=="KnifeCount" ){ $options['jscript']=array(
+//					'field'=>$this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']),
+//					'label'=>$this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']),
+//				);
+//			}
+			$options['readonly']=$readOnly;
+			if(array_key_exists($name, $errors)) $options['error']=1;
+			
+			$results .=  $this->textField($name, $this->fieldDesc($name),  $value, $options, "", "", "", "");
+				
+//			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value,'',$JS, $readOnly) . "\n";
 			if($this->isInternetExploder() && ( $name=="DateShipped"  || $name=="PONumber" ) )
 					$results .=  "<br />";
 		}

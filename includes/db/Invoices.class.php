@@ -234,6 +234,11 @@ class Invoices
 
 	function shipAddressString($invoice){
 		$customers = new Customers();
+		if(array_key_exists('BillingAddressType', $invoice) ){
+			if($this->invoice['BillingAddressType'] == 1) return "SHOP SALE";
+			if($this->invoice['BillingAddressType'] == 2) return "SAME";
+			if($this->invoice['BillingAddressType'] == 3) return "PICK UP";
+		}
 		if( $invoice['ShippingInfo'] != NULL && strlen($invoice['ShippingInfo']) > 0){
 			return str_replace("|", "<br />", $invoice['ShippingInfo']);
 		}
@@ -288,6 +293,83 @@ class Invoices
 		return $invoices;
 	}
 	
+	public function getKnifeListItems($year, $week){
+//		if($week < 1){ // wrap to previous year
+//			$year--;
+//			$week=52 + $week;
+//		}
+//		if($week > 52){ // wrap to next year
+//			$year++;
+//			$week=$week-52;
+//		}
+		$query = "SELECT I.Invoice,I.CustomerID, Dealer, dateestimated, dateordered, C.LastName,C.FirstName";
+		$query .= " FROM Invoices I ";
+		$query .= " left join Customers C on C.CustomerID = I.CustomerID";
+		$query .= " where WEEKOFYEAR(DateEstimated) = $week and YEAR(DateEstimated)=$year";
+		$query .= " order by C.Dealer DESC, C.CustomerID, I.Invoice";
+//		echo $query; 
+		$invoices = getDbRecords($query);
+		
+		for($index=0; $index < sizeof($invoices); $index++){
+			$invoices[$index]['entries'] = $this->itemsWithAdditions($invoices[$index]['Invoice']);
+//			echo debugStatement(dumpDBRecord($invoices[$index]) . dumpDBRecords($invoices[$index]['entries']));			
+		}
+
+		return $invoices;
+	}
+	public function getShopSearchResults($searchValues){
+		$query = "Select Invoice, date_format(DateOrdered, '%b %e %Y') as dateordered, 
+			date_format(DateEstimated, '%b %e %Y') as dateestimated,
+			date_format(DateShipped, '%b %e %Y') as dateshipped,  
+			Invoices.*, Customers.* 
+			from Invoices
+			left join Customers on Customers.CustomerID = Invoices.CustomerID
+			";
+		$filter=array();
+		switch ($searchValues['searchType']) {
+			case 'last':
+				$filter[]  .= "Customers.LastName like '%" . $searchValues['searchValue'] ."%'";
+				break;
+			case 'first last':
+				$searchValue = $searchValues['searchValue'];
+				$names = explode(" ",$searchValues['searchValue']);
+				$filter[]  .= "Customers.LastName like '%" . trim($names[1]) ."%'";
+				$filter[]  .= "Customers.FirstName like '%" . trim($names[0]) ."%'";
+				break;
+			case 'last,first':
+				$searchValue = $searchValues['searchValue'];
+				$names = explode(",",$searchValues['searchValue']);
+				$filter[]  .= "Customers.LastName like '%" . trim($names[0]) ."%'";
+				$filter[]  .= "Customers.FirstName like '%" . trim($names[1]) ."%'";
+				break;
+			default:
+				echo debugStatement("Unable to determine search criteria type: </br>".dumpDBRecord($searchValues));
+				return;
+				break;
+		}
+		
+		$minDate = date("Y-m-d",strtotime(date("Y-m-d", time()) ." -2 year"));
+		$filter[]  .= "DateEstimated > '$minDate'";
+				
+		$queryFilter = " where " . $filter[0];
+		for($filterIndex=1; $filterIndex < sizeof($filter); $filterIndex++)
+		{
+			$queryFilter .= " and " . $filter[$filterIndex];			
+		}
+		$query .= "$queryFilter";
+//		echo $query;
+				
+		return getDbRecords($query);		
+	}
+	
+	public function addCostsEntriesAndAddresses($invoice){
+		$invoice['entries'] = $this->itemsWithAdditions($invoice['Invoice'] );
+		$invoice['ShippingAddress'] = $this->shipAddressString($invoice);
+		$invoice['BillingAddress'] = $this->billingAddressString($invoice);
+		$invoice['Costs'] = $this->computeCosts($invoice);
+		
+		return $invoice;
+	}
 }
 
 ?>

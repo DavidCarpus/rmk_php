@@ -96,7 +96,7 @@ echo headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.cs
 				 	echo $invoiceForms->invNum( $invoice );
 					echo "\n";
 					echo "\n";
-					debugStatement( $invoiceNum );
+//					debugStatement( $invoiceNum );
 					echo $customerForms->displayWithFlags( $customer );					
 					echo "\n";
 					echo "\n";

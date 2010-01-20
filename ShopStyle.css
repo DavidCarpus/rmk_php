@@ -1,3 +1,61 @@
+#displayInvoiceList { display:block; float:left; margin-top:20px; }
+#displayInvoiceList .data {width:115px; display:block; float:left;  }
+#displayInvoiceList .Invoice {width:70px; display:block; float:left; clear:left;  }
+#displayInvoiceList .bdr { display:block; float:left; border-style:solid; border-width:1px;  }
+#displayInvoiceList .Name {width:220px; display:block; float:left; }
+#displayInvoiceList .lbl { font-weight: bold; text-align: center; }
+
+#shopInvoiceSearchForm { width:510px;  display:block; float:left; margin-top:20px; }
+#shopInvoiceSearchForm .entryfield input {  width:210px;  }
+
+
+.knifeListDiv {width:810px;  display:block; float:left; margin-top:10px; }
+.knifeListDiv .customer { display:block; float:left;  clear:left;   }
+.knifeListDiv .invoice { display:block; float:left;  clear:left; width:100%;  padding-bottom:20px; }
+
+.knifeListDiv .qty { display:block; float:left; width:35px; clear:left; }
+.knifeListDiv .partdesc {  width:120px;  display:block; float:left;  }
+.knifeListDiv .features {  width:290px;   display:block; float:left;   }
+.knifeListDiv .comment {  width:350px;   display:block; float:left;  }
+.knifeListDiv .invoiceEntry { display:block; float:left;  clear:left; border-style:solid; border-width:1px;  }
+
+.knifeListDiv .bdr { border-left-style:solid; border-right-style:solid; border-width:1px; }
+.knifeListDiv .customerName { border-style:solid; border-width:3px; background-color:#DDDDDD; text-align: center; margin-top:30px;}
+.knifeListDiv .endDealer { width:810px; float:left;  border-style:solid; border-width:3px; background-color:#DDDDDD; text-align: center; margin-bottom:10px;}
+
+.knifeListDiv .summary { display:block; float:left;  clear:left; }
+.knifeListDiv .summary .desc {width:100px;  display:block; float:left;  border-style:solid; border-width:1px;  }
+.knifeListDiv .summary .cnt {width:20px;  display:block; float:left;  border-style:solid; border-width:1px; margin-right:20px;  }
+
+.shopInvoiceDetail {width:810px;  display:block; float:left; }
+.shopInvoiceDetail .lbl {width:120px; display:block;  float:left; clear:left;
+						font-weight: bold; background-color: #FFFF99;}
+.shopInvoiceDetail .data {width:250px; display:block; float:left;  }
+.shopInvoiceDetail .Dealer {width:50px; display:block; float:left; font-style: italic; }
+.shopInvoiceDetail .BillingAddress_lbl {width:120px; display:block;  float:left; 
+						font-weight: bold; background-color: #FFFF99;}
+.shopInvoiceDetail .qty { display:block; float:left; width:35px; clear:left; }
+.shopInvoiceDetail .partdesc {  width:120px;  display:block; float:left;  }
+.shopInvoiceDetail .features {  width:290px;   display:block; float:left;   }
+.shopInvoiceDetail .comment {  width:350px;   display:block; float:left;  }
+.shopInvoiceDetail .invoiceEntry { display:block; float:left;  clear:left; border-style:solid; border-width:1px;  }
+
+.shopInvoiceDetail .invoiceKnifeListBlock { display:block; float:left; margin-top:20px; }
+.invoiceKnifeListBlock .bdr { border-left-style:solid; border-right-style:solid; border-width:1px; }
+
+.shopInvoiceDetail .invoiceFinanceSummary { display:block; float:left; margin-top:20px; }
+.shopInvoiceDetail .invoiceFinanceSummary .data {  text-align:right; }
+
+.knifeListNavigation {width:810px;  display:block; float:left; }
+
+/*
+.knifeListDiv .customer {  background-color:#FF2200;   }
+.knifeListDiv .comment {  background-color:#FF2200;   }
+.knifeListDiv .invoice {  background-color:#FFFF99;   }
+*/
+/* background-color: #BBBBBB; */
+/* background-color: #FF2200; reddish*/
+/* background-color: #FFFF99; yellowish*/
 
 .titlebar{
 	text-align: center;
@@ -331,3 +389,9 @@ span.cap-g {
 	font-style: italic;
 	font-weight: bold; 
 }
+
+
+	
+/* background-color: #BBBBBB; */
+/* background-color: #FF2200; reddish*/
+/* background-color: #FFFF99; yellowish*/

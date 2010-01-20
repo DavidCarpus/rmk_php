@@ -14,10 +14,13 @@ class Search extends Base
 			if(!array_key_exists('searchValue', $formValues)) $formValues['searchValue'] = "";
 			$results="";
 			$results .=  "<div id='$formName'>";
-			$results .=  "<form name='$formName' action='search.php' method='get'>" ;
-			$JS = array();
-	//		$JS['field'] = "onBlur=\"search($formName);\"";
-			$results .=  $this->textField('searchValue', $this->fieldDesc('searchValue'), false, $formValues['searchValue'],"",$JS) ;
+//			$results .=  "<form name='$formName' action='search.php' method='get'>" ;
+			$results .=  "<form name='$formName' action=" . $_SERVER['SCRIPT_NAME'] . " method='get'>" ;
+			$options=array();
+			$options['jscript']=array("field"=>"onblur=\"search($formName);\"");
+
+			$results .=  $this->textField('searchValue', $this->fieldDesc('searchValue'),  $formValues['searchValue'], $options, "", "", "", "");
+//			$results .=  $this->textField('searchValue', $this->fieldDesc('searchValue'), false, $formValues['searchValue'],"",$JS) ;
 			if(array_key_exists('CustomerID', $formValues)){
 				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "' />";
 			}

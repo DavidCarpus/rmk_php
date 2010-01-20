@@ -9,10 +9,10 @@ class Customer extends Base
    
    function displayWithFlags($cust){
    		$results="";
-   		$results .= "<div style='display: block; float: left; width: 600; clear:right;'>\n\n";
+   		$results .= "<div style='display: block; float: left; width: 600; clear:right;'>";
    		$results .= $this->display( $cust );
 		$results .= $this->customerFlags( $cust );
-		$results .= "</div><!-- End displayWithFlags -->\n\n";
+		$results .= "</div><!-- End displayWithFlags -->";
 		return $results;
    }
    
@@ -160,10 +160,12 @@ class Customer extends Base
 		$fields = array('ADDRESS1', 'ADDRESS2', 'CITY', 'STATE', 'ZIP', 'COUNTRY', 'ZONE');
 		foreach( $fields as $name)
 		{
-			$err=(array_key_exists($name, $errors));
+			$options=array();
+			if((array_key_exists($name, $errors))) $options['error']=1;
 			
 			if(!array_key_exists($name, $formValues)) $formValues[$name] = "";
-			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
+			$results .=  $this->textField($name, $this->fieldDesc($name),  $formValues[$name], $options, "", "", "", "");
+//			$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
 			$results .=  "<br />";
 		}
 		$fields = array('AddressID', 'AddressType', 'CustomerID', 'PrimaryCustomerAddress', 'CorrectedAddressID', 'TimesUsed');
@@ -180,7 +182,7 @@ class Customer extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>\n";
-		$results .=  "<form name='$formName' action='customerEdit.php' method='get'>"  . "\n";
+		$results .=  "<form name='$formName' action='customerEdit.php' method='$this->formMode'>"  . "\n";
 
 		$errors = array();
 		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
@@ -190,15 +192,18 @@ class Customer extends Base
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress', 'Memo', 'Terms', 'Discount');
 		foreach( $fields as $name)
 		{
-			$err=(array_key_exists($name, $errors));
-			
+			$options=array();
+			if((array_key_exists($name, $errors))) $options['error']=1;
+							
 			if(!array_key_exists($name, $formValues)) $formValues[$name] = "";
 			if($name == 'Memo'){
+				$results .=  $this->textArea($name,$this->fieldDesc($name), $formValues[$name],$options,"","","","");
 //				$results .=  $this->textArea($name, $label, $required=false, $value='', $large=false);
-				$results .=  $this->textArea($name, $this->fieldDesc($name), $err, $formValues[$name], true);
+//				$results .=  $this->textArea($name, $this->fieldDesc($name), $err, $formValues[$name], true);
 			}
 			else{
-				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
+				$results .=  $this->textField($name, $this->fieldDesc($name),  $formValues[$name], $options, "", "", "", "");
+//				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $formValues[$name]) . "\n";
 			}
 			if($name == 'LastName' && array_key_exists('CustomerID', $formValues) && $formValues['CustomerID'] > 0){
 				$results .= "<a href='search.php?CustomerID=" . $formValues['CustomerID'] ."'>Customer Invoices</a>";
@@ -207,11 +212,13 @@ class Customer extends Base
 //			if($this->isInternetExploder() && ($name=="Prefix" || $name=="FirstName" || $name=="Suffix" || $name=="EMailAddress"))
 			$results .=  "<br />";
 		}
+		$options=array();
+		if((array_key_exists('Dealer', $errors))) $options['error']=1;
+		
 		$isDealer = ($formValues['Dealer']=='1' || $formValues['Dealer']==1)?1:0;
-//				echo debugStatement("Dealer?: $isDealer : " . $formValues['Dealer']);
-		$results .=  $this->checkbox('Dealer', 'Dealer', (array_key_exists('Dealer', $errors)), $isDealer );
+		$results .=  $this->checkbox('Dealer', 'Dealer',  $isDealer, $options, "", "", "", "" );
 		$results .=  "<br />";
-		$results .=  $this->textField('TaxNumber', 'TaxNumber', false, $formValues['TaxNumber']) . "\n";
+		$results .=  $this->textField('TaxNumber', 'TaxNumber', $formValues['TaxNumber'], $options, "", "", "", ""). "\n";
 		
 		$formValues['CurrrentAddress']['ERROR']=$formValues['ERROR'];
 		$results .= $this->addressForm($formValues['CurrrentAddress']);
@@ -228,15 +235,10 @@ class Customer extends Base
 
 		$results .=  debugStatement("Flag?<br />Balance?<br />CreditCardNumber/CreditCardExpiration?");
 
-		$results .= "</form>";
-		$results .= "</div><!-- End $formName -- >";
-//		$results .= debugStatement(dumpDBRecord($formValues));
+		$results .= "</form><!-- End Form $formName -->\n";
+		$results .= "</div><!-- End $formName -->\n";
 		
 		return $results;
-//		$results = "New Customer Form";
-//		$results .= "<br />";
-//		$results .= dumpDBRecord($formValues);
-//		return $results;
 	}
 }
 ?>

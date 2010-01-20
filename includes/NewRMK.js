@@ -12,7 +12,7 @@ catch (e){  // Internet Explorer
 }
 return xmlHttp;
 }
-  
+
 function dumpProps(obj, parent) {
    // Go through all the properties of the passed-in object
    for (var i in obj) {
@@ -32,12 +32,11 @@ function dumpProps(obj, parent) {
 
 function defaultField(formName, fieldName)
 {
-	var form = document.getElementById(formName);
-	for ( var _elem_num in form.elements){
-		var elem = form.elements[_elem_num]
-		if(elem.name == fieldName){
-			elem.focus();
-			elem.select();
+	var elem = document.getElementById(formName).elements;
+	for(var i=0; i < elem.length; i++){
+		if(elem != null && elem[i].name == fieldName){
+			elem[i].focus();
+			elem[i].select();
 		}
 	}
 //	document.form.field1.focus();
@@ -48,31 +47,28 @@ function recomputeTotalRetail(form, newBaseRetail){
 //	alert("Recompute Total" + form.name);
 	var featureTotal=0;
 	var qty=0;
-	for ( var _elem_num in form.elements){
-		var elem = form.elements[_elem_num];
-		var elemName = ""+elem.name; 
+	var elem = form.elements;
+	for(var i=0; i < elem.length; i++){
+		var elemName = ""+elem[i].name; 
 		if(elemName == 'BaseRetail'){
 			if(newBaseRetail >= 0)
-				elem.value = newBaseRetail;
+				elem[i].value = newBaseRetail;
 			else
-				newBaseRetail = elem.value;
+				newBaseRetail = elem[i].value;
 		} else if(elemName == 'Quantity'){
-			qty = parseFloat(elem.value);
+			qty = parseFloat(elem[i].value);
 		} else if(elemName.substring(0, 15) == 'Addition_Price_'){
-			val = parseFloat(elem.value);
+			val = parseFloat(elem[i].value);
 			if(val > 0){
 				featureTotal += val;
 			}
 		}
-//		alert(form.elements['TotalRetail']);
 	}
-//	alert("New total1?:" + (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2))
-	for ( var _elem_num in form.elements){
-		var elem = form.elements[_elem_num];
+	for(var i=0; i < elem.length; i++){
 //		if(elem.name == 'TotalRetail'){
-		if(elem.name == 'InvoiceEntry_TotalRetail'){			
+		if(elem[i].name == 'InvoiceEntry_TotalRetail'){			
 //			alert("New total?:" + qty + "\n Base: " + newBaseRetail + "\n +Features:" + featureTotal + "\n=" + (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2))
-			elem.value = (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2);
+			elem[i].value = (qty * (parseFloat(newBaseRetail) + featureTotal)).toFixed(2);
 		}
 	}
 }
@@ -89,13 +85,13 @@ function updatedFeature(featureName, formName, newValues){
 	var featurePriceName = "Addition_Price_" + featureName.substring(9, 10);
 //	alert(featurePriceName);
 	var baseRetail=0;
-	for ( var _elem_num in form.elements){
-		var elem = form.elements[_elem_num];
-		var elemName = ""+elem.name; 
+	var elem = form.elements;
+	for(var i=0; i < elem.length; i++){
+		var elemName = ""+elem[i].name; 
 		if(elemName == 'BaseRetail'){
-			baseRetail = elem.value;
+			baseRetail = elem[i].value;
 		} else if(elemName == featurePriceName){
-			elem.value = newValues['BaseRetail']
+			elem[i].value = newValues['BaseRetail']
 		}
 	}
 	recomputeTotalRetail(form, baseRetail);
@@ -137,7 +133,6 @@ function featureFieldEdit(formName, field, keyEvent){
 			var form = document.getElementById(formName);
 			updatedFeature(field.name, formName, local);
 //			alert(local);
-//			dumpProps(local);
 			recomputeTotalRetail(form, -1);
 		}
 	}
@@ -156,6 +151,7 @@ function newPart(formName, field){
 		if(xmlHttp.readyState==4)
 		{
 			var local=new Function("return "+xmlHttp.responseText)();
+//			alert(xmlHttp.responseText);
 			var form = document.getElementById(formName);
 			recomputeTotalRetail(form, local['BaseRetail']);
 		}

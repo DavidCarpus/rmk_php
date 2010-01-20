@@ -56,11 +56,14 @@ switch ($mode) {
 		break;
 }
 		
+echo headSegments("RMK Edit Customer", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 
 ?>
-<LINK href="../Style.css" rel="stylesheet" type="text/css">
-<LINK rel="stylesheet" type="text/css"	 media="print" href="../print.css">	 
-<LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
+
+<body>
+
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
+
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
@@ -75,3 +78,6 @@ switch ($mode) {
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

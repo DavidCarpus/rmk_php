@@ -15,10 +15,11 @@ if($mode == 'submit'){
 	if(!$paymentDB->validateData($formValues) ){ 
 		$formValues['ERROR']=$paymentDB->validationError;	
 		$mode='err';
-//	} else {
+	} else {
+		$paymentDB->saveRequest($formValues);
 //		$catalogs->saveModel($formValues);
 //		$categories=$catalogs->getCategoriesAndModels();
-//		$mode='edit';
+		$mode='submitted';
 	}
 }
 echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.css");
@@ -31,8 +32,10 @@ echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.
 	 	<?php echo toolbar(); ?>
 		<div class="content">
 		<?php
-			echo $paymentForms->basicPaymentForm($formValues);
-		?>
+			if($mode == 'browse' || $mode == 'err') echo $paymentForms->basicPaymentForm($formValues);
+			if($mode == 'submitted') echo $paymentForms->paymentSubmissionResponse($formValues);
+//			if($mode == 'submitted') echo $paymentForms->basicPaymentForm($formValues);
+			?>
 		</div>	
 	 	<?php echo footer(); ?>
 	</div>

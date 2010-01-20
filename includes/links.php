@@ -11,7 +11,7 @@
 //}
 
 function invAcknowledgmentLink($invNum){
-	$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&reportType=ack'>Order Acknowledgement";
+	$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&amp;reportType=ack'>Order Acknowledgement";
 	$results .= "</a>";
 //	$results .= "<a href='CustInvAck.php?Invoice=" . $invNum . "'>Order Acknowledgement";
 //	$results .= "</a>";
@@ -19,9 +19,9 @@ function invAcknowledgmentLink($invNum){
 }	
 function invInvoiceLink($invNum, $dealer){
 	if($dealer){
-		$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&reportType=dlrinv'>Customer Invoice";
+		$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&amp;reportType=dlrinv'>Customer Invoice";
 	} else {
-		$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&reportType=inv'>Customer Invoice";
+		$results .= "<a href='../CustomerReport.php?Invoice=" . $invNum . "&amp;reportType=inv'>Customer Invoice";
 	}
 	$results .= "</a>";
 //	$results .= "<a href='CustInv.php?Invoice=" . $invNum . "'>Customer Invoice";

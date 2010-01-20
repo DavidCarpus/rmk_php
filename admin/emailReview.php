@@ -38,6 +38,8 @@ switch ($mode) {
 echo headSegments("RMK Email Processing", array("../Style.css"), "../print.css");
 ?>
 
+<body>
+
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
@@ -57,3 +59,6 @@ echo headSegments("RMK Email Processing", array("../Style.css"), "../print.css")
 	</div>
 	<?php echo footer(); ?>
 </div>
+
+</body>
+</html>

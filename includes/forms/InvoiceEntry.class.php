@@ -203,18 +203,22 @@ class InvoiceEntry extends Base
 		}
 		$i=1;
 		$results .=  "\n<span class='featureEntry'>\n";
+		$updateRetailJS = " onkeyup='return featureFieldEdit(\"form_$formName\", this, event);'";
+		$recomputeRetailJS = " onkeyup='return recomputeTotalRetail(document.getElementById(\"form_$formName\"), -1);'";
+		
 		foreach ($currEntry['Additions'] as $addition) {
-			$js['field']=" onkeyup='return featureFieldEdit(\"form_$formName\", this, event);'";
-			$results .=  $this->textField("Addition_$i", "Feature $i", false, $addition['PartCode'],  "", $js, false);
-			$js['field']=" onkeyup='return recomputeTotalRetail(document.getElementById(\"form_$formName\"), -1);'";
-			$results .=  $this->textField("Addition_Price_$i", "Price", false, $addition['Price'],  "", $js, false);
+			$options['jscript']=array("field"=>$updateRetailJS);
+			$results .=  $this->textField("Addition_$i", "Feature $i", $addition['PartCode'],  $options, "", "", "", "");
+
+			$options['jscript']=array("field"=>$recomputeRetailJS);
+			$results .=  $this->textField("Addition_Price_$i", "Price", $addition['Price'],  $options, "", "", "", "");
 			$results .=  "<br />\n";
 			$i++;
 		}
 		
 		for(; $i<= 8; $i++){
-			$results .=  $this->textField("Addition_$i", "Feature $i", false, "",  "", $js, false);
-			$results .=  $this->textField("Addition_Price_$i", "Price", false, "",  "", array(), false);
+			$results .=  $this->textField("Addition_$i", "Feature $i", "",  $options, "", "", "", "");
+			$results .=  $this->textField("Addition__Price)$i", "Price", "",  $options, "", "", "", "");
 			$results .=  "<br />\n";
 		}
 		$results .=  "</span>" . "\n";
@@ -297,26 +301,33 @@ class InvoiceEntry extends Base
 		{
 			if(!array_key_exists($name, $values))		$values[$name]="";
 
-			$err=(array_key_exists($name, $errors));
-
+			$options=array();
+//			$options=array('jscript'=>array("field"=>$JS));
+//			$options['readonly']=$readOnly;
+			if((array_key_exists($name, $errors))) $options['error']=$err;
 			
 			$results .= "<span id='span_$name'>";
 			if($name == "FeatureList"){
 				$results .= $this->invoiceEntryFeaturesFields($formName, $values);
 			} else 	if($name == "BaseRetail" || $name == "Quantity"){
-				$js['field']=" onkeyup='return updateRetail(\"form_$formName\");'";
-				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
+				$options['jscript']=array("field"=>" onkeyup='updateRetail(\"form_$formName\")';");
+				$results .=  $this->textField($name, $name, $values[$name], $options, "", "", "", "");
 			} else if($name == "PartDescription"){
-				$js['field']="onkeyup='return newPart(\"form_$formName\", this);' onblur='return newPart(\"form_$formName\", this);'";
-				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
+//				$js['field']="onkeyup='newPart(\"form_$formName\", this);' onblur=newPart(\"form_$formName\", this)";
+//				$results .=  $this->textField($name, $name, $err, $values[$name],  "", $js, false);
+				$options['jscript']=array("field"=>"onkeyup='newPart(\"form_$formName\", this)' onblur='newPart(\"form_$formName\", this)'");
+				$results .=  $this->textField($name, $name, $values[$name], $options, "", "", "", "");
 //			} else if($name == "TotalRetail"){
 //				$results .=  $this->textField($name, $name, $err, number_format($values[$name],2),  "", array(), false);
 			} else if($name == "InvoiceEntry_TotalRetail"){
-				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values[$name],2),  "", array(), false);
+				$results .=  $this->textField($name, "TotalRetail", number_format($values[$name],2), $options, "", "", "", "");
+//				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values[$name],2),  "", array(), false);
 			} else if($name == "Discount"){
-				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
+				$results .=  $this->textField($name, $name, $values[$name], $options, "", "", "", "");
+//				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			} else{
-				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
+				$results .=  $this->textField($name, $name, $values[$name], $options, "", "", "", "");
+//				$results .=  $this->textField($name, $name, $err, $values[$name],  "", array(), false);
 			}
 			$results .= "</span>\n";
 			if($name == "Discount" || $name == "FeatureList"){
@@ -372,10 +383,12 @@ class InvoiceEntry extends Base
 			if(!array_key_exists($name, $values))		$values[$name]="";
 			$results .= "<span class='$name'>";
 			if($name == "InvoiceEntryRemove_TotalRetail"){
-				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values["TotalRetail"],2),  "", array(), false);
+				$results .=  $this->textField($name, "TotalRetail",  number_format($values["TotalRetail"],2), $options, "", "", "", "");
+//				$results .=  $this->textField($name, "TotalRetail", $err, number_format($values["TotalRetail"],2),  "", array(), false);
 			}
 			else{
-				$results .=  $this->textField($name, $name, $err, $values[$name],  '', array(), false);
+				$results .=  $this->textField($name, $name,  $values[$name], $options, "", "", "", "");
+//				$results .=  $this->textField($name, $name, $err, $values[$name],  '', array(), false);
 			}
 			$results .= "</span><br />\n";
 		}

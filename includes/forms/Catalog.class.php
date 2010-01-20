@@ -1,8 +1,11 @@
 <?php
 include_once "Base.class.php";
 
+
 class Catalog extends Base
 {
+	var $formMode='get';
+
 	function __construct() {
        $this->name = "forms_Catalog";
    }
@@ -18,6 +21,8 @@ class Catalog extends Base
 			{return "addphoto";}
 		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Upload Photo")
 			{return "uploadphoto";}
+		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Request Catalog")
+			{return "request_Cat";}
 			
 		if(array_key_exists("catalogcategories_id", $formValues) && $formValues["catalogcategories_id"] > 0 &&
 			array_key_exists("knifemodels_id", $formValues)  && $formValues["knifemodels_id"] > 0 )
@@ -38,7 +43,7 @@ class Catalog extends Base
    		$formName="AdminCategorySelect";
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
 		
 		$options=array();
 		$models=array();
@@ -86,7 +91,7 @@ class Catalog extends Base
    	   	$category = $this->getCategoryFromArray($categories, $formValues['catalogcategories_id']);
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form enctype='multipart/form-data name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
+		$results .=  "<form enctype='multipart/form-data name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
    	   	$results .= "<label for='files' >File:</label>";	
 		$results .= "<input type='file' name='files'/><br />";
 		$results .=  $this->textField($label, "Labels", false, $photoRec['photo_labels']) . "<br/>\n";	
@@ -114,23 +119,25 @@ class Catalog extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='get'>\n" ;
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
 
 //		$results .=  " Edit 'Title' of Category <br/>";
-		$results .=  $this->textField("category", "Category", false, $category['category']) . "<br/>\n";
+//		$results .=  $this->textField("category", "Category", false, $category['category']) . "<br/>\n";
+		$results .=  $this->textField("category", "Category",  $category['category'], $options, "", "", "", "");
 		
    		
 
 		$results .=  "<div class='photoblocks'>" . "\n";
 		foreach ($category['photos'] as $photoRec){
 			$results .=  "<div class='editphotoblock'>" . "\n";
-			$loc = "tn_" . substr($photoRec['filelocation'], strrpos($photoRec['filelocation'], "/")+1);
-			$loc= BASE_IMG_URL . "/catalog/$loc";
-			$loc = "<img src='$loc' >";	
+			$thumbnailFilename = "tn_" . substr($photoRec['filelocation'], strrpos($photoRec['filelocation'], "/")+1);
+			$loc= BASE_IMG_URL . "/catalog/$thumbnailFilename";
+			$loc = "<img src='$loc' alt='$thumbnailFilename' />";	
 			$results .= $loc;
-			$label=	"photo label_" . $photoRec['photo_id'];
-			$results .=  $this->textField($label, "Labels", false, $photoRec['photo_labels']) . "<br/>\n";
-//			$results .= $photoRec['photo_labels'];	
+			$label=	"photo_label_" . $photoRec['photo_id'];
+//			$results .=  $this->textField($label, "Labels", false, $photoRec['photo_labels']) . "<br/>\n";
+			$results .=  $this->textField($label, "Labels",  $photoRec['photo_labels'], $options, "", "", "", "");
+			//			$results .= $photoRec['photo_labels'];	
 			$results .= "</div><!-- End photoblock -->\n";
 		}
 		$results .= "</div><!-- End photoblocks -->\n";
@@ -159,7 +166,7 @@ class Catalog extends Base
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='get'>\n" ;
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
 		
    		$category = $this->getCategoryFromArray($categories, $formValues['catalogcategories_id']);
    		if($category == "") return;
@@ -176,17 +183,18 @@ class Catalog extends Base
 		foreach($fields as $name=>$label)
 		{
 			$value = $model[$name];
-			$err=(array_key_exists($name, $errors));
-			$required=false;
+			$options=array();
+			if(array_key_exists($name, $errors)) $options['error']=true;
+
 			if(isset($formValues[$name])) $value =$formValues[$name];
 //			if($name != 'note'){ $required=true;}
 			
 			if($name == 'description' || $name == 'note'){
-				$results .= $this->textArea($name, $label, $err, $value);
+				$results .=  $this->textArea($name, $label, $value, $options ,"" ,"" ,"" ,"");
 			} else if($name == 'catalogcategories_id' || $name == 'knifemodels_id' || $name == 'active'){
 				$results .= $this->hiddenField($name, $value[$name]);				
 			} else{
-				$results .=  $this->textField($name, $label, $err, $value) . "<br/>\n";
+				$results .=  $this->textField($name, $label,  $value, $options, "", "", "", "");
 			}
 		}
 		$results .=  $this->button("submit", "Save");
@@ -209,6 +217,55 @@ class Catalog extends Base
 		$results .= "</div><!-- End photoblock -->\n";		
 		
    		
+		return $results;
+   }
+   
+   public function customerCatalogRequest($formValues){
+   	   	$formName="customerCatalogRequest";
+   	   	
+   	   	$prefix = "All current catalog and non-catalog information with price lists will be sent via airmail. \n" .
+			  "There is a charge for catalogs mailed <B>outside</B> the United States.\n" .
+			  "USA address - no charge\n" .
+			  "Canada - US$3.00\n" .
+			  "All Other Countries - US$5.00\n" .
+			  "Please use this Secure Form, or if you prefer, print this form and fax it to us (407) 855-9054. " .
+			  "Minimum age to order is 16 years old.\n\n";
+   	   		
+   		$errors = array();
+		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
+			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
+		}
+		
+		$results= htmlizeText($prefix);
+		$results .=  "<div id='$formName'>" . "\n";
+		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
+
+		$results .=  "* All fields are required. Your request will not process if they are empty.";
+		
+		$fields = array('name'=>'Full Name', 'email'=>'Email Address', 'address1'=>'Billing Address', 
+   	   			'address2'=>'&nbsp;', 'address3'=>'&nbsp;', 'city'=>'City', 'state'=>'State/Province', 'country'=>'Country',
+   	   		 'zip'=>'Zip/Postal Code', 'phone'=> 'Phone Number'
+   	   		);
+	
+		foreach($fields as $name=>$label)
+		{
+			$value = $formValues[$name];
+			$options=array();
+			if(array_key_exists($name, $errors)) $options['error']=1;
+			
+			if(isset($formValues[$name])) $value =$formValues[$name];
+			
+			$results .=  $this->textField($name, $label, $value, $options, "","","","") . "<br/>\n";			
+		}
+		
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
+		
+		$results .=  $this->button("submit", "Request Catalog");
+		
+		$results .=  "* All fields are required. Your request will not process if they are empty.";
+		
+		$results .= "</form>";
+		$results .= "</div><!-- End $formName -->\n";	
 		return $results;
    }
 }

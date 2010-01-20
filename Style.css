@@ -1,3 +1,10 @@
+.entryfield { display:block; float:left; position:relative; }
+.entryfield input {  float:left; position:relative; }
+.entryfield label { float:left; width:180px; text-align:right; padding-right:8px; }
+.entryfield .optionblock {display: block; float: left; padding-right: 4px; }
+.entryfield input.option  {width:15px;  }
+
+.statusmessage {width:950px;  display:block; float:left; color: #FF2200; clear:right; font-size:18pt; }
 
 .titlebar{
 	text-align: center;
@@ -75,22 +82,22 @@
 
 
 
-
+/*
 label{
 	width: 200px;
 	float: left;
 	text-align: right;
-/*	margin-right: 0.5em;*/
+	margin-right: 0.5em;
 	margin: 0px 10px 0px 0px;
 	display: block;
 }
+*/
+
 input.btn{
 	background-color: #134242;
 	color: #FFFFFF;
 }
-input{
-	width: 370px;
-}
+
 input.date{
 	width: 70px;
 }
@@ -99,11 +106,13 @@ input.select {
 	width: 20px;
 }
 
+/*
 input.option {
 	width: 12px;
 	background-color:green;
 	padding: 0px 70px 10px 50px;
 }
+*/
 
 .orderListNames input{
 	width: 12px;
@@ -295,33 +304,37 @@ span.cap-g {
 
 #EmailDetailView { width:810px; display: block; float: left;	padding-top: 20px; }
 
-#OrdersSearch { width:310px; display: block; float: left; }
-#OrdersSearch label { width:140px; float:left; clear: left; padding-right: 10px; }
-#OrdersSearch select{ width:130px; display: block; float: left;  }
-#OrdersSearch input{ width:120px; display: block; float: left; }
+#OrdersSearch { width:390px; display: block; float: left; }
+/*
+#OrdersSearch .entryfield label {width:110px;  }
+#OrdersSearch .entryfield input {width:110px;  }
+*/
 #OrdersSearch input.btn{ width:210px; display: block; float: left;}
 
-#RequestList  {  display: block; float: left;}
-#RequestList .req_label { width:210px; float: left; }
-#RequestList .req_val { display: block; float: left; }
+#RequestList  { width:520px;  display: block; float: left;}
 #RequestList #comment {  width:260px; height:60px;  display: block; float: left; }
+#RequestList input.btn { display: block;  clear: left;  width:300px; }
+#RequestList .entryfield label {width:200px;  }
+#RequestList .entryfield input {width:250px;  }
+#RequestList textarea { display: block; float: left; width:250px; }
+#RequestList #CC { height:30px; }
+#RequestList .entryfield .processed {width:110px;  }
 
+.CatalogRequest { width:510px; display:block; float:left; margin-top:10px; background-color:#FFFF99;}
+.QuoteRequest   { width:510px; display:block; float:left; margin-top:10px; background-color:#FF9900;}
+.OrderRequest   { width:510px; display:block; float:left; margin-top:10px; background-color:#BBBBBB;}
+.PaymentRequest   { width:510px; display:block; float:left; margin-top:10px; background-color:#11CC11;}
 
+.CatalogRequest .entryfield label {width:200px;  }
+.CatalogRequest .entryfield input {width:250px;  }
+.CatalogRequest #CC { display: block; float: left; width:250px; height:32px;}
+.QuoteRequest .entryfield label {width:200px;  }
+.QuoteRequest .entryfield input {width:250px;  }
+.QuoteRequest #CC { display: block; float: left; width:250px; height:32px;}
+.OrderRequest .entryfield label {width:200px;  }
+.OrderRequest .entryfield input {width:250px;  }
+.OrderRequest #CC { display: block; float: left; width:250px; height:32px;}
 
-.req_label {clear: left; display: block; float: left; border-style:solid; border-width:thin;}
-.req_val { display: block; float: left;  border-style:solid; border-width:thin;}
-
-#CatalogRequest {  width:535px; display: block; float: left; margin-top: 10px; background-color: #FFFF99;}
-#CatalogRequest .req_label {width:230px;}
-#CatalogRequest .req_val { width:300px;}
-
-#QuoteRequest {  display: block; float: left; margin-top: 10px; background-color: #FF9900;}
-#QuoteRequest .req_label {width:230px; }
-#QuoteRequest .req_val { width:300px; }
-
-#OrderRequest {  display: block; float: left; margin-top: 10px; background-color: #BBBBBB;}
-#OrderRequest .req_label {width:230px; }
-#OrderRequest .req_val { width:300px; }
 
 #AdminCategorySelect {  width:550px; display: block; float: left; margin-top: 10px; }
 #AdminCategorySelect label {width:160px; display: block; float: left; clear: left; }
@@ -349,15 +362,64 @@ span.cap-g {
 .editphotoblock img {width:210px; display: block; margin-left: 10px; }
 .editphotoblock input {width:100px; display: block; }
 
-#unprocessedrequests {  width:380px;  display: block; float: left; margin-top: 10px;}
-#unprocessedrequests .label {width:80px; display: block; float: left; background-color: #FF2200;}
+#unprocessedrequests {  width:200px;  display: block; float: left; margin-top: 10px;}
+#unprocessedrequests .label {width:80px; display: block; clear:left; float: left; background-color: #FF2200;}
 #unprocessedrequests .value {width:40px; display: block; float: left; background-color: #BBBBBB; }
 
-#basicPaymentForm { width:560px;  display: block; float: left;}
-#basicPaymentForm label {width:230px; clear: left; }
-#basicPaymentForm input {width:180px; display: block; float: left; }
-#basicPaymentForm .optionblock {display: block; float: left; padding-right: 10px; }
-#basicPaymentForm input.option  {width:15px;  }
+#emailForRequest {  width:550px;  display: block; float: left; margin-top: 10px; background-color: #BBBBBB; }
+#emailForRequest textarea{  width:330px;  }
+
+#basicPaymentForm { width:450px;  display: block; float: left;}
+#basicPaymentForm input.btn{ width:210px;  display: block; float: left;}
+
+
+#customerOrderForm_main {width:520px;  display: block; float: left; margin-top: 10px; }
+#customerOrderForm { display: block; float: left; margin-top: 10px;}
+
+#customerOrderForm .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
+#customerOrderForm #state {width:40px;  }
+#customerOrderForm #zip {width:130px;  }
+#customerOrderForm #bladelength {width:80px;  }
+#customerOrderForm textarea {width:300px;  }
+#customerOrderForm .optionblock { background-color: #DDDDDD;  }
+#customerOrderForm input.btn {width:140px; display: block; float: left; clear: left; margin-top: 10px; }
+#customerOrderForm  .entryfield input.option  {width:15px;  }
+
+#ccdata {width:500px;  display: block; float: left; margin-top: 10px; margin-left: 40px; border-style:solid;}
+#ccdata .ccvcode {width:40px; }
+#ccdata .ccexpire {width:60px;  }
+#ccdata  .entryfield label { width:140px;  }
+#ccdata input {background-color: #DDDDDD;  }
+#ccdata  .entryfield input.option  {width:15px;  }
+
+#customerOrderValidation {width:460px; float:left;  display: block; }
+#customerOrderValidation #bladelength {width:80px;  }
+/*
+#customerOrderValidation label {width:130px;}
+#customerOrderValidation input.btn {width:220px; float: left; }
+*/
+
+#customerOrderValidation .entryfield {width:420px;  display:block;  }
+
+#PartEditForm { display: block; float: left; width:390px; }
+#PartEditForm .entryfield label { width:100px; }
+#PartEditForm input.btn {width:140px; display: block; float: left; clear: left; margin-top: 10px; }
+
+#customerCatalogRequest  { display: block; float: left; width:600px;  }
+#customerCatalogRequest .optionblock { background-color: #DDDDDD;  }
+#customerCatalogRequest  input { width:210px;  }
+#customerCatalogRequest input.btn {display: block; clear: left; }
+#customerCatalogRequest #zip {width:130px;  }
+#customerCatalogRequest #state {width:40px;  }
+/*
+#customerCatalogRequest .ccvcode {width:40px; }
+#customerCatalogRequest .ccexpire {width:60px;  }
+*/
+
+#paymentSubmissionResponse { display: block; float: left; width:600px; background-color: #FF2200; }
+
+#na {background-color: #FFFF99;)
 
 /* background-color: #BBBBBB; */
 /* background-color: #FF2200; reddish*/
+/* background-color: #FFFF99; yellowish*/

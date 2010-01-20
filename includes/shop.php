@@ -80,7 +80,7 @@ function knifeList($form){
 	$custid=0;
 	$custInv = array();
 	$results .= knifeListNav($week, $startDate, $endDate);
-	$results .= "<P>";
+	$results .= "<p>";
 	foreach($records as $Invoice){
 		if($custid==0) $custid=$Invoice['CustomerID'];
 		if($custid != $Invoice['CustomerID']){
@@ -92,7 +92,7 @@ function knifeList($form){
 	}
 
 	$results .= knifeListSummary($records);
-	$results .= "</P>";
+	$results .= "</p>";
 	
 	return $results;
 }
@@ -116,14 +116,14 @@ function knifeListSummary($invoices)
 	}
 	ksort($totals);
 	$colCnt=1;
-	$results ="\n\n<TABLE class='knifelistsummary' border='1'>";
-	$results .= "<TR>";
+	$results ="\n\n<table class='knifelistsummary' border='1'>";
+	$results .= "<tr>";
 	foreach($totals as $partCode=>$cnt){
-		$results .= "<TD class='quantity' align=right>$cnt</TD><TD class='partcode'>$partCode</TD>";
+		$results .= "<td class='quantity' align=right>$cnt</td><td class='partcode'>$partCode</td>";
 		if(($colCnt++)%6 == 0)
-			$results .= "</TR><TR>";
+			$results .= "</tr><tr>";
 	}
-	$results .="</TABLE>";
+	$results .="</table>";
 	return $results;
 }
 
@@ -131,11 +131,11 @@ function displayKnifeListInvoices($invoices){
 	global $parts, $Invoices;
 	
 	
-	$results ="\n\n<TABLE class='knifelist' border='1'>";
+	$results ="\n\n<table class='knifelist' border='1'>";
 	if(count($invoices) > 0 && $invoices[0]['Dealer']){
-		$results .= "<TR>";
-		$results .= "<TH colspan='4'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TH>";
-		$results .= "</TR>";
+		$results .= "<tr>";
+		$results .= "<th colspan='4'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</th>";
+		$results .= "</tr>";
 	}
 	
 	$bladeListItems=0;
@@ -146,15 +146,15 @@ function displayKnifeListInvoices($invoices){
 //		echo dumpDBRecord( $Invoice );
 		
 //		if($Invoice['Dealer']){
-//			$results .= "<TR>";
-//			$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
-//			$results .= "<TD colspan='3'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</TD>";
-//			$results .= "</TR>";
+//			$results .= "<tr>";
+//			$results .= "<td class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</td>";
+//			$results .= "<td colspan='3'>" . $invoices[0]['FirstName'] . " " . $invoices[0]['LastName'] . "</td>";
+//			$results .= "</tr>";
 //		} else{
-			$results .= "<TR>";
-			$results .= "<TD class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</TD>";
-			$results .= "<TD colspan='3'></TD>";
-			$results .= "</TR>\n";
+			$results .= "<tr>";
+			$results .= "<td class='invoice'>" . invoiceDetailLink($Invoice['Invoice']). "</td>";
+			$results .= "<td colspan='3'></td>";
+			$results .= "</tr>\n";
 //		}
 			
 		$year = date("Y", strtotime($Invoice['dateordered']));
@@ -171,29 +171,29 @@ function displayKnifeListInvoices($invoices){
 				$bladeListItems++;
 				$shadeTag="";
 				if($alt) $shadeTag="class='shade'";
-				$results .= "<TR " . $shadeTag . ">";
-				$results .= "<TD class='quantity'>" . $entry['Quantity']  . "</TD>";
-				$results .= "<TD class='partcode'>" . $entry['PartCode']  . "</TD>";
+				$results .= "<tr " . $shadeTag . ">";
+				$results .= "<td class='quantity'>" . $entry['Quantity']  . "</td>";
+				$results .= "<td class='partcode'>" . $entry['PartCode']  . "</td>";
 				$knifeCount += $entry['Quantity'] ;
 
 				$results .= knifeEntryAdditions_TableCell($entry['InvoiceEntryID'] , $year);
 
 				$comment = $entry['Comment'];
 				if(strlen($comment) <= 0) $comment=" ";
-				$results .= "<TD class='comment'>$comment</TD>";
-				$results .= "</TR>\n";
+				$results .= "<td class='comment'>$comment</td>";
+				$results .= "</tr>\n";
 			}
 		}
 		if(count($Invoice['entries']) > 1){
-			$results .= "<TR class='summary'>";
-			$results .= "<TD  class='quantity' >" . $knifeCount. "</TD>" ;
-			$results .= "<TD > Total (". $Invoice['Invoice']. ")</TD>" ;
-			$results .= "<TD colspan='2'></TD>";
-			$results .= "</TR>\n";
+			$results .= "<tr class='summary'>";
+			$results .= "<td  class='quantity' >" . $knifeCount. "</td>" ;
+			$results .= "<td > Total (". $Invoice['Invoice']. ")</td>" ;
+			$results .= "<td colspan='2'></td>";
+			$results .= "</tr>\n";
 		}
 
 	}
-	$results .="</TABLE>";
+	$results .="</table>";
 	if($bladeListItems > 0)
 		return $results;
 	else
@@ -209,8 +209,8 @@ function knifeListNav($week, $startDate, $endDate){
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week -1) . "> Previous Week</a>";
 
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
-//	$results .= "Week of <B>" .  substr($startDate,5)  . "</B> to <B>" .   substr($endDate,5) . "</B> (".substr($endDate,0,4). ")";
-	$results .= "Week of <B>" .  $startDate  . "</B>";
+//	$results .= "Week of <b>" .  substr($startDate,5)  . "</b> to <b>" .   substr($endDate,5) . "</b> (".substr($endDate,0,4). ")";
+	$results .= "Week of <b>" .  $startDate  . "</b>";
 	$results .= "&nbsp;&nbsp;&nbsp;&nbsp;";
 	
 	$results .= "<a href=" . $_SERVER['PHP_SELF'] . "?week=" . ($week +1) . "> Next Week</a>";
@@ -265,30 +265,30 @@ function displayInvoiceDetailsForShop($record){
 	$shipping =  $Invoices->shipAddressString($record);
 	$billing = $Invoices->billingAddressString($record);
 	
-	$results .= "<TABLE>";
-	$results .=  "<TR>";
-	$results .=  "<TH>". $record['LastName'] . "," .  $record['FirstName'];
+	$results .= "<table>";
+	$results .=  "<tr>";
+	$results .=  "<th>". $record['LastName'] . "," .  $record['FirstName'];
 	if($record['Dealer'])
-		$results .=  "<B><I size=+4>Dealer</I></B> ";
-	$results .=  "</TH>";
-	$results .=  "</TR>";
+		$results .=  "<b><I size=+4>Dealer</I></b> ";
+	$results .=  "</th>";
+	$results .=  "</tr>";
 	
 
-	$results .= "<TR><TD><B>".fieldDesc('phonenumber')."</B></TD><TD>" . $record['PhoneNumber'] . "</TD></TR>";
-	$results .= "<TR><TD><B>".fieldDesc('invoice_num')."</B></TD><TD>" . $record['Invoice'] . "</TD></TR>";
-	$results .= "<TR><TD><B>".fieldDesc('dateordered')."</B></TD><TD>" . $record['dateordered'] . "</TD></TR>";
-	$results .= "<TR><TD><B>".fieldDesc('dateestimated')."</B></TD><TD>" . $record['dateestimated'] . "</TD></TR>";
-	$results .= "<TR><TD><B>Shipping</B></TD><TD>" . $record['ShippingInstructions'] . "</TD></TR>";
+	$results .= "<tr><td><b>".fieldDesc('phonenumber')."</b></td><td>" . $record['PhoneNumber'] . "</td></tr>";
+	$results .= "<tr><td><b>".fieldDesc('invoice_num')."</b></td><td>" . $record['Invoice'] . "</td></tr>";
+	$results .= "<tr><td><b>".fieldDesc('dateordered')."</b></td><td>" . $record['dateordered'] . "</td></tr>";
+	$results .= "<tr><td><b>".fieldDesc('dateestimated')."</b></td><td>" . $record['dateestimated'] . "</td></tr>";
+	$results .= "<tr><td><b>Shipping</b></td><td>" . $record['ShippingInstructions'] . "</td></tr>";
 
 	if($record['dateshipped']  != NULL){
-		$results .= "<TR><TD><B>".fieldDesc('dateshipped')."</B></TD><TD><B><I>" . $record['dateshipped'] . "</I></B></TD></TR>";
+		$results .= "<tr><td><b>".fieldDesc('dateshipped')."</b></td><td><b><I>" . $record['dateshipped'] . "</I></b></td></tr>";
 	}
-	$results .= "<TR>";
-	$results .= "<TD><B>Bill To</B></TD><TD>$billing</TD>";
-	$results .= "<TD><B>Ship To</B></TD><TD>$shipping</TD>";
-	$results .= "<TR>";
+	$results .= "<tr>";
+	$results .= "<td><b>Bill To</b></td><td>$billing</td>";
+	$results .= "<td><b>Ship To</b></td><td>$shipping</td>";
+	$results .= "<tr>";
 
-	$results .=  "</TABLE>";
+	$results .=  "</table>";
 	$results .=  "<br />";
 	
 	$record['entries'] = $Invoices->items($record['Invoice']);
@@ -299,36 +299,36 @@ function displayInvoiceDetailsForShop($record){
 
 	$results .=  "<br />";
 	$results .=  " vvvvvvvvvvvvv This is preliminary (still needs double checking) vvvvvvvvvvvvvvvvvvvv";
-	$results .= "<TABLE>";
-	$results .=  "<TR><TD><B>TotalCost</B></TD><TD align=right>$ " .  number_format($costs['TotalCost'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Subtotal</B></TD><TD align=right>$ " .  number_format($costs['Subtotal'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Shipping</B></TD><TD align=right>$ " .  number_format($costs['Shipping'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Taxes</B></TD><TD align=right>$ " .  number_format($costs['Taxes'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>TotalPayments</B></TD><TD align=right>$ " .  number_format($costs['TotalPayments'] ,2). "</TD></TR>";
-	$results .=  "<TR><TD><B>Due</B></TD><TD align=right>$ " .  number_format($costs['Due'] ,2). "</TD></TR>";
-	$results .=  "</TABLE>";
+	$results .= "<table>";
+	$results .=  "<tr><td><b>TotalCost</b></td><td align=right>$ " .  number_format($costs['TotalCost'] ,2). "</td></tr>";
+	$results .=  "<tr><td><b>Subtotal</b></td><td align=right>$ " .  number_format($costs['Subtotal'] ,2). "</td></tr>";
+	$results .=  "<tr><td><b>Shipping</b></td><td align=right>$ " .  number_format($costs['Shipping'] ,2). "</td></tr>";
+	$results .=  "<tr><td><b>Taxes</b></td><td align=right>$ " .  number_format($costs['Taxes'] ,2). "</td></tr>";
+	$results .=  "<tr><td><b>TotalPayments</b></td><td align=right>$ " .  number_format($costs['TotalPayments'] ,2). "</td></tr>";
+	$results .=  "<tr><td><b>Due</b></td><td align=right>$ " .  number_format($costs['Due'] ,2). "</td></tr>";
+	$results .=  "</table>";
 	
 //	$results .=  dumpDBRecord($costs);
 	return $results;
 }
 
 function displayInvoiceList($records){
-	$results = "<TABLE border=1>";
-	$results .= "<TR><TH>Invoice</TH><TH>Last Name</TH><TH>First Name</TH>";
-	$results .= "<TH>Ordered</TH><TH>Estimated</TH><TH>Shipped</TH>";
+	$results = "<table border=1>";
+	$results .= "<tr><th>Invoice</th><th>Last Name</th><th>First Name</th>";
+	$results .= "<th>Ordered</th><th>Estimated</th><th>Shipped</th>";
 	foreach($records as $record){
-		$results .= "<TR>";
-		$results .= "<TD>" . invoiceDetailLink($record['Invoice']) . "</TD>";
-		$results .= "<TD>" . ($record['LastName']) . "</TD>";
-		$results .= "<TD>" . ($record['FirstName']) . "</TD>";
-		$results .= "<TD>" . ($record['dateordered']) . "</TD>";
-		$results .= "<TD>" . ($record['dateestimated']) . "</TD>";
-		$results .= "<TD>" . ($record['dateshipped']) . "</TD>";
-//		$results .= "<TD>" . ($record['DateOrdered']) . "</TD>";
-		$results .= "</TR>";
+		$results .= "<tr>";
+		$results .= "<td>" . invoiceDetailLink($record['Invoice']) . "</td>";
+		$results .= "<td>" . ($record['LastName']) . "</td>";
+		$results .= "<td>" . ($record['FirstName']) . "</td>";
+		$results .= "<td>" . ($record['dateordered']) . "</td>";
+		$results .= "<td>" . ($record['dateestimated']) . "</td>";
+		$results .= "<td>" . ($record['dateshipped']) . "</td>";
+//		$results .= "<td>" . ($record['DateOrdered']) . "</td>";
+		$results .= "</tr>";
 //		$results .= dumpDBRecord($record);
 	}
-	$results .= "</TABLE>";
+	$results .= "</table>";
 	return $results;
 }
 
@@ -343,7 +343,7 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 	$sheaths = "  MA1 MA2 MAB MB MBB MC MC1 MCB MCR MFB 24B NHS FCH WS BLK LHS LS1 LS2 OK DK ";
 	$etching = "  ET1  ET2  ETC ETV NPN NPB EN1 EN2 EN3 EN4 EN5 MED  ";
 	$results = "";
-	$results .= "<TD  class='additions'>";
+	$results .= "<td  class='additions'>";
 	$totalAdds=count($additions);
 	$cnt=0;
 	if($totalAdds == 0) $results .= " ";
@@ -361,7 +361,7 @@ function knifeEntryAdditions_TableCell($entryID, $year){
 			$results .= ",";
 	}
 	//~ $results = substr($results, 0, strlen($results)-1);
-	$results .= "</TD>";
+	$results .= "</td>";
 	return $results;
 }
 //================================================

@@ -160,6 +160,9 @@ postfix="";
 
 
 
+ALTER TABLE `newrmk`.`orders` ADD invoice INT(11);
+
+
 /*
 create index CustID on Customers (CustomerID);
 create index KnifeInv on InvoiceEntries (Invoice);

@@ -100,20 +100,21 @@ function listFAQ($faq){
 }
 
 function addFAQLink(){
-	return "<a href=" . $_SERVER['PHP_SELF'] . "?action=add>Add New Question</a>";
+	return "<a href='" . $_SERVER['PHP_SELF'] . "?action=add'>Add New Question</a>";
 }
 
 function editFAQLink($question){
-	return "<a href=" . $_SERVER['PHP_SELF'] . "?action=edit&id=" . $question["faq_id"] . ">Edit</a>";
+	return "<a href='" . $_SERVER['PHP_SELF'] . "?action=edit&amp;id=" . $question["faq_id"] . "'>Edit</a>";
 }
 function deleteFAQLink($question){
-	return "<a href=" . $_SERVER['PHP_SELF'] . "?action=delete&id=" . $question["faq_id"] . ">Remove</a>";
+	return "<a href='" . $_SERVER['PHP_SELF'] . "?action=delete&amp;id=" . $question["faq_id"] . "'>Remove</a>";
 }
 
 
+echo headSegments("RMK FAQ Administration", array("../Style.css"), "../print.css");
+
 ?>
-<html>
-<?php echo headSegment("../Style.css"); ?>
+
 <body>
 <?php echo logo_header("admin"); ?>
 <div class="mainbody">

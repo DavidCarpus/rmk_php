@@ -35,8 +35,8 @@ if($mode == 'uploadphoto'){
 echo headSegments("RMK Catalog Maintenance", array("../Style.css"), "../print.css");
 ?>
 
+<body>
 <?php echo logo_header("admin"); ?>
-
  <div class="mainbody">
 	<div class="centerblock">
 	 	<?php echo adminToolbar(); ?>
@@ -58,3 +58,6 @@ echo headSegments("RMK Catalog Maintenance", array("../Style.css"), "../print.cs
 //echo debugStatement($mode);
 //echo debugStatement(dumpDBRecord($formValues));
 ?>
+
+</body>
+</html>

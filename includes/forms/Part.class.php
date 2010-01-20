@@ -150,7 +150,8 @@ class Part extends Base
 				$newValue = $part[$year-1]['Price'] + $adjustment;
 				$newValue = number_format($newValue,2);
 			}
-			$field =  $this->textField($fieldName, "", false, $newValue) . "\n";
+			$field =  $this->textField($fieldName, "",  $newValue, $options, "", "", "", "");
+//			$field =  $this->textField($fieldName, "", false, $newValue) . "\n";
 			
 			$results .= "<span class='Price'>$field</span>  $adjustment";
 //			$results .= "<span class='Price'>" . $this->partOptionFlags($firstYearPart)."</span>";
@@ -255,7 +256,7 @@ class Part extends Base
 	
 	function partEdit($partWithPrices)
 	{
-		$formName="PartEdit";
+		$formName="PartEditForm";
 		$results = "";
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='partEdit.php' method='post'>" . "\n" ;
@@ -268,38 +269,44 @@ class Part extends Base
 		$fields = array('PartCode', 'Description', 'Discountable', 'BladeItem', 'Taxable', 'Active', "Sheath" );
 		foreach($fields as $name)
 		{
-			$err=(array_key_exists($name, $errors));
+			$options=array();
+			if((array_key_exists($name, $errors))) $options['error']=1;
+			
 			
 			$value = (array_key_exists($name, $partWithPrices)? $partWithPrices[$name]: "");
-			if($name == 'Discountable')
-			{
-				$results .= "<br />";
-			}
+//			if($name == 'Discountable')
+//			{
+//				$results .= "<br />";
+//			}
 			if($name == 'Discountable' || $name == 'BladeItem' || $name == 'Taxable' 
 			|| $name == 'Active' || $name == 'Sheath')
 			{
 				if(!is_numeric($value) && $value == "on") $value=1;
 				if(!is_numeric($value) && $value == "off") $value=0;
 				if(is_numeric($value) && $value == "-1") $value=1;
-				$results .=  $name . ":" . checkbox($name, $name, false, $value) . " &nbsp; &nbsp;";
+				
+				$results .=  $this->checkbox($name, $name, $value, "","","","","");
+//				$results .=  $name . ":" . checkbox($name, $name, false, $value) . " &nbsp; &nbsp;";
 			}
 			else {
-				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value) . "\n";
-				$results .= "<br />";
+				$results .=  $this->textField($name, $this->fieldDesc($name),  $value, $options, "", "", "", "");
+//				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value) . "\n";
+//				$results .= "<br />";
 			}
 //			$results .= $name . ":" . $value ;
 //			$results .= "<br />";
 		}
-		$results .= "<br />";
-		$results .= "<br />";
+//		$results .= "<br />";
+//		$results .= "<br />";
 		
 		if (array_key_exists($name, $partWithPrices))
 		{
 		foreach($partWithPrices['Prices'] as $price){
 				$val = number_format($price['Price'],2);
-				$results .=  $this->textField("price_".$price['Year'], $price['Year'], $err, $val) . "\n";
+				$results .=  $this->textField("price_".$price['Year'], $price['Year'], $val, $options, "", "", "", "");
+//				$results .=  $this->textField("price_".$price['Year'], $price['Year'], $err, $val) . "\n";
 //				$results .= $part['Year'] . " - : - " . $part['Price'];
-				$results .= "<br />";
+//				$results .= "<br />";
 			}
 		}
 		$hiddenFields = array('PartID', 'PartType');
