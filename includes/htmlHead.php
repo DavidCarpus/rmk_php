@@ -516,14 +516,14 @@ function getToolbarPrefix(){
 		$secureLocation = false;
 		$prefix = $prefix . $debugMachineRoot;
 	}
-	if(isShopServer() ){
-		$secureLocation = true;
-		$prefix = $prefix . "/rmk/";
-	}
-	if(isShopTestServer() ){
-		$secureLocation = true;
-		$prefix = $prefix . "/testrmk/";
-	}
+//	if(isShopServer() ){
+//		$secureLocation = true;
+//		$prefix = $prefix . "/rmk/";
+//	}
+//	if(isShopTestServer() ){
+//		$secureLocation = true;
+//		$prefix = $prefix . "/testrmk/";
+//	}
 	if($_SERVER['HTTP_HOST'] == '72.18.130.57'){
 		$secureLocation = false;
 		$prefix = $prefix . "/~uplzcvgw";
@@ -532,6 +532,14 @@ function getToolbarPrefix(){
 	if(strstr($_SERVER['PHP_SELF'],"uplzcvgw") != FALSE){
 		$secureLocation = false;
 		$prefix = $prefix . "/~uplzcvgw";
+	}
+	if(strstr($_SERVER['PHP_SELF'],"/test/") != FALSE){
+		$secureLocation = false;
+		$prefix = $prefix . "/test";
+	}
+	if(strstr($_SERVER['PHP_SELF'],"/rmk/") != FALSE){
+		$secureLocation = false;
+		$prefix = $prefix . "/rmk";
 	}
 	if(array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on')
 		$secureLocation = true;
