@@ -1,6 +1,8 @@
 <?php
 session_start(); 
 /* Created on Feb 4, 2006 */
+include_once "config.php";
+
 include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
 ?>

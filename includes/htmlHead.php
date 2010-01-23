@@ -537,10 +537,11 @@ function getToolbarPrefix(){
 		$secureLocation = false;
 		$prefix = $prefix . "/test";
 	}
-	if(strstr($_SERVER['PHP_SELF'],"/rmk/") != FALSE){
+	if(isShopServer() && strstr($_SERVER['PHP_SELF'],"/rmk/") != FALSE){
 		$secureLocation = false;
 		$prefix = $prefix . "/rmk";
 	}
+	
 	if(array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on')
 		$secureLocation = true;
 		
@@ -607,28 +608,7 @@ function isDebugMachine(){
 	return ($_SERVER['HTTP_HOST'] == 'carpus.homelinux.org'
 			|| $_SERVER['HTTP_HOST'] == "localhost");	
 }
-function isCarpusServer(){
-	$address = '192.168.1.99';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		return true;
-	}
-	$address = '192.168.1.90';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		return true;
-	}
-	$address = 'carpus.homelinux.org';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		return true;
-	}
-	return false;
-}
-function isShopServer(){
-	$address = '192.168.1.110';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		return true;
-	}
-	return false;
-}
+
 function isShopTestServer(){
 	$currPage=$_SERVER['PHP_SELF'];
 	if(strrpos($currPage,"testrmk") > 0) return true;

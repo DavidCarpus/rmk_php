@@ -1,5 +1,7 @@
 <?php
 /* * Created on Jan 1, 2006 */
+include_once "../config.php";
+
 session_start(); 
 /* Created on Feb 4, 2006 */
 include_once "../includes/db/db.php";
@@ -125,11 +127,10 @@ function getTimes($file){
 	return $contents;
 }
 
-
-if(!loggedIn()){
-	session_destroy();
+if (!authenticate()){
 	header("Location: "."../");
 }
+
 ?>
 
 <LINK href="../Style.css" rel="stylesheet" type="text/css">

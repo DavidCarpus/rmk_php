@@ -1,4 +1,6 @@
 <?php 
+include_once "../config.php";
+
 session_start(); 
 /* * Created on Feb 4, 2006 */
 include_once "../includes/db/db.php";
