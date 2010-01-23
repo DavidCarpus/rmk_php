@@ -452,6 +452,7 @@ function shopToolbar(){
 
 function toolbar(){
 	$prefix = getToolbarPrefix();
+	$results ="";
 
 	$menu = array(
 //				array('', ''),
@@ -469,7 +470,7 @@ function toolbar(){
 				);
 	$currPage=getCurrPage();
 	
-	$results = $results . "\n<div class='leftnavigation'>\n";
+	$results .=  "\n<div class='leftnavigation'>\n";
 //	$results = $results . "<HR>Test<HR>";
 //	$results = $results . $currPage;
 	

@@ -41,13 +41,16 @@ function localHref($question){
 //#anchorname
 }
 
-
+echo headSegments("Frequently Asked Questions", array("Style.css"), "print.css");
 ?>
 
+<body>
 
 
-<LINK href="Style.css" rel="stylesheet" type="text/css">
+<?php echo "<script type='text/javascript' src='includes/customer.js?" . time() . "' ></script>"; ?>
+
 <?php echo logo_header(""); ?>
+
 <div class="mainbody">
 	<div class="centerblock">
 		<?php echo toolbar(); ?>

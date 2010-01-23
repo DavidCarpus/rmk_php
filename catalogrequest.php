@@ -29,7 +29,7 @@ echo headSegments("Catalog Request", array("Style.css"), "print.css");
 <body>
 
 
-<?php echo "<script type='text/javascript' src='../includes/customer.js?" . time() . "' ></script>"; ?>
+<?php echo "<script type='text/javascript' src='includes/customer.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header(""); ?>
 

@@ -6,11 +6,15 @@ include_once "config.php";
 include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
 include_once "includes/catalog.php";
+
+echo headSegments("Online Catalog", array("Style.css"), "print.css");
 ?>
 
-<html>
-<?php echo headSegment(); ?>
 <body>
+
+
+<?php echo "<script type='text/javascript' src='includes/customer.js?" . time() . "' ></script>"; ?>
+
 <?php echo logo_header(""); ?>
 <div class="mainbody">
 	<div class="centerblock">

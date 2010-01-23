@@ -5,8 +5,15 @@ include_once "config.php";
 
 include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
+
+echo headSegments("The History", array("Style.css"), "print.css");
 ?>
-<LINK href="Style.css" rel="stylesheet" type="text/css">
+
+<body>
+
+
+<?php echo "<script type='text/javascript' src='includes/customer.js?" . time() . "' ></script>"; ?>
+
 <?php echo logo_header(""); ?>
 
  <div class="mainbody">
