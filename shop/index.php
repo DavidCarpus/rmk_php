@@ -89,8 +89,8 @@ echo headSegments("RMK Shop Access", array("../ShopStyle.css", "../Style.css", "
 </div>
 
 <?php
-echo debugStatement($mode);
-echo debugStatement(dumpDBRecord($formValues));
+//echo debugStatement($mode);
+//echo debugStatement(dumpDBRecord($formValues));
 ?>
 
 </body>

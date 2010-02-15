@@ -32,7 +32,7 @@ class Search extends Base
 			
 			$results .= "</form>";
 			$results .= "</div><!-- End $formName -->\n";
-			echo debugStatement(dumpDBRecord($formValues));
+//			echo debugStatement(dumpDBRecord($formValues));
 			return $results;
 	}
 	
