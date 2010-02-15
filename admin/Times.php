@@ -9,10 +9,7 @@ include_once "../includes/htmlHead.php";
 include_once "../includes/catalog.php";
 include_once "../includes/adminFunctions.php";
 
-function getTimeString(){
-	return trim( 
-"
-4/14 - 2
+$oldTime="4/14 - 2
 1/17 - 5
 1/5 - 3
 1/2 - 2
@@ -48,7 +45,12 @@ function getTimeString(){
 4/22 - 1
 4/15 - 1
 4/15 - 1
-4/8 - 8
+4/8 - 8";
+
+function getTimeString(){
+	return trim( 
+"
+
 ");
 
 }

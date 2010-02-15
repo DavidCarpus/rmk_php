@@ -171,10 +171,14 @@ function toDoItems(){
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#55933 – bill to and ship to address are not displayed");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#67761 – calculate tax on subtotal amt");
 	$results[] = array("Done"=>"2008-08-14", "Text"=>"Shop - When searching by invoice, ignore 'older' flag");
-	$results[] = array("Done"=>"", "Text"=>"Add 'shop' to menu with same display restrictions as 'admin'");
+	$results[] = array("Done"=>"2010-01-06", "Text"=>"Add 'shop' to menu with same display restrictions as 'admin'");
+	$results[] = array("Done"=>"", "Text"=>"Shop system - add 3 more weeks back.");
+	$results[] = array("Done"=>"", "Text"=>"Shop system - Sort invoices by name when searching.");
+	$results[] = array("Done"=>"", "Text"=>"Shop system - Search with an initial:Scott r maynard");
+	$results[] = array("Done"=>"", "Text"=>"Shop system - Add to shop toolbar, link to 'real' website on home.");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
-	
+
 	return $results;
 }
 
