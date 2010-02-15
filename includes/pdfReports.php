@@ -1,6 +1,153 @@
 <?php
 include_once "pdfCreator/class.ezpdf.php";
 include_once DB_INC_DIR. "Invoices.class.php";
+include_once FORMS_DIR. "Base.class.php";
+
+function orderCmp($a, $b)
+{
+    if ($a['ordertype'] == $b['ordertype']) {
+    	return 0;
+    }
+    return ($a['ordertype'] < $b['ordertype']) ? -1 : 1;
+}
+	
+class CwebOrderReport extends Cezpdf {
+	
+	public $orderData;
+	public $mainFont;
+	public $footerFont;
+	
+	public function __construct($orderData) {
+		parent::__construct(); 
+		$this->orderData = $orderData;
+		
+		$this->mainFont = PDF_FONT_DIR .'Times-Roman.afm';
+		$this->footerFont = PDF_FONT_DIR .'Courier.afm';
+	}	
+	
+	public function createReport() 	//	Default LTR: 612 x 792
+	{
+		$pageHeight=810; $pagewidth=612;
+		$this->ezSetMargins(90,70,50,50);
+
+		$this->addObject($this->pageHeaderFooter("Web Orders"),'all');
+		$toSort=$this->orderData;
+		usort ( $toSort , "orderCmp" );
+		$this->orderData = $toSort;
+		$this->orderList();
+	}
+	
+
+	
+	function orderList()
+	{
+		$col=0;
+		$lastType=0;
+		$baseFormsClass = new Base();
+		$currentY=780;
+		$leftFieldCount=0;
+		
+//		$fields = $this->getRequestFields($this->orderData[0]);
+//		$this->addRequest($fields, $currentY, 0);
+//		$this->addRequest($fields, $currentY, 1);
+		
+		foreach ($this->orderData as $order) {
+			if($lastType != $order['ordertype']){
+				$orderType = $baseFormsClass->requestTypeFromID($order['ordertype']);	
+//				if($nextY < 100){
+//					$currentY=760;
+//					$this->ezText(" ");
+//				}	
+				if ($col==1){ // shift to 'new' row
+					$currentY -= $leftFieldCount*16;
+				}
+				$this->addText(210, $currentY, 16, $orderType);
+				$currentY -= 16;
+				$col=0;
+				$lastType = $order['ordertype'];				
+			}
+			$fields = $this->getRequestFields($order);
+//			$fields[] = $col;
+			$this->addRequest($fields, $currentY, $col);
+			
+			$fieldCnt=count($fields);
+			if ($col==0) $leftFieldCount=$fieldCnt;
+			$yShift= ($col==1)? max(array($leftFieldCount, $fieldCnt)) *16: 0;
+			$nextY = $currentY - $yShift - 10;
+			$col = ($col==0)? 1:0;			
+			if ($col==0) $currentY=$nextY;
+			if($nextY < 50){
+				$currentY=780;
+				$this->ezText(" ");
+				$this->ezText(" ");
+			}
+		}		
+	}
+	
+	function addRequest($fields, $currentY, $col){
+		$nextY = $currentY - (16*count($fields));
+		$this->ezSetY($currentY);
+		for($i = 0; $i < count($fields); $i++){
+			$x= ($col==0) ? 20: 306;
+			$this->addText($x, $currentY - (16*$i), 16, $fields[$i]);				
+		}		
+//			$nextY = $currentY - (16*count($fields));
+//			$this->ezSetY($currentY);
+//			for($i = 0; $i < count($fields); $i++){
+//				$this->addText(50+(612/2*$col), $currentY + (16*$i), 16, $fields[$i]);				
+//			}
+//			$this->ezSetX($currentY);
+//			$this->ezText($currentY);
+//			$this->ezText(dumpDBRecord($fields));
+	}
+	
+	function getRequestFields($order)
+	{
+		$results=array();
+		
+		$text="";
+		if(strlen($order['name']) > 0) $text .= $order['name'];
+//		if(strlen($order['email']) > 0 && strlen($text) > 0) $text .= " - ";
+//		if(strlen($order['email']) > 0) $text .= $order['email'];
+		if(strlen($text) > 0) 			$results[] = $text;
+		if(strlen($order['email']) > 0) $results[] = $order['email'];
+		
+		$text="";
+		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
+		if(strlen($order['address2']) > 0) $results[] = $order['address2'];
+		if(strlen($order['address3']) > 0) $results[] = $order['address3'];
+		$results[] = $order['city'] . " " . $order['state'] . " " . $order['zip'] . " " . $order['country'];	
+		
+		switch ($order['ordertype']) {		
+			case 4:
+				$ccText = $order['cctype'];
+				$ccText .=  " : " . $order['ccnumber'] . ":" . $order['ccvcode'];
+				$ccText .=  " (" . $order['ccexpire'] . ")";
+			break;
+		}
+		return $results;
+	}
+	
+	function pageHeaderFooter($reportTitle="Report")
+	{
+		$all = $this->openObject();
+		$this->saveState();
+		$this->setStrokeColor(0,0,0,1);
+		$this->line(20, 822, 578, 822);
+		$this->line(20, 796, 578, 796);
+		$this->line(20,40,578,40);
+		
+		$this->selectFont($this->mainFont);
+		$this->ezSetY(820);
+		$this->ezText("RANDALL MADE KNIVES", 16, array('justification' => 'center'));
+//		$this->ezText($reportTitle, 16, array('justification' => 'center'));
+		
+		$this->restoreState();
+		$this->closeObject();
+		return $all;
+	}
+		
+}
 
 class CcustomerReport extends Cezpdf {
 	

@@ -8,6 +8,8 @@ include_once FORMS_DIR. "Email.class.php";
 include_once DB_INC_DIR. "Emails.class.php";
 include_once INCLUDE_DIR. "class.phpmailer.php";
 
+include_once INCLUDE_DIR. "pdfReports.php";
+
 if (!authenticate("../")){
 	return;
 }
@@ -64,6 +66,13 @@ switch ($mode) {
 			$orderData['search_criteria']=$orderProcessingForms->getCurrentSearchCriteria($formValues);
 			$orderData['ordertypestring']=$orderProcessingForms->requestTypeFromID($orderData['ordertype']);			
 		}
+		break;
+	case "generatePDF":
+		$orderData = $orders->search($formValues);
+		$pdf = new CwebOrderReport($orderData);
+		$pdf->createReport();
+		$params= array('Content-Disposition'=>'WebOrders.pdf');
+		$pdf->stream($params);
 		break;
 	case "search":
 		$orderData = $orders->search($formValues);

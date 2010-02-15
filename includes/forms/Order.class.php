@@ -31,6 +31,7 @@ class Order extends Base
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Send"){return "submitEmail";}
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Review Request"){return "requestreview";}
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Submit Request"){return "requestsubmit";}
+		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Printable List"){return "generatePDF";}
 		
 		if(array_key_exists("statusUpdate", $formValues) && $formValues["statusUpdate"] == "UpdateStatus"){return "updatestatus";}
 		return "browse";	
@@ -84,6 +85,7 @@ class Order extends Base
 //		$results .= hiddenField('action','searchorders') . "\n";
 	
 		$results .=  $this->button("submitButton", "Search");
+		$results .=  $this->button("submitButton", "Printable List");
 		$results .= "\n</form>";
 		$results .= "</div><!-- End $formName -->\n";
 
