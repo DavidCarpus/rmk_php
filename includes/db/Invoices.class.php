@@ -342,14 +342,25 @@ class Invoices
 				$filter[]  .= "Customers.LastName like '%" . trim($names[0]) ."%'";
 				$filter[]  .= "Customers.FirstName like '%" . trim($names[1]) ."%'";
 				break;
+			case 'first m last':
+				$searchValue = $searchValues['searchValue'];
+				$names = explode(" ",$searchValues['searchValue']);
+//				echo debugStatement(dumpDBRecord($names));
+				$filter[]  .= "Customers.LastName like '%" . trim($names[2]) ."%'";
+				$filter[]  .= "Customers.FirstName like '%" . trim($names[0]) . " " . trim($names[1]) ."%'";
+				break;
 			default:
 				echo debugStatement("Unable to determine search criteria type: </br>".dumpDBRecord($searchValues));
 				return;
 				break;
 		}
 		
-		$minDate = date("Y-m-d",strtotime(date("Y-m-d", time()) ." -2 year"));
-		$filter[]  .= "DateEstimated > '$minDate'";
+		$pivotDate = date("Y-m-d",strtotime(date("Y-m-d", time()) ." -3 year"));
+		if(array_key_exists('Older', $searchValues) &&  $searchValues['Older'] == 1){
+			$filter[]  .= "DateEstimated < '$pivotDate'";			
+		} else {
+			$filter[]  .= "DateEstimated > '$pivotDate'";
+		}
 				
 		$queryFilter = " where " . $filter[0];
 		for($filterIndex=1; $filterIndex < sizeof($filter); $filterIndex++)

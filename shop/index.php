@@ -41,6 +41,7 @@ switch ($mode) {
 		break;	
 	case "search":
 		$searchType = $searchForms->getSearchType($formValues);
+		$formValues['Older'] = (array_key_exists("Newer", $formValues))? 0: 1;
 		$formValues['searchType'] = $searchType;
 		if($searchType == 'invoice'){
 			$invoice = $invoiceDbAccess->details( $formValues['searchValue'] );

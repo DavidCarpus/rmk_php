@@ -24,8 +24,15 @@ class Search extends Base
 			if(array_key_exists('CustomerID', $formValues)){
 				$results .=  "<input type='hidden' name='CustomerID' value='". $formValues['CustomerID'] . "' />";
 			}
+			if(array_key_exists('Older', $formValues) &&  $formValues['Older'] == 1){
+				$results .=  $this->button("Newer", "Newer");
+			} else {
+				$results .=  $this->button("Older", "Older");				
+			}
+			
 			$results .= "</form>";
 			$results .= "</div><!-- End $formName -->\n";
+			echo debugStatement(dumpDBRecord($formValues));
 			return $results;
 	}
 	
@@ -67,7 +74,11 @@ class Search extends Base
 			return "last,first";
 		}
 		$names = explode(" ",$searchValue);
-		if(count($names) > 1){
+		echo count($names);
+		if(count($names) == 3){
+			return "first m last";
+		}
+		if(count($names) == 2){
 			return "first last";
 		}
 		return "last";			
@@ -103,6 +114,11 @@ class Search extends Base
 				return $custClass->fetchCustomersByLname($formValues['searchValue']);
 //				return "Search by customer last name";
 			break;
+			case 'first m last':
+				$names = explode(" ",$formValues['searchValue']);
+				echo debugStatement(dumpDBRecord($names));
+				return $custClass->fetchCustomersByFirstAndLast(trim($names[0]) . " " . trim($names[1]), $names[2]);
+				break;
 			case "CustomerID":{
 				$results = array();
 				$results[] = $custClass->fetchCustomer($formValues['CustomerID']);
