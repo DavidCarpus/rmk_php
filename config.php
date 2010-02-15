@@ -38,7 +38,7 @@ define("PDF_FONT_DIR", "/var/www/rmk/includes/pdfCreator/fonts/");
 	
 }
 
-define("MAX_EMAIL_LIST_LEN", 30);
+define("MAX_EMAIL_LIST_LEN", 90);
 define("BASE_IMG_URL", "/test/images/");
 define("BASE_IMG_FILEPATH", "/var/www/html/test/images/catalog");
 ?>
