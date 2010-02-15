@@ -87,10 +87,14 @@ function getPageDescription($page){
 	return $results;
 }
 
+echo headSegments("Web Copy/Text", array("../Style.css"), "../print.css");
 ?>
-<html>
-<?php echo headSegment("../Style.css"); ?>
+
 <body>
+
+
+<?php echo "<script type='text/javascript' src='../includes/customer.js?" . time() . "' ></script>"; ?>
+
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">

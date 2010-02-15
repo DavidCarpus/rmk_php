@@ -7,7 +7,7 @@ include_once "includes/db/db.php";
 include_once "includes/htmlHead.php";
 
 // echo dumpServerVariables(); 
-echo headSegments("Catalog Request", array("Style.css"), "print.css");
+echo headSegments("Randall Made Knives", array("Style.css"), "print.css");
 ?>
 
 <body>
@@ -20,7 +20,6 @@ echo headSegments("Catalog Request", array("Style.css"), "print.css");
 	<div class="centerblock">
 		<?php echo toolbar(); ?>
 		<div class="content" align=center>
-			<?php isDebugMachine(); ?>
 			<img src='<?php echo getBaseImageDir(); ?>/main.jpg'>
 		</div>
 	</div>
