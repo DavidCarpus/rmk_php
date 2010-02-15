@@ -416,6 +416,8 @@ span.cap-g {
 #customerCatalogRequest .ccexpire {width:60px;  }
 */
 
+#sendEmailForm .entryfield input {width:220px;  }
+
 #paymentSubmissionResponse { display: block; float: left; width:600px; background-color: #FF2200; }
 
 #na {background-color: #FFFF99;)
