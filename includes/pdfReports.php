@@ -67,7 +67,7 @@ class CwebOrderReport extends Cezpdf {
 				$lastType = $order['ordertype'];				
 			}
 			$fields = $this->getRequestFields($order);
-//			$fields[] = $col;
+//			$fields[sizeof($fields)-1] .= " - " . $currentY;
 			$this->addRequest($fields, $currentY, $col);
 			
 			$fieldCnt=count($fields);
@@ -76,10 +76,10 @@ class CwebOrderReport extends Cezpdf {
 			$nextY = $currentY - $yShift - 10;
 			$col = ($col==0)? 1:0;			
 			if ($col==0) $currentY=$nextY;
-			if($nextY < 50){
+			if($nextY <= 70){
 				$currentY=780;
-				$this->ezText(" ");
-				$this->ezText(" ");
+				$this->newPage();
+//				$this->ezText(" ");
 			}
 		}		
 	}
@@ -116,7 +116,12 @@ class CwebOrderReport extends Cezpdf {
 		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
 		if(strlen($order['address2']) > 0) $results[] = $order['address2'];
 		if(strlen($order['address3']) > 0) $results[] = $order['address3'];
-		$results[] = $order['city'] . " " . $order['state'] . " " . $order['zip'] . " " . $order['country'];	
+		$results[] = $order['city'] . " " . $order['state'] . " " . $order['zip'];
+		$country = strtoupper($order['country']);
+		$isUSA = $country  == "USA" || strncmp($country, "UNITED STATES", 13) == 0;
+		if(! $isUSA){	
+			$results[] = $order['country'];
+		}	
 		
 		switch ($order['ordertype']) {		
 			case 4:
