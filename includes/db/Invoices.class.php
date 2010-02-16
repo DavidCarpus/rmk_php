@@ -372,7 +372,7 @@ class Invoices
 		$query .= " ORDER BY Customers.LastName, Customers.FirstName, dateSort";
 		
 		 // sort by name
-		echo $query;
+//		echo $query;
 				
 		return getDbRecords($query);		
 	}
