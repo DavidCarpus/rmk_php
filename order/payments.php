@@ -11,6 +11,12 @@ $paymentDB = new WebPayments();
 
 $mode=$paymentForms->entryFormMode($formValues);
 
+if($mode == 'review'){
+	if(!$paymentDB->validateData($formValues) ){ 
+		$formValues['ERROR']=$paymentDB->validationError;	
+		$mode='err';
+	}
+}
 if($mode == 'submit'){
 	if(!$paymentDB->validateData($formValues) ){ 
 		$formValues['ERROR']=$paymentDB->validationError;	

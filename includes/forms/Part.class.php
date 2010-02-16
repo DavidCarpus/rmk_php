@@ -106,11 +106,7 @@ class Part extends Base
 		$results = "";
 		$results .=  "<div id='PartList'>\n";
 		
-   		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-//			$results .=  debugStatement("Errors - " . print_r($errors, true));
-		}
+   		$errors = $this->retrieveErrorArray($formValues);
 		
 		$formName="PartList";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>" . "\n" ;
@@ -261,10 +257,7 @@ class Part extends Base
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='partEdit.php' method='post'>" . "\n" ;
 		
-		$errors = array();
-		if(array_key_exists("ERROR", $partWithPrices) && count($partWithPrices['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $partWithPrices['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($partWithPrices);
 			
 		$fields = array('PartCode', 'Description', 'Discountable', 'BladeItem', 'Taxable', 'Active', "Sheath" );
 		foreach($fields as $name)

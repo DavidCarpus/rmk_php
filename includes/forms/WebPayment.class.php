@@ -32,7 +32,7 @@ class WebPayment extends Base
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
 		
-		$errors = array();
+		$errors = $this->retrieveErrorArray($formValues);
 		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
 		foreach($fields as $name=>$label)
 		{
@@ -70,11 +70,7 @@ class WebPayment extends Base
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
 		
-	   	$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
-//		echo "Errors:" . dumpDBRecord($errors);
+	   	$errors = $this->retrieveErrorArray($formValues);
 				
 		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
 		foreach($fields as $name=>$label)

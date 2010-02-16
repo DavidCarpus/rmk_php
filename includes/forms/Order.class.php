@@ -296,11 +296,7 @@ class Order extends Base
 		$results .= "<div style='color:red'>* These fields are required. <br/>Your order/quote will not process if they are empty.</div>";
 		$results .= "<br />\n" ;
 			
-		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
-//		echo "Errors:" . dumpDBRecord($errors);
+		$errors = $this->retrieveErrorArray($formValues);
 		
 		$fields=array("name"=>"Full Name *", "email"=>"Email Address *", "address1"=>"Billing Address *", 
 			"address2"=>"&nbsp;", "address3"=>"&nbsp;", "city"=>"City *", "state"=>"State/Province *", 

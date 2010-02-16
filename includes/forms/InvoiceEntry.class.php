@@ -265,10 +265,7 @@ class InvoiceEntry extends Base
 		if(array_key_exists("submit", $formValues))	$values['submit'] = $formValues['submit']; 
 		//		return;
 				
-		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($formValues);
 				
 		$results="";
 		$results .=  "<a name='$formName'></a>\n";

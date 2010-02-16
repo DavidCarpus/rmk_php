@@ -112,10 +112,7 @@ class Catalog extends Base
    	   	$formName="editCategoryForm";
    	   	$category = $this->getCategoryFromArray($categories, $formValues['catalogcategories_id']);
    	   	
-   		$errors = array();
-		if(array_key_exists("ERROR", $categories) && count($categories['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $categories['ERROR']), true);
-		}
+   		$errors = $this->retrieveErrorArray($formValues);
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
@@ -159,10 +156,7 @@ class Catalog extends Base
    {
    	   	$formName="editModelForm";
    	   	
-   		$errors = array();
-		if(array_key_exists("ERROR", $categories) && count($categories['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $categories['ERROR']), true);
-		}
+   		$errors = $this->retrieveErrorArray($formValues);
 		
 		$results="";
 		$results .=  "<div id='$formName'>" . "\n";
@@ -231,10 +225,7 @@ class Catalog extends Base
 			  "Please use this Secure Form, or if you prefer, print this form and fax it to us (407) 855-9054. " .
 			  "Minimum age to order is 16 years old.\n\n";
    	   		
-   		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
+   		$errors = $this->retrieveErrorArray($formValues);
 		
 		$results= htmlizeText($prefix);
 		$results .=  "<div id='$formName'>" . "\n";

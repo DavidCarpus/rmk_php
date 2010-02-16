@@ -150,10 +150,7 @@ class Customer extends Base
 		$results ="";
 //		$results .= debugStatement(dumpDBRecord($formValues));
 		
-		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($formValues);
 //		$results .= debugStatement(dumpDBRecord($formValues));
 		
 		$results .=  "<br /><br />";
@@ -184,10 +181,7 @@ class Customer extends Base
 		$results .=  "<div id='$formName'>\n";
 		$results .=  "<form name='$formName' action='customerEdit.php' method='$this->formMode'>"  . "\n";
 
-		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($formValues);
 		
 		$fields = array('Prefix', 'FirstName', 'LastName', 'Suffix', 'PhoneNumber', 'EMailAddress', 'Memo', 'Terms', 'Discount');
 		foreach( $fields as $name)

@@ -99,10 +99,7 @@ class Email extends Base
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='".$_SERVER['PHP_SELF']."' method='post'>\n" ;
 
-		$errors = array();
-		if(array_key_exists("ERROR", $emailData) && count($emailData['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $emailData['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($emailData);
 		
 		$fields = array('fromaddress', 'toaddress', 'messagesubject', 'message', 'customername');
 		foreach($fields as $name)

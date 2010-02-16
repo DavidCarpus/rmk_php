@@ -68,10 +68,7 @@ class Invoice extends Base
 		$formName="InvoiceDetails";
 		if(!array_key_exists('invoice_num', $invoice)) $invoice['invoice_num'] = "";
 
-		$errors = array();
-		if(array_key_exists("ERROR", $invoice) && count($invoice['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $invoice['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($invoice);
 		$readOnly = !( ($mode == "edit") || ($mode == "new") || $mode == "err" );
 		
 		$results="";

@@ -212,10 +212,8 @@ class Base
 	public function creditCardFormBlock($formValues, $ccTypeOptions, $hide=true){
 		$results="";
 		
-		$errors = array();
-		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
-			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
-		}
+		$errors = $this->retrieveErrorArray($formValues);
+
 		$hideStyle = ($hide)? "style='display: none;'": "style='display: block;'"; 
 		$results .= "<div id='ccdata' $hideStyle>";
 		$ccFields=array("cctype"=>"Credit Card Type", 
@@ -253,6 +251,18 @@ class Base
 			}
 		}
 		return $results;
+	}
+	
+	public function retrieveErrorArray($formValues){
+		$errors = array();
+		if(array_key_exists("ERROR", $formValues) && count($formValues['ERROR']) > 0){
+//			$errors=array_fill_keys(explode(",", $formValues['ERROR']), true);
+			$errs = explode(",", $formValues['ERROR']);
+			foreach ($errs as $err){
+				$errors[$err] = $err;
+			}
+		}
+		return $errors;		
 	}
 }
 ?>
