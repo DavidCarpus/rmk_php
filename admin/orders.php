@@ -68,7 +68,7 @@ switch ($mode) {
 		}
 		break;
 	case "generatePDF":
-		$orderData = $orders->search($formValues);
+		$orderData = $orders->search($formValues, true);
 		$pdf = new CwebOrderReport($orderData);
 		$pdf->createReport();
 		$params= array('Content-Disposition'=>'WebOrders.pdf');

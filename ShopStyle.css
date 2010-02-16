@@ -1,12 +1,12 @@
-#displayInvoiceList { display:block; float:left; margin-top:20px; }
+#displayInvoiceList { display:block; float:left; margin-top:20px;   padding-right:100px; }
 #displayInvoiceList .data {width:115px; display:block; float:left;  }
 #displayInvoiceList .Invoice {width:70px; display:block; float:left; clear:left;  }
 #displayInvoiceList .bdr { display:block; float:left; border-style:solid; border-width:1px;  }
 #displayInvoiceList .Name {width:220px; display:block; float:left; }
 #displayInvoiceList .lbl { font-weight: bold; text-align: center; }
 
-#shopInvoiceSearchForm { width:510px;  display:block; float:left; margin-top:20px; }
-#shopInvoiceSearchForm .entryfield input {  width:210px;  }
+#searchScreen { width:510px;  display:block; float:left; margin-top:20px; }
+#searchScreen .entryfield input {  width:210px;  }
 
 
 .knifeListDiv {width:810px;  display:block; float:left; margin-top:10px; }

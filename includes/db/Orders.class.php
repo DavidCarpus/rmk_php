@@ -23,7 +23,7 @@ class Orders
 		return $valid;
 	}
 	
-	function search($searchValues){
+	function search($searchValues, $nolimit=false){
 		$filter=array();
 		if($searchValues['requesttype'] > 0){
 			$filter[] = " ordertype=" . $searchValues['requesttype'];
@@ -52,7 +52,10 @@ class Orders
 		
 		$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders";
 		$query .= "$queryFilter";
-		$query .= " order by datesubmitted DESC, orders_id DESC LIMIT " . MAX_EMAIL_LIST_LEN;
+		if($nolimit)
+			$query .= " order by datesubmitted DESC, orders_id DESC";
+		else
+			$query .= " order by datesubmitted DESC, orders_id DESC LIMIT " . MAX_EMAIL_LIST_LEN;
 		
 //		echo debugStatement("Search orders values:<br/>" . dumpDBRecord($searchValues));
 //		echo debugStatement("Search orders:<br/>$query" );

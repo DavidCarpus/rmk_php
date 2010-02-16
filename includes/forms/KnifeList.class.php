@@ -47,8 +47,13 @@ class KnifeList extends Base
    		$results="";
    		$lastCustomer=0;
    		$prevCustomerDealer=false;
+   		
+
    		$results .= "\n<div class='knifeListDiv'>";
+   		$results .= $this->knifeListTotalCount($knifeListInvoices);
    		$results .= "\n";
+   		
+   		
    		foreach($knifeListInvoices as $invoice){
    			$bladeCount=$this->bladeItemCount($invoice);
    			if($bladeCount > 0) {
@@ -90,6 +95,20 @@ class KnifeList extends Base
    		return $results;
    }
    
+   function knifeListTotalCount($knifeListInvoices){
+   		$cnt=0;
+   		foreach($knifeListInvoices as $invoice){
+   			$bladeCount=$this->bladeItemCount($invoice);
+			$cnt += $bladeCount;
+   		}
+   		$results="\n<div class='knifeCountTotal'>";
+   		$results .= "Total Knives: $cnt";
+   		$results .= "</div><!-- End summary -->\n";
+   		return $results;
+   		
+   }
+   
+   
    function knifeListSummary($knifeListInvoices){
    		
    		$cnts=array();
@@ -97,7 +116,8 @@ class KnifeList extends Base
    			foreach ($invoice['entries'] as $entry){
    				if($entry['BladeItem']){
 	   				if(! array_key_exists($entry['PartDescription'], $cnts)) $cnts[$entry['PartDescription']] = 0;
-   					$cnts[$entry['PartDescription']] += 1;
+   					$cnts[$entry['PartDescription']] += $entry['Quantity'];
+//   					echo debugStatement(dumpDBRecord($entry));
    				}
    			}
    		}

@@ -37,7 +37,7 @@ class WebPayment extends Base
 		}
 //		echo "Errors:" . dumpDBRecord($errors);
 				
-		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number' );
+		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
 		foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];

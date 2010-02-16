@@ -8,7 +8,7 @@ class WebPayments extends BaseDBObject
 	
 	function validateData($values){
 		$valid=true;
-		$requiredFields = array('phone','invoice','ccnumber', "address1", 'city', 'state', 'zip', 'country');
+		$requiredFields = array('phone', 'name', 'invoice','ccnumber', 'ccname', "address1", 'city', 'state', 'zip', 'country');
 		foreach ($requiredFields as $field){
 			if($values[$field] == ""){$this->validationError .= "$field,"; $valid=false;continue;}			
 		}
