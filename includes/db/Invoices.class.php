@@ -319,8 +319,9 @@ class Invoices
 	}
 	public function getShopSearchResults($searchValues){
 		$query = "Select Invoice, date_format(DateOrdered, '%b %e %Y') as dateordered, 
-			date_format(DateEstimated, '%b %e %Y') as dateestimated,
-			date_format(DateShipped, '%b %e %Y') as dateshipped,  
+			date_format(DateEstimated, '%b %e %Y') as dateestimated, 
+			date_format(DateShipped, '%b %e %Y') as dateshipped, 
+			date_format(Invoices.DateEstimated, '%Y-%m-%d') as dateSort, 
 			Invoices.*, Customers.* 
 			from Invoices
 			left join Customers on Customers.CustomerID = Invoices.CustomerID
@@ -368,7 +369,10 @@ class Invoices
 			$queryFilter .= " and " . $filter[$filterIndex];			
 		}
 		$query .= "$queryFilter";
-//		echo $query;
+		$query .= " ORDER BY Customers.LastName, Customers.FirstName, dateSort";
+		
+		 // sort by name
+		echo $query;
 				
 		return getDbRecords($query);		
 	}
