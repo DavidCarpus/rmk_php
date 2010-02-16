@@ -33,6 +33,7 @@ echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.
 		<div class="content">
 		<?php
 			if($mode == 'browse' || $mode == 'err') echo $paymentForms->basicPaymentForm($formValues);
+			if($mode == 'review') echo $paymentForms->reviewPaymentRequest($formValues);
 			if($mode == 'submitted') echo $paymentForms->paymentSubmissionResponse($formValues);
 //			if($mode == 'submitted') echo $paymentForms->basicPaymentForm($formValues);
 			?>

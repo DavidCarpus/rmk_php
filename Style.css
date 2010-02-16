@@ -376,6 +376,15 @@ span.cap-g {
 #basicPaymentForm .entryfield .zip {width:130px;  }
 #basicPaymentForm .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
 
+#paymentSubmissionReviewForm { width:450px;  display: block; float: left;}
+#paymentSubmissionReviewForm input.btn{ width:210px;  display: block; float: left;}
+#paymentSubmissionReviewForm .entryfield input {width:250px;  }
+#paymentSubmissionReviewForm .entryfield .state {width:40px;  }
+#paymentSubmissionReviewForm .entryfield .zip {width:130px;  }
+#paymentSubmissionReviewForm .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
+
+
+
 #customerOrderForm_main {width:520px;  display: block; float: left; margin-top: 10px; }
 #customerOrderForm { display: block; float: left; margin-top: 10px;}
 
