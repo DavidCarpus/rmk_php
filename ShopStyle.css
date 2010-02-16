@@ -1,4 +1,4 @@
-#displayInvoiceList { display:block; float:left; margin-top:20px;   padding-right:100px; }
+#displayInvoiceList { display:block; float:left; margin-top:20px;   padding-right:200px; }
 #displayInvoiceList .data {width:115px; display:block; float:left;  }
 #displayInvoiceList .Invoice {width:70px; display:block; float:left; clear:left;  }
 #displayInvoiceList .bdr { display:block; float:left; border-style:solid; border-width:1px;  }
@@ -9,7 +9,7 @@
 #searchScreen .entryfield input {  width:210px;  }
 
 
-.knifeListDiv {width:810px;  display:block; float:left; margin-top:10px; }
+.knifeListDiv {width:810px;  display:block; float:left; margin-top:10px;   padding-right:100px;  }
 .knifeListDiv .customer { display:block; float:left;  clear:left;   }
 .knifeListDiv .invoice { display:block; float:left;  clear:left; width:100%;  padding-bottom:20px; }
 
