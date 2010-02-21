@@ -217,17 +217,9 @@ class Catalog extends Base
    public function customerCatalogRequest($formValues){
    	   	$formName="customerCatalogRequest";
    	   	
-   	   	$prefix = "All current catalog and non-catalog information with price lists will be sent via airmail. \n" .
-			  "There is a charge for catalogs mailed <B>outside</B> the United States.\n" .
-			  "USA address - no charge\n" .
-			  "Canada - US$3.00\n" .
-			  "All Other Countries - US$5.00\n" .
-			  "Please use this Secure Form, or if you prefer, print this form and fax it to us (407) 855-9054. " .
-			  "Minimum age to order is 16 years old.\n\n";
-   	   		
    		$errors = $this->retrieveErrorArray($formValues);
 		
-		$results= htmlizeText($prefix);
+		$results= $this->formPrefix('catalog');
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
 
@@ -252,11 +244,10 @@ class Catalog extends Base
 		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
 		
 		$results .=  $this->button("submit", "Request Catalog");
-		
-		$results .=  "* All fields are required. Your request will not process if they are empty.";
-		
+				
 		$results .= "</form>";
 		$results .= "</div><!-- End $formName -->\n";	
+		$results .= $this->formPostfix('catalog');
 		return $results;
    }
 }

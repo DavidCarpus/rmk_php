@@ -395,7 +395,7 @@ span.cap-g {
 #customerOrderForm textarea {width:300px;  }
 #customerOrderForm .optionblock { background-color: #DDDDDD;  }
 #customerOrderForm input.btn {width:140px; display: block; float: left; clear: left; margin-top: 10px; }
-#customerOrderForm  .entryfield input.option  {width:15px;  }
+#customerOrderForm  .entryfield input.option  {width:15px; margin-right: 2px; }
 #customerOrderForm .entryfield input {width:250px;  }
 
 #ccdata {width:500px;  display: block; float: left; margin-top: 10px; margin-left: 40px; border-style:solid;}
@@ -428,6 +428,11 @@ span.cap-g {
 #customerCatalogRequest .ccvcode {width:40px; }
 #customerCatalogRequest .ccexpire {width:60px;  }
 */
+
+#disseminatePolicy  { display: block; float: left; width:600px;  }
+#prefix  { display: block; float: left; width:800px; margin-bottom: 10px;  }
+#postfix  { display: block; float: left; width:800px; margin-top: 10px;  }
+
 
 #sendEmailForm .entryfield input {width:220px;  }
 
