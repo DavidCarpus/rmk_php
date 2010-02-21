@@ -26,8 +26,12 @@ class WebPayments extends BaseDBObject
 	function saveRequest($formValues){
 		$formValues['ordertype']=4;		
 		unset($formValues["submit"]);
-		
-		saveRecord("orders", "orders_id", $formValues);
+		$ccNumber = $formValues['ccnumber'];
+		$ccNumber = str_replace(" ", "",$ccNumber);
+		$ccNumber = str_replace("-", "",$ccNumber);
+		$formValues['ccnumber'] = $ccNumber;
+				
+		return saveRecord("orders", "orders_id", $formValues);
 	}
 	
 //	function checkCC_Date($date){

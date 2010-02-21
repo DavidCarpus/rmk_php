@@ -194,9 +194,11 @@ class Order extends Base
 				$value=$record['city'] . ", " . $record['state'] . " " . $record['zip']. " " . $record['country'];
 			}
 			if($name == 'CC'){
-				$value=$record['cctype'] . " : " . $record['ccnumber'] . " (" . $record['ccvcode']. ")\n";
-				$value.= "EXP: " . $record['ccexpire'];
-				$value.=" : " . $record['ccname'];
+				$ccnumber = $this->getFormattedCC($record['ccnumber']);
+				$value=substr($record['cctype'],0,1) . ": " . $ccnumber . "\n"; 
+				$value.= "EXP: " . $record['ccexpire']. "\n";
+				$value .= "#" . $record['ccvcode']. "\n";
+				$value.= $record['ccname'];
 				if(strlen( trim($record['cctype'] . $record['ccnumber'] . $record['ccvcode'])) == 0) $value="NONE";
 				if($value == "NONE" && 	$orderType="Catalog Request") $value="";
 			}
@@ -292,9 +294,14 @@ class Order extends Base
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>"  . "\n";
 		
+		$results .= $this->formPrefix('order');
+		
 		$results .=  "<div id='$formName"."_main'>" . "\n";
+		
+		
 		$results .= "<div style='color:red'>* These fields are required. <br/>Your order/quote will not process if they are empty.</div>";
 		$results .= "<br />\n" ;
+		
 			
 		$errors = $this->retrieveErrorArray($formValues);
 		
@@ -327,14 +334,18 @@ class Order extends Base
 		
 		$results .= "</div>";
 		
-	$results = $results . "It is the policy of Randall Made Knives NOT to disseminate names, addresses, or phone numbers to any person, organization or company.<br />";
 		
 		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions);
+		
 		
 		$results .=  $this->button("submitButton", "Review Request");
 		
 		$results .= "</div>";
 		$results .= "</form>";
+		$results .= $this->disseminatePolicy();
+		
+		$results .= $this->formPostfix('order');
+
 		return $results;
 	}
 
