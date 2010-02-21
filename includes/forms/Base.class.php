@@ -121,7 +121,7 @@ class Base
 		foreach($values as $value){
 			$chked = ($default == $value) ? "checked" : "";
 			$results .= "<span class='optionblock'>";
-			$results .= "<input name='$name' value='$value' $js type='radio' class='option' $chked />$value";
+			$results .= "<input name='$name' value='$value' $js type='radio' class='option' $chked />$value&nbsp;&nbsp;&nbsp;";
 			$results .= "</span>";
 		}
 
@@ -208,6 +208,35 @@ class Base
 //				" onmouseout='ajax_hideTooltip()'";
 		return "";
 	}
+	public function formPrefix($page){
+		$results = "";
+   		$copy = getSingleDbRecord("Select * from webcopy where page='$page'");
+		if(count($copy) > 0){
+			$results .= "<div id='prefix'>";
+			$results .= htmlizeText($copy['prefix']);
+			$results .= "</div>";
+		}
+		return $results;
+	}
+	public function formPostfix($page){
+		$results = "";
+   		$copy = getSingleDbRecord("Select * from webcopy where page='$page'");
+		if(count($copy) > 0){
+			$results .= "<div id='postfix'>";
+			$results .= htmlizeText($copy['postfix']);
+			$results .= "</div>";
+		}
+		return $results;
+	}
+	
+	public function disseminatePolicy(){
+		$results="";
+		$results .= "<div id='disseminatePolicy'>";
+		$results .= "It is the policy of Randall Made Knives NOT to disseminate names, addresses, or phone numbers ";
+		$results .= "to any person, organization or company.";
+		$results .= "</div>";	
+		return $results;
+	}
 	
 	public function creditCardFormBlock($formValues, $ccTypeOptions, $hide=true){
 		$results="";
@@ -263,6 +292,16 @@ class Base
 			}
 		}
 		return $errors;		
+	}
+	public function getFormattedCC($creditCard) {
+		$results="";
+		$split = str_split($creditCard, 4);
+		foreach ($split as $part) {
+			$results .= $part . "-";
+		}
+		// trim last "-"
+		$results = substr($results, 0 ,strlen($results)-1);
+		return $results;
 	}
 }
 ?>
