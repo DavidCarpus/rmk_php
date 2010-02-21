@@ -14,6 +14,20 @@ function isCarpusServer(){
 	}
 	return false;
 }
+function isCarpusLaptop(){
+	$address = '192.168.1.3';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+	$address = '127.0.0.1';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+	$address = 'localhost';
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		return true;
+	}
+}
 function isShopServer(){
 	$address = '192.168.1.110';
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
@@ -27,15 +41,14 @@ define("FORMS_DIR", "/var/www/html/test/includes/forms/");
 define("DB_INC_DIR", "/var/www/html/test/includes/db/");
 define("PDF_FONT_DIR", "/var/www/html/test/includes/pdfCreator/fonts/");
 
-} else if(isCarpusServer()){
+} else if(isCarpusServer() || isCarpusLaptop() ){
 define("INCLUDE_DIR", "/var/www/rmk/includes/");
 define("FORMS_DIR", "/var/www/rmk/includes/forms/");
 define("DB_INC_DIR", "/var/www/rmk/includes/db/");
 define("PDF_FONT_DIR", "/var/www/rmk/includes/pdfCreator/fonts/");
 	
 } else{
-	
-	
+	echo "Unknown system config: " . $_SERVER['SERVER_ADDR'];
 }
 
 define("MAX_EMAIL_LIST_LEN", 90);
