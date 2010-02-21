@@ -165,25 +165,35 @@ function toDoItems(){
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – please format to line up the decimals.");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"Knife order specs – same as accounting on invoices -  #55315 and #55318 – shows four knives, 2 were deleted and change to new models. Shows qty of 4.   (rmk purged today)");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"KNIFE LIST - The KNV  part number is still added into total qty.  ((purged today)) ");
-	$results[] = array("Done"=>"", "Text"=>"Blist for 1/31/0 - List by invoice number, then within invoice-Program to list model numbers numerically, then alpha.");
-	$results[] = array("Done"=>"", "Text"=>"Dealers – next to the invoice number, same line, display dealer name in italics.");
-	$results[] = array("Done"=>"", "Text"=>"End of Blist –  display grand total of knives");
+	$results[] = array("Done"=>"2009-03-24", "Text"=>"Blist for 1/31/0 - List by invoice number, then within invoice-Program to list model numbers numerically, then alpha.");
+	$results[] = array("Done"=>"2008-05-13", "Text"=>"Dealers – next to the invoice number, same line, display dealer name in italics.");
+	$results[] = array("Done"=>"2009-12-30", "Text"=>"End of Blist –  display grand total of knives");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#55933 – bill to and ship to address are not displayed");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#67761 – calculate tax on subtotal amt");
 	$results[] = array("Done"=>"2008-08-14", "Text"=>"Shop - When searching by invoice, ignore 'older' flag");
 	$results[] = array("Done"=>"2010-01-06", "Text"=>"Add 'shop' to menu with same display restrictions as 'admin'");
-	$results[] = array("Done"=>"", "Text"=>"Shop system - add 3 more weeks back.");
-	$results[] = array("Done"=>"", "Text"=>"Shop system - Sort invoices by name when searching.");
-	$results[] = array("Done"=>"", "Text"=>"Shop system - Search with an initial:Scott r maynard");
-	$results[] = array("Done"=>"", "Text"=>"Shop system - Add to shop toolbar, link to 'real' website on home.");
+	$results[] = array("Done"=>"2010-02-15", "Text"=>"Shop system - add 3 more weeks back.");
+	$results[] = array("Done"=>"2010-02-17", "Text"=>"Shop system - Sort invoices by name when searching.");
+	$results[] = array("Done"=>"2010-02-15", "Text"=>"Shop system - Search with an initial:Scott r maynard");
+	$results[] = array("Done"=>"2010-01-22", "Text"=>"Shop system - Add to shop toolbar, link to 'real' website on home.");
+	$results[] = array("Done"=>"2010-02-17", "Text"=>"Customer order form - add more spacing between quote and order options");
+	$results[] = array("Done"=>"2010-02-17", "Text"=>"Catalog request form - Not pulling 'header' from DB like it should. CA $4 Other $6");
+	$results[] = array("Done"=>"2010-02-18", "Text"=>"Admin Order processing - CC numbers should have dashes every 4 characters");
+	$results[] = array("Done"=>"2010-02-18", "Text"=>"Admin Order processing - screen and printable list credit info as CC \\n Expiration \\n vcode");
+	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
+	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
+	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
+	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
+	$results[] = array("Done"=>"", "Text"=>"Shop knife list - add column and list models for each invoice");
+	$results[] = array("Done"=>"", "Text"=>"?? Sort orders to have foreign seperate from US??");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
-
+	
 	return $results;
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated Mar 1, 2007</i><br />";
+	$results = "Web priority list <i>Last Updated Feb 17, 20107</i><br />";
 	$results .= "<ol id='toDoList'>";
 	$items = toDoItems();
 	foreach ($items as $item) {
