@@ -3,8 +3,47 @@ include_once "pdfCreator/class.ezpdf.php";
 include_once DB_INC_DIR. "Invoices.class.php";
 include_once FORMS_DIR. "Base.class.php";
 
-function orderCmp($a, $b)
+function isUSZipCode($zipCode)
 {
+	$zipCode = str_replace("-", "",$zipCode);
+	$zipCode = trim($zipCode);
+	if(strlen($zipCode) == 5 || strlen($zipCode) == 9 )	return is_numeric($zipCode);
+//	echo "UNK zip: $zipCode" . " " . strlen($zipcode) . "<BR>";
+	return 0;
+}
+
+function webOrderCountry($order)
+{
+	$country = strtoupper($order['country']);
+	if($country  == "USA" || $country  == "US"  || $country  == "U.S.A." 
+		|| strncmp($country, "UNITED STATES", 13) == 0
+		){
+		return "1";
+	}
+	if(isUSZipCode($order['zip'])) return "1";
+	
+	if($country  == "CA" || strncmp($country, "CANADA", 13) == 0) return "2";
+//	echo $country . " " . $order['state']. " " . $order['zip'] . "<BR>";
+	return "3";
+}
+
+function orderLabelSort($a, $b)
+{
+	// Sort First by 'ordertype'
+	// Sort Next  by country - US, CA, Other
+    if ($a['ordertype'] == $b['ordertype']) {
+    	$cntryA = webOrderCountry($a); 
+    	$cntryB = webOrderCountry($b); 
+    	if ($cntryA == $cntryB) return 0;
+    	else ($cntryA < $cntryB) ? -1 : 1;
+    }
+    return ($a['ordertype'] < $b['ordertype']) ? -1 : 1;
+}
+	
+function orderDetailSort($a, $b)
+{
+	// Sort First by country - US, CA, Other
+	// Sort Next by 'ordertype'
     if ($a['ordertype'] == $b['ordertype']) {
     	return 0;
     }
@@ -28,6 +67,16 @@ class CwebOrderReport extends Cezpdf {
 	}	
 	public function setData($orderData){
 		$this->orderData = $orderData;				
+	}
+	
+	function orderCmp2($a, $b)
+	{
+		// Sort First by country - US, CA, Other
+		// Sort Next by 'ordertype'
+	    if ($a['ordertype'] == $b['ordertype']) {
+	    	return 0;
+	    }
+	    return ($a['ordertype'] < $b['ordertype']) ? -1 : 1;
 	}
 	
 	public function avery5160Alignment()
@@ -60,9 +109,14 @@ class CwebOrderReport extends Cezpdf {
 		
 		if(sizeof($this->orderData) > 0){
 			$toSort=$this->orderData;
-			usort ( $toSort , "orderCmp" );
+			usort ( $toSort , "orderLabelSort" );
 			$this->orderListLabels($toSort);
 		}
+	}
+	
+	public function orderListDetailed($data)
+	{
+		
 	}
 	
 	function printLabel($row, $col, $data)
