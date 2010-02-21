@@ -18,7 +18,12 @@ class WebPayment extends Base
 		$results="";
 		$results .=  "<div id='$responseDiv'>" . "\n";
 		
-		$results .= "We have received yor payment request and should be processing it within 5 business days.";
+		$results .= "We have received your payment request. ";
+		$results .= "</ br>";
+		$results .= "Credit card processing will be completed within the agreed payment terms. ";
+		$results .= "</ br>";
+		$results .= "Thank you. ";
+
 //		$results .= dumpDBRecord($formValues);
 		
 		$results .= "</div><!-- End $responseDiv -->\n";
