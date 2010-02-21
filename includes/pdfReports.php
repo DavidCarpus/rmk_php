@@ -14,94 +14,128 @@ function orderCmp($a, $b)
 class CwebOrderReport extends Cezpdf {
 	
 	public $orderData;
-	public $mainFont;
+	public $labelFont;
 	public $footerFont;
+//	public $pageHeight=830;
+//	public $pagewidth=612;
 	
-	public function __construct($orderData) {
-		parent::__construct(); 
-		$this->orderData = $orderData;
+	public function __construct() {
+		parent::__construct('LETTER'); 
+		$this->ezSetMargins(10,10,50,50);
 		
-		$this->mainFont = PDF_FONT_DIR .'Times-Roman.afm';
+		$this->labelFont = PDF_FONT_DIR .'Times-Roman.afm';
 		$this->footerFont = PDF_FONT_DIR .'Courier.afm';
 	}	
+	public function setData($orderData){
+		$this->orderData = $orderData;				
+	}
 	
+	public function avery5160Alignment()
+	{
+		$this->setStrokeColor(0,0,0,1);		
+		$this->selectFont($this->labelFont);
+		
+		$tickLength=15;
+		$tmpY=$this->ez['pageHeight']-20;
+		for ($i=0; $i < 11; $i++){
+			$this->line(1, $tmpY, $tickLength, $tmpY);	
+			if($i < 10){
+				$this->addText(1, $tmpY-12, 12, $tmpY);
+			}
+			$tmpY -= 78;
+		}
+		
+		$tmpX = 0;
+		for ($i=0; $i < 3; $i++){
+			$this->line($tmpX, 1, $tmpX, $tickLength);
+			$this->addText($tmpX + 5, 10, 12, $tmpX);		
+			$tmpX += 214;
+		}		
+	}
 	public function createReport() 	//	Default LTR: 612 x 792
 	{
-		$pageHeight=810; $pagewidth=612;
-		$this->ezSetMargins(90,70,50,50);
-
-		$this->addObject($this->pageHeaderFooter("Web Orders"),'all');
-		$toSort=$this->orderData;
-		usort ( $toSort , "orderCmp" );
-		$this->orderData = $toSort;
-		$this->orderList();
+		$this->setStrokeColor(0,0,0,1);		
+		$this->selectFont($this->labelFont);		
+//		$this->avery5160Alignment();
+		
+		if(sizeof($this->orderData) > 0){
+			$toSort=$this->orderData;
+			usort ( $toSort , "orderCmp" );
+			$this->orderListLabels($toSort);
+		}
+	}
+	
+	function printLabel($row, $col, $data)
+	{
+		$fontSize=12;
+		$currentX = 0;;
+		$currentY = $this->ez['pageHeight']-20 ;
+		
+		$currentX += ($col * 214);
+		$currentY -= (($row * 77) + $fontSize);
+		
+		foreach ($data as $row){
+			$this->addText($currentX, $currentY, $fontSize, $row);
+			$currentY -= $fontSize;
+		}
+		
 	}
 	
 
-	
-	function orderList()
-	{
+	function orderListLabels($data){
+		$row=0;
 		$col=0;
 		$lastType=0;
-		$baseFormsClass = new Base();
-		$currentY=780;
-		$leftFieldCount=0;
 		
-//		$fields = $this->getRequestFields($this->orderData[0]);
-//		$this->addRequest($fields, $currentY, 0);
-//		$this->addRequest($fields, $currentY, 1);
-		
-		foreach ($this->orderData as $order) {
-			if($lastType != $order['ordertype']){
-				$orderType = $baseFormsClass->requestTypeFromID($order['ordertype']);	
-//				if($nextY < 100){
-//					$currentY=760;
-//					$this->ezText(" ");
-//				}	
-				if ($col==1){ // shift to 'new' row
-					$currentY -= $leftFieldCount*16;
+		foreach ($data as $order) {
+			if($lastType != $order['ordertype'] && $lastType > 0){
+				if($col > 0){
+					$row++;
+					$col=0;
 				}
-				$this->addText(210, $currentY, 16, $orderType);
-				$currentY -= 16;
+				$currentY = $this->ez['pageHeight']-20 - (($row * 77) + $fontSize);
+				$this->line(1, $currentY, 600, $currentY);
+				if($row > 10){
+					$this->newPage();
+					$row=0;
+				}
+			}
+			$fields = $this->getLabelRequestFields($order);
+//			$fields[] = $col;			
+			$this->printLabel($row,$col,$fields);
+			$col++;
+			if($col >=3 ){
+				$row++;
 				$col=0;
-				$lastType = $order['ordertype'];				
 			}
-			$fields = $this->getRequestFields($order);
-//			$fields[sizeof($fields)-1] .= " - " . $currentY;
-			$this->addRequest($fields, $currentY, $col);
-			
-			$fieldCnt=count($fields);
-			if ($col==0) $leftFieldCount=$fieldCnt;
-			$yShift= ($col==1)? max(array($leftFieldCount, $fieldCnt)) *16: 0;
-			$nextY = $currentY - $yShift - 10;
-			$col = ($col==0)? 1:0;			
-			if ($col==0) $currentY=$nextY;
-			if($nextY <= 70){
-				$currentY=780;
+			if($row > 10){
 				$this->newPage();
-//				$this->ezText(" ");
+				$row=0;
 			}
+			$lastType = $order['ordertype'];	
 		}		
 	}
 	
-	function addRequest($fields, $currentY, $col){
-		$nextY = $currentY - (16*count($fields));
-		$this->ezSetY($currentY);
-		for($i = 0; $i < count($fields); $i++){
-			$x= ($col==0) ? 20: 306;
-			$this->addText($x, $currentY - (16*$i), 16, $fields[$i]);				
-		}		
-//			$nextY = $currentY - (16*count($fields));
-//			$this->ezSetY($currentY);
-//			for($i = 0; $i < count($fields); $i++){
-//				$this->addText(50+(612/2*$col), $currentY + (16*$i), 16, $fields[$i]);				
+//	function orderList()
+//	{
+//			if($lastType != $order['ordertype']){
+//				$orderType = $baseFormsClass->requestTypeFromID($order['ordertype']);	
+////				if($nextY < 100){
+////					$currentY=760;
+////					$this->ezText(" ");
+////				}	
+//				if ($col==1){ // shift to 'new' row
+//					$currentY -= $leftFieldCount*12;
+//				}
+//				$this->addText(210, $currentY, 12, $orderType);
+//				$currentY -= 12;
+//				$col=0;
+//				$lastType = $order['ordertype'];				
 //			}
-//			$this->ezSetX($currentY);
-//			$this->ezText($currentY);
-//			$this->ezText(dumpDBRecord($fields));
-	}
+//	}
+
 	
-	function getRequestFields($order)
+	function getLabelRequestFields($order)
 	{
 		$results=array();
 		
@@ -110,7 +144,7 @@ class CwebOrderReport extends Cezpdf {
 //		if(strlen($order['email']) > 0 && strlen($text) > 0) $text .= " - ";
 //		if(strlen($order['email']) > 0) $text .= $order['email'];
 		if(strlen($text) > 0) 			$results[] = $text;
-		if(strlen($order['email']) > 0) $results[] = $order['email'];
+//		if(strlen($order['email']) > 0) $results[] = $order['email'];
 		
 		$text="";
 		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
@@ -123,35 +157,17 @@ class CwebOrderReport extends Cezpdf {
 			$results[] = $order['country'];
 		}	
 		
-		switch ($order['ordertype']) {		
-			case 4:
-				$ccText = $order['cctype'];
-				$ccText .=  " : " . $order['ccnumber'] . ":" . $order['ccvcode'];
-				$ccText .=  " (" . $order['ccexpire'] . ")";
-			break;
-		}
+//		$results[] = $order['ordertype'];
+		
+//		switch ($order['ordertype']) {		
+//			case 4:
+//				$ccText = $order['cctype'];
+//				$ccText .=  " : " . $order['ccnumber'] . ":" . $order['ccvcode'];
+//				$ccText .=  " (" . $order['ccexpire'] . ")";
+//			break;
+//		}
 		return $results;
-	}
-	
-	function pageHeaderFooter($reportTitle="Report")
-	{
-		$all = $this->openObject();
-		$this->saveState();
-		$this->setStrokeColor(0,0,0,1);
-		$this->line(20, 822, 578, 822);
-		$this->line(20, 796, 578, 796);
-		$this->line(20,40,578,40);
-		
-		$this->selectFont($this->mainFont);
-		$this->ezSetY(820);
-		$this->ezText("RANDALL MADE KNIVES", 16, array('justification' => 'center'));
-//		$this->ezText($reportTitle, 16, array('justification' => 'center'));
-		
-		$this->restoreState();
-		$this->closeObject();
-		return $all;
-	}
-		
+	}	
 }
 
 class CcustomerReport extends Cezpdf {
