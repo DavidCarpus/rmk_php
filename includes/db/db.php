@@ -138,6 +138,7 @@ function setDB_Globals(){
 		$dbconfig['password']="rmkskeet";
 		$dbconfig['webDatabase']="newrmk";	
 		$dbconfig['address']=$address;
+		return;
 	}
 	
 	$address = '127.0.0.1';
@@ -147,6 +148,7 @@ function setDB_Globals(){
 		$dbconfig['password']="rmkskeet";
 		$dbconfig['webDatabase']="newrmk";
 		$dbconfig['address']=$address;
+		return;
 		
 	}
 	$address = 'localhost';
@@ -156,7 +158,16 @@ function setDB_Globals(){
 		$dbconfig['password']="rmkskeet";
 		$dbconfig['webDatabase']="newrmk";
 		$dbconfig['address']=$address;
-		
+		return;
+	}
+	
+	if($_SERVER['HTTP_HOST'] == 'localhost'){
+		$dbconfig['server'] = "localhost";
+		$dbconfig['username']="rmkweb";
+		$dbconfig['password']="rmkskeet";
+		$dbconfig['webDatabase']="newrmk";
+		$dbconfig['address']=$address;
+		return;
 	}
 	//		$dbconfig['server'] = "www.randallknives.com";
 //		$dbconfig['username']="uplzcvgw_rmkweb";
