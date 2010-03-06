@@ -14,11 +14,14 @@ function isUSZipCode($zipCode)
 
 function webOrderCountry($order)
 {
-	$country = strtoupper($order['country']);
+	$country = trim(strtoupper($order['country']));
 	if($country  == "USA" || $country  == "US"  || $country  == "U.S.A." 
 		|| strncmp($country, "UNITED STATES", 13) == 0
 		){
 		return "1";
+	}
+	if($country  == "FRANCE"  ){
+		return "3";
 	}
 	if(isUSZipCode($order['zip'])) return "1";
 	
@@ -34,8 +37,14 @@ function orderLabelSort($a, $b)
     if ($a['ordertype'] == $b['ordertype']) {
     	$cntryA = webOrderCountry($a); 
     	$cntryB = webOrderCountry($b); 
-    	if ($cntryA == $cntryB) return 0;
-    	else ($cntryA < $cntryB) ? -1 : 1;
+    	if ($cntryA == $cntryB){
+    		return strcmp(strtoupper($a['state']),$b['state']);
+//    		return 0;
+    	} else if($cntryA < $cntryB){
+    		return -1;
+    	} else {
+    		return 1;
+    	}
     }
     return ($a['ordertype'] < $b['ordertype']) ? -1 : 1;
 }
@@ -110,13 +119,177 @@ class CwebOrderReport extends Cezpdf {
 		if(sizeof($this->orderData) > 0){
 			$toSort=$this->orderData;
 			usort ( $toSort , "orderLabelSort" );
+//			foreach ($toSort as $row){
+//				echo $row['ordertype'] . "-" . $row['country'] . "-" . webOrderCountry($row) . "<BR>";
+//			}
 			$this->orderListLabels($toSort);
+			$this->newPage();
+			$this->ezSetY($this->ez['pageHeight']-20);
+			
+			$this->orderListDetailed($toSort);
+			
+		}
+	}
+	public function nameAddressCC($request){
+		// TODO: Print Name,full address, cc info
+		$pointSize=8;
+		$this->addText(10, $this->y, $pointSize, $request['name']);
+		
+		$address="";
+		if(strlen($request['address1']) > 0) $address .= $request['address1'] . " ";
+		if(strlen($request['address2']) > 0) $address .= $request['address2'] . " ";
+		if(strlen($request['address3']) > 0) $address .= $request['address3'] . " ";
+		$address .= ", " . $request['city'] . " " . $request['state'] . " " . $request['zip'];
+		$this->addText(150, $this->y, $pointSize, $address);
+		
+		$country = strtoupper($request['country']);
+		$this->addText(310, $this->y, $pointSize, $country);
+		
+		$this->ezSetY($this->y - $pointSize);
+		
+		$this->addText(10, $this->y, $pointSize, "CC: Name : " . $request['ccname']);
+		$this->addText(150, $this->y, $pointSize, $request['cctype'] . " - " . $this->getFormattedCC($request['ccnumber']) . "  EXP(" . $request['ccexpire'] . ")");
+		$this->addText(310, $this->y, $pointSize, "VCODE: " . $request['ccvcode']);
+		
+		$this->ezSetY($this->y - ($pointSize*2));
+	}
+	
+	public function orderListDetailedQuote($request){ // ordertype=1
+		$pointSize=12;
+		
+		if($this->y < 200){
+			$this->newPage();
+			$this->ezSetY($this->ez['pageHeight']-20);
+		}
+		
+		$this->ezText("<b>Quote Request</b>",$pointSize);
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, $request['name']);
+		$this->addText(200, $this->y, $pointSize, $request['email']);
+		
+		$address="";
+		if(strlen($request['address1']) > 0) $address .= $request['address1'] . " ";
+		if(strlen($request['address2']) > 0) $address .= $request['address2'] . " ";
+		if(strlen($request['address3']) > 0) $address .= $request['address3'] . " ";
+		$address .= ", " . $request['city'] . " " . $request['state'] . " " . $request['zip'];
+		$country = strtoupper($request['country']);
+		$address .= " (" . $country . ")";
+		
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Billing: ");
+		$this->addText(200, $this->y, $pointSize, $address);
+				
+		$address="";
+		if(strlen($request['shipaddress1']) > 0) $address .= $request['shipaddress1'] . " ";
+		if(strlen($request['shipaddress2']) > 0) $address .= $request['shipaddress2'] . " ";
+		if(strlen($request['shipaddress3']) > 0) $address .= $request['shipaddress3'] . " ";
+		
+		if(strlen($address) > 0){
+			$this->ezSetY($this->y - $pointSize);
+			$this->addText(10, $this->y, $pointSize, "Shipping: ");
+			$this->addText(200, $this->y, $pointSize, $address);
+		}
+
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Model: " . $request['model']);
+		$this->addText(200, $this->y, $pointSize, "Length:" . $request['bladelength']);
+		
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Features:");
+		$this->ezText($request['note'],$pointSize);
+		
+		$this->ezSetY($this->y - ($pointSize*2));
+		
+		//				$this->ezText(dumpDBRecord($request),$pointSize);	
+	}
+	
+	public function orderListDetailedOrder($request){ // ordertype=2
+		// name, email, billing address, country, shipping address
+		// model, blade len, features, cc info, submission date
+		$pointSize=12;
+		$this->ezSetY($this->y - $pointSize);
+		$this->ezText("<b>Order Request</b>",$pointSize);
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, $request['name']);
+		$this->addText(200, $this->y, $pointSize, $request['email']);
+		
+		$address="";
+		if(strlen($request['address1']) > 0) $address .= $request['address1'] . " ";
+		if(strlen($request['address2']) > 0) $address .= $request['address2'] . " ";
+		if(strlen($request['address3']) > 0) $address .= $request['address3'] . " ";
+		$address .= ", " . $request['city'] . " " . $request['state'] . " " . $request['zip'];
+		$country = strtoupper($request['country']);
+		$address .= " (" . $country . ")";
+		
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Billing: ");
+		$this->addText(200, $this->y, $pointSize, $address);
+
+				
+		$address="";
+		if(strlen($request['shipaddress1']) > 0) $address .= $request['shipaddress1'] . " ";
+		if(strlen($request['shipaddress2']) > 0) $address .= $request['shipaddress2'] . " ";
+		if(strlen($request['shipaddress3']) > 0) $address .= $request['shipaddress3'] . " ";
+		
+		if(strlen($address) > 0){
+			$this->ezSetY($this->y - $pointSize);
+			$this->addText(10, $this->y, $pointSize, "Shipping: ");
+			$this->addText(200, $this->y, $pointSize, $address);
+		}
+
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Model: " . $request['model']);
+		$this->addText(200, $this->y, $pointSize, "Length:" . $request['bladelength']);
+		
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "Features:");
+		$this->ezText($request['note'],$pointSize);
+
+		$this->ezSetY($this->y - $pointSize);
+		$this->addText(10, $this->y, $pointSize, "CC: Name : " . $request['ccname']);
+		$this->addText(200, $this->y, $pointSize, $request['cctype'] . " - " . $this->getFormattedCC($request['ccnumber'])  . "  EXP (" . $request['ccexpire'] . ")");
+		$this->addText(420, $this->y, $pointSize, "VCODE: " . $request['ccvcode']);
+		
+		$this->ezSetY($this->y - ($pointSize*2));
+		
+//		$this->ezText(dumpDBRecord($request),8);	
+		$this->newPage();
+		$this->ezSetY($this->ez['pageHeight']-20);
+	}
+	
+	public function orderListDetailedCatalog($request){ // ordertype=3
+		if(webOrderCountry($request) > 1) { // NOT a US, 
+			$this->nameAddressCC($request);
 		}
 	}
 	
+	public function orderListDetailedPayment($request){ // ordertype=4
+		$this->nameAddressCC($request);
+	}
+		
 	public function orderListDetailed($data)
 	{
-		
+//		$this->newPage();
+		foreach ($data as $order) {
+			switch ($order['ordertype']) {
+				case 1:
+				$this->orderListDetailedQuote($order);
+				break;
+				case 2:
+				$this->orderListDetailedOrder($order);
+				break;
+				case 3:
+				$this->orderListDetailedCatalog($order);
+				break;
+				case 4:
+				$this->orderListDetailedPayment($order);
+				break;
+				
+				default:
+					;
+				break;
+			}
+		}
 	}
 	
 	function printLabel($row, $col, $data)
@@ -154,6 +327,9 @@ class CwebOrderReport extends Cezpdf {
 					$row=0;
 				}
 			}
+			if(webOrderCountry($order) == 1){
+				$order=$this->fixUS_Address($order);
+			}
 			$fields = $this->getLabelRequestFields($order);
 //			$fields[] = $col;			
 			$this->printLabel($row,$col,$fields);
@@ -170,24 +346,12 @@ class CwebOrderReport extends Cezpdf {
 		}		
 	}
 	
-//	function orderList()
-//	{
-//			if($lastType != $order['ordertype']){
-//				$orderType = $baseFormsClass->requestTypeFromID($order['ordertype']);	
-////				if($nextY < 100){
-////					$currentY=760;
-////					$this->ezText(" ");
-////				}	
-//				if ($col==1){ // shift to 'new' row
-//					$currentY -= $leftFieldCount*12;
-//				}
-//				$this->addText(210, $currentY, 12, $orderType);
-//				$currentY -= 12;
-//				$col=0;
-//				$lastType = $order['ordertype'];				
-//			}
-//	}
-
+	function fixUS_Address($order) {
+		$order['country'] = "";
+		$order['state'] = strtoupper($order['state']);
+		
+		return $order;
+	}
 	
 	function getLabelRequestFields($order)
 	{
@@ -222,6 +386,16 @@ class CwebOrderReport extends Cezpdf {
 //		}
 		return $results;
 	}	
+	public function getFormattedCC($creditCard) {
+		$results="";
+		$split = str_split($creditCard, 4);
+		foreach ($split as $part) {
+			$results .= $part . "-";
+		}
+		// trim last "-"
+		$results = substr($results, 0 ,strlen($results)-1);
+		return $results;
+	}
 }
 
 class CcustomerReport extends Cezpdf {
