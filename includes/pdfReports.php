@@ -131,7 +131,7 @@ class CwebOrderReport extends Cezpdf {
 		}
 	}
 	public function nameAddressCC($request){
-		// TODO: Print Name,full address, cc info
+		// Print Name,full address, cc info
 		$pointSize=8;
 		$this->addText(10, $this->y, $pointSize, $request['name']);
 		
@@ -143,13 +143,13 @@ class CwebOrderReport extends Cezpdf {
 		$this->addText(150, $this->y, $pointSize, $address);
 		
 		$country = strtoupper($request['country']);
-		$this->addText(310, $this->y, $pointSize, $country);
+		$this->addText(380, $this->y, $pointSize, $country);
 		
 		$this->ezSetY($this->y - $pointSize);
 		
 		$this->addText(10, $this->y, $pointSize, "CC: Name : " . $request['ccname']);
 		$this->addText(150, $this->y, $pointSize, $request['cctype'] . " - " . $this->getFormattedCC($request['ccnumber']) . "  EXP(" . $request['ccexpire'] . ")");
-		$this->addText(310, $this->y, $pointSize, "VCODE: " . $request['ccvcode']);
+		$this->addText(380, $this->y, $pointSize, "VCODE: " . $request['ccvcode']);
 		
 		$this->ezSetY($this->y - ($pointSize*2));
 	}
@@ -269,8 +269,10 @@ class CwebOrderReport extends Cezpdf {
 		
 	public function orderListDetailed($data)
 	{
+		$firstCatalogOrPayment=true;
 //		$this->newPage();
 		foreach ($data as $order) {
+			$order = $this->cleanUpOrder($order);
 			switch ($order['ordertype']) {
 				case 1:
 				$this->orderListDetailedQuote($order);
@@ -279,10 +281,20 @@ class CwebOrderReport extends Cezpdf {
 				$this->orderListDetailedOrder($order);
 				break;
 				case 3:
-				$this->orderListDetailedCatalog($order);
-				break;
+					if($firstCatalogOrPayment && $this->y <  ($this->ez['pageHeight']-30)) {
+						$this->newPage();
+						$this->ezSetY($this->ez['pageHeight']-20);
+					}
+					$this->orderListDetailedCatalog($order);
+					$firstCatalogOrPayment=false;
+					break;
 				case 4:
-				$this->orderListDetailedPayment($order);
+					if($firstCatalogOrPayment && $this->y  < ($this->ez['pageHeight']-30)) {
+						$this->newPage();
+						$this->ezSetY($this->ez['pageHeight']-20);
+					}
+					$this->orderListDetailedPayment($order);
+					$firstCatalogOrPayment=false;
 				break;
 				
 				default:
@@ -290,6 +302,22 @@ class CwebOrderReport extends Cezpdf {
 				break;
 			}
 		}
+	}
+	
+	function cleanUpOrder($order){
+		if(webOrderCountry($order) == 1){
+			$order['country'] = "";
+		}
+		
+		foreach (array('name','address1','address2','address3','city','state','ccname') as $field){
+			$order[$field] = ucwords(strtolower($order[$field])); 
+		}
+		
+		if(strlen($order['state']) <=3 ){
+			$order['state'] = strtoupper($order['state']);
+		}
+				
+		return $order;
 	}
 	
 	function printLabel($row, $col, $data)
@@ -315,6 +343,7 @@ class CwebOrderReport extends Cezpdf {
 		$lastType=0;
 		
 		foreach ($data as $order) {
+			$order = $this->cleanUpOrder($order);
 			if($lastType != $order['ordertype'] && $lastType > 0){
 				if($col > 0){
 					$row++;
@@ -348,7 +377,7 @@ class CwebOrderReport extends Cezpdf {
 	
 	function fixUS_Address($order) {
 		$order['country'] = "";
-		$order['state'] = strtoupper($order['state']);
+//		$order['state'] = strtoupper($order['state']);
 		
 		return $order;
 	}
