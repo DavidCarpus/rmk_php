@@ -249,7 +249,7 @@ function displayInvoiceList($records){
 	$results .=  "<div id='displayInvoiceList'>" . "\n";
 	
 	$fields=array("Invoice"=>"Invoice", "Name"=>"Name" ,
-		"dateordered"=>"Ordered", "dateestimated"=>"Estimated", "dateshipped"=>"Shipped", );
+		"dateordered"=>"Ordered", "dateestimated"=>"Estimated", "dateshipped"=>"Shipped", "SortField"=>"Model");
 	
 	foreach($fields as $name=>$label){
 		$results .= "<div class='lbl data $name'>$label</div>\n";

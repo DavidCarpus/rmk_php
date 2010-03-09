@@ -318,13 +318,15 @@ class Invoices
 		return $invoices;
 	}
 	public function getShopSearchResults($searchValues){
-		$query = "Select Invoice, date_format(DateOrdered, '%b %e %Y') as dateordered, 
+		$query = "Select distinct Invoices.Invoice, date_format(DateOrdered, '%b %e %Y') as dateordered, 
 			date_format(DateEstimated, '%b %e %Y') as dateestimated, 
 			date_format(DateShipped, '%b %e %Y') as dateshipped, 
 			date_format(Invoices.DateEstimated, '%Y-%m-%d') as dateSort, 
-			Invoices.*, Customers.* 
+			Invoices.*, Customers.* , Parts.SortField
 			from Invoices
 			left join Customers on Customers.CustomerID = Invoices.CustomerID
+			left JOIN InvoiceEntries on InvoiceEntries.Invoice = Invoices.Invoice
+			left JOIN Parts on Parts.PartID = InvoiceEntries.PartID
 			";
 		$filter=array();
 		switch ($searchValues['searchType']) {
