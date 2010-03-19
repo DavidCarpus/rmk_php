@@ -259,18 +259,26 @@ class Part extends Base
 		
 		$errors = $this->retrieveErrorArray($partWithPrices);
 			
-		$fields = array('PartCode', 'Description', 'Discountable', 'BladeItem', 'Taxable', 'Active', "Sheath" );
+		$fields = array('PartCode', 'Description' );
 		foreach($fields as $name)
 		{
 			$options=array();
 			if((array_key_exists($name, $errors))) $options['error']=1;
+			$value = (array_key_exists($name, $partWithPrices)? $partWithPrices[$name]: "");
 			
+			$results .=  $this->textField($name, $this->fieldDesc($name),  $value, $options, "", "", "", "");
+			
+		}
+		
+		$results .=  "<div class='partFlags'>\n";
+		$fields = array( 'Discountable', 'BladeItem', 'Taxable', 'Active', "Sheath" );
+		foreach($fields as $name)
+		{
+			$options=array();
+			if((array_key_exists($name, $errors))) $options['error']=1;			
 			
 			$value = (array_key_exists($name, $partWithPrices)? $partWithPrices[$name]: "");
-//			if($name == 'Discountable')
-//			{
-//				$results .= "<br />";
-//			}
+		
 			if($name == 'Discountable' || $name == 'BladeItem' || $name == 'Taxable' 
 			|| $name == 'Active' || $name == 'Sheath')
 			{
@@ -279,19 +287,12 @@ class Part extends Base
 				if(is_numeric($value) && $value == "-1") $value=1;
 				
 				$results .=  $this->checkbox($name, $name, $value, "","","","","");
-//				$results .=  $name . ":" . checkbox($name, $name, false, $value) . " &nbsp; &nbsp;";
 			}
-			else {
-				$results .=  $this->textField($name, $this->fieldDesc($name),  $value, $options, "", "", "", "");
-//				$results .=  $this->textField($name, $this->fieldDesc($name), $err, $value) . "\n";
-//				$results .= "<br />";
-			}
-//			$results .= $name . ":" . $value ;
-//			$results .= "<br />";
 		}
-//		$results .= "<br />";
-//		$results .= "<br />";
+		$results .= "</div>";
 		
+		$results .=  "<div class='partEditPrices'>\n";
+		$options['class'] = "partEditPrice";
 		if (array_key_exists($name, $partWithPrices))
 		{
 		foreach($partWithPrices['Prices'] as $price){
@@ -302,6 +303,8 @@ class Part extends Base
 //				$results .= "<br />";
 			}
 		}
+		$results .= "</div>";
+		
 		$hiddenFields = array('PartID', 'PartType');
 		foreach($hiddenFields as $name)
 		{
