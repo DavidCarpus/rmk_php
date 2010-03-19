@@ -25,10 +25,7 @@ echo headSegments("RMK Order Managment System", array("../Style.css", "", "../Da
 				<br />
 				<a href='dealers.php'>Dealer List</a>
 				<br />
-				<a href='Pricing.php'>Parts (Under Construction)</a>
-				<br />
-				<a href='adminRequests.php'>Admin requests (Under Construction)</a>
-				<br />
+				<a href='Pricing.php'>Models/Features</a>
 		</div>
 	</div>
 	<?php //echo logoutLink() . " : " . $_SERVER['PHP_AUTH_USER']. " : " . $_SESSION['session_id']; ?> 

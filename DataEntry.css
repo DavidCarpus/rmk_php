@@ -424,6 +424,9 @@ span.helptext a:hover span {
 }
 
 /* ================================================================================ */
-#PartEdit input		{width: 80px;}
-#PartEdit #PartCode		{width: 220px;}
-#PartEdit #Description		{width: 320px;}
+#PartEditForm 		{width: 500px;}
+#PartEditForm .PartCode		{width: 220px;}
+#PartEditForm .Description		{width: 320px;}
+#PartEditForm .partEditPrice {width: 60px;}
+#PartEditForm .partFlags		{width: 400px; display: block; float:left; margin-top: 20px;  margin-bottom: 20px; }
+#PartEditForm .partEditPrices {width: 400px; display: block; clear:left; margin-top: 60px; }
