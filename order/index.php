@@ -46,7 +46,7 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 </div>
 
 <?php
-echo debugStatement($mode);
-echo debugStatement(dumpDBRecord($formValues));
+//echo debugStatement($mode);
+//echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
