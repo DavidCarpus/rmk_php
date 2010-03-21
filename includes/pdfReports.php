@@ -74,6 +74,14 @@ class CwebOrderReport extends Cezpdf {
 		$this->labelFont = PDF_FONT_DIR .'Times-Roman.afm';
 		$this->footerFont = PDF_FONT_DIR .'Courier.afm';
 	}
+	
+	function startPage($margin){
+		if($this->y < $this->ez['pageHeight']-$margin-10){
+			$this->newPage();
+			$this->ezSetY($this->ez['pageHeight']-$margin);
+		}		
+	}
+	
 	public function setData($orderData){
 		$this->orderData = $orderData;
 	}
@@ -114,7 +122,7 @@ class CwebOrderReport extends Cezpdf {
 	{
 		$this->setStrokeColor(0,0,0,1);
 		$this->selectFont($this->labelFont);
-		//		$this->avery5160Alignment();
+//		$this->avery5160Alignment();
 
 		if(sizeof($this->orderData) > 0){
 			$toSort=$this->orderData;
@@ -122,8 +130,8 @@ class CwebOrderReport extends Cezpdf {
 			//			foreach ($toSort as $row){
 			//				echo $row['ordertype'] . "-" . $row['country'] . "-" . webOrderCountry($row) . "<BR>";
 			//			}
-			//			$this->orderListLabels($toSort);
-			//			$this->newPage();
+			$this->orderListLabels($toSort);
+			$this->newPage();
 			$this->ezSetY($this->ez['pageHeight']-20);
 				
 			$this->orderListDetailed($toSort);
@@ -139,7 +147,7 @@ class CwebOrderReport extends Cezpdf {
 		return $address;
 	}
 	public function getJoinedCSZ($request){
-		$address = $request['city'] . ", " . $request['state'] . ", " . $request['zip'];
+		$address = $request['city'] . ", " . stateAbbreviationLookup($request['state']) . ", " . $request['zip'];
 		$country = strtoupper($request['country']);
 		if(strlen($country) > 0){
 			$address .= " (" . $country . ")";
@@ -147,35 +155,10 @@ class CwebOrderReport extends Cezpdf {
 		return $address;
 	}
 
-	public function nameAddressCC($request){
-		// Print Name,full address, cc info
-		$pointSize=8;
-		$this->addText(10, $this->y, $pointSize, $request['name']);
-
-		$address=$this->getJoinedAddress($request);
-		$address .= ", " . $request['city'] . " " . $request['state'] . " " . $request['zip'];
-		$this->addText(150, $this->y, $pointSize, $address);
-
-		$country = strtoupper($request['country']);
-		$this->addText(380, $this->y, $pointSize, $country);
-
-		$this->ezSetY($this->y - $pointSize);
-
-		$this->addText(10, $this->y, $pointSize, "CC: Name : " . $request['ccname']);
-		$this->addText(150, $this->y, $pointSize, $request['cctype'] . " - " . $this->getFormattedCC($request['ccnumber']) . "  EXP(" . $request['ccexpire'] . ")");
-		$this->addText(380, $this->y, $pointSize, "VCODE: " . $request['ccvcode']);
-
-		$this->ezSetY($this->y - ($pointSize*2));
-	}
-
 	public function orderListDetailedQuote($request){ // ordertype=1
 		$pointSize=14;
 
-		if($this->y < 200){
-			//			$this->ezText($this->y,16);
-			$this->newPage();
-			$this->ezSetY($this->ez['pageHeight']-20);
-		}
+		if($this->y < 200){		$this->startPage(20);	}
 
 		$this->ezText("<b>Quote Request</b>",16);
 		$this->ezSetY($this->y - $pointSize);
@@ -212,12 +195,8 @@ class CwebOrderReport extends Cezpdf {
 		// name, email, billing address, country, shipping address
 		// model, blade len, features, cc info, submission date
 		$pointSize=14;
-		if($this->y <  ($this->ez['pageHeight']-30)){
-			//			$this->ezText($this->y,16);
-			$this->newPage();
-			$this->ezSetY($this->ez['pageHeight']-30);
-		}
-		
+		$this->startPage(20);
+
 		$this->ezSetY($this->y - $pointSize);
 		$this->ezText("<b>Order Request</b>",$pointSize);
 		$this->ezSetY($this->y - $pointSize);
@@ -252,8 +231,8 @@ class CwebOrderReport extends Cezpdf {
 			$this->ezSetY($this->y - (1.5*$pointSize));
 		}
 		//		$this->ezText(dumpDBRecord($request),8);
-		$this->newPage();
-		$this->ezSetY($this->ez['pageHeight']-20);
+//		$this->newPage();
+//		$this->ezSetY($this->ez['pageHeight']-20);
 	}
 
 	public function orderListDetailedCatalog($request){ // ordertype=3
@@ -276,14 +255,16 @@ class CwebOrderReport extends Cezpdf {
 				$this->addText(170, $this->y, $pointSize, $field[1]);
 				$this->ezSetY($this->y - ($pointSize));
 			}
-//			$this->nameAddressCC($request);
+			if($this->y < 150){ 	$this->startPage(20);  }
+			
 		}
 	}
 
 	public function orderListDetailedPayment($request){ // ordertype=4
-		//		$this->nameAddressCC($request);
 		$pointSize=14;
 
+		$this->startPage(20);
+		
 		$this->ezSetY($this->y - $pointSize*1.5);
 		$this->addText(50, $this->y, $pointSize*1.5, "<b>Order Payment Request</b>");
 		$this->addText(300, $this->y, $pointSize*1.5, "<b>Printed</b>");
@@ -307,13 +288,13 @@ class CwebOrderReport extends Cezpdf {
 			$this->ezSetY($this->y - (1.5*$pointSize));
 		}
 
-		$this->newPage();
-		$this->ezSetY($this->ez['pageHeight']-20);
+//		$this->newPage();
+//		$this->ezSetY($this->ez['pageHeight']-20);
 	}
 
 	public function orderListDetailed($data)
 	{
-		$firstCatalogOrPayment=true;
+		$firstNonUSCatalog=true;
 		$this->ezSetY($this->ez['pageHeight']);
 
 		//		$this->newPage();
@@ -327,22 +308,17 @@ class CwebOrderReport extends Cezpdf {
 					$this->orderListDetailedOrder($order);
 					break;
 				case 3:
-					//					if($firstCatalogOrPayment && $this->y <  ($this->ez['pageHeight']-30)) {
-					//						$this->newPage();
-					//						$this->ezSetY($this->ez['pageHeight']-20);
-					//					}
+					if(($firstNonUSCatalog && webOrderCountry($request) > 1)){
+						$firstNonUSCatalog = false;
+						$this->startPage(20);
+					}
 					$this->orderListDetailedCatalog($order);
 					$firstCatalogOrPayment=false;
 					break;
 				case 4:
-					//					if($firstCatalogOrPayment && $this->y  < ($this->ez['pageHeight']-30)) {
-					//						$this->newPage();
-					//						$this->ezSetY($this->ez['pageHeight']-20);
-					//					}
 					$this->orderListDetailedPayment($order);
 					$firstCatalogOrPayment=false;
 					break;
-
 				default:
 					;
 					break;
@@ -447,7 +423,7 @@ class CwebOrderReport extends Cezpdf {
 		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
 		if(strlen($order['address2']) > 0) $results[] = $order['address2'];
 		if(strlen($order['address3']) > 0) $results[] = $order['address3'];
-		$results[] = $order['city'] . " " . $order['state'] . " " . $order['zip'];
+		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']) . " " . $order['zip'];
 		$country = strtoupper($order['country']);
 		$isUSA = $country  == "USA" || strncmp($country, "UNITED STATES", 13) == 0;
 		if(! $isUSA){
@@ -486,6 +462,55 @@ class CwebOrderReport extends Cezpdf {
 		return $phone;
 	}
 }
+
+class CDealerSpecLetter extends Cezpdf {
+	public $reportData;
+	public $letterData;
+	public $labelFont;
+	public $footerFont;
+
+	public function __construct() {
+		parent::__construct('LETTER');
+		$this->ezSetMargins(10,10,50,50);
+
+		$this->labelFont = PDF_FONT_DIR .'Times-Roman.afm';
+		$this->footerFont = PDF_FONT_DIR .'Courier.afm';
+	}
+	function startPage($margin){
+		if($this->y < $this->ez['pageHeight']-$margin-10){
+			$this->newPage();
+			$this->ezSetY($this->ez['pageHeight']-$margin);
+		}		
+	}
+	
+	public function setData($dealerSpecLetter, $reportData){
+		$this->reportData = $reportData;
+		$this->letterData = $dealerSpecLetter;
+	}
+	public function createReport() 	//	Default LTR: 612 x 792
+	{
+		$this->setStrokeColor(0,0,0,1);
+		$this->selectFont($this->labelFont);
+//		$this->avery5160Alignment();
+
+//		echo sizeof($this->reportData) ;
+		if(sizeof($this->reportData) > 0){
+			$this->ezSetY($this->ez['pageHeight']-20);
+			$this->dump();
+		}
+	}
+	function dump(){
+		foreach ($this->reportData as $record) {
+			$this->startPage(20);
+			$letter = $this->letterData['prefix'] . $this->letterData['postfix'];
+			$letter = substitureLetterFields($letter, $record );
+			$this->ezText($letter );
+//			$this->ezText(dumpDBRecord($record),10);;
+		}
+	}
+}
+
+
 
 class CcustomerReport extends Cezpdf {
 
@@ -810,5 +835,23 @@ class CcustomerReport extends Cezpdf {
 		return $all;
 	}
 
+}
+
+function stateAbbreviationLookup($state){
+$lookupTable = array("ALABAMA"=>"AL", "ALASKA"=>"AK", "AMERICAN SAMOA"=>"AS", "ARIZONA"=>"AZ", "ARKANSAS"=>"AR", 
+"CALIFORNIA"=>"CA", "COLORADO"=>"CO", "CONNECTICUT"=>"CT", "DELAWARE"=>"DE", "DISTRICT OF COLUMBIA"=>"DC", 
+"FEDERATED STATES OF MICRONESIA"=>"FM", "FLORIDA"=>"FL", "GEORGIA"=>"GA", "GUAM"=>"GU", "HAWAII"=>"HI", 
+"IDAHO"=>"ID", "ILLINOIS"=>"IL", "INDIANA"=>"IN", "IOWA"=>"IA", "KANSAS"=>"KS", "KENTUCKY"=>"KY", "LOUISIANA"=>"LA", 
+"MAINE"=>"ME", "MARSHALL ISLANDS"=>"MH", "MARYLAND"=>"MD", "MASSACHUSETTS"=>"MA", "MICHIGAN"=>"MI", 
+"MINNESOTA"=>"MN", "MISSISSIPPI"=>"MS", "MISSOURI"=>"MO", "MONTANA"=>"MT", "NEBRASKA"=>"NE", "NEVADA"=>"NV", 
+"NEW HAMPSHIRE"=>"NH", "NEW JERSEY"=>"NJ", "NEW MEXICO"=>"NM", "NEW YORK"=>"NY", "NORTH CAROLINA"=>"NC", 
+"NORTH DAKOTA"=>"ND", "NORTHERN MARIANA ISLANDS"=>"MP", "OHIO"=>"OH", "OKLAHOMA"=>"OK", "OREGON"=>"OR", 
+"PALAU"=>"PW", "PENNSYLVANIA"=>"PA", "PUERTO RICO"=>"PR", "RHODE ISLAND"=>"RI", "SOUTH CAROLINA"=>"SC", 
+"SOUTH DAKOTA"=>"SD", "TENNESSEE"=>"TN", "TEXAS"=>"TX", "UTAH"=>"UT", "VERMONT"=>"VT", "VIRGIN ISLANDS"=>"VI", 
+"VIRGINIA"=>"VA", "WASHINGTON"=>"WA", "WEST VIRGINIA"=>"WV", "WISCONSIN"=>"WI", "WYOMING"=>"WY");
+
+$abbreviation = $lookupTable[strtoupper($state)];
+if(strlen($abbreviation) == 0) $abbreviation = $state;
+return $abbreviation;
 }
 ?>
