@@ -180,12 +180,12 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-02-17", "Text"=>"Catalog request form - Not pulling 'header' from DB like it should. CA $4 Other $6");
 	$results[] = array("Done"=>"2010-02-18", "Text"=>"Admin Order processing - CC numbers should have dashes every 4 characters");
 	$results[] = array("Done"=>"2010-02-18", "Text"=>"Admin Order processing - screen and printable list credit info as CC \\n Expiration \\n vcode");
-	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
+	$results[] = array("Done"=>"2010-03-09", "Text"=>"Shop knife list - add column and list models for each invoice");
+	$results[] = array("Done"=>"2010-03-06", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
+	$results[] = array("Done"=>"2010-03-19", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
+	$results[] = array("Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
 	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
-	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
 	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
-	$results[] = array("Done"=>"", "Text"=>"Shop knife list - add column and list models for each invoice");
-	$results[] = array("Done"=>"", "Text"=>"?? Sort orders to have foreign seperate from US??");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	

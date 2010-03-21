@@ -50,7 +50,8 @@ $oldTime="4/14 - 2
 function getTimeString(){
 	return trim( 
 "
-
+3/18 - 4
+3/19 - 8
 ");
 
 }
