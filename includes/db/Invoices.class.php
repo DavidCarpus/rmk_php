@@ -262,7 +262,49 @@ class Invoices
 		$results = str_replace("\|", "<br />", $results);
 		return $results;
 	}
-
+	public function getUnSpecefiedDealerOrders($estShipDate){
+		$query = "SELECT C.LastName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, I.TotalRetail, IE.Quantity, ";
+		$query .= "A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country ";
+		$query .= "FROM Invoices I ";
+		$query .= "Join Customers C on C.CustomerID = I.CustomerID ";
+		$query .= "Left Join InvoiceEntries IE on IE.Invoice = I.Invoice ";
+		$query .= "left join Address A on C.CustomerID = A.CustomerID ";
+		$query .= "where ";
+		$query .= "C.Dealer ";
+		$query .= "AND A.PrimaryCustomerAddress ";
+		$query .= "and I.TotalRetail = 0 ";
+//		$query .= "and IE.PartDescription = 'KNV'";
+		$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
+		$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		$query .= "ORDER BY C.LastName ";
+		
+//		echo $query; 
+		
+		$records = getDbRecords($query);
+		return $records;
+	}
+	
+	public function getPastDueInvoices($estShipDate)
+	{
+		$query = "SELECT C.LastName, C.FirstName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, ";
+		$query .= "DATE_FORMAT(I.DateOrdered, '%M %d, %Y') as DateOrdered, ";
+		$query .= "I.TotalRetail, A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country , ";
+		$query .= "I.AmountPaid, I.SubTotal+I.ShippingAmount-I.AmountPaid as Due, I.TaxPercentage ";
+		$query .= "FROM Invoices I Join Customers C on C.CustomerID = I.CustomerID  ";
+		$query .= "left join Address A on C.CustomerID = A.CustomerID  ";
+		$query .= "where (C.Dealer is null or C.Dealer != 1)  ";
+		$query .= "and A.PrimaryCustomerAddress ";
+		$query .= "and I.AmountPaid < (I.SubTotal + I.ShippingAmount) ";
+		$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
+		$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		$query .= "ORDER BY C.LastName, C.FirstName ";
+		
+//		echo $query; 
+		
+		$records = getDbRecords($query);
+		return $records;
+	}
+	
 	public function getCustomerInvoices($CustomerID, $older=false, $sort="invoice DESC"){
 //		$years = 4;
 //		$query = "SELECT * FROM Invoices I where customerid = $CustomerID and dateordered > date_sub(now(), INTERVAL '$years' year)";

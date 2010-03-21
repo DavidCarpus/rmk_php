@@ -25,6 +25,10 @@ echo headSegments("RMK Order Managment System", array("../Style.css", "", "../Da
 				<br />
 				<a href='dealers.php'>Dealer List</a>
 				<br />
+				<a href='DealerSpecLetter.php'>Dealer Specification Letter</a>
+				<br />
+				<a href='BalanceDueLetter.php'>Balance Due Letter</a>
+				<br />
 				<a href='Pricing.php'>Models/Features</a>
 		</div>
 	</div>

@@ -48,13 +48,13 @@ function saveCopy($copy){
 
 function editCopy($section){
 	$copy = getPageCopy($section);
+	if(strlen($copy['page']) == 0) $copy['page']=$section;
 	
 	$results = $results . "<H2>".getPageDescription($section)."</H2>";
 	$results = $results . "<form action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
 	$results = $results . "<center>";
 	$results = $results . textArea('prefix', 'Prefix', true, $copy['prefix'], true). "<br />\n" ;
 	$results = $results . textArea('postfix', 'Postfix', true, $copy['postfix'], true). "<br />\n" ;
-	$results = $results . hiddenField('page',$copy['page']);		
 	$results = $results . hiddenField('page',$copy['page']);		
 	$results = $results . hiddenField('action','save');		
 	$results = $results . hiddenField('webcopy_id',$copy['webcopy_id']);		

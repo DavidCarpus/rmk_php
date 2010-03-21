@@ -643,4 +643,53 @@ function isDebugAccess(){
 		|| $_SERVER['REMOTE_ADDR'] == '198.73.165.1'
 	);
 }
+
+	function creditCardBlockForLetters(){
+		$block = "";
+		$block .= str_repeat(" ", 10) . "If payment by credit card:  Visa, Mastercard, Discover" . "\n";
+		$block .= "\n";
+		$block .= str_repeat(" ", 10) . "Card number:\t" . "_______________________________" . "\n";
+		$block .= str_repeat(" ", 10) . "'V' Code (numbers on signature line):\t" . "__________" . "\n";
+		$block .= str_repeat(" ", 10) . "Expiration date:\t" . "__________" . "\n";
+		$block .= str_repeat(" ", 10) . "Name as appears on credit card:\t" . "______________________________" . "\n";
+		$block .= str_repeat(" ", 10) . "Billing Address:\t" . "______________________________" . "\n";
+		$block .= str_repeat(" ", 36)  . "______________________________" . "\n";
+		$block .= str_repeat(" ", 36)  . "______________________________" . "\n";
+		$block .= str_repeat(" ", 10) . "Signature:\t" . "______________________________" . "\n";
+		
+		return $block;
+	}
+
+   function substitureLetterFields($letter, $fields)
+   {
+   		foreach (array("first_name"=>"FirstName", "last_name"=>"LastName", "reserved_spaces"=>"Quantity", 
+   			"scheduled_ship_date"=>"EstShip", "invoice"=>"Invoice", "due"=>"Due", "ordered_date"=>"DateOrdered") 
+   			as $textField=>$dataField)
+   		{
+   			$data = $fields[$dataField];
+   			if($dataField == "Due") $data = "$" . number_format($fields['Due'] ,2);
+			$letter = str_replace("[[$textField]]", $data, $letter);
+   		}
+		// Address Block substitution
+		$address = "";
+		if(strlen($fields['Address0']) > 0) $address .= $fields['Address0'] . "\n";
+		if(strlen($fields['Address1']) > 0) $address .= $fields['Address1'] . "\n";
+		if(strlen($fields['Address2']) > 0) $address .= $fields['Address2'] . "\n";
+		$address .= $fields['City'] . ", " . $fields['State'] . " " . $fields['Zip'];
+//		if(strlen($fields['Country']) > 0) 
+		$address .= "\n". $fields['Country'];
+		$letter = str_replace("[[address_block]]", $address, $letter);		
+		
+		// Date(s) substitution
+		$letter = str_replace("[[curr_date]]", date("F j, Y" ), $letter);
+		
+		$holdDate = strtotime( $fields['EstShip'] . " +30 days");		
+		$letter = str_replace("[[hold_date]]", date("F j, Y", $holdDate), $letter);
+
+
+		$letter = str_replace("[[cc_payment_block]]", creditCardBlockForLetters(), $letter);
+		
+//		$letter = str_replace("\n", "<br /> ", $letter);
+		return $letter;
+   }
 ?>
