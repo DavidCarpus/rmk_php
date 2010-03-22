@@ -9,9 +9,9 @@ include_once INCLUDE_DIR. "class.phpmailer.php";
 
 include_once INCLUDE_DIR. "pdfReports.php";
 
-if (!authenticate("../")){
-	return;
-}
+//if (!authenticate("../")){
+//	return;
+//}
 $formValues = getFormValues();
 
 $rptForm = new WeeklyReports();
@@ -22,7 +22,6 @@ $pastDueLetter=array();
 $mode = $rptForm->entryFormMode($formValues);
 if($mode == 'display_orders'){
 	$invoices = $invClass->getPastDueInvoices($formValues['date']);
-	echo sizeof($invoice);
 	$pastDueLetter = getSingleDbRecord("Select * from webcopy where page='pastdue'");
 }
 if($mode == 'Report'){
@@ -72,3 +71,6 @@ echo debugStatement($mode);
 echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
+
+</body>
+</html>

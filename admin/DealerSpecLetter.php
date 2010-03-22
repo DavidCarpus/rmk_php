@@ -70,3 +70,6 @@ echo debugStatement($mode);
 echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
+
+</body>
+</html>
