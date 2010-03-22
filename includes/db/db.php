@@ -131,44 +131,30 @@ function setDB_Globals(){
 		$dbconfig['address']=$address;
 	}
 	
-	$address = '192.168.1.90';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$dbconfig['server'] = "localhost";
-		$dbconfig['username']="rmkweb";
-		$dbconfig['password']="rmkskeet";
-		$dbconfig['webDatabase']="newrmk";	
-		$dbconfig['address']=$address;
-		return;
-	}
-	
-	$address = '127.0.0.1';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
-		$dbconfig['server'] = "localhost";
-		$dbconfig['username']="rmkweb";
-		$dbconfig['password']="rmkskeet";
-		$dbconfig['webDatabase']="newrmk";
-		$dbconfig['address']=$address;
-		return;
-		
-	}
-	$address = 'localhost';
-	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//	$address = '192.168.1.90';
+//	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+//		$dbconfig['server'] = "localhost";
+//		$dbconfig['username']="rmkweb";
+//		$dbconfig['password']="rmkskeet";
+//		$dbconfig['webDatabase']="newrmk";	
+//		$dbconfig['address']=$address;
+//		return;
+//	}
+
+	if(isCarpusLaptop() || isCarpusServer()
+			|| ($_SERVER['HTTP_HOST'] == 'localhost') 
+			|| ($_SERVER['SERVER_ADDR'] == 'localhost')
+			|| (substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address )
+			){
 		$dbconfig['server'] = "localhost";
 		$dbconfig['username']="rmkweb";
 		$dbconfig['password']="rmkskeet";
 		$dbconfig['webDatabase']="newrmk";
-		$dbconfig['address']=$address;
+//		$dbconfig['address']=$_SERVER['HTTP_HOST'];
+		$dbconfig['address']='localhost';
 		return;
-	}
-	
-	if($_SERVER['HTTP_HOST'] == 'localhost'){
-		$dbconfig['server'] = "localhost";
-		$dbconfig['username']="rmkweb";
-		$dbconfig['password']="rmkskeet";
-		$dbconfig['webDatabase']="newrmk";
-		$dbconfig['address']=$address;
-		return;
-	}
+	}	
+
 	//		$dbconfig['server'] = "www.randallknives.com";
 //		$dbconfig['username']="uplzcvgw_rmkweb";
 //		$dbconfig['password']="rmkskeet";

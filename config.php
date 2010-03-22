@@ -1,5 +1,6 @@
 <?php
 $system="";
+$address="12.153.188.121";
 
 foreach (array('192.168.1.99', '192.168.1.90', 'carpus.homelinux.org') as $address) {
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
@@ -7,13 +8,14 @@ foreach (array('192.168.1.99', '192.168.1.90', 'carpus.homelinux.org') as $addre
 		break;
 	}
 }
+// , '12.153.188.121' // Hilton Garden Inn 'external' address for HTMLValidator
 foreach (array('192.168.1.3', '127.0.0.1', 'localhost') as $address) {
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		$system="CARPUS_LAPTOP";
 		break;
 	}
-	break;
 }
+
 foreach (array('192.168.1.110') as $address) {
 	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
 		$system="SHOP_SERVER";
@@ -23,7 +25,6 @@ foreach (array('192.168.1.110') as $address) {
 if($system=="" && ($_SERVER['HTTP_HOST'] == 'localhost')){
 	$system="CARPUS_LAPTOP";
 }
-
 
 function isCarpusServer(){
 	global $system;
@@ -52,6 +53,7 @@ define("PDF_FONT_DIR", "/var/www/rmk/includes/pdfCreator/fonts/");
 	
 } else{
 	echo "Unknown system config: " . $_SERVER['SERVER_ADDR'] . ":" . $_SERVER['HTTP_HOST'];
+	exit;
 }
 
 define("MAX_EMAIL_LIST_LEN", 90);

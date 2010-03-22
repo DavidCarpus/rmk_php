@@ -513,7 +513,7 @@ function getToolbarPrefix(){
 	global $debugMachineRoot;
 	$prefix = $_SERVER['HTTP_HOST'];
 			
-	if(isDebugMachine() || isCarpusServer() ){
+	if(isDebugMachine() || isCarpusServer() || isCarpusLaptop() ){
 		$secureLocation = false;
 		$prefix = $prefix . $debugMachineRoot;
 	}
