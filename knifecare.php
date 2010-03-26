@@ -18,7 +18,7 @@ echo headSegments("Knife Care", array("Style.css"), "print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Knife Care"); ?>
 		
 		<div class="content">
 			<span class="cap-g">B</span>efore it leaves our shop, the cutting edge of every Randall Made knife is carefully honed by hand, ready to use for its intended purpose. However, the bevel and edge of a knife designed for cutting skin and flesh are much different from those used to hack bone or other hard materials.

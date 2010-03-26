@@ -53,7 +53,7 @@ echo headSegments("Frequently Asked Questions", array("Style.css"), "print.css")
 
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("F.A.Q."); ?>
 		<div class="content">
 			<?php echo listFAQ();?>
 		</div>

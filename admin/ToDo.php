@@ -16,7 +16,7 @@ echo headSegments("RMK To Do", array("../Style.css"), "../print.css");
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("ToDo"); ?>
 		<div class="content">
 			<?php  
 				echo toDoPage();

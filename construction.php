@@ -18,7 +18,7 @@ echo headSegments("Knife Construction", array("Style.css"), "print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Knife Construction"); ?>
 		
 	<div class="content">
 <img class='floatright' width=415 height=456 src='<?php echo getBaseImageDir(); ?>/knifecons.jpg'>

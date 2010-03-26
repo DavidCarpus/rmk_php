@@ -34,7 +34,7 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-	 	<?php echo toolbar(); ?>
+	 	<?php echo toolbar("Order Form"); ?>
 		<div class="content">
 		<?php
 			if($mode == 'browse' || $mode == 'err') echo $orderProcessingForms->customerOrderForm($formValues);

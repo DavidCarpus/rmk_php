@@ -19,7 +19,7 @@ echo headSegments("RMK Order Managment System", array("../Style.css", "", "../Da
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("RMK"); ?>
 		<div class="content">
 				<a href='search.php'>Search system</a>
 				<br />

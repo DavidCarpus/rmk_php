@@ -43,7 +43,7 @@ echo headSegments("RMK Email Processing", array("../Style.css"), "../print.css")
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("Emails"); ?>
 		<div class="content">
 			<?php  
 //			echo $mode;

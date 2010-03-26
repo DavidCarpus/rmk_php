@@ -12,7 +12,7 @@ include_once "includes/htmlHead.php";
 
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Knife Care"); ?>
 		<div class="content">
 			Each Randall Made knife is ground carefully by hand, and a section of knife blade when it leaves the grinder looks something like Figure 1.
 			<br /><br />

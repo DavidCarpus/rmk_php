@@ -39,7 +39,7 @@ echo headSegments("RMK Catalog Maintenance", array("../Style.css"), "../print.cs
 <?php echo logo_header("admin"); ?>
  <div class="mainbody">
 	<div class="centerblock">
-	 	<?php echo adminToolbar(); ?>
+	 	<?php echo adminToolbar("Catalog"); ?>
 		<div class="content">
 		<?php
 			echo $catalogAdminForms->categorySelectForm($formValues,$categories);

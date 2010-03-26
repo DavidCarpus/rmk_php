@@ -102,7 +102,7 @@ echo headSegments("RMK Order/Quote Processing", array("../Style.css"), "../print
 
  <div class="mainbody">
 	<div class="centerblock">
-	 	<?php echo adminToolbar(); ?>
+	 	<?php echo adminToolbar("Orders"); ?>
 		<div class="content">
 		<?php
 			if($mode=='email' || $mode=='submitEmail'){

@@ -18,7 +18,7 @@ echo headSegments("The Design", array("Style.css"), "print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("The Design"); ?>
 		
 		<div class="content">
 			Randall Made knives are custom-designed for many uses. The models shown in this catalogue have been developed over a period of 68 years from personal experience, extensive research and the study of hundreds of designs submitted by individuals around the world requesting custom-made knives.

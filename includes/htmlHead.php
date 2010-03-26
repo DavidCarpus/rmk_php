@@ -354,7 +354,7 @@ function logo_header($section, $prefix="."){
 
 	return $results;
 }
-function adminToolbar(){
+function adminToolbar($currMenu){
 	$prefix = getToolbarPrefix();
 	$menu = array(
 //	array('', ''),
@@ -381,16 +381,16 @@ function adminToolbar(){
 			$realprefix = str_replace("https://", "http://", $realprefix);
 		}
 		$selectedStyle="";
-		if(strtolower($currPage)==strtolower($option[0]))
+		if(strtolower($currMenu)==strtolower($option[1]))
 			$selectedStyle="id='selected'";
 			
 		$results = $results . "<a $selectedStyle href='$realprefix/admin/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
-	if(isset($_SERVER['PHP_AUTH_USER']) && ! empty($_SESSION['session_id'])){
-//		$results .= logoutLink();
-	} else{
-		$results .= "<a href='$prefix/admin/'>LOGIN</a>\n";
-	}
+//	if(isset($_SERVER['PHP_AUTH_USER']) && ! empty($_SESSION['session_id'])){
+////		$results .= logoutLink();
+//	} else{
+//		$results .= "<a href='$prefix/admin/'>LOGIN</a>\n";
+//	}
 
 	//########### Development machine not set up for secure pages at this point  #####
 	if($_SERVER['HTTP_HOST'] == "carpus.homelinux.org"){ 
@@ -450,7 +450,7 @@ function shopToolbar(){
 }
 
 
-function toolbar(){
+function toolbar($currentMenu){
 	$prefix = getToolbarPrefix();
 	$results ="";
 
@@ -485,7 +485,7 @@ function toolbar(){
 			$realprefix = str_replace("http://", "https://", $realprefix);
 		}
 		$selectedStyle="";
-		if(strtolower($currPage)==strtolower($option[0]))
+		if(strtolower($currentMenu)==strtolower($option[1]))
 			$selectedStyle="id='selected'";
 		
 		$results = $results . "<a $selectedStyle href='$realprefix/" . $option[0] . "'>" . $option[1] . "</a>\n";

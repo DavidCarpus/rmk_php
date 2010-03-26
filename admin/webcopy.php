@@ -98,7 +98,7 @@ echo headSegments("Web Copy/Text", array("../Style.css"), "../print.css");
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("Copy/Text"); ?>
 		<div class="content">
 			<?php webCopyAdminProcessing();?>
 		</div>

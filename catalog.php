@@ -18,7 +18,7 @@ echo headSegments("Online Catalog", array("Style.css"), "print.css");
 <?php echo logo_header(""); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Catalog"); ?>
 		<div class="content">
 			<?php catalogProcessing();?>
 		</div>

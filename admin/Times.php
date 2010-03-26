@@ -149,7 +149,7 @@ if (!authenticate()){
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("Billed Time"); ?>
 		<div class="content">
 			<?php echo getTable2();?>
 		</div>

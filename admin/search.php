@@ -48,7 +48,7 @@ echo headSegments("RMK Search", array("../Style.css", "", "../DataEntry.css"), "
 
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("RMK"); ?>
 		<div class="content">
 			<?php 	
 				echo $searchForms->searchScreen($formValues);

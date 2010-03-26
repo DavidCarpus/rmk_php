@@ -27,7 +27,7 @@ echo headSegments("RMK Dealers", array("../Style.css", "", "../DataEntry.css"), 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("RMK"); ?>
 		<div class="content">
 			<?php 
 				$dealers=$custClass->fetchDealers();

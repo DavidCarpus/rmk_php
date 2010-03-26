@@ -18,7 +18,7 @@ echo headSegments("The History", array("Style.css"), "print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("The History"); ?>
 		<div class="content">
 			<span class="cap-g">F</span>or me it started very simply as a hobby. In the summer of 1937 I was taking a stroll near Walloon Lake in Michigan when I saw a fellow scraping paint from a boat with a distinctive looking knife.
 			<br /><br />

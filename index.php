@@ -18,7 +18,7 @@ echo headSegments("Randall Made Knives", array("Style.css"), "print.css");
 <?php echo logo_header(""); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Home"); ?>
 		<div class="content" align=center>
 			<img src='<?php echo getBaseImageDir(); ?>/main.jpg'>
 		</div>

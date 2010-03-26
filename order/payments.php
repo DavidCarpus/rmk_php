@@ -35,7 +35,7 @@ echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.
 
  <div class="mainbody">
 	<div class="centerblock">
-	 	<?php echo toolbar(); ?>
+	 	<?php echo toolbar("Payment Form"); ?>
 		<div class="content">
 		<?php
 			if($mode == 'browse' || $mode == 'err') echo $paymentForms->basicPaymentForm($formValues);
