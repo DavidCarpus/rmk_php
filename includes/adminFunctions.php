@@ -160,14 +160,14 @@ function toDoItems(){
 	$results[] = array("Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
 	$results[] = array("Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
 	$results[] = array("Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
-	$results[] = array("Done"=>"2008-06-25", "Text"=>"Accounting on invoices – FL invoice #55385 – note the $.72 – which is tax added to the invoice on the ups charge. (ups charge is added to invoice when billed in year of shipment.)   Invoice is actually paid in full, no credit due,   and shows $.72 credit on the shop rmk.");
-	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – invoice #55315 and  #55318 – two kn order – shows four knives  billing –  2 kn were deleted and changed to new models. Shows total qty of 4.  (((purged rmk program today)))");
-	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – please format to line up the decimals.");
-	$results[] = array("Done"=>"2008-03-24", "Text"=>"Knife order specs – same as accounting on invoices -  #55315 and #55318 – shows four knives, 2 were deleted and change to new models. Shows qty of 4.   (rmk purged today)");
-	$results[] = array("Done"=>"2008-03-24", "Text"=>"KNIFE LIST - The KNV  part number is still added into total qty.  ((purged today)) ");
-	$results[] = array("Done"=>"2009-03-24", "Text"=>"Blist for 1/31/0 - List by invoice number, then within invoice-Program to list model numbers numerically, then alpha.");
-	$results[] = array("Done"=>"2008-05-13", "Text"=>"Dealers – next to the invoice number, same line, display dealer name in italics.");
-	$results[] = array("Done"=>"2009-12-30", "Text"=>"End of Blist –  display grand total of knives");
+//	$results[] = array("Done"=>"2008-06-25", "Text"=>"Accounting on invoices – FL invoice #55385 – note the $.72 – which is tax added to the invoice on the ups charge. (ups charge is added to invoice when billed in year of shipment.)   Invoice is actually paid in full, no credit due,   and shows $.72 credit on the shop rmk.");
+//	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – invoice #55315 and  #55318 – two kn order – shows four knives  billing –  2 kn were deleted and changed to new models. Shows total qty of 4.  (((purged rmk program today)))");
+//	$results[] = array("Done"=>"2008-03-24", "Text"=>"Accounting on invoices – please format to line up the decimals.");
+//	$results[] = array("Done"=>"2008-03-24", "Text"=>"Knife order specs – same as accounting on invoices -  #55315 and #55318 – shows four knives, 2 were deleted and change to new models. Shows qty of 4.   (rmk purged today)");
+//	$results[] = array("Done"=>"2008-03-24", "Text"=>"KNIFE LIST - The KNV  part number is still added into total qty.  ((purged today)) ");
+//	$results[] = array("Done"=>"2009-03-24", "Text"=>"Blist for 1/31/0 - List by invoice number, then within invoice-Program to list model numbers numerically, then alpha.");
+//	$results[] = array("Done"=>"2008-05-13", "Text"=>"Dealers – next to the invoice number, same line, display dealer name in italics.");
+//	$results[] = array("Done"=>"2009-12-30", "Text"=>"End of Blist –  display grand total of knives");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#55933 – bill to and ship to address are not displayed");
 	$results[] = array("Done"=>"2008-03-24", "Text"=>"#67761 – calculate tax on subtotal amt");
 	$results[] = array("Done"=>"2008-08-14", "Text"=>"Shop - When searching by invoice, ignore 'older' flag");
@@ -184,8 +184,8 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-03-06", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
 	$results[] = array("Done"=>"2010-03-19", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
 	$results[] = array("Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
+	$results[] = array("Done"=>"2010-03-25", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
 	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
-	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	
