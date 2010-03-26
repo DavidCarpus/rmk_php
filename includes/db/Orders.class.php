@@ -73,6 +73,14 @@ class Orders
 //		echo debugStatement("updateStatus:<br/>$query" );
 		executeSQL($query);
 	}
+	public function markAllProcessed($orders, $processedStatus)
+	{
+		foreach ($orders as $order)
+		{
+//			echo dumpDBRecord($order);
+			$this->updateStatus($order['orders_id'], $processedStatus);
+		}
+	}
 	
 	public function getUnprocessedCounts($requestTypeOptions)
 	{

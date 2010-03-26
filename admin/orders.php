@@ -75,6 +75,16 @@ switch ($mode) {
 		$params= array('Content-Disposition'=>'WebOrders.pdf');
 		$pdf->stream($params);
 		break;
+	case "processAndPrint":
+		$orderData = $orders->search($formValues, true);
+		$orders->markAllProcessed($orderData, $orderProcessingForms->statusIDFromDesc("Processed"));
+		$pdf = new CwebOrderReport();
+		$pdf->setData($orderData);
+		$pdf->createReport();
+		$params= array('Content-Disposition'=>'WebOrders.pdf');
+		$pdf->stream($params);
+		break;
+		
 	case "search":
 		$orderData = $orders->search($formValues);
 		break;

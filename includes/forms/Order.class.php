@@ -24,6 +24,12 @@ class Order extends Base
    	 }
    }
    
+   public function statusIDFromDesc($text){
+   	 foreach ($this->statusOptions as $option){
+   	 	if($option['label'] == $text) return $option['id'];
+   	 }
+   }
+   
    public function entryFormMode($formValues)
    {
 		if(array_key_exists("submitButton", $formValues) && strrpos($formValues["submitButton"],"mail:") )	{return "email";}
@@ -32,6 +38,7 @@ class Order extends Base
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Review Request"){return "requestreview";}
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Submit Request"){return "requestsubmit";}
 		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Printable List"){return "generatePDF";}
+		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Process and Print Unprocessed"){return "processAndPrint";}
 		
 		if(array_key_exists("statusUpdate", $formValues) && $formValues["statusUpdate"] == "UpdateStatus"){return "updatestatus";}
 		return "browse";	
@@ -86,6 +93,7 @@ class Order extends Base
 	
 		$results .=  $this->button("submitButton", "Search");
 		$results .=  $this->button("submitButton", "Printable List");
+		$results .=  $this->button("submitButton", "Process and Print Unprocessed");
 		$results .= "\n</form>";
 		$results .= "</div><!-- End $formName -->\n";
 
