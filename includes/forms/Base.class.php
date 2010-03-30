@@ -135,7 +135,7 @@ class Base
 		$value = $this->htmlizeFormValue($value);
 		$ro = (isset($options['readonly'])) ? "readonly='readonly'" : "";
 		$error = (isset($options['error'])) ? "class='required'" : "";
-		$class = (isset($options['class'])) ? "class='" . $options['class'] ."'" : "";
+		$class = (isset($options['class'])) ? "class='" . $options['class'] ."'" : "class='$name'";
 		
 		$id=$name . "_" . $this->consecutiveID++;
 		
