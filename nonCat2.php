@@ -1,8 +1,12 @@
 <?php
+include_once "./config.php";
+
+include_once INCLUDE_DIR. "htmlHead.php";
+include_once FORMS_DIR. "Order.class.php";
+include_once DB_INC_DIR. "db.php";
+
 session_start(); 
 /* Created on Feb 4, 2006 */
-include_once "includes/db/db.php";
-include_once "includes/htmlHead.php";
 ?>
 <html>
 <?php echo headSegment(); ?>
@@ -87,7 +91,7 @@ for($i=0; $i< count($left); $i++ ) {
 <?php echo logo_header(""); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo toolbar(); ?>
+		<?php echo toolbar("Catalog"); ?>
 <?php
 if (ereg( 'MSIE ([0-9].[0-9]{1,2})',$HTTP_USER_AGENT,$log_version)) {
 	echo "<div class='contentIE'>";
