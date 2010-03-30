@@ -2,15 +2,16 @@
 include_once "pdfCreator/class.ezpdf.php";
 include_once DB_INC_DIR. "Invoices.class.php";
 include_once FORMS_DIR. "Base.class.php";
+include_once INCLUDE_DIR. "utils.php";
 
-function isUSZipCode($zipCode)
-{
-	$zipCode = str_replace("-", "",$zipCode);
-	$zipCode = trim($zipCode);
-	if(strlen($zipCode) == 5 || strlen($zipCode) == 9 )	return is_numeric($zipCode);
-	//	echo "UNK zip: $zipCode" . " " . strlen($zipcode) . "<BR>";
-	return 0;
-}
+//function isUSZipCode($zipCode)
+//{
+//	$zipCode = str_replace("-", "",$zipCode);
+//	$zipCode = trim($zipCode);
+//	if(strlen($zipCode) == 5 || strlen($zipCode) == 9 )	return is_numeric($zipCode);
+//	//	echo "UNK zip: $zipCode" . " " . strlen($zipcode) . "<BR>";
+//	return 0;
+//}
 
 function webOrderCountry($order)
 {
@@ -131,8 +132,8 @@ class CwebOrderReport extends Cezpdf {
 			//				echo $row['ordertype'] . "-" . $row['country'] . "-" . webOrderCountry($row) . "<BR>";
 			//			}
 			$this->orderListLabels($toSort);
-			$this->newPage();
-			$this->ezSetY($this->ez['pageHeight']-20);
+			$this->ezSetY($this->ez['pageHeight']-90);
+			$this->startPage(20);
 				
 			$this->orderListDetailed($toSort);
 				
@@ -261,15 +262,15 @@ class CwebOrderReport extends Cezpdf {
 	}
 
 	public function orderListDetailedPayment($request){ // ordertype=4
-		$pointSize=14;
+		$pointSize=16;
 
 		$this->startPage(20);
 		
 		$this->ezSetY($this->y - $pointSize*1.5);
-		$this->addText(50, $this->y, $pointSize*1.5, "<b>Order Payment Request</b>");
-		$this->addText(300, $this->y, $pointSize*1.5, "<b>Printed</b>");
-		$this->addText(380, $this->y, $pointSize*1.5, date("M j o g:i a"));
-		$this->ezSetY($this->y - $pointSize*2);
+		$this->addText(30, $this->y, $pointSize*1.5, "<b>Order Payment Request</b>");
+		$this->addText(370, $this->y, $pointSize*1, "<b>Printed</b>");
+		$this->addText(450, $this->y, $pointSize*1, date("M j o g:i a"));
+		$this->ezSetY($this->y - $pointSize*6);
 
 		$fields = array();
 		$fields[] = array("Account Name", $request['name']);
@@ -280,11 +281,12 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
+		$fields[] = array("Notes", $request['note']);
 		$fields[] = array("Comments", $request['comment']);
-
+		
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
-			$this->addText(170, $this->y, $pointSize, $field[1]);
+			$this->addText(200, $this->y, $pointSize, $field[1]);
 			$this->ezSetY($this->y - (1.5*$pointSize));
 		}
 
@@ -295,7 +297,8 @@ class CwebOrderReport extends Cezpdf {
 	public function orderListDetailed($data)
 	{
 		$firstNonUSCatalog=true;
-		$this->ezSetY($this->ez['pageHeight']);
+		$this->startPage(20);
+//		$this->ezSetY($this->ez['pageHeight']-29);
 
 		//		$this->newPage();
 		foreach ($data as $order) {
