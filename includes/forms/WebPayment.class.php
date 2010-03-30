@@ -34,9 +34,12 @@ class WebPayment extends Base
 	public function reviewPaymentRequest($formValues){
 		$formName="paymentSubmissionReviewForm";
 		$results="";
+		$results .= $this->formPrefix('PaymentRequestReview');
+		
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
 		
+		$results .=  $this->button("submit", "Submit Payment Request");
 		$errors = $this->retrieveErrorArray($formValues);
 		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
 		foreach($fields as $name=>$label)
@@ -51,15 +54,19 @@ class WebPayment extends Base
 		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
 		
 		$fields = array("address1"=>"Billing Address", "address2"=>"&nbsp;", "address3"=>"&nbsp;", 
-			"city"=>"City", "state"=>"State/Province", "zip"=>"Zip/Postal Code",	"country"=>"Country"
+			"city"=>"City", "state"=>"State/Province", "zip"=>"Zip/Postal Code",	"country"=>"Country",
+			"note"=>"Note"
 		);
 		foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
 			$options=array();
 			if(array_key_exists($name, $errors)) $options['error']=true;
-
-			$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"") . "<br/>\n";
+			if($name != "note"){
+				$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"") . "<br/>\n";
+			} else{
+				$results .=  $this->textArea($name, $label, $value, $options ,"" ,"" ,"" ,"");
+			}
 		}
 		
 		$results .=  $this->button("submit", "Submit Payment Request");
@@ -72,10 +79,14 @@ class WebPayment extends Base
 	public function basicPaymentForm($formValues){
 		$formName="basicPaymentForm";
 		$results="";
+		
+		$results .= $this->formPrefix('PaymentRequest');
+				
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>\n" ;
 		
-	   	$errors = $this->retrieveErrorArray($formValues);
+		$results .=  $this->button("submit", "Review Payment Submission");
+		$errors = $this->retrieveErrorArray($formValues);
 				
 		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
 		foreach($fields as $name=>$label)
@@ -90,15 +101,19 @@ class WebPayment extends Base
 		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
 		
 		$fields = array("address1"=>"Billing Address", "address2"=>"&nbsp;", "address3"=>"&nbsp;", 
-			"city"=>"City", "state"=>"State/Province", "zip"=>"Zip/Postal Code",	"country"=>"Country"
+			"city"=>"City", "state"=>"State/Province", "zip"=>"Zip/Postal Code",	"country"=>"Country",
+			"note"=>"Note"
 		);
 		foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
 			$options=array();
 			if(array_key_exists($name, $errors)) $options['error']=true;
-
-			$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"") . "<br/>\n";
+			if($name != "note"){
+				$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"") . "<br/>\n";
+			} else{
+				$results .=  $this->textArea($name, $label, $value, $options ,"" ,"" ,"" ,"");
+			}
 		}
 		
 		$results .=  $this->button("submit", "Review Payment Submission");
