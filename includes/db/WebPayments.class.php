@@ -1,6 +1,7 @@
 <?php
 include_once "db.php";
 include_once "BaseDBObject.class.php";
+include_once INCLUDE_DIR. "utils.php";
 
 class WebPayments extends BaseDBObject
 {
@@ -8,10 +9,12 @@ class WebPayments extends BaseDBObject
 	
 	function validateData($values){
 		$valid=true;
-		$requiredFields = array('phone', 'name', 'invoice','ccnumber', 'ccname', "address1", 'city', 'state', 'zip', 'country');
+		$requiredFields = array('phone', 'name', 'invoice','ccnumber', 'ccname', "address1", 'city', 'state', 'zip');
+		if(! isUSZipCode($values['zip'])) $requiredFields[]='country';
 		foreach ($requiredFields as $field){
 			if($values[$field] == ""){$this->validationError .= "$field,"; $valid=false;continue;}			
 		}
+		
 
 		$ccErrors=$this->validateCreditCardDataBlock($values);
 		if($ccErrors != ''){ $this->validationError .= $ccErrors; $valid=false; }
