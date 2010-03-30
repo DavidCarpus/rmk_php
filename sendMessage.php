@@ -39,7 +39,7 @@ echo headSegments("Send us a message", array("Style.css"), "print.css");
 
  <div class="mainbody">
 	<div class="centerblock">
-	 	<?php echo toolbar(); ?>
+	 	<?php echo toolbar("Home"); ?>
 		<div class="content">
 		<?php
 			echo $emailProcessingForms->sendEmailForm($formValues);
