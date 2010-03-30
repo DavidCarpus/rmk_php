@@ -186,6 +186,8 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
 	$results[] = array("Done"=>"2010-03-25", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
 	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
+	$results[] = array("Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
+	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	
