@@ -131,10 +131,7 @@ class CwebOrderReport extends Cezpdf {
 			//			foreach ($toSort as $row){
 			//				echo $row['ordertype'] . "-" . $row['country'] . "-" . webOrderCountry($row) . "<BR>";
 			//			}
-			$this->orderListLabels($toSort);
-			$this->ezSetY($this->ez['pageHeight']-90);
-			$this->startPage(20);
-				
+			$this->orderListLabels($toSort);			
 			$this->orderListDetailed($toSort);
 				
 		}
@@ -220,11 +217,11 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
-		$fields[] = array("Comments", $request['comment']);
-
+		$fields[] = array("Shop Comments", $request['comment']);
+		
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
-			if($field[0] == 'Features'){
+			if($field[0] == 'Features' || $field[0] == 'Shop Comments'){
 				$this->ezText($field[1],$pointSize);
 			} else {
 				$this->addText(170, $this->y, $pointSize, $field[1]);
@@ -281,12 +278,19 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
-		$fields[] = array("Notes", $request['note']);
-		$fields[] = array("Comments", $request['comment']);
+		$fields[] = array("CC Name on Card", $request['ccname']);
+		$fields[] = array("Customer Notes", $request['note']);
+		$fields[] = array("Shop Comments", $request['comment']);
 		
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
-			$this->addText(200, $this->y, $pointSize, $field[1]);
+			
+			if($field[0] == 'Shop Comments' || $field[0] == 'Customer Notes'){
+				$this->ezText($field[1],$pointSize);
+			} else {
+				$this->addText(200, $this->y, $pointSize, $field[1]);
+//				$this->addText(170, $this->y, $pointSize, $field[1]);
+			}
 			$this->ezSetY($this->y - (1.5*$pointSize));
 		}
 
@@ -373,34 +377,40 @@ class CwebOrderReport extends Cezpdf {
 
 		foreach ($data as $order) {
 			$order = $this->cleanUpOrder($order);
-			if($lastType != $order['ordertype'] && $lastType > 0){
-				if($col > 0){
+			if($order['ordertype'] != 4){ // Do not print labels for payments Per Val Email 2010-03-30
+				if($lastType != $order['ordertype'] && $lastType > 0){
+					if($col > 0){
+						$row++;
+						$col=0;
+					}
+					$currentY = $this->ez['pageHeight']-20 - (($row * 77) + $fontSize);
+					$this->line(1, $currentY, 600, $currentY);
+					if($row > 10){
+						$this->newPage();
+						$row=0;
+					}
+				}
+				if(webOrderCountry($order) == 1){
+					$order=$this->fixUS_Address($order);
+				}
+				$fields = $this->getLabelRequestFields($order);
+				//			$fields[] = $col;
+				$this->printLabel($row,$col,$fields);
+				$col++;
+				if($col >=3 ){
 					$row++;
 					$col=0;
 				}
-				$currentY = $this->ez['pageHeight']-20 - (($row * 77) + $fontSize);
-				$this->line(1, $currentY, 600, $currentY);
 				if($row > 10){
 					$this->newPage();
 					$row=0;
 				}
 			}
-			if(webOrderCountry($order) == 1){
-				$order=$this->fixUS_Address($order);
-			}
-			$fields = $this->getLabelRequestFields($order);
-			//			$fields[] = $col;
-			$this->printLabel($row,$col,$fields);
-			$col++;
-			if($col >=3 ){
-				$row++;
-				$col=0;
-			}
-			if($row > 10){
-				$this->newPage();
-				$row=0;
-			}
 			$lastType = $order['ordertype'];
+		}
+		if($row > 0 || $col > 0){
+			$this->ezSetY($this->ez['pageHeight']-90);
+			$this->startPage(20);
 		}
 	}
 
