@@ -302,14 +302,6 @@ function headSegments($title="rmk", $stylesheets=array("Style.css"), $printStyle
 	$results .=	"<meta http-equiv='Content-type' content='text/html;charset=UTF-8' />\n";
 	$results .=	"</head>\n";
 	return $results;
-	
-//		$printStyle = str_replace(".css", "_Print.css", $stylesheet);
-//	return 	"<head><meta http-equiv='Content-Language' content='en' />" .
-//			"<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />" .
-//			"<LINK href='$stylesheet' rel='stylesheet' type='text/css'></head>\n".
-//			"<LINK href='$printStyle' media='print' rel='stylesheet' type='text/css'>".
-//			"<meta http-equiv='Content-type' content='text/html;charset=UTF-8' /></head>\n"
-//			;
 }
 
 
@@ -323,12 +315,7 @@ function logo_header($section, $prefix="."){
 	$results = "";
 	$headerid="";
 	if($section=='admin') $headerid='admin';
-//	if($section=='admin')
-////		$results = $results .  "<div id='adminheader'><H1>Admin Header</H1></div>\n";
-//		$results = $results .  "<div id='adminheader'><img src='" . getBaseImageDir() . "/logo.gif'></div>\n";
-//	else	
-////		$results = $results .  "<div id='header'><H1>NEW and Improved RMK Website</H1></div>";
-//		$results = $results .  "<div id='header'><img src='" . getBaseImageDir() . "/logo.gif'></div>\n";
+
 		$image1=getBaseImageDir() . "/logo.gif";
 		$image2=getBaseImageDir() . "/logoknife.gif";
 		$image3=getBaseImageDir() . "/Globe.gif";
@@ -336,18 +323,17 @@ function logo_header($section, $prefix="."){
 			$image3=getBaseImageDir() . "/GlobeStill.gif";
 			
 		$results = $results .  "<div class='".$headerid."titlebar' >";
-//		$results = $results .  "<div id='".$headerid."header' style='text-align:left;'>";
-		$results = $results .  "<img align='top' src='$image3' alt='globe' />";
-		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
-		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
-//		$results = $results .  "</div>\n";
+
 		
-		$results = $results .  "<img align='top' src='$image1'  alt='logo' />";
-//		$results = $results .  "&reg;<SMALL><SUP>TM</SUP></SMALL>";
-		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
-		$results = $results .  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+		$results = $results .  "<span class='titlebar_logo1' >";
+		$results = $results .  "<img align='center' src='$image3' alt='globe' />";
+		$results = $results .  "</span>\n";
+		$results = $results .  "<span class='titlebar_logo2' >";
+		$results = $results .  "<img align='top' src='$image1' alt='logo' />";
+		$results = $results .  "</span>\n";
 		
-//		$results = $results .  "<img src='$image3'>";
+////		$results = $results .  "&reg;<SMALL><SUP>TM</SUP></SMALL>";
+
 		$results = $results .  "</div>\n";
 
 		
@@ -409,11 +395,6 @@ function shopToolbar(){
 //		return $_SERVER['REMOTE_ADDR'];
 		
 	$prefix = getToolbarPrefix();
-//	$menu = array(
-//				array('knife_list.php', 'Knife List'),
-//				array('view_invoice.php', 'View Order'),
-//				array('../index.php', 'Home'),
-//				);
 	$menu = array(
 				array('.', 'Knife List'),
 				array('./index.php?invoicesearch', 'View Order'),

@@ -9,9 +9,13 @@
 .titlebar{
 	text-align: center;
 	height:80px;
+	display:block; 
 	color: #e4e5b5;
 	background-color: #134242;
 }
+.titlebar .titlebar_logo1{  padding-left: 30%; width:10%;  float: left; align:center; }
+.titlebar .titlebar_logo2{ padding-right: 30%; width:20%;  float: left; align:left;}
+
 .leftnavigation{
 	background-image: url(images/sidenav.gif);
 	display:block; 
@@ -288,6 +292,9 @@ span.cap-g {
 
 #toDoList span.done{ text-decoration: line-through; }
 
+
+
+
 #EmailSearch 
 {
 	float: left;
@@ -369,19 +376,25 @@ span.cap-g {
 #emailForRequest {  width:550px;  display: block; float: left; margin-top: 10px; background-color: #BBBBBB; }
 #emailForRequest textarea{  width:330px;  }
 
-#basicPaymentForm { width:450px;  display: block; float: left;}
+#basicPaymentForm { width:500px;  display: block; float: left;}
 #basicPaymentForm input.btn{ width:210px;  display: block; float: left;}
+#basicPaymentForm input.btn:focus{ border:2px #FF0000 solid;}
+#basicPaymentForm input.btn:hover{ border:2px #FF0000 solid;}
 #basicPaymentForm .entryfield input {width:250px;  }
 #basicPaymentForm .entryfield .state {width:40px;  }
 #basicPaymentForm .entryfield .zip {width:130px;  }
 #basicPaymentForm .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
+#basicPaymentForm .note {width:300px; height:60px; display: block; float: left; } 
 
-#paymentSubmissionReviewForm { width:450px;  display: block; float: left;}
-#paymentSubmissionReviewForm input.btn{ width:210px;  display: block; float: left;}
+#paymentSubmissionReviewForm { width:500px;  display: block; float: left;}
+#paymentSubmissionReviewForm input.btn{ width:210px;  display: block; float: left; }
+#paymentSubmissionReviewForm input.btn:focus{ border:2px #FF0000 solid;}
+#paymentSubmissionReviewForm input.btn:hover{ border:2px #FF0000 solid;}
 #paymentSubmissionReviewForm .entryfield input {width:250px;  }
 #paymentSubmissionReviewForm .entryfield .state {width:40px;  }
 #paymentSubmissionReviewForm .entryfield .zip {width:130px;  }
 #paymentSubmissionReviewForm .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
+#paymentSubmissionReviewForm .note {width:300px; height:60px; display: block; float: left; } 
 
 
 
@@ -434,7 +447,11 @@ span.cap-g {
 #postfix  { display: block; float: left; width:800px; margin-top: 10px;  }
 
 
+#sendEmailForm {display: block; width:600px;  }
+#sendEmailForm .entryfield  {width:600px; margin-bottom: 10px;  }
 #sendEmailForm .entryfield input {width:220px;  }
+#sendEmailForm .entryfield label { float:left; }
+
 
 #paymentSubmissionResponse { display: block; float: left; width:600px; background-color: #FF2200; }
 
