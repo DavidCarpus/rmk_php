@@ -51,6 +51,7 @@ class Order extends Base
 		$results .=  "<div id='unprocessedrequests'>" . "\n";
    		$results .= "<div class='header'>" ."Unprocessed Requests: " . "</div>";
    		foreach ($records as $label=>$value){
+			$results .=  "<div class='unprocessedrequest'>" . "\n";
    			$label =str_replace(" Request", "", $label);
    			$results .= "<div class='label'>" .$label . "</div>";
    			if($value >0){
@@ -61,6 +62,7 @@ class Order extends Base
    				$value = "<a href='$href'>$value</a>";
    			}
    			$results .= "<div class='value'>" .$value . "</div>";
+   			$results .= "</div><!-- End unprocessedrequest -->\n";
    		}
    		$results .= "</div><!-- End unprocessedrequests -->\n";
    		
@@ -178,7 +180,7 @@ class Order extends Base
 		$fields=array("email"=>"Email Address", "processed"=>"Process State", "name" => 'Full Name',  
 						"address1"=>"Billing Address", "shipaddress1"=>"Shipping Address",
 						"csz" => 'city_state_zip_cntry', "phone"=> "Phone Number","invoice"=> "Invoice",
-						 "note" => 'Knife features, comments and questions', "CC" => "Credit Card Info",
+						 "note" => 'Customer Notes', "CC" => "Credit Card Info",
 						"datesubmitted"=>"Request Submitted", "ordertype"=>"Request Type", 
 		);
 		
@@ -222,7 +224,7 @@ class Order extends Base
 				} else if($name == 'processed' && !$displayOnly){
 					$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
 					$results .= $this->selection($name, $this->statusOptions, "", $record['processed'], true);
-					$results .=  $this->textArea('comment', "Note", $record['comment'], $options ,"" ,"" ,"" ,"");
+					$results .=  $this->textArea('comment', "RMK Notes", $record['comment'], $options ,"" ,"" ,"" ,"");
 					
 				} else if($name == 'email' && $value != '' && !$displayOnly){
 					$results .=  $this->button("submitButton", "Email:$value");

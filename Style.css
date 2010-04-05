@@ -370,8 +370,10 @@ span.cap-g {
 .editphotoblock input {width:100px; display: block; }
 
 #unprocessedrequests {  width:200px;  display: block; float: left; margin-top: 10px;}
-#unprocessedrequests .label {width:80px; display: block; clear:left; float: left; background-color: #FF2200; padding-bottom: 10px;}
-#unprocessedrequests .value {width:40px; display: block; float: left; background-color: #BBBBBB; padding-bottom: 10px;}
+#unprocessedrequests .label {width:80px; display: block; clear:left; float: left;
+		background-color: #FF2200; padding-bottom: 10px;}
+#unprocessedrequests .value {width:40px; display: block; float: left;
+		background-color: #BBBBBB; padding-bottom: 10px;}
 
 #emailForRequest {  width:550px;  display: block; float: left; margin-top: 10px; background-color: #BBBBBB; }
 #emailForRequest textarea{  width:330px;  }
