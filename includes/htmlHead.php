@@ -670,7 +670,19 @@ function isDebugAccess(){
 
 		$letter = str_replace("[[cc_payment_block]]", creditCardBlockForLetters(), $letter);
 		
+		$letter = acrobatFix($letter );
 //		$letter = str_replace("\n", "<br /> ", $letter);
 		return $letter;
    }
+   function acrobatFix($text)
+   {
+		$text = str_replace("&rsquo;", "';", $text);
+		$text = str_replace("&quot;", "\"", $text);
+		$text = str_replace( " &frac12;", chr(189),$text);
+		$text = str_replace( " &frac14;", chr(188), $text);
+		$text = str_replace( chr(189), " 1/2", $text);
+		$text = str_replace( chr(188), " 1/4", $text);
+		return $text;
+   }
+   
 ?>
