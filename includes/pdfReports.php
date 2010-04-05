@@ -217,11 +217,11 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
-		$fields[] = array("Shop Comments", $request['comment']);
+		$fields[] = array("RMK Comments", $request['comment']);
 		
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
-			if($field[0] == 'Features' || $field[0] == 'Shop Comments'){
+			if($field[0] == 'Features' || $field[0] == 'RMK Comments'){
 				$this->ezText($field[1],$pointSize);
 			} else {
 				$this->addText(170, $this->y, $pointSize, $field[1]);
@@ -280,12 +280,12 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("VCODE", $request['ccvcode']);
 		$fields[] = array("CC Name on Card", $request['ccname']);
 		$fields[] = array("Customer Notes", $request['note']);
-		$fields[] = array("Shop Comments", $request['comment']);
+		$fields[] = array("RMK Comments", $request['comment']);
 		
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
 			
-			if($field[0] == 'Shop Comments' || $field[0] == 'Customer Notes'){
+			if($field[0] == 'RMK Comments' || $field[0] == 'Customer Notes'){
 				$this->ezText($field[1],$pointSize);
 			} else {
 				$this->addText(200, $this->y, $pointSize, $field[1]);
@@ -377,7 +377,8 @@ class CwebOrderReport extends Cezpdf {
 
 		foreach ($data as $order) {
 			$order = $this->cleanUpOrder($order);
-			if($order['ordertype'] != 4){ // Do not print labels for payments Per Val Email 2010-03-30
+			if($order['ordertype'] != 4 &&  // Do not print labels for payments Per Val Email 2010-03-30 
+					$order['ordertype'] != 1 ){// Do not print labels for payments Per Val call 2010-03-31 
 				if($lastType != $order['ordertype'] && $lastType > 0){
 					if($col > 0){
 						$row++;
