@@ -185,8 +185,10 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-03-19", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
 	$results[] = array("Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
 	$results[] = array("Done"=>"2010-03-25", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
-	$results[] = array("Done"=>"", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
+	$results[] = array("Done"=>"2010-03-31", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
+	$results[] = array("Done"=>"2010-04-05", "Text"=>"Fix 'codes' and apostraphes on Dealer spec letter. Acrobat problem?");
 	$results[] = array("Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
+	$results[] = array("Done"=>"", "Text"=>"Labels for foreign should have more lines. Seperate out 'state and zip' on seperate line?");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
