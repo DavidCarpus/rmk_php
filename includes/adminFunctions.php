@@ -189,6 +189,17 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-04-05", "Text"=>"Fix 'codes' and apostraphes on Dealer spec letter. Acrobat problem?");
 	$results[] = array("Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
 	$results[] = array("Done"=>"", "Text"=>"Labels for foreign should have more lines. Seperate out 'state and zip' on seperate line?");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: Reference invoice #60891, florida sales tax,   amount due reflects $606.00,  does not include the tax due of $45.89 in the total amount due.");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: The top and left and right margin need to be adjusted.  The top margin needs to be  2.5” to accommodate letterhead.    Left  and right margins could use another 1/2 inch. ");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: Can you center the payment info at the end of the letter,  “If payment by credit card:  Visa, MC, Disc,    and card number  block of info.");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Order Processing screen:Shipping addres—remove—we took this out of the payment request form.");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Order Processing screen:Customer notes---list in order – after the credit card info. – not before.");
+	$results[] = array("Done"=>"", "Text"=>"Order Processing screen:Process and print bar--- not working  -after 1st print  and return to screen, the Payment(red box) still shows qty of 1 ");
+	$results[] = array("Done"=>"", "Text"=>"Order Processing screen:unprocessed payment.  Also the Process state—still reflects unprocessed.");
+	$results[] = array("Done"=>"2010-04-22", "Text"=>"Order payment request – printed form:Billing address   -  line 1,2,3, - separate the lines. At this time the lines 1,2,3 are printing on one line, separate to print on 3 individual lines. See V Rivera Test 4/6/10—account name.");
+	$results[] = array("Done"=>"", "Text"=>"");
+	$results[] = array("Done"=>"", "Text"=>"");
+	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
@@ -197,24 +208,24 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated Feb 17, 20107</i><br />";
+	$results = "Web priority list <i>Last Updated Apr 22, 20107</i><br />";
 	$results .= "<ol id='toDoList'>";
 	$items = toDoItems();
 	foreach ($items as $item) {
-		if(strlen($item['Text'])>0){
+		$task=htmlizeText($item['Text']);
+		
+		if(strlen($task)>0){
 			$results .= "<li>";
 	
 			if(strlen($item['Done'] > 0)){
-				$results .= "<span class='done'>" . $item['Text'] . "</span>";
-			} else {
-				$results .= "<span>" . $item['Text'] . "</span>";
-			}
-			
-			if(strlen($item['Done'] > 0)){
+				$results .= "<span class='done'>$task</span>";
 				$results .= "<b>";
 				$results .= $item['Done'];
 				$results .= "</b>";
+			} else {
+				$results .= "<span>$task</span>";
 			}
+			
 			$results .= "</li>\n";
 		}
 	}
