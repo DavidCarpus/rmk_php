@@ -165,6 +165,7 @@ class Order extends Base
 
 		$shortType=str_replace(" Request", "Request", $orderType);
 		$results .=  "\n<div class='$shortType'><!-- Start $shortType -->\n";
+//		$results .= $shortType;
 		
 		if(!$displayOnly){
 			$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>"  . "\n";
@@ -180,7 +181,7 @@ class Order extends Base
 		$fields=array("email"=>"Email Address", "processed"=>"Process State", "name" => 'Full Name',  
 						"address1"=>"Billing Address", "shipaddress1"=>"Shipping Address",
 						"csz" => 'city_state_zip_cntry', "phone"=> "Phone Number","invoice"=> "Invoice",
-						 "note" => 'Customer Notes', "CC" => "Credit Card Info",
+						 "CC" => "Credit Card Info","note" => 'Customer Notes', 
 						"datesubmitted"=>"Request Submitted", "ordertype"=>"Request Type", 
 		);
 		
@@ -199,6 +200,10 @@ class Order extends Base
 			if($name == 'shipaddress1'){
 				$value .=  $record['address2'];
 				$value .=  $record['address3'];
+			}
+			// 'Hide' ship address for Payments
+			if($name == 'shipaddress1' && $shortType == "PaymentRequest"){
+				$value ="";
 			}
 			if($name == 'csz'){
 				$value=$record['city'] . ", " . $record['state'] . " " . $record['zip']. " " . $record['country'];

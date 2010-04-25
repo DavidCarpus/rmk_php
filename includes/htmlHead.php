@@ -627,16 +627,17 @@ function isDebugAccess(){
 
 	function creditCardBlockForLetters(){
 		$block = "";
-		$block .= str_repeat(" ", 10) . "If payment by credit card:  Visa, Mastercard, Discover" . "\n";
+		$basePadding=40;
+		$block .= str_repeat(" ", $basePadding) . "If payment by credit card:  Visa, Mastercard, Discover" . "\n";
 		$block .= "\n";
-		$block .= str_repeat(" ", 10) . "Card number:\t" . "_______________________________" . "\n";
-		$block .= str_repeat(" ", 10) . "'V' Code (numbers on signature line):\t" . "__________" . "\n";
-		$block .= str_repeat(" ", 10) . "Expiration date:\t" . "__________" . "\n";
-		$block .= str_repeat(" ", 10) . "Name as appears on credit card:\t" . "______________________________" . "\n";
-		$block .= str_repeat(" ", 10) . "Billing Address:\t" . "______________________________" . "\n";
-		$block .= str_repeat(" ", 36)  . "______________________________" . "\n";
-		$block .= str_repeat(" ", 36)  . "______________________________" . "\n";
-		$block .= str_repeat(" ", 10) . "Signature:\t" . "______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "Card number:\t" . "_______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "'V' Code (numbers on signature line):\t" . "__________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "Expiration date:\t" . "__________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "Name as appears on credit card:\t" . "______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "Billing Address:\t" . "______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding+26)  . "______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding+26)  . "______________________________" . "\n";
+		$block .= str_repeat(" ", $basePadding) . "Signature:\t" . "______________________________" . "\n";
 		
 		return $block;
 	}

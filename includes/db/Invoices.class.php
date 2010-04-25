@@ -289,7 +289,8 @@ class Invoices
 		$query = "SELECT C.LastName, C.FirstName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, ";
 		$query .= "DATE_FORMAT(I.DateOrdered, '%M %d, %Y') as DateOrdered, ";
 		$query .= "I.TotalRetail, A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country , ";
-		$query .= "I.AmountPaid, I.SubTotal+I.ShippingAmount-I.AmountPaid as Due, I.TaxPercentage ";
+//		$query .= "I.AmountPaid, ((I.SubTotal+I.ShippingAmount-I.AmountPaid)) as Due, I.TaxPercentage ";
+		$query .= "I.AmountPaid, ((I.SubTotal+I.ShippingAmount-I.AmountPaid) * (1+(I.TaxPercentage/100.0))) as Due, I.TaxPercentage ";
 		$query .= "FROM Invoices I Join Customers C on C.CustomerID = I.CustomerID  ";
 		$query .= "left join Address A on C.CustomerID = A.CustomerID  ";
 		$query .= "where (C.Dealer is null or C.Dealer != 1)  ";

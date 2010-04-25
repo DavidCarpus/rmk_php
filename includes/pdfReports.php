@@ -271,7 +271,12 @@ class CwebOrderReport extends Cezpdf {
 
 		$fields = array();
 		$fields[] = array("Account Name", $request['name']);
-		$fields[] = array("Billing Address", $this->getJoinedAddress($request));
+//		$fields[] = array("Billing Address", $this->getJoinedAddress($request));
+		$padding = "                ";
+		if(strlen($request['address1']) > 0) $fields[] = array("Billing Address", $request['address1']);
+		if(strlen($request['address2']) > 0) $fields[] = array($padding, $request['address2']);
+		if(strlen($request['address3']) > 0) $fields[] = array($padding, $request['address3']);
+		
 		$fields[] = array("City, State, Zip Code", $this->getJoinedCSZ($request));
 		$fields[] = array("Telephone Number", $this->getFormattedPhoneNum($request['phone']));
 		$fields[] = array("Invoice Number", $request['invoice']);
@@ -485,7 +490,7 @@ class CDealerSpecLetter extends Cezpdf {
 
 	public function __construct() {
 		parent::__construct('LETTER');
-		$this->ezSetMargins(10,10,50,50);
+		$this->ezSetMargins(110,10,80,80);
 
 		$this->labelFont = PDF_FONT_DIR .'Times-Roman.afm';
 		$this->footerFont = PDF_FONT_DIR .'Courier.afm';
@@ -509,13 +514,13 @@ class CDealerSpecLetter extends Cezpdf {
 
 //		echo sizeof($this->reportData) ;
 		if(sizeof($this->reportData) > 0){
-			$this->ezSetY($this->ez['pageHeight']-20);
+			$this->ezSetY($this->ez['pageHeight']-110-10);
 			$this->dump();
 		}
 	}
 	function dump(){
 		foreach ($this->reportData as $record) {
-			$this->startPage(20);
+			$this->startPage(110);
 			$letter = $this->letterData['prefix'] . $this->letterData['postfix'];
 			$letter = substitureLetterFields($letter, $record );
 			$this->ezText($letter );
