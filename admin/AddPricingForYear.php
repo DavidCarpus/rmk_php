@@ -57,7 +57,7 @@ echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'>
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">
 	<div class="centerblock">
-		<?php echo adminToolbar(); ?>
+		<?php echo adminToolbar("RMK"); ?>
 		<div class="content">
 			<?php 	
 //					echo "Pricing - $mode";
