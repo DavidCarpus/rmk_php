@@ -442,13 +442,16 @@ class CwebOrderReport extends Cezpdf {
 		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
 		if(strlen($order['address2']) > 0) $results[] = $order['address2'];
 		if(strlen($order['address3']) > 0) $results[] = $order['address3'];
-		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']) . " " . $order['zip'];
+//		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']) . " " . $order['zip'];
+		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']);
 		$country = strtoupper($order['country']);
 		$isUSA = $country  == "USA" || strncmp($country, "UNITED STATES", 13) == 0;
-		if(! $isUSA){
+		if(! $isUSA && strlen($order['country']) > 0){
 			$results[] = $order['country'];
 		}
-
+		
+		$results[] = $order['zip'];
+		
 		//		$results[] = $order['ordertype'];
 
 		//		switch ($order['ordertype']) {

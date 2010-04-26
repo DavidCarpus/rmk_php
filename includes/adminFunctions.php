@@ -188,7 +188,7 @@ function toDoItems(){
 	$results[] = array("Done"=>"2010-03-31", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
 	$results[] = array("Done"=>"2010-04-05", "Text"=>"Fix 'codes' and apostraphes on Dealer spec letter. Acrobat problem?");
 	$results[] = array("Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
-	$results[] = array("Done"=>"", "Text"=>"Labels for foreign should have more lines. Seperate out 'state and zip' on seperate line?");
+//	$results[] = array("Done"=>"", "Text"=>"Labels for foreign should have more lines. Seperate out 'state and zip' on seperate line?");
 	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: Reference invoice #60891, florida sales tax,   amount due reflects $606.00,  does not include the tax due of $45.89 in the total amount due.");
 	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: The top and left and right margin need to be adjusted.  The top margin needs to be  2.5” to accommodate letterhead.    Left  and right margins could use another 1/2 inch. ");
 	$results[] = array("Done"=>"2010-04-22", "Text"=>"Balance due letters: Can you center the payment info at the end of the letter,  “If payment by credit card:  Visa, MC, Disc,    and card number  block of info.");
