@@ -5,6 +5,14 @@ class Orders
 {
 	public $validationError;	
 	
+
+	public function saveRequest($formValues){
+		unset($formValues["submit"]);
+		unset($formValues["submitButton"]);
+					
+		return saveRecord("orders", "orders_id", $formValues, false);
+	}
+	
 	public function customerOrderFormValidation($formValues){
 		$valid=true;
 		
@@ -102,6 +110,12 @@ class Orders
 	{
 		$query = "Select *, UNIX_TIMESTAMP(datesubmitted) as submission_date from orders where orders_id=$requestID";
 		return getSingleDbRecord($query);
+	}
+	
+	public function clearOldCCNumbers()
+	{
+//		UPDATE orders set datesubmitted=datesubmitted, ccnumber=concat("****", substring(ccnumber, length(ccnumber)-3))
+// where length(ccnumber) > 4 and DATEDIFF(NOW(), datesubmitted ) > 7
 	}
 
 }

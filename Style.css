@@ -420,8 +420,17 @@ span.cap-g {
 #ccdata input {background-color: #DDDDDD;  }
 #ccdata  .entryfield input.option  {width:15px;  }
 
-#customerOrderValidation {width:460px; float:left;  display: block; }
-#customerOrderValidation #bladelength {width:80px;  }
+#customerOrderValidation_main {width:520px;  display: block; float: left; margin-top: 10px; }
+#customerOrderValidation {float:left;  display: block; }
+#customerOrderValidation .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
+#customerOrderValidation .entryfield .state {width:40px;  }
+#customerOrderValidation .entryfield .zip {width:130px;  }
+#customerOrderValidation .entryfield .bladelength {width:80px;  }
+#customerOrderValidation textarea {width:220px;  }
+#customerOrderValidation .optionblock { background-color: #DDDDDD;  }
+#customerOrderValidation input.btn {width:140px; display: block; float: left; clear: left; margin-top: 10px; }
+#customerOrderValidation  .entryfield input.option  {width:15px; margin-right: 2px; }
+#customerOrderValidation .entryfield input {width:220px;  }
 /*
 #customerOrderValidation label {width:130px;}
 #customerOrderValidation input.btn {width:220px; float: left; }

@@ -269,6 +269,8 @@ class Order extends Base
 		$results .=  "<div id='$formName'>" . "\n";
 		$results .=  "<form name='$formName' action='". $_SERVER['PHP_SELF']. "' method='post'>"  . "\n";
 		
+		$results .=  "<div id='$formName"."_main'>" . "\n";
+		
 		$fields=array("name"=>"Full Name", "email"=>"Email Address", "address1"=>"Billing Address", 
 			"address2"=>"&nbsp;", "address3"=>"&nbsp;", "city"=>"City", "state"=>"State/Province", 
 			"zip"=>"Zip/Postal Code",	"country"=>"Country", "phone"=>"Phone Number", 
@@ -287,6 +289,8 @@ class Order extends Base
 			if($value != ''){
 				if($name=='qty'){
 					$results .=  $this->hiddenField($name, $value);
+				} else	if($name == 'note'){
+					$results .=  $this->textArea($name, $label, $value, $options ,"" ,"" ,"" ,"");									
 				} else {
 					$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
 				}
@@ -296,6 +300,7 @@ class Order extends Base
 			$results .=  $this->button("submitButton", "Submit Request");
 			$results .=  $this->button("submitButton", "Edit Request");
 		}
+		$results .= "</div>";
 		
 		$results .= "</div>";
 		$results .= "</form><!-- End $formName -->\n";
@@ -350,7 +355,11 @@ class Order extends Base
 		$results .= "</div>";
 		
 		
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions);
+		$hiddenCC=true;
+		if($formValues['ordertype'] == "Order"){
+			$hiddenCC=false;
+		}
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, $hiddenCC);
 		
 		
 		$results .=  $this->button("submitButton", "Review Request");
@@ -363,6 +372,27 @@ class Order extends Base
 
 		return $results;
 	}
-
+	public function orderSubmissionResponse($formValues){
+		$responseDiv="orderSubmissionResponse";
+		$results="";
+		$results .=  "<div id='$responseDiv'>" . "\n";
+		
+		$results = $results . "Thank you for your order request with Randall Made Knives.\n\n";
+		$results = $results . "Full Name:". $formValues['name'] . "\n";
+		$results = $results . "Order request date:". date("F j Y") . "\n";
+		$results = $results . "Model Number:". $formValues['model'] . "\n\n";
+		$results = $results . "An 'order acknowledgement' will be forwarded via post office within 21 days.\n\n";
+		$results = $results . "The acknowledgement will outline knife order specifications, ";
+		$results = $results . "the scheduled ship date and also a deposit record. ";
+		$results = $results . "If you do not receive an order acknowledgement, it is imperative to contact Randall Made Knives "; 
+		$results = $results . "to verify complete order specs and deposit records.\n\n";
+		$results = $results . "<I>All order requests are subject to approval  and confirmation by Randall Made Knives.</I>\n\n";
+	
+//		$results .= dumpDBRecord($formValues);
+		
+		$results .= "</div><!-- End $responseDiv -->\n";
+		
+		return $results;		
+	}
 }
 ?>
