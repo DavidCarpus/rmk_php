@@ -72,16 +72,15 @@ function executeSQL($sql){
 	$result = mysql_query($sql) or die("Unable to execute SQL:" . $sql);	
 }
 
-function saveRecord($tableName, $keyField, $record){
+function saveRecord($tableName, $keyField, $record, $test=false){
 	if(array_key_exists($keyField, $record) && $record[$keyField] > 0){
 		$sql = updateRecordSQL($record, $keyField, $tableName);
-		executeSQL($sql);
-//		echo debugStatement($sql);
+		if(! $test)	executeSQL($sql);
+		if( $test) 	echo debugStatement($sql);
 	}else{
 		$sql = insertRecordSQL($record, $keyField, $tableName);
-		executeSQL($sql);
-//		echo debugStatement($sql);
-//		echo "<HR>$sql<HR>";
+		if(! $test)	executeSQL($sql);
+		if( $test) 	echo debugStatement($sql);
 		$record[$keyField] = mysql_insert_id();		
 	}
 	return $record;
