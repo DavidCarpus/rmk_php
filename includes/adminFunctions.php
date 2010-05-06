@@ -219,7 +219,7 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated Apr 22, 20107</i><br />";
+	$results = "Web priority list <i>Last Updated May 05, 2010</i><br />";
 	$results .= "<ol id='toDoList'>";
 	$items = toDoItems();
 	foreach ($items as $item) {
