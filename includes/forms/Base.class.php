@@ -293,6 +293,11 @@ class Base
 		}
 		return $errors;		
 	}
+	public function getUnFormattedCC($ccNumber) {
+		$ccNumber = str_replace(" ", "",$ccNumber);
+		$ccNumber = str_replace("-", "",$ccNumber);
+		return $ccNumber;		
+	}
 	public function getFormattedCC($creditCard) {
 		$results="";
 		$split = str_split($creditCard, 4);
