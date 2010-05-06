@@ -5,6 +5,8 @@ include_once INCLUDE_DIR. "htmlHead.php";
 include_once FORMS_DIR. "Order.class.php";
 include_once DB_INC_DIR. "Orders.class.php";
 
+include_once INCLUDE_DIR. "email.php";
+
 $formValues = getFormValues();
 
 $orderProcessingForms = new Order();
@@ -17,10 +19,24 @@ if($mode == 'requestreview'){
 		$formValues['ERROR']=$ordersDB->validationError;	
 		$mode='err';
 	}
+	
 }
 if($mode == 'requestsubmit'){
-	$formValues['STATUS']=$mode;
+	$formValues['ordertype']=$orderProcessingForms->requestTypeIDFromLabel("Order Request");
+	$formValues['ccnumber'] = $orderProcessingForms->getUnFormattedCC($formValues['ccnumber']);		
+	$ordersDB->saveRequest($formValues);
+
+	$emailValues['to']=$formValues['email'];
+	$emailValues['from']="webmessages@randallknives.com";
+	$emailValues['customername']=$formValues['name'];
+	$emailValues['subject']="Your order request with Randall Made Knives";
+	$emailValues['message']=$orderProcessingForms->orderSubmissionResponse($formValues);
+	
+	saveAndSend($emailValues,false);
+
+	$mode='submitted';
 }
+
 
 echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 ?>
@@ -38,7 +54,10 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 		<div class="content">
 		<?php
 			if($mode == 'browse' || $mode == 'err') echo $orderProcessingForms->customerOrderForm($formValues);
-			if($mode == 'requestreview' || $mode == 'requestsubmit' ) echo $orderProcessingForms->customerOrderValidation($formValues);			
+			if($mode == 'requestreview' || $mode == 'requestsubmit' ) echo $orderProcessingForms->customerOrderValidation($formValues);
+			if($mode == 'submitted'){
+				echo str_replace("\n","<BR>\n",$orderProcessingForms->orderSubmissionResponse($formValues));
+			}
 		?>
 		</div>	
 	 	<?php echo footer(); ?>
@@ -46,7 +65,7 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 </div>
 
 <?php
-//echo debugStatement($mode);
-//echo debugStatement(dumpDBRecord($formValues));
+echo debugStatement($mode);
+echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
