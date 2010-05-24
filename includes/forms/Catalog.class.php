@@ -241,7 +241,7 @@ class Catalog extends Base
 			$results .=  $this->textField($name, $label, $value, $options, "","","","") . "<br/>\n";			
 		}
 		
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, false);
 		
 		$results .=  $this->button("submit", "Request Catalog");
 				

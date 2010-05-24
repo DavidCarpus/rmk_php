@@ -238,7 +238,7 @@ class Base
 		return $results;
 	}
 	
-	public function creditCardFormBlock($formValues, $ccTypeOptions, $hide=true){
+	public function creditCardFormBlock($formValues, $ccTypeOptions, $getAmount, $hide=true){
 		$results="";
 		
 		$errors = $this->retrieveErrorArray($formValues);
@@ -249,6 +249,9 @@ class Base
 			"ccnumber"=>"Credit Card Number", "ccexpire"=>"Expiration Date",  
 			"ccvcode"=>"VCode <i>(Last 3 digits on signature line)</i>", "ccname"=>"Name as it appears on card",
 		);
+		if($getAmount)
+ 			$ccFields["amount"] = "Amount";
+
 		foreach ($ccFields as $name=>$label){
 			$value=$formValues[$name];
 			$options=array();			
@@ -256,6 +259,21 @@ class Base
 			
 			if($name == 'cctype'){
 				$results .= $this->optionField($name, $label, $ccTypeOptions, $value, $options);
+			} else	if($name == 'amount'){
+				$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
+//				$results .=  "<span style='font-size: 12px; display: block; float:left;'><i>Min $100 on CC payments</i></span>";
+				$results .=  "<span class='minPayment'><i>Min $100 on CC payments</i></span>";
+				
+				$results .=  "<br/>\n";
+//				$img = "<img align='top' src='" . getImagePath("memo.png") . "' border='0' alt='Min $100 on CC payments' />";
+//
+////				$results .= "<a onmouseover='details(\"google\")' href='http://www.google.com/'\" target='_blank' class='menulink'>Google</a>";
+//				
+//				
+//				$results .= "<span class='helptext'>";
+////				$results .= "<a href='#'target='_blank'>";
+//				$results .= "$img<span>Min $100 on CC payments</span>";
+//				$results .= "</span><!-- End HelpText -->\n";				} else	if($name == 'qty'){
 			} else	if($name == 'qty'){
 				$results .= $this->hiddenField($name, "1");
 			} else	if($name == 'note'){

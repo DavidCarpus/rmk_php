@@ -359,7 +359,7 @@ class Order extends Base
 		if($formValues['ordertype'] == "Order"){
 			$hiddenCC=false;
 		}
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, $hiddenCC);
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, $hiddenCC);
 		
 		
 		$results .=  $this->button("submitButton", "Review Request");

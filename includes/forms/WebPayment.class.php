@@ -98,7 +98,7 @@ class WebPayment extends Base
 			$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"") . "<br/>\n";
 		}
 		
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false);
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, true, false);
 		
 		$fields = array("address1"=>"Billing Address", "address2"=>"&nbsp;", "address3"=>"&nbsp;", 
 			"city"=>"City", "state"=>"State/Province", "zip"=>"Zip/Postal Code",	"country"=>"Country",
