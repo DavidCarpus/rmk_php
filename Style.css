@@ -66,6 +66,11 @@
 }
 .leftnavigation a:hover {color: blue;}
 .leftnavigation a#selected {color: #134242; background: url(images/back.gif); background-color: #e4e5b5;}
+.leftnavigation .paymentMenu{
+	color: #FFFFFF;
+	font: bold 16px sans-serif; 
+	background-color: #e4e5b5;
+}
 
 .admintitlebar{
 	text-align: center;
@@ -414,13 +419,17 @@ span.cap-g {
 #customerOrderForm .entryfield input {width:250px;  }
 
 #ccdata {width:500px;  display: block; float: left; margin-top: 10px; margin-left: 40px; border-style:solid;}
-#ccdata .ccvcode {width:40px; }
-#ccdata .ccexpire {width:60px;  }
+#ccdata  .minPayment  {font-size: 12px; display: block; float:left; vertical-align: center; }
+#ccdata .entryfield .ccvcode {width:40px;  }
+#ccdata .entryfield .ccexpire {width:60px;  }
+#ccdata .entryfield .amount {width:60px;  }
+
 #ccdata  .entryfield label { width:140px;  }
 #ccdata input {background-color: #DDDDDD;  }
 #ccdata  .entryfield input.option  {width:15px;  }
 
-#customerOrderValidation_main {width:520px;  display: block; float: left; margin-top: 10px; }
+
+#customerOrderValidation_main {width:460px;  display: block; float: left; margin-top: 10px; }
 #customerOrderValidation {float:left;  display: block; }
 #customerOrderValidation .name, .email, .address1, .city, .state, .zip, .country, .phone {background-color: #DDDDDD;  }
 #customerOrderValidation .entryfield .state {width:40px;  }
@@ -428,9 +437,13 @@ span.cap-g {
 #customerOrderValidation .entryfield .bladelength {width:80px;  }
 #customerOrderValidation textarea {width:220px;  }
 #customerOrderValidation .optionblock { background-color: #DDDDDD;  }
-#customerOrderValidation input.btn {width:140px; display: block; float: left; clear: left; margin-top: 10px; }
+#customerOrderValidation input.btn {width:140px; display: block; float: left; margin-top: 10px; }
 #customerOrderValidation  .entryfield input.option  {width:15px; margin-right: 2px; }
 #customerOrderValidation .entryfield input {width:220px;  }
+/*
+#customerOrderValidation_main {width:460px;  display: block; float: left; }
+#customerOrderValidation .entryfield .bladelength {width:80px;  }
+*/
 /*
 #customerOrderValidation label {width:130px;}
 #customerOrderValidation input.btn {width:220px; float: left; }

@@ -468,7 +468,14 @@ function toolbar($currentMenu){
 		$selectedStyle="";
 		if(strtolower($currentMenu)==strtolower($option[1]))
 			$selectedStyle="id='selected'";
-		
+		if($option[1] == "Catalog Request" ||
+			$option[1] == "Order Form" ||
+			$option[1] == "Payment Form"
+			)
+//			$selectedStyle.=" style='color: blue;'";
+			$selectedStyle.=" class='paymentMenu'";
+ 			//style='clear:both'
+			
 		$results = $results . "<a $selectedStyle href='$realprefix/" . $option[0] . "'>" . $option[1] . "</a>\n";
 	}
 	if(isDebugMachine()  
