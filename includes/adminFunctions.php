@@ -204,9 +204,8 @@ function toDoItems(){
 	$results[] = array("Done"=>"", "Text"=>"FIX date of submissions on orders if possible.");
 	$results[] = array("Done"=>"2010-05-05", "Text"=>"FL Tax not correct. See Inv#60891");
 	$results[] = array("Done"=>"2010-05-04", "Text"=>"Re-Edit does not show CC info");
-	$results[] = array("Done"=>"", "Text"=>"After Submitting, give a print option");
-	$results[] = array("Done"=>"", "Text"=>"minimum installment payment is $100");
-	$results[] = array("Done"=>"", "Text"=>"Dealer spec letter - Need to be able to enter just month/year");
+	$results[] = array("Done"=>"2010-05-23", "Text"=>"minimum installment payment is $100");
+	$results[] = array("Done"=>"2010-05-24", "Text"=>"Dealer spec letter - Need to be able to enter just month/year");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
 	$results[] = array("Done"=>"", "Text"=>"");
