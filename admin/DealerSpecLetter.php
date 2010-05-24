@@ -19,7 +19,9 @@ $invClass = new Invoices();
 
 $invoices =array();
 $dealerSpecLetter=array();
+
 $mode = $rptForm->entryFormMode($formValues);
+
 if($mode == 'display_orders'){
 	$invoices = $invClass->getUnSpecefiedDealerOrders($formValues['date']);
 	$dealerSpecLetter = getSingleDbRecord("Select * from webcopy where page='dealerspec'");

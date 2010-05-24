@@ -12,9 +12,9 @@ class WeeklyReports extends Base
    public function entryFormMode($formValues)
    {
    		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "View" 
-   			&& array_key_exists("date", $formValues) && strlen($formValues["date"]) > 5){return "display_orders";}
+   			&& array_key_exists("date", $formValues) && strlen($formValues["date"]) >=4 ){return "display_orders";}
    		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Report" 
-   			&& array_key_exists("date", $formValues) && strlen($formValues["date"]) > 5){return "Report";}
+   			&& array_key_exists("date", $formValues) && strlen($formValues["date"]) >= 4){return "Report";}
    			
 		return "get_date";	
    }
@@ -28,7 +28,7 @@ class WeeklyReports extends Base
 		
 	   	$errors = $this->retrieveErrorArray($formValues);
 	   	
-	   	if($formValues['date'] == '')	$formValues['date'] = date("m/d/y", strtotime("+8 week"));
+	   	if($formValues['date'] == '')	$formValues['date'] = date("m/y", strtotime("+8 week"));
 
 	   	
 		$fields = array('date'=>'Estimated Ship Date' );

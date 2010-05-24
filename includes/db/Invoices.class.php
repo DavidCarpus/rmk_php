@@ -263,7 +263,17 @@ class Invoices
 		return $results;
 	}
 	public function getUnSpecefiedDealerOrders($estShipDate){
-		$query = "SELECT C.LastName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, I.TotalRetail, IE.Quantity, ";
+		$dateparts = split("/", $estShipDate);
+		$byMonth=false;
+		if(count($dateparts) == 2)	$byMonth=true;
+		
+		if($byMonth)
+		{	
+			$estShipDate = $dateparts[0] .  "/01" . "/" . $dateparts[1];
+		}
+		
+		$query = "SELECT C.LastName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, I.TotalRetail, sum(IE.Quantity) as Quantity, ";
+//		$query = "SELECT C.LastName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, I.TotalRetail, IE.Quantity, ";
 		$query .= "A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country ";
 		$query .= "FROM Invoices I ";
 		$query .= "Join Customers C on C.CustomerID = I.CustomerID ";
@@ -274,9 +284,16 @@ class Invoices
 		$query .= "AND A.PrimaryCustomerAddress ";
 		$query .= "and I.TotalRetail = 0 ";
 //		$query .= "and IE.PartDescription = 'KNV'";
-		$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
-		$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
-		$query .= "ORDER BY C.LastName ";
+		if($byMonth){
+			$query .= "AND MONTH(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = MONTH(DateEstimated) ";
+			$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";			
+		} else {
+			$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
+			$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		}
+		$query .= "group by C.LastName, A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country";
+		
+//		$query .= "ORDER BY C.LastName ";
 		
 //		echo $query; 
 		
