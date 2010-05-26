@@ -294,10 +294,15 @@ span.cap-g {
 #PartList input			{width: 70px;  padding-left: 10px; text-align: right; float: left; display: block; }
 
 
+#toDoList { display: block; position: relative; float:left; }
 
-#toDoList span.done{ text-decoration: line-through; }
+#toDoList li{width:770px;  display: block; clear:left; padding-top:4px;} 
 
+#toDoList .id{ font-style: italic;  width:50px; display: block;  float:left; }
+#toDoList .donedate{ font-weight: bold;  width:100px; display: block;  float:left;} 
 
+#toDoList .done{ width:500px; display: block; background-color:#DDDDDD; float:left; }
+#toDoList .desc{ width:500px; display: block; float:left;}
 
 
 #EmailSearch 
