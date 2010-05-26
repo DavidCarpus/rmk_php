@@ -40,7 +40,8 @@ switch ($mode) {
 		break;
 	case "updatestatus":
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		header("Expires: 0"); // Date in the past
+		header("pragma: no-cache"); 
 		$orders->updateStatus($formValues['orders_id'], $formValues['processed'], $orderProcessingForms->htmlizeFormValue($formValues['comment']));
 		// get original search
 		$formValues = $orderProcessingForms->originalSearchCritera($formValues);
@@ -71,7 +72,8 @@ switch ($mode) {
 		break;
 	case "generatePDF":
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		header("Expires: 0"); // Date in the past
+		header("pragma: no-cache"); 
 		$orderData = $orders->search($formValues, true);
 		$pdf = new CwebOrderReport();
 		$pdf->setData($orderData);
@@ -81,7 +83,8 @@ switch ($mode) {
 		break;
 	case "processAndPrint":
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		header("Expires: 0"); // Date in the past
+		header("pragma: no-cache"); 
 		$orderData = $orders->search($formValues, true);
 		$orders->markAllProcessed($orderData, $orderProcessingForms->statusIDFromDesc("Processed"));
 		$pdf = new CwebOrderReport();
@@ -93,7 +96,8 @@ switch ($mode) {
 		
 	case "search":
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		header("Expires: 0"); // Date in the past
+		header("pragma: no-cache"); 
 		$orderData = $orders->search($formValues);
 //<meta http-equiv="cache-control" content="no-cache"> <!-- tells browser not to cache -->
 //<meta http-equiv="expires" content="0"> <!-- says that the cache expires 'now' -->
