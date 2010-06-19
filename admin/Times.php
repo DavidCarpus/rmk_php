@@ -68,6 +68,7 @@ function getTimeString(){
 5/4 - 2
 5/23 - 2
 5/24 - 3
+5/26 - 1
 ");
 
 }

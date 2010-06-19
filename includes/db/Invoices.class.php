@@ -303,6 +303,15 @@ class Invoices
 	
 	public function getPastDueInvoices($estShipDate)
 	{
+		$dateparts = split("/", $estShipDate);
+		$byMonth=false;
+		if(count($dateparts) == 2)	$byMonth=true;
+		
+		if($byMonth)
+		{	
+			$estShipDate = $dateparts[0] .  "/01" . "/" . $dateparts[1];
+		}
+		
 		$query = "SELECT C.LastName, C.FirstName, I.Invoice, DATE_FORMAT(I.DateEstimated, '%M %d, %Y') as EstShip, ";
 		$query .= "DATE_FORMAT(I.DateOrdered, '%M %d, %Y') as DateOrdered, ";
 		$query .= "I.TotalRetail, A.Address0, A.Address1, A.Address2, A.City, A.State, A.Zip, A.Country , ";
@@ -313,8 +322,13 @@ class Invoices
 		$query .= "where (C.Dealer is null or C.Dealer != 1)  ";
 		$query .= "and A.PrimaryCustomerAddress ";
 		$query .= "and I.AmountPaid < (I.SubTotal + I.ShippingAmount) ";
-		$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
-		$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		if($byMonth){
+			$query .= "AND MONTH(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = MONTH(DateEstimated) ";
+			$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		} else {
+			$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
+			$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
+		}
 		$query .= "ORDER BY C.LastName, C.FirstName ";
 		
 //		echo $query; 

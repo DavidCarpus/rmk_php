@@ -516,13 +516,13 @@ class CDealerSpecLetter extends Cezpdf {
 
 //		echo sizeof($this->reportData) ;
 		if(sizeof($this->reportData) > 0){
-			$this->ezSetY($this->ez['pageHeight']-220-10);
+			$this->ezSetY($this->ez['pageHeight']-150-10);
 			$this->dump();
 		}
 	}
 	function dump(){
 		foreach ($this->reportData as $record) {
-			$this->startPage(220);
+			$this->startPage(150);
 			$letter = $this->letterData['prefix'] . $this->letterData['postfix'];
 			$letter = substitureLetterFields($letter, $record );
 			$this->ezText($letter );
