@@ -219,7 +219,7 @@ function toDoItems(){
 	$results[] = array("ID"=>59, "Done"=>"2010-05-23", "Text"=>"minimum installment payment is $100");
 	$results[] = array("ID"=>60, "Done"=>"2010-05-24", "Text"=>"Dealer spec letter - Need to be able to enter just month/year");
 	$results[] = array("ID"=>61, "Done"=>"2010-05-26", "Text"=>"Dealer spec letter - need 3 inch top margin");
-	$results[] = array("ID"=>62, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>62, "Done"=>"2010-07-12", "Text"=>"Credit Card info not displaying for customer to review on order submission.");
 	$results[] = array("ID"=>63, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>64, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>65, "Done"=>"", "Text"=>"");
@@ -230,7 +230,7 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated May 26, 2010</i><br />";
+	$results = "Web priority list <i>Last Updated July 12, 2010</i><br />";
 	$results .= "<ul id='toDoList'>";
 	$items = toDoItems();
 	usort ( $items , "toDoSort" );

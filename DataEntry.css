@@ -383,6 +383,7 @@ fieldset {
 	display: block;
 /*	background-color: #00FFCC;*/
 }
+#InvoiceDetails input[readonly] {background: #DDDDDD;}
 
 #CustomerFlags{
 	display: block; 

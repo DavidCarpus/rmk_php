@@ -106,7 +106,8 @@ class Invoice extends Base
 //					'label'=>$this->helpTextJS("invKnivesHelp.php?invoice_num=" . $invoice['Invoice']),
 //				);
 //			}
-			$options['readonly']=$readOnly;
+			if($readOnly)
+				$options['readonly']=$readOnly;
 			if(array_key_exists($name, $errors)) $options['error']=1;
 			
 			$results .=  $this->textField($name, $this->fieldDesc($name),  $value, $options, "", "", "", "");
