@@ -58,7 +58,7 @@ function editForm(){
 	$results .= logo_header("admin", "..");
 	$results .= "<div class='mainbody'>";
 	$results .= "<div class='centerblock'>";
-	$results .= adminToolbar();
+	$results .= adminToolbar("RMK");
 	$results .= "<div class='content'>";
 	$results .=  "Edit Mode";
 	$results .= $invoiceForms->invNum( $invoice);
