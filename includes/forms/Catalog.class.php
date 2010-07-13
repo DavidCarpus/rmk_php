@@ -224,7 +224,7 @@ class Catalog extends Base
 		
 		$results= $this->formPrefix('catalog');
 		$results .=  "<div id='$formName'>" . "\n";
-		$results .=  "<form name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
+		$results .=  "<form id='form_$formName' name='$formName' action='" . $_SERVER['SCRIPT_NAME'] . "' method='$this->formMode'>\n" ;
 
 		$results .=  "* All fields are required. Your request will not process if they are empty.";
 		
@@ -233,7 +233,9 @@ class Catalog extends Base
    	   		 'zip'=>'Zip/Postal Code', 'phone'=> 'Phone Number'
    	   		);
 	
-		foreach($fields as $name=>$label)
+		
+		$chkCountryJscript = array("field"=>"onkeyup='checkCountry(this)' onblur='checkCountry(this)'");
+   	   	foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
 			$options=array();
@@ -241,10 +243,11 @@ class Catalog extends Base
 			
 			if(isset($formValues[$name])) $value =$formValues[$name];
 			
+			if($name == 'state' || $name == 'country' || $name == 'zip') $options['jscript']=$chkCountryJscript;
 			$results .=  $this->textField($name, $label, $value, $options, "","","","") . "<br/>\n";			
 		}
-		
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, false);
+
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, true);
 		
 		$results .=  $this->button("submit", "Request Catalog");
 				

@@ -29,7 +29,6 @@ class CatalogRequests  extends BaseDBObject
 		$country = $formValues['country'];
 		$country = strtoupper($country);
 		if($country == 'US' || $country == 'USA' ) return false;
-
 		if($country == 'CA' || $country == 'CANADA' ) return true;
 		
 		$zip= $formValues['zip'];

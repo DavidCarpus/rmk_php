@@ -41,7 +41,7 @@ class WebPayment extends Base
 		
 		$results .=  $this->button("submit", "Submit Payment Request");
 		$errors = $this->retrieveErrorArray($formValues);
-		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
+		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name', "email"=>"Email Address"   );
 		foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
@@ -88,7 +88,7 @@ class WebPayment extends Base
 		$results .=  $this->button("submit", "Review Payment Submission");
 		$errors = $this->retrieveErrorArray($formValues);
 				
-		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name'  );
+		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name', "email"=>"Email Address"  );
 		foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
