@@ -223,11 +223,11 @@ function toDoItems(){
 	$results[] = array("ID"=>63, "Done"=>"2010-07-12", "Text"=>"Payment request PDF does not have amount");
 	$results[] = array("ID"=>64, "Done"=>"2010-07-12*", "Text"=>"Back button from order PDF goes back twice?");
 	$results[] = array("ID"=>65, "Done"=>"2010-07-13", "Text"=>"Catalog request - Make CC info only show up if NOT USA request.");
-	$results[] = array("ID"=>66, "Done"=>"", "Text"=>"Payment request should send email at the end of process. Include dollar amount customer entered.");
+	$results[] = array("ID"=>66, "Done"=>"2010-07-13", "Text"=>"Payment request should send email at the end of process. Include dollar amount customer entered.");
 	$results[] = array("ID"=>67, "Done"=>"2010-07-12", "Text"=>"Admin catalog - make default list the catagories instead of a pull down.");
 	$results[] = array("ID"=>68, "Done"=>"2010-07-12", "Text"=>"Add an inch to dealer spec letter top margin.");
-	$results[] = array("ID"=>69, "Done"=>"", "Text"=>"add the email address to the payment form as a required field and send email confirm");
-	$results[] = array("ID"=>70, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>69, "Done"=>"2010-07-13", "Text"=>"add the email address to the payment form as a required field and send email confirm");
+	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>72, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"");
