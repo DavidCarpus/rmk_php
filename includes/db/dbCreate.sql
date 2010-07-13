@@ -161,6 +161,7 @@ postfix="";
 
 
 ALTER TABLE `newrmk`.`orders` ADD invoice INT(11);
+ALTER TABLE `newrmk`.`orders` ADD amount DECIMAL(7,2);
 
 
 /*
