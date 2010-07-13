@@ -262,7 +262,7 @@ class Base
 			} else	if($name == 'amount'){
 				$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
 //				$results .=  "<span style='font-size: 12px; display: block; float:left;'><i>Min $100 on CC payments</i></span>";
-				$results .=  "<span class='minPayment'><i>Min $100 on CC payments</i></span>";
+				$results .=  "<span class='minPayment'><i>Min $100 on CC payments. All amounts in USD</i></span>";
 				
 				$results .=  "<br/>\n";
 //				$img = "<img align='top' src='" . getImagePath("memo.png") . "' border='0' alt='Min $100 on CC payments' />";
