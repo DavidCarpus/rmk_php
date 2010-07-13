@@ -213,7 +213,7 @@ function toDoItems(){
 	$results[] = array("ID"=>53, "Done"=>"2010-05-04", "Text"=>"Not submitting orders into Database");
 	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
 	$results[] = array("ID"=>55, "Done"=>"2010-05-26", "Text"=>"Order processing screen, 'auto refresh'. (Expire contents)");
-	$results[] = array("ID"=>56, "Done"=>"", "Text"=>"FIX date of submissions on orders if possible.");
+	$results[] = array("ID"=>56, "Done"=>"2010-07-12*", "Text"=>"FIX date of submissions on orders if possible.");
 	$results[] = array("ID"=>57, "Done"=>"2010-05-05", "Text"=>"FL Tax not correct. See Inv#60891");
 	$results[] = array("ID"=>58, "Done"=>"2010-05-04", "Text"=>"Re-Edit does not show CC info");
 	$results[] = array("ID"=>59, "Done"=>"2010-05-23", "Text"=>"minimum installment payment is $100");
@@ -221,12 +221,12 @@ function toDoItems(){
 	$results[] = array("ID"=>61, "Done"=>"2010-05-26", "Text"=>"Dealer spec letter - need 3 inch top margin");
 	$results[] = array("ID"=>62, "Done"=>"2010-07-12", "Text"=>"Credit Card info not displaying for customer to review on order submission.");
 	$results[] = array("ID"=>63, "Done"=>"2010-07-12", "Text"=>"Payment request PDF does not have amount");
-	$results[] = array("ID"=>64, "Done"=>"", "Text"=>"Back button from order PDF goes back twice?");
-	$results[] = array("ID"=>65, "Done"=>"", "Text"=>"Catalog request - Make CC info only show up if NOT USA request.");
+	$results[] = array("ID"=>64, "Done"=>"2010-07-12*", "Text"=>"Back button from order PDF goes back twice?");
+	$results[] = array("ID"=>65, "Done"=>"2010-07-13", "Text"=>"Catalog request - Make CC info only show up if NOT USA request.");
 	$results[] = array("ID"=>66, "Done"=>"", "Text"=>"Payment request should send email at the end of process. Include dollar amount customer entered.");
 	$results[] = array("ID"=>67, "Done"=>"2010-07-12", "Text"=>"Admin catalog - make default list the catagories instead of a pull down.");
 	$results[] = array("ID"=>68, "Done"=>"2010-07-12", "Text"=>"Add an inch to dealer spec letter top margin.");
-	$results[] = array("ID"=>69, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>69, "Done"=>"", "Text"=>"add the email address to the payment form as a required field and send email confirm");
 	$results[] = array("ID"=>70, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>71, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>72, "Done"=>"", "Text"=>"");
@@ -243,7 +243,8 @@ function toDoItems(){
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated July 12, 2010</i><br />";
+	$results = "Web priority list <i>Last Updated July 13, 2010</i><br />";
+	$results .= "<B><i>Date</i>*</B> indicates - Unable to reproduce.";
 	$results .= "<ul id='toDoList'>";
 	$items = toDoItems();
 	usort ( $items , "toDoSort" );
