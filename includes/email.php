@@ -74,7 +74,9 @@ function saveAndSend($form, $quiet=false){
 	
 	if(isDevelopmentMachine() ){ 
 		print "The following message will be 'sent':<br />";
-		print  "<HR>".$form['message'] . "-" . $dbRecord['messagebody'] . "<HR>";
+//		print  "<HR>".$form['message'] . "<HR>" . $dbRecord['messagebody'] . "<HR>";
+		print  "<HR>". $dbRecord['messagebody'] . "<HR>";
+		return;
 	}
 		
 	if(!isDevelopmentMachine() && !$mail->Send()){ 
