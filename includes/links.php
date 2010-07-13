@@ -41,4 +41,15 @@ function rmkHeaderLinks($header, $dealer)
 	return $results;
 }
 
+function catalogAdmin_Categories($categories)
+{
+	foreach ($categories as $category){
+		$options[] = array('id'=>$category['catalogcategories_id'], 'label'=>$category['category']);
+		$results .= "<a href='" . $_SERVER['PHP_SELF'] . "?catalogcategories_id=" . $category['catalogcategories_id'] . "'>";
+		$results .= $category['category'];
+		$results .= "</a><br/>";
+	}
+	return $results;
+}
+
 ?>

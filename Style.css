@@ -353,19 +353,24 @@ span.cap-g {
 .OrderRequest #CC { display: block; float: left; width:250px; height:32px;}
 
 
-#AdminCategorySelect {  width:550px; display: block; float: left; margin-top: 10px; }
+#AdminCategorySelect {  width:400px; display: block; float: left; margin-top: 10px; }
 #AdminCategorySelect label {width:160px; display: block; float: left; clear: left; }
-#AdminCategorySelect select { width:340px; display: block; float: left; }
+#AdminCategorySelect select { width:230px; display: block; float: left; }
 
-#editModelForm {  width:550px; display: block; float: left; margin-top: 30px; }
+#editModelForm {  width:510px; display: block; float: left; margin-top: 30px; }
 #editModelForm label {width:120px; display: block; float: left; clear: left; }
 #editModelForm input {width:210px; display: block; float: left; }
 #editModelForm input.btn {width:210px; display: block; float: left; clear:left;}
 #editModelForm #description {width:410px; height:110px; display: block; float: left; }
 #editModelForm #note {width:410px; height:60px; display: block; float: left; }
-#editModelForm #piclabel {width:30px; display: block; float: left; }
+#editModelForm .piclabel {width:30px; display: block; float: left; }
+#editModelForm .price {width:310px; display: block; float: left; }
+#editModelForm .weight {width:310px; display: block; float: left; }
+#editModelForm .model {width:310px; display: block; float: left; }
 
 #photoblock {  width:550px; display: block; float: left; margin-left: 30px;  }
+
+#catalogAdmin_Categories {  width:250px; display: block; float: left; margin-top: 30px; }
 
 #editCategoryForm {  display: block; float: left; margin-top: 30px; }
 #editCategoryForm label {width:80px; display: block; float: left; clear: left; }

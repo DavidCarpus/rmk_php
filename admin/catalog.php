@@ -2,6 +2,7 @@
 include_once "../config.php";
 
 include_once INCLUDE_DIR. "htmlHead.php";
+include_once INCLUDE_DIR. "links.php";
 
 include_once FORMS_DIR. "Catalog.class.php";
 include_once DB_INC_DIR. "Catalogs.class.php";
@@ -55,8 +56,8 @@ echo headSegments("RMK Catalog Maintenance", array("../Style.css"), "../print.cs
 </div>
 
 <?php
-//echo debugStatement($mode);
-//echo debugStatement(dumpDBRecord($formValues));
+echo debugStatement($mode);
+echo debugStatement(dumpDBRecord($formValues));
 ?>
 
 </body>

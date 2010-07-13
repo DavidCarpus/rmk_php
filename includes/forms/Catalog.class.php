@@ -1,7 +1,6 @@
 <?php
 include_once "Base.class.php";
 
-
 class Catalog extends Base
 {
 	var $formMode='get';
@@ -51,7 +50,7 @@ class Catalog extends Base
 			$options[] = array('id'=>$category['catalogcategories_id'], 'label'=>$category['category']);
 			if($formValues['catalogcategories_id'] == $category['catalogcategories_id']) $models=$category['models'];
 		}
-		
+
 		$results .= $this->selection("catalogcategories_id", $options, "Catalog Category", $formValues['catalogcategories_id'], true);
 		
 		$options=array();
@@ -66,8 +65,12 @@ class Catalog extends Base
 //		$results .= hiddenField('action','searchorders') . "\n";
 	
 		$results .= "</form>";
+		$results .=  "<div id='catalogAdmin_Categories'>" . "\n";
+		$results .= catalogAdmin_Categories($categories);
+		$results .= "</div><!-- End catalogAdmin_Categories -->\n";
 		$results .= "</div><!-- End $formName -->\n";
-
+		
+		
 		return $results;
    }
    
