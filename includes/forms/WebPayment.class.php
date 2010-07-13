@@ -12,22 +12,24 @@ class WebPayment extends Base
 //		if(array_key_exists("statusUpdate", $formValues) && $formValues["statusUpdate"] == "UpdateStatus"){return "updatestatus";}
 		return "browse";	
 	}
+	public function paymentSubmissionResponseText($formValues){
+		$results="";
+
+		$results .= "We have received your payment request for Invoice # " . $formValues['invoice'] . " in the amount of $" . number_format($formValues['amount'],2) . ".";
+		$results .= "\n";
+		$results .= "Credit card processing with the card ending in **" . substr($formValues['ccnumber'], 16-4);
+		$results .= " will be completed within the agreed payment terms. ";
+		$results .= "\n";
+		$results .= "Thank you. ";		
+		return $results;		
+	}
 	
 	public function paymentSubmissionResponse($formValues){
 		$responseDiv="paymentSubmissionResponse";
 		$results="";
-		$results .=  "<div id='$responseDiv'>" . "\n";
-		
-		$results .= "We have received your payment request. ";
-		$results .= "</ br>";
-		$results .= "Credit card processing will be completed within the agreed payment terms. ";
-		$results .= "</ br>";
-		$results .= "Thank you. ";
-
-//		$results .= dumpDBRecord($formValues);
-		
+		$results .=  "<div id='$responseDiv'>";
+		$results .= $this->paymentSubmissionResponseText($formValues); 	
 		$results .= "</div><!-- End $responseDiv -->\n";
-		
 		return $results;		
 	}
 	

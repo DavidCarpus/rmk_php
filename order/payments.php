@@ -5,6 +5,8 @@ include_once INCLUDE_DIR. "htmlHead.php";
 include_once FORMS_DIR. "WebPayment.class.php";
 include_once DB_INC_DIR. "WebPayments.class.php";
 
+include_once INCLUDE_DIR. "email.php";
+
 $formValues = getFormValues();
 $paymentForms = new WebPayment();
 $paymentDB = new WebPayments();
@@ -22,9 +24,17 @@ if($mode == 'submit'){
 		$formValues['ERROR']=$paymentDB->validationError;	
 		$mode='err';
 	} else {
+		$formValues['ordertype']=$paymentForms->requestTypeIDFromLabel("Payment Request");
+		$formValues['ccnumber'] = $paymentForms->getUnFormattedCC($formValues['ccnumber']);		
 		$paymentDB->saveRequest($formValues);
-//		$catalogs->saveModel($formValues);
-//		$categories=$catalogs->getCategoriesAndModels();
+	
+		$emailValues['to']=$formValues['email'];
+		$emailValues['from']="webmessages@randallknives.com";
+		$emailValues['customername']=$formValues['name'];
+		$emailValues['subject']="Your order payment for Randall Made Knives";
+		$emailValues['message']=$paymentForms->paymentSubmissionResponseText($formValues);
+
+		saveAndSend($emailValues,false);
 		$mode='submitted';
 	}
 }
@@ -40,7 +50,9 @@ echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.
 		<?php
 			if($mode == 'browse' || $mode == 'err') echo $paymentForms->basicPaymentForm($formValues);
 			if($mode == 'review') echo $paymentForms->reviewPaymentRequest($formValues);
-			if($mode == 'submitted') echo $paymentForms->paymentSubmissionResponse($formValues);
+			if($mode == 'submitted'){
+				echo str_replace("\n","<BR>\n",$paymentForms->paymentSubmissionResponse($formValues));
+			} 
 //			if($mode == 'submitted') echo $paymentForms->basicPaymentForm($formValues);
 			?>
 		</div>	
