@@ -130,6 +130,14 @@ class BaseDBObject
 
 		return true;
 	}
+	
+	function fixCurrencyForDB($currency)
+	{
+		$currency = str_replace(" ", "",$currency);
+		$currency = str_replace("$", "",$currency);
+		$currency = str_replace(",", "",$currency);
+		return $currency;
+	}
 }
 
 ?>
