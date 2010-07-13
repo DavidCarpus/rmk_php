@@ -280,6 +280,7 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("City, State, Zip Code", $this->getJoinedCSZ($request));
 		$fields[] = array("Telephone Number", $this->getFormattedPhoneNum($request['phone']));
 		$fields[] = array("Invoice Number", $request['invoice']);
+		$fields[] = array("Amount", $request['amount']);
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
@@ -516,13 +517,13 @@ class CDealerSpecLetter extends Cezpdf {
 
 //		echo sizeof($this->reportData) ;
 		if(sizeof($this->reportData) > 0){
-			$this->ezSetY($this->ez['pageHeight']-150-10);
+			$this->ezSetY($this->ez['pageHeight']-210-10);
 			$this->dump();
 		}
 	}
 	function dump(){
 		foreach ($this->reportData as $record) {
-			$this->startPage(150);
+			$this->startPage(210);
 			$letter = $this->letterData['prefix'] . $this->letterData['postfix'];
 			$letter = substitureLetterFields($letter, $record );
 			$this->ezText($letter );
