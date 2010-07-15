@@ -188,7 +188,7 @@ class Order extends Base
 		foreach ($fields as $name=>$label){
 			$value=$record[$name];
 			if($name == 'ordertype'){
-				$value = $orderType;
+				$value = $this->requestTypeFromID($record['ordertype']);
 			}
 			if($name == 'processed'){
 				$value = $this->statusFromID($record['processed']) . (($displayOnly) ?   ":" . $record['comment']: "");
@@ -392,6 +392,23 @@ class Order extends Base
 		
 		$results .= "</div><!-- End $responseDiv -->\n";
 		
+		$results .= dumpDBRecord($formValues);
+		
+		return $results;		
+	}
+	
+	public function quoteSubmissionResponse($formValues){
+		$responseDiv="quoteSubmissionResponse";
+		$results="";
+		$results .=  "<div id='$responseDiv'>" . "\n";
+		
+		$results = $results . "Thank you for your quote request with Randall Made Knives.\n\n";
+		$results = $results . "Full Name:". $formValues['name'] . "\n";
+		$results = $results . "Quote request date:". date("F j Y") . "\n";
+		$results = $results . "Model Number:". $formValues['model'] . "\n\n";
+		$results = $results . " We should reply within three business days.\n\n";
+		$results .= "</div><!-- End $responseDiv -->\n";
+				
 		return $results;		
 	}
 }

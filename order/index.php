@@ -13,6 +13,7 @@ $orderProcessingForms = new Order();
 $ordersDB = new Orders();
 
 $mode=$orderProcessingForms->entryFormMode($formValues);
+$submissionResponse = "";
 
 if($mode == 'requestreview'){
 	if(!$ordersDB->customerOrderFormValidation($formValues) ){ 
@@ -22,15 +23,25 @@ if($mode == 'requestreview'){
 	
 }
 if($mode == 'requestsubmit'){
-	$formValues['ordertype']=$orderProcessingForms->requestTypeIDFromLabel("Order Request");
+	// convert text  string (Order, Quote) to ID
+	$orderTypeStr=$formValues['ordertype'] . " Request";
+	$formValues['ordertype']=$orderProcessingForms->requestTypeIDFromLabel($orderTypeStr);
+	
 	$formValues['ccnumber'] = $orderProcessingForms->getUnFormattedCC($formValues['ccnumber']);		
 	$ordersDB->saveRequest($formValues);
-
+	
+	if($formValues['ordertype']==1){
+		$submissionResponse=$orderProcessingForms->quoteSubmissionResponse($formValues);
+	}
+	if($formValues['ordertype']==2){
+		$submissionResponse=$orderProcessingForms->orderSubmissionResponse($formValues);
+	}
+	
 	$emailValues['to']=$formValues['email'];
 	$emailValues['from']="webmessages@randallknives.com";
 	$emailValues['customername']=$formValues['name'];
 	$emailValues['subject']="Your order request with Randall Made Knives";
-	$emailValues['message']=$orderProcessingForms->orderSubmissionResponse($formValues);
+	$emailValues['message']=$submissionResponse;
 	
 	saveAndSend($emailValues,false);
 
@@ -56,7 +67,7 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 			if($mode == 'browse' || $mode == 'err') echo $orderProcessingForms->customerOrderForm($formValues);
 			if($mode == 'requestreview' || $mode == 'requestsubmit' ) echo $orderProcessingForms->customerOrderValidation($formValues);
 			if($mode == 'submitted'){
-				echo str_replace("\n","<BR>\n",$orderProcessingForms->orderSubmissionResponse($formValues));
+				echo str_replace("\n","<BR>\n",$submissionResponse);
 			}
 		?>
 		</div>	
@@ -65,7 +76,7 @@ echo headSegments("Order/Quote Request", array("../Style.css"), "../print.css");
 </div>
 
 <?php
-echo debugStatement($mode);
-echo debugStatement(dumpDBRecord($formValues));
+//echo debugStatement($mode);
+//echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
