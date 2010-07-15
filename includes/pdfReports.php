@@ -178,7 +178,8 @@ class CwebOrderReport extends Cezpdf {
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
 			if($field[0] == 'Features'){
-				$this->ezText($field[1],$pointSize);
+				$options=array('left'=>120, 'right'=>50);
+				$this->ezText($field[1],$pointSize, $options);
 			} else {
 				$this->addText(170, $this->y, $pointSize, $field[1]);
 			}
@@ -222,7 +223,8 @@ class CwebOrderReport extends Cezpdf {
 		foreach ($fields as $field) {
 			$this->addText(30, $this->y, $pointSize, "<b>" . $field[0] . "</b>");
 			if($field[0] == 'Features' || $field[0] == 'RMK Comments'){
-				$this->ezText($field[1],$pointSize);
+				$options=array('left'=>120, 'right'=>50);
+				$this->ezText($field[1],$pointSize, $options);
 			} else {
 				$this->addText(170, $this->y, $pointSize, $field[1]);
 			}
