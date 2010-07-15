@@ -32,9 +32,8 @@ class WebPayments extends BaseDBObject
 	function saveRequest($formValues){
 		$formValues['ordertype']=4;		
 		unset($formValues["submit"]);
-		$formValues['amount'] = $this->fixCurrencyForDB($formValues['amount']);
 				
-		return saveRecord("orders", "orders_id", $formValues);
+		return saveRecord("orders", "orders_id", $formValues, true);
 	}
 }
 ?>

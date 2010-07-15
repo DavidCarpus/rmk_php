@@ -25,7 +25,8 @@ if($mode == 'submit'){
 		$mode='err';
 	} else {
 		$formValues['ordertype']=$paymentForms->requestTypeIDFromLabel("Payment Request");
-		$formValues['ccnumber'] = $paymentForms->getUnFormattedCC($formValues['ccnumber']);		
+		$formValues['ccnumber'] = $paymentForms->getUnFormattedCC($formValues['ccnumber']);
+		$formValues['amount'] = $paymentDB->fixCurrencyForDB($formValues['amount']);		
 		$paymentDB->saveRequest($formValues);
 	
 		$emailValues['to']=$formValues['email'];
