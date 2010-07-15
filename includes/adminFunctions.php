@@ -228,22 +228,32 @@ function toDoItems(){
 	$results[] = array("ID"=>68, "Done"=>"2010-07-12", "Text"=>"Add an inch to dealer spec letter top margin.");
 	$results[] = array("ID"=>69, "Done"=>"2010-07-13", "Text"=>"add the email address to the payment form as a required field and send email confirm");
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
-	$results[] = array("ID"=>71, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>72, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>74, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>75, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>76, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>77, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
+	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
+	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF?");
+	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
+	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
+	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
+	$results[] = array("ID"=>77, "Done"=>"2010-07-15", "Text"=>"Submitting order/quotes crossing wires?");
 	$results[] = array("ID"=>78, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>80, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>81, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>82, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>83, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>84, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>85, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>86, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"");
 	
 	return $results;
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated July 13, 2010</i><br />";
+	$results = "Web priority list <i>Last Updated July 15, 2010</i><br />";
 	$results .= "<B><i>Date</i>*</B> indicates - Unable to reproduce.";
 	$results .= "<ul id='toDoList'>";
 	$items = toDoItems();
@@ -253,13 +263,13 @@ function toDoPage(){
 		
 		if(strlen($task)>0){
 			$results .= "<li>";
-			$results .= "<div class='id'>#" . $item['ID'] . "</div>";
+			$results .= "<div class='id'>#" . $item['ID'] . " </div> ";
 			
 			if(strlen($item['Done'] > 0)){
-				$results .= "<div class='donedate'>" . $item['Done'] . "</div>";
-				$results .= "<div class='done'>$task</div>";
+				$results .= "<div class='donedate'> " . $item['Done'] . "</div> ";
+				$results .= "<div class='done'> $task</div>";
 			} else {
-				$results .= "<div class='desc'>$task</div>";
+				$results .= "<div class='desc'> $task</div>";
 			}
 			
 			$results .= "</li>\n";
