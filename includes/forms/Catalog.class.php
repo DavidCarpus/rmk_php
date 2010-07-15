@@ -234,7 +234,7 @@ class Catalog extends Base
    	   		);
 	
 		
-		$chkCountryJscript = array("field"=>"onkeyup='checkCountry(this)' onblur='checkCountry(this)'");
+//		$chkCountryJscript = array("field"=>"onkeyup='checkCountry(this)' onblur='checkCountry(this)'");
    	   	foreach($fields as $name=>$label)
 		{
 			$value = $formValues[$name];
@@ -247,7 +247,7 @@ class Catalog extends Base
 			$results .=  $this->textField($name, $label, $value, $options, "","","","") . "<br/>\n";			
 		}
 
-		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, true);
+		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, false);
 		
 		$results .=  $this->button("submit", "Request Catalog");
 				
