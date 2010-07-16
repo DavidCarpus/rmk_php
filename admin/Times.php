@@ -73,6 +73,7 @@ function getTimeString(){
 7/13 - 4
 7/14 - 1
 7/15 - 1
+7/16 - 3
 ");
 
 }

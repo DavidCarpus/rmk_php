@@ -3,145 +3,7 @@
 
 function adminProcessing(){
 	echo "Administrate order/catalog requests and emails.</br>";
-//	emailProcessing();
 }
-
-//function emailProcessing(){
-//	$parameters = getFormValues();
-//	$action = $parameters['action'];
-//	if($action == '') $action='browse';
-//	
-//	switch ($action) {
-//		case 'browse':
-//			if($parameters['startid']<=0) $parameters['startid']=999999;
-//			echo browseEmailsSent($parameters);
-//			echo emailSentSearchForm($parameters);
-//			break;
-//		case 'sentEmailDetail':
-//			echo emailSentDetail($parameters);
-//			break;
-//		case 'searchemails':
-//			echo searchEmails($parameters);
-//			echo emailSentSearchForm($parameters);
-//			break;
-//		default:
-//			echo 'Function ' . "' $action '" . ' not implimented';
-//			break;
-//	}
-//	$startid = (getHTMLValue('startid') > 0? getHTMLValue('startid') : 0);
-//	
-//}
-//
-//function searchEmails($parameters){
-//	$MAX_LIST_LEN=60;
-//	$filter = "";
-////	debugStatement(dumpDBRecord($parameters));
-//
-//	if($parameters['address'] != ''){
-//		if($filter != "") $filter .= " AND ";
-//		$filter .= " ( fromaddress LIKE '%" . $parameters['address'] . "%'";
-//		$filter .= " OR toaddress LIKE '%" . $parameters['address'] . "%' )";
-//	}
-//	
-////	if($parameters['requesttype'] > 0){
-////		if($filter != "") $filter .= " AND ";
-////		$filter .= " ordertype=" . $parameters['requesttype'];
-////	}
-//	
-//	if($parameters['message'] != ''){
-//		if($filter != "") $filter .= " AND ";
-//		$filter .= " messagebody LIKE '%".$parameters['message']."%'";
-//	}
-//	if($parameters['startdate'] != ''){
-//		if($filter != "") $filter .= " AND ";
-//		$date = date("Y-m-d", strtotime($parameters['startdate']));
-//		$filter .= " datesubmitted > '$date'";
-//	}
-//	if($parameters['enddate'] != ''){
-//		if($filter != "") $filter .= " AND ";
-//		$date = date("Y-m-d", strtotime($parameters['enddate'] . "+1 day"));
-//		$filter .= " datesubmitted < '$date'";
-//	}
-//	
-//	$query = "Select email_id, fromaddress, toaddress, UNIX_TIMESTAMP(datesubmitted) as date_sent, messagesubject from emails ";
-//	$query .= " where $filter  order by datesubmitted DESC, email_id DESC LIMIT $MAX_LIST_LEN ";
-////	debugStatement($query);
-//
-//	$emails = getDbRecords($query);
-//	return displayEmails($emails);
-//
-//}
-//
-//function emailSentSearchForm($parameters){
-//	$results .= "<form  class='printHide' action='". $_SERVER['PHP_SELF']. "' method='post'>" ;
-//
-//	$results .= textField('desc', "Description", false, $parameters['desc']) . "<br />\n" ;
-//	$results .= textField('message', "Message", false, $parameters['message']) . "<br />\n" ;
-//	$results .= textField('address', "Email Address", false, $parameters['address']) . "<br />\n" ;
-//	$results .= textField('startdate', "Date - Start", false, $parameters['startdate'], 'date') . "<br />" ;
-//	$results .= textField('enddate', "End ", false, $parameters['enddate'], 'date') . "<br />\n" ;
-//
-//	$results .= hiddenField('action','searchemails') . "\n";
-//	$results .= "<br />\n";
-//	$results .= "<center><input class='btn' type='submit' name='submit' value='Find' ></center>\n" ;
-//	$results .= "</form>";
-//	return $results;
-//}
-
-//function emailSentDetail($parameters){
-//	$email = getBasicSingleDbRecord('emails', 'email_id', $parameters['email_id']);
-//	foreach($email as $field=>$value){
-//		echo "$field == " . str_replace("\n", "<br />\n",$value)."<br />\n";
-//	}
-//}
-//
-//function browseEmailsSent($parameters){
-//	$startid = $parameters['startid'];
-//	$records = getEmails($startid, 10);
-//	$results = displayEmails($records);
-//	return "<B>Not Fully Implemented</B><br />" . $results;
-//}
-
-//function displayEmails($records){
-//	$results .= "<table>";
-//	foreach($records as $email){
-//		$results .=  linkToEmailSent($email);
-//		$keyID =$email['email_id'];
-//	}
-//	$results .=  "</table>";
-////	$keyID -= 1;
-////	if(count($records) == 20){
-////		$results .=  "<a href='" . $_SERVER['PHP_SELF'] . "?startid=$keyID'>Next 20</a>";
-////	}
-////	$results .=  " &nbsp;";
-////	if(count($records) <= 20 && $records[0]['email_id'] == $startid){
-////		$keyID =$records[0]['email_id'] +20;
-////		$results .=  "<a href='" . $_SERVER['PHP_SELF'] . "?startid=$keyID'>Previous 20</a>";
-////	}
-//	return $results;
-//}
-
-//function linkToEmailSent($email){
-//	$results .=  "<tr>";
-//	$from = split("-", $email['fromaddress']);
-//	$address = $from[0];
-//	if($from[0] == "BLANK")
-//		$address = "TO : " . $email['toaddress'];
-//		
-//	$link=$_SERVER['PHP_SELF'] . "?action=sentEmailDetail&email_id=" . $email['email_id'];
-//	$results .=  "<TD><a href='$link'>" . $address . "</a></TD>";
-//	$results .=  "<TD>" . date('Y-m-d', $email['date_sent']) . "</TD>";
-//	$results .=  "<TD>" . $email['messagesubject']. "</TD>";
-//	$results .=  "</tr>";
-//	return $results;
-//}
-
-//function getEmails($startID=0, $cnt=20){
-//	$query = "Select email_id, fromaddress, toaddress, UNIX_TIMESTAMP(datesubmitted) as date_sent, messagesubject from emails ";
-//	$query .= " where email_id <=$startID  order by datesubmitted DESC, email_id DESC LIMIT $cnt ";
-////	debugStatement($query);
-//	return getDbRecords($query);	
-//}
 
 function toDoSort($a, $b)
 {
@@ -230,7 +92,7 @@ function toDoItems(){
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
 	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exitint notes.?");
+	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
 	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
 	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
 	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
@@ -238,12 +100,12 @@ function toDoItems(){
 	$results[] = array("ID"=>78, "Done"=>"2010-07-16", "Text"=>"Processing orders - Need model number and blade length");
 	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
 	$results[] = array("ID"=>80, "Done"=>"2010-07-16", "Text"=>"Comma seperate seperate lines of address.");
-	$results[] = array("ID"=>81, "Done"=>"", "Text"=>"Change text of quote request response");
-	$results[] = array("ID"=>82, "Done"=>"", "Text"=>"Catalog Request - 'All countries outside of the US please complete credit card information'");
-	$results[] = array("ID"=>83, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>84, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>85, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>86, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>81, "Done"=>"2010-07-16", "Text"=>"Change text of quote request response");
+	$results[] = array("ID"=>82, "Done"=>"2010-07-16", "Text"=>"Catalog Request - 'All countries outside of the US please complete credit card information'");
+	$results[] = array("ID"=>83, "Done"=>"2010-07-16", "Text"=>"Send us a message not working");
+	$results[] = array("ID"=>84, "Done"=>"2010-07-16", "Text"=>"Clear CC# for processed items after print & process");
+	$results[] = array("ID"=>85, "Done"=>"", "Text"=>"Remove label pages from order/quote PDF");
+	$results[] = array("ID"=>86, "Done"=>"", "Text"=>"reply emails have programming(HTML)  in the text.");
 	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
