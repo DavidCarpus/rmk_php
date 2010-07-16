@@ -29,11 +29,6 @@ function toDoItems(){
 //	$results[] = array("ID"=>7, "Done"=>"2007-01-25", "Text"=>"Name and address fields &#150; allow  an apostrophe for names such a O&rsquo;Reily.");
 //	$results[] = array("ID"=>8, "Done"=>"2007-02-14", "Text"=>"Process orders, quote, cat  &#150;   we would like to be able to enter the processed items  to mark for whatever reason,   rejected, pending, etc.");
 //	$results[] = array("ID"=>9, "Done"=>"2007-02-08", "Text"=>"Non Catalog II &#150; list model, desc, and price.");
-	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
-	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
-	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
-	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
-	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
 //	$results[] = array("ID"=>15, "Done"=>"2008-06-25", "Text"=>"Accounting on invoices – FL invoice #55385 – note the $.72 – which is tax added to the invoice on the ups charge. (ups charge is added to invoice when billed in year of shipment.)   Invoice is actually paid in full, no credit due,   and shows $.72 credit on the shop rmk.");
 //	$results[] = array("ID"=>16, "Done"=>"2008-03-24", "Text"=>"Accounting on invoices – invoice #55315 and  #55318 – two kn order – shows four knives  billing –  2 kn were deleted and changed to new models. Shows total qty of 4.  (((purged rmk program today)))");
 //	$results[] = array("ID"=>17, "Done"=>"2008-03-24", "Text"=>"Accounting on invoices – please format to line up the decimals.");
@@ -54,26 +49,25 @@ function toDoItems(){
 //	$results[] = array("ID"=>32, "Done"=>"2010-02-17", "Text"=>"Catalog request form - Not pulling 'header' from DB like it should. CA $4 Other $6");
 //	$results[] = array("ID"=>33, "Done"=>"2010-02-18", "Text"=>"Admin Order processing - CC numbers should have dashes every 4 characters");
 //	$results[] = array("ID"=>34, "Done"=>"2010-02-18", "Text"=>"Admin Order processing - screen and printable list credit info as CC \\n Expiration \\n vcode");
-	$results[] = array("ID"=>35, "Done"=>"2010-03-09", "Text"=>"Shop knife list - add column and list models for each invoice");
-	$results[] = array("ID"=>36, "Done"=>"2010-03-06", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
-	$results[] = array("ID"=>37, "Done"=>"2010-03-19", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
-	$results[] = array("ID"=>38, "Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
-	$results[] = array("ID"=>39, "Done"=>"2010-03-25", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
-	$results[] = array("ID"=>40, "Done"=>"2010-03-31", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
+//	$results[] = array("ID"=>35, "Done"=>"2010-03-09", "Text"=>"Shop knife list - add column and list models for each invoice");
+//	$results[] = array("ID"=>36, "Done"=>"2010-03-06", "Text"=>"Admin Order processing - Only show CC info on orders and catalog requests for foreign (do not show for US catalog requests)");
+//	$results[] = array("ID"=>37, "Done"=>"2010-03-19", "Text"=>"Admin Order processing - Orders and quotes should display ALL info (model, blade length, ...)");
+//	$results[] = array("ID"=>38, "Done"=>"2010-03-19", "Text"=>"?? Sort orders to have foreign seperate from US??");
+//	$results[] = array("ID"=>39, "Done"=>"2010-03-25", "Text"=>"Admin Order processing - Need option to 'process' ALL catalog requests");
+//	$results[] = array("ID"=>40, "Done"=>"2010-03-31", "Text"=>"Admin Order processing - Orders and quotes should be one per page on printable list");
 //	$results[] = array("ID"=>41, "Done"=>"", "Text"=>"Labels for foreign should have more lines. Seperate out 'state and zip' on seperate line?");
-	$results[] = array("ID"=>42, "Done"=>"2010-04-05", "Text"=>"Fix 'codes' and apostraphes on Dealer spec letter. Acrobat problem?");
-	$results[] = array("ID"=>43, "Done"=>"2010-04-22", "Text"=>"Balance due letters: Reference invoice #60891, florida sales tax,   amount due reflects $606.00,  does not include the tax due of $45.89 in the total amount due.");
-	$results[] = array("ID"=>44, "Done"=>"2010-04-22", "Text"=>"Balance due letters: The top and left and right margin need to be adjusted.  The top margin needs to be  2.5” to accommodate letterhead.    Left  and right margins could use another 1/2 inch. ");
-	$results[] = array("ID"=>45, "Done"=>"2010-04-22", "Text"=>"Balance due letters: Can you center the payment info at the end of the letter,  “If payment by credit card:  Visa, MC, Disc,    and card number  block of info.");
-	$results[] = array("ID"=>46, "Done"=>"2010-04-22", "Text"=>"Order Processing screen:Shipping addres—remove—we took this out of the payment request form.");
-	$results[] = array("ID"=>47, "Done"=>"2010-04-22", "Text"=>"Order Processing screen:Customer notes---list in order – after the credit card info. – not before.");
-	$results[] = array("ID"=>48, "Done"=>"2010-04-22", "Text"=>"Order payment request – printed form:Billing address   -  line 1,2,3, - separate the lines. At this time the lines 1,2,3 are printing on one line, separate to print on 3 individual lines. See V Rivera Test 4/6/10—account name.");
+//	$results[] = array("ID"=>42, "Done"=>"2010-04-05", "Text"=>"Fix 'codes' and apostraphes on Dealer spec letter. Acrobat problem?");
+//	$results[] = array("ID"=>43, "Done"=>"2010-04-22", "Text"=>"Balance due letters: Reference invoice #60891, florida sales tax,   amount due reflects $606.00,  does not include the tax due of $45.89 in the total amount due.");
+//	$results[] = array("ID"=>44, "Done"=>"2010-04-22", "Text"=>"Balance due letters: The top and left and right margin need to be adjusted.  The top margin needs to be  2.5” to accommodate letterhead.    Left  and right margins could use another 1/2 inch. ");
+//	$results[] = array("ID"=>45, "Done"=>"2010-04-22", "Text"=>"Balance due letters: Can you center the payment info at the end of the letter,  “If payment by credit card:  Visa, MC, Disc,    and card number  block of info.");
+//	$results[] = array("ID"=>46, "Done"=>"2010-04-22", "Text"=>"Order Processing screen:Shipping addres—remove—we took this out of the payment request form.");
+//	$results[] = array("ID"=>47, "Done"=>"2010-04-22", "Text"=>"Order Processing screen:Customer notes---list in order – after the credit card info. – not before.");
+//	$results[] = array("ID"=>48, "Done"=>"2010-04-22", "Text"=>"Order payment request – printed form:Billing address   -  line 1,2,3, - separate the lines. At this time the lines 1,2,3 are printing on one line, separate to print on 3 individual lines. See V Rivera Test 4/6/10—account name.");
 	$results[] = array("ID"=>49, "Done"=>"2010-05-03", "Text"=>"Order Processing screen:Process and print bar--- not working  -after 1st print  and return to screen, the Payment(red box) still shows qty of 1 ");
 	$results[] = array("ID"=>50, "Done"=>"2010-05-03", "Text"=>"Order Processing screen:unprocessed payment.  Also the Process state—still reflects unprocessed.");
 	$results[] = array("ID"=>51, "Done"=>"2010-05-04", "Text"=>"Decrease margin on Balance Due letter by about an inch");
 	$results[] = array("ID"=>52, "Done"=>"2010-05-04", "Text"=>"Order form, REview request - Fields need to be longer");
 	$results[] = array("ID"=>53, "Done"=>"2010-05-04", "Text"=>"Not submitting orders into Database");
-	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
 	$results[] = array("ID"=>55, "Done"=>"2010-05-26", "Text"=>"Order processing screen, 'auto refresh'. (Expire contents)");
 	$results[] = array("ID"=>56, "Done"=>"2010-07-12*", "Text"=>"FIX date of submissions on orders if possible.");
 	$results[] = array("ID"=>57, "Done"=>"2010-05-05", "Text"=>"FL Tax not correct. See Inv#60891");
@@ -92,20 +86,18 @@ function toDoItems(){
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
 	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
 	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
 	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
 	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
 	$results[] = array("ID"=>77, "Done"=>"2010-07-15", "Text"=>"Submitting order/quotes crossing wires?");
 	$results[] = array("ID"=>78, "Done"=>"2010-07-16", "Text"=>"Processing orders - Need model number and blade length");
-	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
 	$results[] = array("ID"=>80, "Done"=>"2010-07-16", "Text"=>"Comma seperate seperate lines of address.");
 	$results[] = array("ID"=>81, "Done"=>"2010-07-16", "Text"=>"Change text of quote request response");
 	$results[] = array("ID"=>82, "Done"=>"2010-07-16", "Text"=>"Catalog Request - 'All countries outside of the US please complete credit card information'");
 	$results[] = array("ID"=>83, "Done"=>"2010-07-16", "Text"=>"Send us a message not working");
 	$results[] = array("ID"=>84, "Done"=>"2010-07-16", "Text"=>"Clear CC# for processed items after print & process");
-	$results[] = array("ID"=>85, "Done"=>"", "Text"=>"Remove label pages from order/quote PDF");
-	$results[] = array("ID"=>86, "Done"=>"", "Text"=>"reply emails have programming(HTML)  in the text.");
+	$results[] = array("ID"=>85, "Done"=>"2010-07-16", "Text"=>"Remove label pages from order/quote PDF");
+	$results[] = array("ID"=>86, "Done"=>"2010-07-16", "Text"=>"reply emails have programming(HTML)  in the text.");
 	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
@@ -120,11 +112,21 @@ function toDoItems(){
 	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>99, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>100, "Done"=>"", "Text"=>"");	
+
+	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
+	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
+	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
+	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
+	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
+	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
+	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
+	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
+	
 	return $results;
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated July 15, 2010</i><br />";
+	$results = "Web priority list <i>Last Updated July 16, 2010</i><br />";
 	$results .= "<B><i>Date</i>*</B> indicates - Unable to reproduce.";
 	$results .= "<ul id='toDoList'>";
 	$items = toDoItems();
