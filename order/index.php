@@ -30,18 +30,18 @@ if($mode == 'requestsubmit'){
 	$formValues['ccnumber'] = $orderProcessingForms->getUnFormattedCC($formValues['ccnumber']);		
 	$ordersDB->saveRequest($formValues);
 	
-	if($formValues['ordertype']==1){
-		$submissionResponse=$orderProcessingForms->quoteSubmissionResponse($formValues);
-	}
-	if($formValues['ordertype']==2){
-		$submissionResponse=$orderProcessingForms->orderSubmissionResponse($formValues);
-	}
-	
 	$emailValues['to']=$formValues['email'];
 	$emailValues['from']="webmessages@randallknives.com";
 	$emailValues['customername']=$formValues['name'];
 	$emailValues['subject']="Your $orderTypeStr with Randall Made Knives";
-	$emailValues['message']=strip_tags($submissionResponse);
+	if($formValues['ordertype']==1){
+		$emailValues['message']=strip_tags($orderProcessingForms->quoteSubmissionResponseText($formValues));
+		$submissionResponse=$orderProcessingForms->quoteSubmissionResponse($formValues);
+	}
+	if($formValues['ordertype']==2){
+		$emailValues['message']=strip_tags($orderProcessingForms->orderSubmissionResponseText($formValues));
+		$submissionResponse=$orderProcessingForms->orderSubmissionResponse($formValues);
+	}
 	
 	saveAndSend($emailValues,true);
 
