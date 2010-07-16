@@ -184,6 +184,12 @@ class Order extends Base
 						 "CC" => "Credit Card Info","note" => 'Customer Notes', 
 						"datesubmitted"=>"Request Submitted", "ordertype"=>"Request Type", 
 		);
+		if($record['ordertype'] == $this->requestTypeIDFromLabel("Quote Request")
+			|| $record['ordertype'] == $this->requestTypeIDFromLabel("Order Request")){
+				$fields['model']="Model";
+				$fields['qty']="Quantity";
+				$fields['bladelength']="Blade";
+			}
 		
 		foreach ($fields as $name=>$label){
 			$value=$record[$name];
@@ -194,12 +200,20 @@ class Order extends Base
 				$value = $this->statusFromID($record['processed']) . (($displayOnly) ?   ":" . $record['comment']: "");
 			}
 			if($name == 'address1'){
-				$value .=  $record['address2'];
-				$value .=  $record['address3'];
+				if($record['address2'] != ''){
+					$value .=  ", " . $record['address2'];
+				}
+				if($record['address3'] != ''){
+					$value .=  ", " . $record['address3'];
+				}
 			}
 			if($name == 'shipaddress1'){
-				$value .=  $record['address2'];
-				$value .=  $record['address3'];
+				if($record['shipaddress2'] != ''){
+					$value .=  ", " . $record['shipaddress2'];
+				}
+				if($record['shipaddress3'] != ''){
+					$value .=  ", " . $record['shipaddress3'];
+				}
 			}
 			// 'Hide' ship address for Payments
 			if($name == 'shipaddress1' && $shortType == "PaymentRequest"){
@@ -392,7 +406,7 @@ class Order extends Base
 		
 		$results .= "</div><!-- End $responseDiv -->\n";
 		
-		$results .= dumpDBRecord($formValues);
+//		$results .= dumpDBRecord($formValues);
 		
 		return $results;		
 	}
@@ -406,7 +420,7 @@ class Order extends Base
 		$results = $results . "Full Name:". $formValues['name'] . "\n";
 		$results = $results . "Quote request date:". date("F j Y") . "\n";
 		$results = $results . "Model Number:". $formValues['model'] . "\n\n";
-		$results = $results . " We should reply within three business days.\n\n";
+		$results = $results . " A reply will be forwarded in approximately three business days.\n\n";
 		$results .= "</div><!-- End $responseDiv -->\n";
 				
 		return $results;		
