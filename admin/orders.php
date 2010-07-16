@@ -77,7 +77,13 @@ switch ($mode) {
 		$orderData = $orders->search($formValues, true);
 		$pdf = new CwebOrderReport();
 		$pdf->setData($orderData);
-		$pdf->createReport();
+
+		$nolabels=false;
+		if($formValues['requesttype']==1) $nolabels=true; // Quote requests
+		if($formValues['requesttype']==2) $nolabels=true; // Order Requests
+		
+		$pdf->createReport($nolabels);
+
 		$params= array('Content-Disposition'=>'WebOrders.pdf');
 		$pdf->stream($params);
 		break;
@@ -90,7 +96,11 @@ switch ($mode) {
 		$orders->clearOldCCNumbers();
 		$pdf = new CwebOrderReport();
 		$pdf->setData($orderData);
-		$pdf->createReport();
+		$nolabels=false;
+		if($formValues['requesttype']==1) $nolabels=true; // Quote requests
+		if($formValues['requesttype']==2) $nolabels=true; // Order Requests
+		
+		$pdf->createReport($nolabels);
 		$params= array('Content-Disposition'=>'WebOrders.pdf');
 		$pdf->stream($params);
 		break;

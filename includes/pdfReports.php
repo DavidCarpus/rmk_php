@@ -119,7 +119,7 @@ class CwebOrderReport extends Cezpdf {
 			$tmpX += 214;
 		}
 	}
-	public function createReport() 	//	Default LTR: 612 x 792
+	public function createReport($nolabels=false) 	//	Default LTR: 612 x 792
 	{
 		$this->setStrokeColor(0,0,0,1);
 		$this->selectFont($this->labelFont);
@@ -131,7 +131,9 @@ class CwebOrderReport extends Cezpdf {
 			//			foreach ($toSort as $row){
 			//				echo $row['ordertype'] . "-" . $row['country'] . "-" . webOrderCountry($row) . "<BR>";
 			//			}
-			$this->orderListLabels($toSort);			
+			if(! $nolabels){
+				$this->orderListLabels($toSort);
+			}			
 			$this->orderListDetailed($toSort);
 				
 		}
