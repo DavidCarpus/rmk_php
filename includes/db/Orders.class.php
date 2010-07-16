@@ -114,8 +114,15 @@ class Orders
 	
 	public function clearOldCCNumbers()
 	{
-//		UPDATE orders set datesubmitted=datesubmitted, ccnumber=concat("****", substring(ccnumber, length(ccnumber)-3))
-// where length(ccnumber) > 4 and DATEDIFF(NOW(), datesubmitted ) > 7
+		$query = "";
+		$query .= "UPDATE orders set datesubmitted=datesubmitted, ";
+		$query .= "ccnumber=concat('****', substring(ccnumber, length(ccnumber)-3)) ";
+		$query .= " where processed=1 and length(ccnumber) > 4 ";
+//		$query .= " and DATEDIFF(NOW(), datesubmitted ) > 1";
+//		$query .= " and DATEDIFF(NOW(), datesubmitted ) > 7";
+		
+//		echo $query;
+		executeSQL($query);
 	}
 
 }

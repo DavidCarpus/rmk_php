@@ -87,6 +87,7 @@ switch ($mode) {
 //		header("pragma: no-cache"); 
 		$orderData = $orders->search($formValues, true);
 		$orders->markAllProcessed($orderData, $orderProcessingForms->statusIDFromDesc("Processed"));
+		$orders->clearOldCCNumbers();
 		$pdf = new CwebOrderReport();
 		$pdf->setData($orderData);
 		$pdf->createReport();
