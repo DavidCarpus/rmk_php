@@ -22,6 +22,13 @@ foreach (array('192.168.1.110') as $address) {
 	}
 	break;
 }
+foreach (array('208.76.82.94') as $address) {
+	if(substr($_SERVER['SERVER_ADDR'] ,0,strlen($address)) == $address ){
+		$system="LIVE_SERVER";
+	}
+	break;
+}
+
 if($system=="" && ($_SERVER['HTTP_HOST'] == 'localhost')){
 	$system="CARPUS_LAPTOP";
 }
@@ -38,6 +45,10 @@ function isShopServer(){
 	global $system;
 	return $system=="SHOP_SERVER";
 }
+function isLiveServer(){
+	global $system;
+	return $system=="LIVE_SERVER";
+}
 //echo $system;
 if(isShopServer()){
 define("INCLUDE_DIR", "/var/www/html/test/includes/");
@@ -52,6 +63,13 @@ define("FORMS_DIR", "/var/www/rmk/includes/forms/");
 define("DB_INC_DIR", "/var/www/rmk/includes/db/");
 define("PDF_FONT_DIR", "/var/www/rmk/includes/pdfCreator/fonts/");
 define("BASE_IMG_URL", "/rmk/images/");
+
+} else if(isLiveServer() ){
+define("INCLUDE_DIR", "/home/uplzcvgw/public_html/includes/");
+define("FORMS_DIR", "/home/uplzcvgw/public_html/includes/forms/");
+define("DB_INC_DIR", "/home/uplzcvgw/public_html/includes/db/");
+define("PDF_FONT_DIR", "/home/uplzcvgw/public_html/includes/pdfCreator/fonts/");
+define("BASE_IMG_URL", "/home/uplzcvgw/public_html/images/");
 
 } else{
 	echo "Unknown system config: " . $_SERVER['SERVER_ADDR'] . ":" . $_SERVER['HTTP_HOST'];

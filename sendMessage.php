@@ -5,6 +5,7 @@ include_once INCLUDE_DIR. "htmlHead.php";
 include_once INCLUDE_DIR. "class.phpmailer.php";
 include_once FORMS_DIR. "Email.class.php";
 include_once DB_INC_DIR. "Emails.class.php";
+//include_once INCLUDE_DIR. "email.php";
 
 $formValues = getFormValues();
 $emailProcessingForms = new Email();
@@ -20,7 +21,8 @@ switch ($mode) {
 //			$orderData['searchCriteria']=$orderProcessingForms->getCurrentSearchCriteria($formValues);
 //			$orderData['ordertypestring']=$orderProcessingForms->requestTypeFromID($orderData['ordertype']);			
 			// TODO: Send email and store in DB
-			$emailsDB->saveAndSend($formValues);
+//			echo debugStatement(dumpDBRecord($formValues));
+			$emailsDB->saveAndSend($formValues, false);
 		} else {
 			$formValues['ERROR']=$emailsDB->validationError;
 			echo "Errors Encountered.";
@@ -50,7 +52,7 @@ echo headSegments("Send us a message", array("Style.css"), "print.css");
 </div>
 
 <?php
-echo debugStatement("Mode:" . $mode);
-echo debugStatement(dumpDBRecord($formValues));
+//echo debugStatement("Mode:" . $mode);
+//echo debugStatement(dumpDBRecord($formValues));
 //echo debugStatement(dumpDBRecords($orderData));
 ?>
