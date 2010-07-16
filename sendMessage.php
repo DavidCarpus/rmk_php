@@ -23,6 +23,7 @@ switch ($mode) {
 			// TODO: Send email and store in DB
 //			echo debugStatement(dumpDBRecord($formValues));
 			$emailsDB->saveAndSend($formValues, false);
+			$mode="submitted";
 		} else {
 			$formValues['ERROR']=$emailsDB->validationError;
 			echo "Errors Encountered.";
@@ -44,7 +45,11 @@ echo headSegments("Send us a message", array("Style.css"), "print.css");
 	 	<?php echo toolbar("Home"); ?>
 		<div class="content">
 		<?php
-			echo $emailProcessingForms->sendEmailForm($formValues);
+			if($mode !="submitted"){
+				echo $emailProcessingForms->sendEmailForm($formValues);
+			} else{
+				echo "Thank you. Your message:<HR>" . $formValues['message'] . "<HR>Has been received.";
+			}
 		?>
 		</div>	
 	 	<?php echo footer(); ?>
