@@ -41,7 +41,7 @@ if($mode == 'requestsubmit'){
 	$emailValues['from']="webmessages@randallknives.com";
 	$emailValues['customername']=$formValues['name'];
 	$emailValues['subject']="Your $orderTypeStr with Randall Made Knives";
-	$emailValues['message']=$submissionResponse;
+	$emailValues['message']=strip_tags($submissionResponse);
 	
 	saveAndSend($emailValues,true);
 

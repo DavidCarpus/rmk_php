@@ -386,28 +386,37 @@ class Order extends Base
 
 		return $results;
 	}
+	
+	public function orderSubmissionResponseText($formValues){
+		$results="";
+		$results .= "Thank you for your order request with Randall Made Knives.\n\n";
+		$results .= "Full Name:". $formValues['name'] . "\n";
+		$results .= "Order request date:". date("F j Y") . "\n";
+		$results .= "Model Number:". $formValues['model'] . "\n\n";
+		$results .= "An 'order acknowledgement' will be forwarded via post office within 21 days.\n\n";
+		$results .= "The acknowledgement will outline knife order specifications, ";
+		$results .= "the scheduled ship date and also a deposit record. ";
+		$results .= "If you do not receive an order acknowledgement, it is imperative to contact Randall Made Knives "; 
+		$results .= "to verify complete order specs and deposit records.\n\n";
+		$results .= "<I>All order requests are subject to approval  and confirmation by Randall Made Knives.</I>\n\n";
+		return $results;		
+	}
+	public function quoteSubmissionResponseText($formValues){
+		$results="";
+		$results .= "Thank you for your quote request with Randall Made Knives.\n\n";
+		$results .= "Full Name:". $formValues['name'] . "\n";
+		$results .= "Quote request date:". date("F j Y") . "\n";
+		$results .= "Model Number:". $formValues['model'] . "\n\n";
+		$results .= " A reply will be forwarded in approximately three business days.\n\n";
+		return $results;				
+	}
+
 	public function orderSubmissionResponse($formValues){
 		$responseDiv="orderSubmissionResponse";
 		$results="";
 		$results .=  "<div id='$responseDiv'>" . "\n";
-		
-		$results = $results . "Thank you for your order request with Randall Made Knives.\n\n";
-		$results = $results . "Full Name:". $formValues['name'] . "\n";
-		$results = $results . "Order request date:". date("F j Y") . "\n";
-		$results = $results . "Model Number:". $formValues['model'] . "\n\n";
-		$results = $results . "An 'order acknowledgement' will be forwarded via post office within 21 days.\n\n";
-		$results = $results . "The acknowledgement will outline knife order specifications, ";
-		$results = $results . "the scheduled ship date and also a deposit record. ";
-		$results = $results . "If you do not receive an order acknowledgement, it is imperative to contact Randall Made Knives "; 
-		$results = $results . "to verify complete order specs and deposit records.\n\n";
-		$results = $results . "<I>All order requests are subject to approval  and confirmation by Randall Made Knives.</I>\n\n";
-	
-//		$results .= dumpDBRecord($formValues);
-		
+		$results .= $this->orderSubmissionResponseText($formValues);
 		$results .= "</div><!-- End $responseDiv -->\n";
-		
-//		$results .= dumpDBRecord($formValues);
-		
 		return $results;		
 	}
 	
@@ -415,12 +424,7 @@ class Order extends Base
 		$responseDiv="quoteSubmissionResponse";
 		$results="";
 		$results .=  "<div id='$responseDiv'>" . "\n";
-		
-		$results = $results . "Thank you for your quote request with Randall Made Knives.\n\n";
-		$results = $results . "Full Name:". $formValues['name'] . "\n";
-		$results = $results . "Quote request date:". date("F j Y") . "\n";
-		$results = $results . "Model Number:". $formValues['model'] . "\n\n";
-		$results = $results . " A reply will be forwarded in approximately three business days.\n\n";
+		$results .= $this->quoteSubmissionResponseText($formValues);
 		$results .= "</div><!-- End $responseDiv -->\n";
 				
 		return $results;		
