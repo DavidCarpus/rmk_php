@@ -230,16 +230,16 @@ function toDoItems(){
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
 	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF?");
+	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exitint notes.?");
 	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
 	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
 	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
 	$results[] = array("ID"=>77, "Done"=>"2010-07-15", "Text"=>"Submitting order/quotes crossing wires?");
-	$results[] = array("ID"=>78, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>80, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>81, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>82, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>78, "Done"=>"2010-07-16", "Text"=>"Processing orders - Need model number and blade length");
+	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
+	$results[] = array("ID"=>80, "Done"=>"2010-07-16", "Text"=>"Comma seperate seperate lines of address.");
+	$results[] = array("ID"=>81, "Done"=>"", "Text"=>"Change text of quote request response");
+	$results[] = array("ID"=>82, "Done"=>"", "Text"=>"Catalog Request - 'All countries outside of the US please complete credit card information'");
 	$results[] = array("ID"=>83, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>84, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>85, "Done"=>"", "Text"=>"");
@@ -248,7 +248,16 @@ function toDoItems(){
 	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"");
-	
+	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>93, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>94, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>95, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>96, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>97, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>99, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>100, "Done"=>"", "Text"=>"");	
 	return $results;
 }
 
