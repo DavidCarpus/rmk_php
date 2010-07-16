@@ -35,7 +35,7 @@ if($mode == 'submit'){
 		$emailValues['subject']="Your order payment for Randall Made Knives";
 		$emailValues['message']=$paymentForms->paymentSubmissionResponseText($formValues);
 
-		saveAndSend($emailValues,false);
+		saveAndSend($emailValues,true);
 		$mode='submitted';
 	}
 }

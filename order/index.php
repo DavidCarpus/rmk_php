@@ -40,10 +40,10 @@ if($mode == 'requestsubmit'){
 	$emailValues['to']=$formValues['email'];
 	$emailValues['from']="webmessages@randallknives.com";
 	$emailValues['customername']=$formValues['name'];
-	$emailValues['subject']="Your order request with Randall Made Knives";
+	$emailValues['subject']="Your $orderTypeStr with Randall Made Knives";
 	$emailValues['message']=$submissionResponse;
 	
-	saveAndSend($emailValues,false);
+	saveAndSend($emailValues,true);
 
 	$mode='submitted';
 }
