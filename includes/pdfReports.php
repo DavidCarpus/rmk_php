@@ -139,9 +139,9 @@ class CwebOrderReport extends Cezpdf {
 	public function getJoinedAddress($request, $shipping=false){
 		$address="";
 		$ship = ($shipping? 'ship': '');
-		if(strlen($request[$ship.'address1']) > 0) $address .= $request[$ship.'address1'] . " ";
-		if(strlen($request[$ship.'address2']) > 0) $address .= $request[$ship.'address2'] . " ";
-		if(strlen($request[$ship.'address3']) > 0) $address .= $request[$ship.'address3'] . " ";
+		if(strlen($request[$ship.'address1']) > 0) $address .= $request[$ship.'address1'] . ", ";
+		if(strlen($request[$ship.'address2']) > 0) $address .= $request[$ship.'address2'] . ", ";
+		if(strlen($request[$ship.'address3']) > 0) $address .= $request[$ship.'address3'] . ", ";
 		return $address;
 	}
 	public function getJoinedCSZ($request){
