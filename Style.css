@@ -486,6 +486,7 @@ span.cap-g {
 #sendEmailForm .entryfield input {width:220px;  }
 #sendEmailForm .entryfield label { float:left; }
 
+#nonUSCCRequest {display: block; float: left; font-style: italic;}
 
 #paymentSubmissionResponse { display: block; float: left; width:600px; background-color: #FF2200; }
 

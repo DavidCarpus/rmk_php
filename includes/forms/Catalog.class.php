@@ -247,6 +247,7 @@ class Catalog extends Base
 			$results .=  $this->textField($name, $label, $value, $options, "","","","") . "<br/>\n";			
 		}
 
+		$results .= "<div id='nonUSCCRequest'>All countries outside of the US please complete credit card information</div>";
 		$results .= $this->creditCardFormBlock($formValues, $this->creditCardOptions, false, false);
 		
 		$results .=  $this->button("submit", "Request Catalog");
