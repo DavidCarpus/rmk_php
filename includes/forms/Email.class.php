@@ -13,8 +13,8 @@ class Email extends Base
 //				
 //		if(array_key_exists("Invoice", $formValues) && is_numeric($formValues["Invoice"])){return "edit";}
 		if(array_key_exists("action", $formValues) && $formValues["action"] == "detail"){return "detail";}
-		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Search"){return "search";}
-		if(array_key_exists("submit", $formValues) && $formValues["submit"] == "Send"){return "submitEmail";}
+		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Search"){return "search";}
+		if(array_key_exists("submitButton", $formValues) && $formValues["submitButton"] == "Send"){return "submitEmail";}
 		return "browse";	
    }
 	

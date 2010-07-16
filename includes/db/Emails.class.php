@@ -14,7 +14,7 @@ class Emails  extends BaseDBObject
 		if($values['messagesubject']==''){$this->validationError .= "messagesubject,"; $valid=false;}
 		if($values['message']==''){$this->validationError .= "message,"; $valid=false;}
 		
-//		echo "Validate:</BR>" . dumpDBRecord($values) . $this->validationError;
+//		echo "Validate:</BR>" . dumpDBRecord($values) . "\n". $valid . $this->validationError;
 		return $valid;
 	}
 
@@ -94,15 +94,21 @@ class Emails  extends BaseDBObject
 	//	}
 		$this->emailSent = "The following message would be 'sent':" .dumpDBRecord($dbRecord);
 
+		if(isCarpusServer() ){ 
+			print "Dev Machine: The following message will be 'sent':<br />";
+			print  "<HR>". $dbRecord['messagebody'] . "<HR>";
+			return;
+		}
+		
+		if(!isCarpusServer() && !$mail->Send()){ 
+			$error = $error . 'Unable to send email to:' . $form['to'] . "<br />\n";
+		}else{
+			if(!$quiet){
+				print "The following message was 'sent':<br />";
+				print  "<HR>".$form['message'] . "-" . $dbRecord['messagebody'] . "<HR>";
+			}
+		}
 			
-//		if(!isDevelopmentMachine() && !$mail->Send()){ 
-//			$this->validationError .= 'Unable to send email to:' . $form['to'];
-//		}else{
-//			if(!$quiet){
-//				print "The following message was 'sent':<br />";
-//				print  "<HR>".$dbRecord['messagesubject'] . "-" . $dbRecord['messagebody'] . "<HR>";
-//			}
-//		}
 	//	print_r($form);
 		
 	

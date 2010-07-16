@@ -73,7 +73,7 @@ function saveAndSend($form, $quiet=false){
 //	}
 	
 	if(isDevelopmentMachine() ){ 
-		print "The following message will be 'sent':<br />";
+		print "Dev Machine: The following message will be 'sent':<br />";
 //		print  "<HR>".$form['message'] . "<HR>" . $dbRecord['messagebody'] . "<HR>";
 		print  "<HR>". $dbRecord['messagebody'] . "<HR>";
 		return;
