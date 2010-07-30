@@ -66,6 +66,7 @@ switch ($mode) {
 			echo "Adding email form data";
 			$orderData['ERROR']=$emailsDB->validationError;
 			// TODO: Merge form values into $orderData array.
+			echo debugStatement(dumpDBRecord($formValues));
 			$orderData['search_criteria']=$orderProcessingForms->getCurrentSearchCriteria($formValues);
 			$orderData['ordertypestring']=$orderProcessingForms->requestTypeFromID($orderData['ordertype']);			
 		}
@@ -123,6 +124,7 @@ echo headSegments("RMK Order/Quote Processing", array("../Style.css"), "../print
 ?>
 
 <body>
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header("admin"); ?>
 

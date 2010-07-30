@@ -243,6 +243,9 @@ class Order extends Base
 				} else if($name == 'processed' && !$displayOnly){
 					$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
 					$results .= $this->selection($name, $this->statusOptions, "", $record['processed'], true);
+					$options=array();
+//					$options['js']="onblur='alert(\"comment-" . $record['orders_id'] . "\");'";
+					$options['js']="onblur='saveNote(this," . $record['orders_id'] . ");'";
 					$results .=  $this->textArea('comment', "RMK Notes", $record['comment'], $options ,"" ,"" ,"" ,"");
 					
 				} else if($name == 'email' && $value != '' && !$displayOnly){

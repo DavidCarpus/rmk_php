@@ -136,12 +136,13 @@ class Base
 		$ro = (isset($options['readonly'])) ? "readonly='readonly'" : "";
 		$error = (isset($options['error'])) ? "class='required'" : "";
 		$class = (isset($options['class'])) ? "class='" . $options['class'] ."'" : "class='$name'";
+		$js= (isset($options['js']) ? $options['js']: "");
 		
 		$id=$name . "_" . $this->consecutiveID++;
 		
 		$results = "\n<div class='entryfield'>";
 		$results .= "<label  for='$id' $error>$label</label>";
-		$results .= "<textarea  id='$id' rows='2' cols='20' $class name='$name'>$value</textarea>";
+		$results .= "<textarea  id='$id' rows='2' cols='20' $js $class name='$name'>$value</textarea>";
 		$results .= "</div>";
 		
 //		if($large)

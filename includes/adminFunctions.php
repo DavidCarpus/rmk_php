@@ -86,6 +86,7 @@ function toDoItems(){
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
 	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
+	$results[] = array("ID"=>73, "Done"=>"2010-07-28", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
 	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
 	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
 	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
@@ -119,7 +120,6 @@ function toDoItems(){
 	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
 	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
 	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
 	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
 	
 	return $results;

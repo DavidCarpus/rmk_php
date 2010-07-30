@@ -209,6 +209,29 @@ function newPaymentSubmit(form){
 	return false;
 }
 
+function saveNote(field,orders_id){
+	var urlNote = encodeURIComponent(field.value);
+	
+	fetchURL="updateOrderNote.php?orders_id="+orders_id+ "&note="+ escape(field.value);
+//	if(urlNote != ""){
+//		alert(urlNote + "-" + orders_id);
+//		alert(fetchURL);
+//	}
+
+	xmlHttp=getXmlHttpObject()
+	if(!xmlHttp) alert("No xmlHttp object??");
+	xmlHttp.open("GET",fetchURL,true);
+	xmlHttp.send(null);
+	
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4)
+		{
+			var local=new Function("return "+xmlHttp.responseText)();
+//			alert(xmlHttp.responseText);
+		}
+	}
+}
+
 function showHint(id){
 alert(id);
 }
