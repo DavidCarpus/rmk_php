@@ -62,7 +62,7 @@ echo headSegments("RMK Shop Access", array("../ShopStyle.css", "../Style.css", "
 
 <body>
 
-<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
+<?php echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "' ></script>"; ?>
 
 
 <?php echo logo_header("", ".."); ?>

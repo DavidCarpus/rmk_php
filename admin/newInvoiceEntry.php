@@ -54,7 +54,7 @@ function editForm(){
 		
 	$results .= headSegments("RMK Edit Invoice", array("../Style.css", "", "../DataEntry.css"), "../print.css");
 	$results .= "\n<body  onload=defaultField(\"form_InvoiceEntryEdit\",\"PartDescription\")>\n";
-	$results .=  "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>";
+	$results .=  "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "' ></script>";
 	$results .= logo_header("admin", "..");
 	$results .= "<div class='mainbody'>";
 	$results .= "<div class='centerblock'>";

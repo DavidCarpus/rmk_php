@@ -50,7 +50,7 @@ echo headSegments("RMK Remove Item from Invoice", array("../Style.css", "", "../
 
 <body  onload='defaultField("form_RemoveInvoiceEntry","PartDescription");'>
 
-<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
+<?php echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "' ></script>"; ?>
 
 
 <?php echo logo_header("admin", ".."); ?>

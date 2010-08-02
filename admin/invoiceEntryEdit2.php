@@ -18,7 +18,7 @@ session_start();
 <LINK href="../DataEntry.css" rel="stylesheet" media='screen' type="text/css">
 
 <?php
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+ echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "'></SCRIPT>";
 
  $invoiceForms = new Invoice();
 $customerForms = new Customer();
