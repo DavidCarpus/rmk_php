@@ -329,7 +329,8 @@ class Invoices
 			$query .= "AND WEEK(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = WEEK(DateEstimated) ";
 			$query .= "AND YEAR(STR_TO_DATE('$estShipDate', '%c/%d/%y')) = YEAR(DateEstimated)";
 		}
-		$query .= "ORDER BY C.LastName, C.FirstName ";
+//		$query .= "ORDER BY C.LastName, C.FirstName ";
+		$query .= "ORDER BY I.Invoice ";
 		
 //		echo $query; 
 		
