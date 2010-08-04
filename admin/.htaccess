@@ -1,5 +1,6 @@
 AuthName "Password Required"
 AuthType Basic
-AuthUserFile /var/www/.htpasswd
+#AuthUserFile /var/www/.htpasswd
+AuthUserFile /home/uplzcvgw/public_html/.htpasswd
 AuthGroupFile /dev/null 
 require valid-user
