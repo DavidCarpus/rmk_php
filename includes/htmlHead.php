@@ -627,9 +627,10 @@ function isDebugAccess(){
 	if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') return true;
 	
 	return ($_SERVER['REMOTE_ADDR'] == '97.100.243.22'
-		||	$_SERVER['REMOTE_ADDR'] == '67.8.252.151'
+		||	$_SERVER['REMOTE_ADDR'] == '65.96.245.146'
 		|| $_SERVER['REMOTE_ADDR'] == '198.73.165.1'
 	);
+//		||	$_SERVER['REMOTE_ADDR'] == '67.8.252.151'
 }
 
 	function creditCardBlockForLetters(){

@@ -33,7 +33,7 @@ class WebPayments extends BaseDBObject
 		$formValues['ordertype']=4;		
 		unset($formValues["submit"]);
 				
-		return saveRecord("orders", "orders_id", $formValues, true);
+		return saveRecord("orders", "orders_id", $formValues, false);
 	}
 }
 ?>
