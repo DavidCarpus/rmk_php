@@ -73,16 +73,18 @@ function executeSQL($sql){
 }
 
 function saveRecord($tableName, $keyField, $record, $test=false){
+	global $dbconfig;
+	$sql="";
 	if(array_key_exists($keyField, $record) && $record[$keyField] > 0){
 		$sql = updateRecordSQL($record, $keyField, $tableName);
 		if(! $test)	executeSQL($sql);
-		if( $test) 	echo debugStatement($sql);
 	}else{
 		$sql = insertRecordSQL($record, $keyField, $tableName);
 		if(! $test)	executeSQL($sql);
-		if( $test) 	echo debugStatement($sql);
 		$record[$keyField] = mysql_insert_id();		
 	}
+	if( $test) 	echo debugStatement($sql);
+	echo debugStatement($test . dumpDBRecord($dbconfig));
 	return $record;
 }
 

@@ -62,6 +62,9 @@ echo headSegments("Order Payment Submissions", array("../Style.css"), "../print.
 </div>
 
 <?php
-echo debugStatement($mode);
-echo debugStatement(dumpDBRecord($formValues));
+//echo $_SERVER['REMOTE_ADDR'];
+//echo isDebugAccess();
+//echo debugStatement(dumpDBRecord($dbconfig));
+//echo debugStatement($mode);
+//echo debugStatement(dumpDBRecord($formValues));
 ?>
