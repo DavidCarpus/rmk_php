@@ -103,11 +103,11 @@ function toDoItems(){
 	$results[] = array("ID"=>88, "Done"=>"2010-08-01", "Text"=>"balance due letter – Sort by INVOICE number");
 	$results[] = array("ID"=>89, "Done"=>"2010-08-01", "Text"=>"Order processing - Move extra features afer blade length");
 	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"Gary Jul 20 -On the quote form (& maybe other forms) increase the field sizes");	
-	$results[] = array("ID"=>91, "Done"=>"2010-008-18", "Text"=>"ORDER FORM -  add the date order placed to the screen and to the printed hard copy.");
-	$results[] = array("ID"=>92, "Done"=>"2010-008-18", "Text"=>"ORDER FORM -  add to the credit card info --- name as it appears on the credit card");
-	$results[] = array("ID"=>93, "Done"=>"2010-008-18", "Text"=>"PAYMENT REQUEST -  need a return email address on the screen to utilize and also to print on hard copy.");
-	$results[] = array("ID"=>94, "Done"=>"2010-008-18", "Text"=>"Gary July 26 - If third line down prints the same as the first address line, delete");
-	$results[] = array("ID"=>95, "Done"=>"2010-008-18", "Text"=>"Val call Aug 17 Problem with label for spain order - perez");
+	$results[] = array("ID"=>91, "Done"=>"2010-08-18", "Text"=>"ORDER FORM -  add the date order placed to the screen and to the printed hard copy.");
+	$results[] = array("ID"=>92, "Done"=>"2010-08-18", "Text"=>"ORDER FORM -  add to the credit card info --- name as it appears on the credit card");
+	$results[] = array("ID"=>93, "Done"=>"2010-08-18", "Text"=>"PAYMENT REQUEST -  need a return email address on the screen to utilize and also to print on hard copy.");
+	$results[] = array("ID"=>94, "Done"=>"2010-08-18", "Text"=>"Gary July 26 - If third line down prints the same as the first address line, delete");
+	$results[] = array("ID"=>95, "Done"=>"2010-08-18", "Text"=>"Val call Aug 17 Problem with label for spain order - perez");
 	$results[] = array("ID"=>96, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>97, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
