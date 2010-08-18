@@ -15,7 +15,7 @@ session_start();
 //	session_destroy();
 //	header("Location: "."../");
 //}
- echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
+ echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "'></SCRIPT>";
  $formValues = getFormValues();
  $custReportsClass = new CustomerReports();
  

@@ -181,8 +181,8 @@ class Order extends Base
 		$fields=array("email"=>"Email Address", "processed"=>"Process State", "name" => 'Full Name',  
 						"address1"=>"Billing Address", "shipaddress1"=>"Shipping Address",
 						"csz" => 'city_state_zip_cntry', "phone"=> "Phone Number","invoice"=> "Invoice",
-						 "CC" => "Credit Card Info","note" => 'Customer Notes', 
-						"datesubmitted"=>"Request Submitted", "ordertype"=>"Request Type", 
+						 "CC" => "Credit Card Info",  "datesubmitted"=>"Request Submitted", 
+						 "ordertype"=>"Request Type"
 		);
 		if($record['ordertype'] == $this->requestTypeIDFromLabel("Quote Request")
 			|| $record['ordertype'] == $this->requestTypeIDFromLabel("Order Request")){
@@ -190,6 +190,7 @@ class Order extends Base
 				$fields['qty']="Quantity";
 				$fields['bladelength']="Blade";
 			}
+		$fields['note']='Customer Notes';
 		
 		foreach ($fields as $name=>$label){
 			$value=$record[$name];
@@ -243,6 +244,9 @@ class Order extends Base
 				} else if($name == 'processed' && !$displayOnly){
 					$results .=  $this->textField($name, $label, $value, $options ,"" ,"" ,"" ,"");
 					$results .= $this->selection($name, $this->statusOptions, "", $record['processed'], true);
+					$options=array();
+//					$options['js']="onblur='alert(\"comment-" . $record['orders_id'] . "\");'";
+					$options['js']="onblur='saveNote(this," . $record['orders_id'] . ");'";
 					$results .=  $this->textArea('comment', "RMK Notes", $record['comment'], $options ,"" ,"" ,"" ,"");
 					
 				} else if($name == 'email' && $value != '' && !$displayOnly){

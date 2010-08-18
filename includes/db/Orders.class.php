@@ -81,6 +81,15 @@ class Orders
 //		echo debugStatement("updateStatus:<br/>$query" );
 		executeSQL($query);
 	}
+	
+	function updateRMKNote($id, $newNote)
+	{
+		$query = "";
+		$query .= "update orders set comment = '$newNote' where orders_id=$id";
+//		echo debugStatement("updateStatus:<br/>$query" );
+		executeSQL($query);
+	}
+	
 	public function markAllProcessed($orders, $processedStatus)
 	{
 		foreach ($orders as $order)

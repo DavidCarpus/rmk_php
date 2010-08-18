@@ -86,6 +86,7 @@ function toDoItems(){
 	$results[] = array("ID"=>70, "Done"=>"2010-07-13", "Text"=>"Add 'All amounts in USD' next to amount field for payments");
 	$results[] = array("ID"=>71, "Done"=>"2010-07-15", "Text"=>"Make payment req show cc info all the time.");
 	$results[] = array("ID"=>72, "Done"=>"2010-07-15", "Text"=>"Amounts not showing on email following submission of payment. (DB problem?)");
+	$results[] = array("ID"=>73, "Done"=>"2010-07-28", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
 	$results[] = array("ID"=>74, "Done"=>"2010-07-15", "Text"=>"Line up notes and comments on pdf with the rest of the 'text'");
 	$results[] = array("ID"=>75, "Done"=>"2010-07-15", "Text"=>"Quote request displays message for orders. Should be seperate message.Thank u for the quote request. We should reply within three business days.");
 	$results[] = array("ID"=>76, "Done"=>"2010-07-14", "Text"=>"Orders and quotes showing up as catalog requests?");
@@ -98,9 +99,19 @@ function toDoItems(){
 	$results[] = array("ID"=>84, "Done"=>"2010-07-16", "Text"=>"Clear CC# for processed items after print & process");
 	$results[] = array("ID"=>85, "Done"=>"2010-07-16", "Text"=>"Remove label pages from order/quote PDF");
 	$results[] = array("ID"=>86, "Done"=>"2010-07-16", "Text"=>"reply emails have programming(HTML)  in the text.");
-	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>87, "Done"=>"2010-05-06", "Text"=>"Minimum payments should be $100");
+	$results[] = array("ID"=>88, "Done"=>"2010-08-01", "Text"=>"balance due letter – Sort by INVOICE number");
+	$results[] = array("ID"=>89, "Done"=>"2010-08-01", "Text"=>"Order processing - Move extra features afer blade length");
+	
+
+	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
+	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
+	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
+	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
+	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
+	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
+	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
+
 	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"");
@@ -112,25 +123,43 @@ function toDoItems(){
 	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>99, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>100, "Done"=>"", "Text"=>"");	
-
-	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
-	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
-	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
-	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
-	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
-	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
-	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
-	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
+	
+/*
+ * 
+ * March 29
+Payment section – drop the cover page, no need.
+Order Payment Request page --   insert space between the heading ‘order payment request’  and the ‘account info’ – at least of couple of inches  since we have the whole page..
+ 
+When entering the info on payment request form -  ‘Comments’  box is missing.
+ 
+When you tab from the last box which is comments, tab to ‘review bar’, then review page.
+After reviewing page, the ‘send bar’  should be more visible. When I was testing it was at the bottom of page, out of sight.
+ * 
+ *
+ * 
+ * 
+ * 
+ * 	
+ */
+	
+	
 	
 	return $results;
 }
 
 function toDoPage(){
-	$results = "Web priority list <i>Last Updated July 16, 2010</i><br />";
-	$results .= "<B><i>Date</i>*</B> indicates - Unable to reproduce.";
-	$results .= "<ul id='toDoList'>";
 	$items = toDoItems();
 	usort ( $items , "toDoSort" );
+	$lastFinish="";
+	foreach ($items as $item) {
+		if(strlen($item['Done'] > 0)){ $lastFinish = $item['Done']; break; }
+	}
+	
+//	$results = "Web priority list <i>Last Updated July 16, 2010</i><br />";
+	$lastFinish = Date("M j,Y", strtotime($lastFinish));
+	$results = "Web priority list <i>Last Updated <B>$lastFinish</B></i><br />";
+	$results .= "<B><i>Date</i>*</B> indicates - Unable to reproduce.";
+	$results .= "<ul id='toDoList'>";
 	foreach ($items as $item) {
 		$task=htmlizeText($item['Text']);
 		
