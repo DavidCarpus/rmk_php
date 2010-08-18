@@ -50,7 +50,7 @@ echo headSegments("RMK Edit Invoice Payments", array("../Style.css", "", "../Dat
 
 <body>
 
-<?php echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "' ></script>"; ?>
+<?php echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "' ></script>"; ?>
 
 <?php echo logo_header("admin", ".."); ?>
 <div class="mainbody">

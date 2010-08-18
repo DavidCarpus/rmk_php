@@ -46,7 +46,7 @@ switch ($mode) {
 		}
 		break;
 }
-echo "<script type='text/javascript' src='../admin/NewRMK.js?" . time() . "'></SCRIPT>";
+echo "<script type='text/javascript' src='../includes/NewRMK.js?" . time() . "'></SCRIPT>";
 
 ?>
 
