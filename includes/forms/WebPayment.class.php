@@ -93,7 +93,8 @@ class WebPayment extends Base
 		$fields = array('phone'=>'Phone Number', 'invoice'=>'Invoice/Order Number', 'name'=>'Account Name', "email"=>"Email Address"  );
 		foreach($fields as $name=>$label)
 		{
-			$value = $formValues[$name];
+			$value="";
+			if(array_key_exists($name, $formValues)) $value=$formValues[$name];
 			$options=array();
 			if(array_key_exists($name, $errors)) $options['error']=true;
 
@@ -108,7 +109,8 @@ class WebPayment extends Base
 		);
 		foreach($fields as $name=>$label)
 		{
-			$value = $formValues[$name];
+			$value="";
+			if(array_key_exists($name, $formValues)) $value=$formValues[$name];
 			$options=array();
 			if(array_key_exists($name, $errors)) $options['error']=true;
 			if($name != "note"){

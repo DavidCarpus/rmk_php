@@ -25,9 +25,11 @@ function webOrderCountry($order)
 		return "3";
 	}
 	if(isUSZipCode($order['zip'])) return "1";
+	
+	if(isUS_StateAbbreviation(stateAbbreviationLookup($order['state'])))  return "1";
 
 	if($country  == "CA" || strncmp($country, "CANADA", 13) == 0) return "2";
-	//	echo $country . " " . $order['state']. " " . $order['zip'] . "<BR>";
+//	echo "Cntry?:" . $country . " Abb:" . stateAbbreviationLookup($order['state']). ":" . (isUS_StateAbbreviation(stateAbbreviationLookup($order['state']))) . " " . $order['zip'] . "<BR>";
 	return "3";
 }
 
@@ -201,6 +203,8 @@ class CwebOrderReport extends Cezpdf {
 		$this->ezSetY($this->y - $pointSize);
 
 		$fields = array();
+		
+		$fields[] = array("Request Submitted", $request['datesubmitted']);
 		$fields[] = array("Name", $request['name']);
 		$fields[] = array("Email", $request['email']);
 		$fields[] = array("Billing Address", $this->getJoinedAddress($request));
@@ -215,6 +219,7 @@ class CwebOrderReport extends Cezpdf {
 		$fields[] = array("Length", $request['bladelength']);
 		$fields[] = array("Features", $request['note']);
 
+		$fields[] = array("CC Name", $request['ccname']);
 		$fields[] = array("Credit Card Number", $this->getFormattedCC($request['ccnumber']));
 		$fields[] = array("Expiration Date", $request['ccexpire']);
 		$fields[] = array("VCODE", $request['ccvcode']);
@@ -236,6 +241,7 @@ class CwebOrderReport extends Cezpdf {
 	}
 
 	public function orderListDetailedCatalog($request){ // ordertype=3
+		$pointSize=0;
 		if(webOrderCountry($request) > 1) { // NOT a US,
 			$this->ezText("<b>Non US Catalog Request</b>",14);
 			$this->ezSetY($this->y - $pointSize);
@@ -273,6 +279,7 @@ class CwebOrderReport extends Cezpdf {
 
 		$fields = array();
 		$fields[] = array("Account Name", $request['name']);
+		$fields[] = array("Email", $request['email']);
 //		$fields[] = array("Billing Address", $this->getJoinedAddress($request));
 		$padding = "                ";
 		if(strlen($request['address1']) > 0) $fields[] = array("Billing Address", $request['address1']);
@@ -371,6 +378,7 @@ class CwebOrderReport extends Cezpdf {
 		}
 
 		foreach ($data as $row){
+//			echo debugStatement($row);
 			$this->addText($currentX, $currentY, $fontSize, $row);
 			$currentY -= $fontSize;
 		}
@@ -443,16 +451,24 @@ class CwebOrderReport extends Cezpdf {
 
 		$text="";
 		if(strlen($order['address1']) > 0) $results[] = $order['address1'];
-		if(strlen($order['address2']) > 0) $results[] = $order['address2'];
-		if(strlen($order['address3']) > 0) $results[] = $order['address3'];
-		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']);
-		$country = strtoupper($order['country']);
-		$isUSA = $country  == "USA" || strncmp($country, "UNITED STATES", 13) == 0;
-		if(! $isUSA && strlen($order['country']) > 0){
-			$results[] = $order['country'];
+		if(strlen($order['address2']) > 0 && $order['address1'] != $order['address2']){
+			$results[] = $order['address2'];
+		}
+		if(strlen($order['address3']) > 0 && $order['address1'] != $order['address3']
+			 && $order['address2'] != $order['address3']){
+			$results[] = $order['address3'];
+		}
+//		$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']);
+		
+		if(webOrderCountry($order) == 1){
+			$results[] = $order['city'] . " " . stateAbbreviationLookup($order['state']) . " " . $order['zip'];			
+		} else {
+			$country = strtoupper($order['country']);
+			$results[] = $order['city'];
+			$results[] = $order['state'] . " " . $order['country'] . " " . $order['zip'];			
 		}
 		
-		$results[] = $order['zip'];
+//		$results[] = $order['zip'];
 		
 		//		$results[] = $order['ordertype'];
 
@@ -861,6 +877,16 @@ class CcustomerReport extends Cezpdf {
 
 }
 
+
+function isUS_StateAbbreviation($stateAbbreviation){
+	$lookupTable = array("AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FM","FL","GA","GU","HI","ID",
+	"IL","IN","IA","KS","KY","LA","ME","MH","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM",
+	"NY","NC","ND","MP","OH","OK","OR","PW","PA","PR","RI","SC","SD","TN","TX","UT","VT","VI","VA","WA",
+	"WV","WI","WY","AE","AA","AE","AE","AE","AP");
+	if(in_array(strtoupper(trim($stateAbbreviation)), $lookupTable)) return 1;
+	return 0;
+}
+
 function stateAbbreviationLookup($state){
 $lookupTable = array("ALABAMA"=>"AL", "ALASKA"=>"AK", "AMERICAN SAMOA"=>"AS", "ARIZONA"=>"AZ", "ARKANSAS"=>"AR", 
 "CALIFORNIA"=>"CA", "COLORADO"=>"CO", "CONNECTICUT"=>"CT", "DELAWARE"=>"DE", "DISTRICT OF COLUMBIA"=>"DC", 
@@ -874,7 +900,9 @@ $lookupTable = array("ALABAMA"=>"AL", "ALASKA"=>"AK", "AMERICAN SAMOA"=>"AS", "A
 "SOUTH DAKOTA"=>"SD", "TENNESSEE"=>"TN", "TEXAS"=>"TX", "UTAH"=>"UT", "VERMONT"=>"VT", "VIRGIN ISLANDS"=>"VI", 
 "VIRGINIA"=>"VA", "WASHINGTON"=>"WA", "WEST VIRGINIA"=>"WV", "WISCONSIN"=>"WI", "WYOMING"=>"WY");
 
-$abbreviation = $lookupTable[strtoupper($state)];
+$abbreviation = "";
+if(array_key_exists(strtoupper($state), $lookupTable)) $abbreviation = $lookupTable[strtoupper($state)];
+
 if(strlen($abbreviation) == 0) $abbreviation = $state;
 return $abbreviation;
 }

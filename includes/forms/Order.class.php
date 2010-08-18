@@ -80,6 +80,7 @@ class Order extends Base
 					'phone'=>'Phone Number', 'startdate'=>'Date - Start', 'enddate'=>'Date - End');
 		foreach($fields as $name=>$label)
 		{
+			$options=array();
 			$value = $searchValues[$name];
 			if($name == 'requesttype'){
 				$results .= $this->selection($name, $this->requestTypeOptions, $label, $value);
@@ -149,7 +150,7 @@ class Order extends Base
 		}
 		$results .=  "</div>";
 //		$results = ($this->enteredSearchFields($formValues, $this->searchCriteriaFields)) . $results;
-		$results .=  $searchCriteria;
+//		$results .=  $searchCriteria;
 		return $results;
 	}
 
@@ -192,7 +193,8 @@ class Order extends Base
 			}
 		
 		foreach ($fields as $name=>$label){
-			$value=$record[$name];
+			$value="";
+			if(array_key_exists($name, $record)) $value=$record[$name];
 			if($name == 'ordertype'){
 				$value = $this->requestTypeFromID($record['ordertype']);
 			}
@@ -237,6 +239,7 @@ class Order extends Base
 //				}
 //			}
 			if($value != ''){
+				$options=array();
 				if($name == 'CC' || $name == 'note'){
 					$results .=  $this->textArea($name, $label, $value, $options ,"" ,"" ,"" ,"");
 					

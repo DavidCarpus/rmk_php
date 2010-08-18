@@ -80,7 +80,7 @@ class Base
 
 	public function textField($name, $label, $value, $options, $unused1, $unused2, $unused3, $unused4){
 		$value = $this->htmlizeFormValue($value);
-		if($class != '') $class = " class='$class'";
+//		if($class != '') $class = " class='$class'";
 		$labelJscript = $fieldJscript = ""; 
 		if(isset($options['jscript'])){
 //			echo $name . ":" . ($options['jscript']["field"]);
@@ -110,7 +110,7 @@ class Base
 	
 	function optionField($name, $label, $values, $default='' , $options){
 		$required = isset($options['required']);
-		$value = $this->htmlizeFormValue($value);
+//		$value = $this->htmlizeFormValue($value);
 		
 //		echo $name . ":" . dumpDBRecord($options);
 		
@@ -253,7 +253,8 @@ class Base
  			$ccFields["amount"] = "Amount";
 
 		foreach ($ccFields as $name=>$label){
-			$value=$formValues[$name];
+			$value="";
+			if(array_key_exists($name, $formValues)) $value=$formValues[$name];
 			$options=array();			
 			if(array_key_exists($name, $errors)) $options['error']=true;
 			

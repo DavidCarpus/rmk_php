@@ -98,12 +98,12 @@ function toDoItems(){
 	$results[] = array("ID"=>84, "Done"=>"2010-07-16", "Text"=>"Clear CC# for processed items after print & process");
 	$results[] = array("ID"=>85, "Done"=>"2010-07-16", "Text"=>"Remove label pages from order/quote PDF");
 	$results[] = array("ID"=>86, "Done"=>"2010-07-16", "Text"=>"reply emails have programming(HTML)  in the text.");
-	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>87, "Done"=>"", "Text"=>"Gary Jul 20 -On the quote form (& maybe other forms) increase the field sizes");	
+	$results[] = array("ID"=>88, "Done"=>"", "Text"=>"ORDER FORM -  add the date order placed to the screen and to the printed hard copy.");
+	$results[] = array("ID"=>89, "Done"=>"", "Text"=>"ORDER FORM -  add to the credit card info --- name as it appears on the credit card");
+	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"PAYMENT REQUEST -  need a return email address on the screen to utilize and also to print on hard copy.");
+	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"Gary July 26 - If third line down prints the same as the first address line, delete");
+	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"Val call Aug 17 Problem with label for spain order - perez");
 	$results[] = array("ID"=>93, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>94, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>95, "Done"=>"", "Text"=>"");
@@ -112,7 +112,17 @@ function toDoItems(){
 	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>99, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>100, "Done"=>"", "Text"=>"");	
-
+	$results[] = array("ID"=>101, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>102, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>103, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>104, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>105, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>106, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>107, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>108, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>109, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>110, "Done"=>"", "Text"=>"");	
+	
 	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
 	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
 	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
