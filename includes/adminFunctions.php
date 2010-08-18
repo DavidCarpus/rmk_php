@@ -102,27 +102,27 @@ function toDoItems(){
 	$results[] = array("ID"=>87, "Done"=>"2010-05-06", "Text"=>"Minimum payments should be $100");
 	$results[] = array("ID"=>88, "Done"=>"2010-08-01", "Text"=>"balance due letter – Sort by INVOICE number");
 	$results[] = array("ID"=>89, "Done"=>"2010-08-01", "Text"=>"Order processing - Move extra features afer blade length");
-	
-
-	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
-	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
-	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
-	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
-	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
-	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
-	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
-
-	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>93, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>94, "Done"=>"", "Text"=>"");
-	$results[] = array("ID"=>95, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>90, "Done"=>"", "Text"=>"Gary Jul 20 -On the quote form (& maybe other forms) increase the field sizes");	
+	$results[] = array("ID"=>91, "Done"=>"", "Text"=>"ORDER FORM -  add the date order placed to the screen and to the printed hard copy.");
+	$results[] = array("ID"=>92, "Done"=>"", "Text"=>"ORDER FORM -  add to the credit card info --- name as it appears on the credit card");
+	$results[] = array("ID"=>93, "Done"=>"", "Text"=>"PAYMENT REQUEST -  need a return email address on the screen to utilize and also to print on hard copy.");
+	$results[] = array("ID"=>94, "Done"=>"", "Text"=>"Gary July 26 - If third line down prints the same as the first address line, delete");
+	$results[] = array("ID"=>95, "Done"=>"", "Text"=>"Val call Aug 17 Problem with label for spain order - perez");
 	$results[] = array("ID"=>96, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>97, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>98, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>99, "Done"=>"", "Text"=>"");
 	$results[] = array("ID"=>100, "Done"=>"", "Text"=>"");	
+	$results[] = array("ID"=>101, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>102, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>103, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>104, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>105, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>106, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>107, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>108, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>109, "Done"=>"", "Text"=>"");
+	$results[] = array("ID"=>110, "Done"=>"", "Text"=>"");	
 	
 /*
  * 
@@ -134,15 +134,17 @@ When entering the info on payment request form -  ‘Comments’  box is missing
  
 When you tab from the last box which is comments, tab to ‘review bar’, then review page.
 After reviewing page, the ‘send bar’  should be more visible. When I was testing it was at the bottom of page, out of sight.
- * 
- *
- * 
- * 
- * 
  * 	
  */
 	
-	
+	$results[] = array("ID"=>10, "Done"=>"", "Text"=>"Time submitted &#150; when an order,quote,cat,  is sent to processed, the time will vary. We need one permanent time and date stamp. No changes.");
+	$results[] = array("ID"=>11, "Done"=>"", "Text"=>"Processed order &#150; purge option.");
+	$results[] = array("ID"=>12, "Done"=>"", "Text"=>"Examples of Combinations -  list model, desc, and price.");
+	$results[] = array("ID"=>13, "Done"=>"", "Text"=>"Set up so that all catalogue requests are deleted every week. (Gary 2006-10-22)");
+	$results[] = array("ID"=>14, "Done"=>"", "Text"=>"&rsquo; in name and address fields uses  &rsquo;");
+	$results[] = array("ID"=>54, "Done"=>"", "Text"=>"Eliminate 'duplicates' in the web order processing stuff");
+	$results[] = array("ID"=>73, "Done"=>"", "Text"=>"Customer notes entered by shop on orders/requests not showing up on PDF. Make notes auto save when exiting notes.");
+	$results[] = array("ID"=>79, "Done"=>"", "Text"=>"Formatting of labels for catalog requests off.");
 	
 	return $results;
 }

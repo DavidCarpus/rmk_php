@@ -85,8 +85,17 @@ switch ($mode) {
 		
 		$pdf->createReport($nolabels);
 
-		$params= array('Content-Disposition'=>'WebOrders.pdf');
-		$pdf->stream($params);
+//		if(0){
+//			echo debugStatement(dumpDBRecords($orderData));
+//			$pdfcode = $pdf->output(1);
+//			$pdfcode = str_replace("\n","\n<br />",htmlspecialchars($pdfcode));		  
+//			echo '<html><body>';		  
+//			echo trim($pdfcode);		  
+//			echo '</body></html>';
+//		} else {
+			$params= array('Content-Disposition'=>'WebOrders.pdf');
+			$pdf->stream($params);
+//		}
 		break;
 	case "processAndPrint":
 //		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -137,6 +146,7 @@ echo headSegments("RMK Order/Quote Processing", array("../Style.css"), "../print
 				echo	$emailProcessingForms->emailForRequest($orderData);
 				echo	$orderProcessingForms->listItem($orderData, "", true);
 			} else {
+//				echo debugStatement(dumpDBRecords($orderData));
 				echo $orderProcessingForms->displayUnprocessedCounts($orderCounts);
 				echo $orderProcessingForms->searchForm($formValues);
 				echo $orderProcessingForms->listItems($orderData, $formValues);
